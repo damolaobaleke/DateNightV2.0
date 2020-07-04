@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "101695365043",
+    "firebase_url": "https://datenight-f491f.firebaseio.com",
+    "project_id": "datenight-f491f",
+    "storage_bucket": "datenight-f491f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101695365043:android:a291f4bfa979bfc91475c6",
+        "android_client_info": {
+          "package_name": "com.datenight"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101695365043-io1uldumpqp5jrp0op5qa9g15no26ve1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoN8P6JcFoOf0W1kmpMv9fTuNUKAzqbbE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "101695365043-io1uldumpqp5jrp0op5qa9g15no26ve1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
