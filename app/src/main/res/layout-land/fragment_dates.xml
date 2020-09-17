@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListView
+        android:id="@+id/dateList"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="1dp"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Join"
+        android:elevation="20dp"
+        android:textSize="14sp"
+        android:fontFamily="@font/inter"
+        android:textColor="@color/date_night_purple"
+        app:layout_constraintEnd_toEndOf="@+id/fabJoinDate"
+        app:layout_constraintStart_toStartOf="@+id/fabJoinDate"
+        app:layout_constraintTop_toBottomOf="@id/imageView4"
+        tools:layout_editor_absoluteX="298dp"
+        tools:layout_editor_absoluteY="554dp" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginStart="6dp"
+        android:elevation="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/fabJoinDate"
+        app:layout_constraintEnd_toEndOf="@+id/fabJoinDate"
+        app:layout_constraintHorizontal_bias="0.384"
+        app:layout_constraintStart_toStartOf="@+id/fabJoinDate"
+        app:srcCompat="@drawable/join_heart" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabJoinDate"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="200dp"
+        app:backgroundTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.893"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dateList" />
+
+    <TextView
+        android:id="@+id/create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create"
+        android:elevation="20dp"
+        android:textSize="14sp"
+        android:fontFamily="@font/inter"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/fabCreateDate"
+        app:layout_constraintStart_toStartOf="@+id/fabCreateDate"
+        app:layout_constraintTop_toBottomOf="@id/add"
+        tools:layout_editor_absoluteX="298dp"
+        tools:layout_editor_absoluteY="554dp" />
+
+    <ImageView
+        android:id="@+id/add"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginStart="6dp"
+        android:elevation="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/fabCreateDate"
+        app:layout_constraintEnd_toEndOf="@+id/fabCreateDate"
+        app:layout_constraintHorizontal_bias="0.384"
+        app:layout_constraintStart_toStartOf="@+id/fabCreateDate"
+        app:srcCompat="@drawable/create_add" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCreateDate"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        app:backgroundTint="@color/date_night_purple"
+        app:layout_constraintEnd_toEndOf="@+id/fabJoinDate"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/fabJoinDate"
+        app:layout_constraintTop_toBottomOf="@+id/fabJoinDate" />
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

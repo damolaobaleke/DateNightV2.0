@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/nav_my_dates"
+        android:icon="@drawable/ic_my_dates"
+        android:title="@string/my_dates" />
+    <item
+        android:id="@+id/nav_date_hub"
+        android:icon="@drawable/ic_date_hub"
+        android:title="@string/date_hub" />
+    <item
+        android:id="@+id/nav_chats"
+        android:icon="@drawable/ic_chatroom"
+        android:title="@string/chats" />
+</menu>

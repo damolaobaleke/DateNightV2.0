@@ -4,21 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/datenight_bg"
     tools:context=".BoardingScreen">
 
-    <VideoView
-        android:id="@+id/videoView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <VideoView-->
+<!--        android:id="@+id/videoView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <ImageView
         android:id="@+id/date_night_logo"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="130dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/datenight_text_logo"
+        android:src="@drawable/datenight_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,29 +29,48 @@
         android:id="@+id/Login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/custom_login_button"
-        android:fontFamily="@font/axiforma_heavy"
+        android:fontFamily="@font/inter"
         android:text="@string/login"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/date_night_logo"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/date_night_logo"
-        app:layout_constraintTop_toBottomOf="@+id/date_night_logo" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome" />
 
     <Button
         android:id="@+id/SignUp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/custom_login_button"
-        android:fontFamily="@font/axiforma_heavy"
+        android:background="@drawable/custom_signup_button"
+        android:fontFamily="@font/inter"
+        android:textFontWeight="900"
         android:text="@string/sign_up"
-        android:textColor="@color/white"
+        android:textColor="@color/date_night_purple"
         app:layout_constraintEnd_toEndOf="@+id/Login"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/Login"
         app:layout_constraintTop_toBottomOf="@+id/Login" />
+
+    <TextView
+        android:id="@+id/welcome"
+        style="@style/datenightHeadings"
+        android:textStyle="bold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="136dp"
+        android:layout_marginEnd="24dp"
+        android:gravity="center"
+        android:text="@string/welcome_to_datenight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

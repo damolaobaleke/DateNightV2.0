@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_accounts"
+            android:icon="@drawable/ic_accounts"
+            android:iconTint="@color/date_night_purple"
+            android:title="@string/accounts" />
+
+        <item
+            android:id="@+id/nav_buy_dtc"
+            android:icon="@drawable/ic_buy_dtc"
+            android:iconTint="@color/date_night_purple"
+            android:title="@string/buy_dtc" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help"
+            android:iconTint="@color/date_night_purple"
+            android:title="@string/help" />
+        <item
+            android:id="@+id/nav_log_out"
+            android:icon="@drawable/ic_log_out"
+            android:iconTint="@color/date_night_purple"
+            android:title="@string/log_out" />
+    </group>
+
+
+<!--    <item android:title="Coming Soon">-->
+<!--        <menu>-->
+<!--            <item android:id="@+id/nav_virtual"-->
+<!--                android:icon="@drawable/ic_virtual_24"-->
+<!--                android:title="Digital Dash" />-->
+<!--            <item-->
+<!--                android:id="@+id/nav_buyDTC"-->
+<!--                android:icon="@drawable/ic_icon_coins_24"-->
+<!--                android:title="@string/buy_datenight_coin" />-->
+<!--        </menu>-->
+<!--    </item>-->
+
+<!--    <item android:title="Contact Us">-->
+<!--        <menu>-->
+<!--            <item-->
+<!--                android:id="@+id/nav_contact"-->
+<!--                android:icon="@drawable/ic_contact_24"-->
+<!--                android:title="@string/contact" />-->
+<!--            <item-->
+<!--                android:id="@+id/nav_help"-->
+<!--                android:icon="@drawable/ic_help_24"-->
+<!--                android:title="@string/help" />-->
+<!--            <item-->
+<!--                android:id="@+id/nav_version"-->
+<!--                android:icon="@drawable/ic_settings_24"-->
+<!--                android:title="@string/version" />-->
+<!--        </menu>-->
+<!--    </item>-->
+</menu>

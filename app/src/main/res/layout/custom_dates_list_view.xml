@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/dateTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/inter"
+        android:text="dateTitle"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dateImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/dateTitle"
+        app:layout_constraintTop_toBottomOf="@+id/dateTitle"
+        app:srcCompat="@drawable/avatar_ellipse" />
+
+    <TextView
+        android:id="@+id/dateDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/pill"
+        android:paddingTop="3dp"
+        android:text="dateDate"
+        android:textAlignment="center"
+        android:textColor="@color/date_night_theme"
+        android:textSize="16sp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintStart_toEndOf="@+id/dateImage"
+        app:layout_constraintTop_toBottomOf="@+id/dateTitle" />
+
+    <TextView
+        android:id="@+id/dateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:background="@drawable/pill"
+        android:paddingTop="3dp"
+        android:text="dateTime"
+        android:textAlignment="center"
+        android:textColor="@color/date_night_theme"
+        android:textSize="16sp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintStart_toEndOf="@+id/dateDate"
+        app:layout_constraintTop_toTopOf="@+id/dateDate" />
+</androidx.constraintlayout.widget.ConstraintLayout>

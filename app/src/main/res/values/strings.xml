@@ -10,6 +10,52 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="login">Login</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="email">email</string>
+    <string name="sign_up"><b>Sign Up</b></string>
+    <string name="email">Enter your email address</string>
+    <string name="title_activity_create_date">CreateDate</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="casual">Casual</string>
+    <string name="premium_experience">Premium</string>
+    <string name="buy_datenight_coin">Buy DTC</string>
+    <string name="version">Version</string>
+    <string name="contact">Contact</string>
+    <string name="logOut">Log Out</string>
+    <string name="open_navigation">open</string>
+    <string name="close_navigation">close</string>
+    <string name="welcome_to_datenight">Welcome to Datenight</string>
+    <string name="i_accept_the_terms_amp_conditions">I accept the <font color='#B048D1'>Terms &amp; Conditions</font></string>
+    <string name="datehub">Datehub</string>
+    <string name="datestats">Datestats</string>
+    <string name="profile">Profile</string>
+    <string name="edit_avatar"> <font color="#Fc3e7a">Edit Avatar</font></string>
+    <string name="title_activity_test">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_bottom_nav">BottomNav</string>
+    <string name="title_activity_navigation_bottom">NavigationBottom</string>
+    <string name="title_activity_nav_bottom">BottomNavActivity</string>
+    <string name="title_activity_bottom_navigation">BottomNavigation</string>
+    <string name="title_activity_experience_type">ExperienceType</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="accounts">Accounts</string>
+    <string name="buy_dtc">Buy Dtc</string>
+    <string name="help">Help</string>
+    <string name="log_out">Log Out</string>
+    <string name="chats">chats</string>
+    <string name="date_hub">date hub</string>
+    <string name="my_dates">My dates</string>
+    <string name="average_date_rating">Your average date rating is </string>
+
+    <string name="game_view_content_description">Game view</string>
 </resources>

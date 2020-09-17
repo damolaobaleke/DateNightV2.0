@@ -2,6 +2,7 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/amiko</item>
+        <item>@font/inder</item>
         <item>@font/josefin_sans_bold</item>
         <item>@font/josefin_sans_thin</item>
     </array>

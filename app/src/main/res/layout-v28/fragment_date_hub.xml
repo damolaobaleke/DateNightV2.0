@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui_fragments.datehub.DatehubFragment">
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:scaleType="center"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_avatar_img" />
+
+    <Space
+        android:id="@+id/line1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="14dp"
+        android:background="#DAE0E8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        app:layout_constraintEnd_toEndOf="@+id/line1"
+        app:layout_constraintHorizontal_bias="0.107"
+        app:layout_constraintStart_toStartOf="@+id/line1"
+        app:layout_constraintTop_toBottomOf="@+id/line1"
+        app:srcCompat="@drawable/ic_dates_been_on"
+        android:contentDescription="" />
+
+    <TextView
+        android:id="@+id/datesBeenOn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/inter"
+        android:text="50"
+        android:textColor="@color/black"
+        android:textFontWeight="900"
+        android:textSize="40sp"
+        app:layout_constraintStart_toEndOf="@+id/imageView6"
+        app:layout_constraintTop_toBottomOf="@+id/line1" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter"
+        android:text="Dates you've been on"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/datesBeenOn"
+        app:layout_constraintTop_toBottomOf="@+id/datesBeenOn" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="120dp"
+        android:background="#DAE0E8"
+        app:layout_constraintEnd_toEndOf="@+id/line1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/line1"
+        app:layout_constraintTop_toBottomOf="@+id/line1" />
+
+    <!--Give a style of horizonal progress-->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progress="80"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="-2dp"
+        android:layout_marginTop="40dp"
+        android:scaleX="1.8"
+        android:scaleY="1.8"
+        android:progressDrawable="@drawable/progress_circle"
+        app:layout_constraintStart_toStartOf="@+id/imageView6"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <TextView
+        android:id="@+id/avgDateRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/inter"
+        android:text="2"
+        android:textColor="@color/black"
+        android:textFontWeight="900"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="@+id/datesBeenOn"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <TextView
+        android:id="@+id/avgtext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter"
+        android:text="Your average date rating"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/avgDateRating"
+        app:layout_constraintTop_toBottomOf="@+id/avgDateRating" />
+
+    <View
+        android:id="@+id/line3"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="120dp"
+        android:background="#DAE0E8"
+        app:layout_constraintEnd_toEndOf="@+id/line1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line3"
+        app:srcCompat="@drawable/ic_kisses" />
+
+    <TextView
+        android:id="@+id/kissesReceived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/inter"
+        android:text="24"
+        android:textColor="@color/black"
+        android:textFontWeight="900"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="@+id/avgDateRating"
+        app:layout_constraintTop_toBottomOf="@+id/line3" />
+
+    <TextView
+        android:id="@+id/kisses_received"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter"
+        android:text="Kisses Received"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/kissesReceived"
+        app:layout_constraintTop_toBottomOf="@+id/kissesReceived" />
+
+
+    <View
+        android:id="@+id/line4"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="120dp"
+        android:background="#DAE0E8"
+        app:layout_constraintEnd_toEndOf="@+id/line1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/line3"
+        app:layout_constraintTop_toBottomOf="@+id/line3" />
+
+
+    <RatingBar
+        android:id="@+id/dateRatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line4" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
