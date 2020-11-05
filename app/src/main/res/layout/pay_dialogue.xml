@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:paddingBottom="80dp"
+    app:layout_constraintCircleRadius="25dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:fontFamily="@font/inter"
+        android:text="Pay With"
+        android:textColor="@color/black"
+        android:textFontWeight="600"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.084"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="wrap_content"
+        android:layout_height="0.2dp"
+        android:layout_marginTop="22dp"
+        android:background="@color/date_night_grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+    <Button
+        android:id="@+id/pay_with_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="20dp"
+        android:textAllCaps="false"
+        android:fontFamily="@font/inter"
+        android:background="@drawable/custom_edittext"
+        android:text="Pay with card"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView16"
+        app:layout_constraintTop_toTopOf="@+id/line" />
+
+    <Button
+        android:id="@+id/pay_with_gpay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="20dp"
+        android:textAllCaps="false"
+        android:fontFamily="@font/inter"
+        android:background="@drawable/custom_edittext"
+        android:text="Pay with Google pay"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView16"
+        app:layout_constraintTop_toBottomOf="@+id/pay_with_card" />
+
+    <Button
+        android:id="@+id/cancel_pay"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="202dp"
+        android:background="@drawable/ic_cancel"
+        app:layout_constraintEnd_toEndOf="@+id/pay_with_card"
+        app:layout_constraintHorizontal_bias="0.481"
+        app:layout_constraintStart_toEndOf="@+id/textView16"
+        app:layout_constraintTop_toTopOf="@+id/textView16" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

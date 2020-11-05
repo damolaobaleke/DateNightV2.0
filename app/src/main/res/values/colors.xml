@@ -15,4 +15,5 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="yellow">#EFA506</color>
+    <color name="date_night_grey">#7A8BA5</color>
 </resources>

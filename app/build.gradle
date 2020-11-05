@@ -11,16 +11,14 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.immersia_datenight"
+        applicationId "com.datenight_immersia_ltd"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
+        ndk.abiFilters 'armeabi-v7a','arm64-v8a'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters 'armeabi-v7a', 'x86'
-        }
     }
 
     buildTypes {
@@ -29,6 +27,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    ndkVersion "21.3.6528147" //21.3.6528147
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -40,34 +40,57 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86"
+            include  'armeabi-v7a','arm64-v8a','x86_64'
         }
     }
 
 }
 
 dependencies {
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
+    def room_version = "2.2.5"
+    def retrofit_version ="2.9.0"
+    def kotlin_version = "1.3.72"
+    def material_ui = "1.2.1"
+    def firebase_database_version = "19.5.1"
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
-    implementation 'androidx.navigation:navigation-fragment:2.3.0'
-    implementation 'androidx.navigation:navigation-ui:2.3.0'
+    implementation "com.google.android.material:material:$material_ui"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.3'
+    implementation 'androidx.navigation:navigation-fragment:2.3.1'
+    implementation 'androidx.navigation:navigation-ui:2.3.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    //View model & LiveData
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'com.google.firebase:firebase-database:19.4.0'
+
+    //J-unit Testing
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
-    implementation 'com.google.firebase:firebase-auth:19.4.0'
-    implementation 'com.google.firebase:firebase-database:19.4.0'
-    //implementation project(":launcher-environment")
+
+    //Firebase
+    implementation 'com.google.firebase:firebase-analytics:18.0.0'
+    implementation 'com.google.firebase:firebase-auth:20.0.0'
+    implementation "com.google.firebase:firebase-database:$firebase_database_version"
+    implementation platform('com.google.firebase:firebase-bom:26.0.0')
+    implementation 'com.google.firebase:firebase-firestore'
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    //Unity
     implementation project(':unityLibrary')
     implementation fileTree(dir: project(':unityLibrary').getProjectDir().toString() + ('\\libs'), include: ['*.jar'])
-    //implementation fileTree(dir: 'libs', include: ['*.jar'])
+
 
 }
 apply plugin: 'com.android.application'

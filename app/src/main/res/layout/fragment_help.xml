@@ -4,19 +4,108 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".views.datehub_navigation.ui_fragments.help.HelpFragment">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="260dp"
-        android:text="HELP"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="30sp"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/report_issue"
+        android:layout_width="156dp"
+        android:layout_height="156dp"
+        android:layout_marginTop="50dp"
+        app:cardBackgroundColor="@color/date_night_purple"
+        app:cardCornerRadius="100dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.734"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/inter"
+            android:gravity="center"
+            android:text="@string/report_an_issue"
+            android:textColor="@color/white"
+            android:textFontWeight="600"
+            android:textSize="20sp" />
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/suggest_improvement"
+        android:layout_width="174dp"
+        android:layout_height="174dp"
+        android:layout_marginTop="96dp"
+        app:cardBackgroundColor="@color/date_night_purple"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.26"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/report_issue">
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/inter"
+            android:gravity="center"
+            android:text="Suggest an\n improvement "
+            android:textColor="@color/white"
+            android:textFontWeight="600"
+            android:textSize="20sp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/faq"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="48dp"
+        app:cardBackgroundColor="@color/date_night_purple"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toEndOf="@+id/suggest_improvement"
+        app:layout_constraintTop_toBottomOf="@+id/report_issue">
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/inter"
+            android:gravity="center"
+            android:text="FAQ"
+            android:textColor="@color/white"
+            android:textFontWeight="600"
+            android:textSize="20sp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/tweet"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="20dp"
+        app:cardBackgroundColor="@color/date_night_purple"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/suggest_improvement"
+        app:layout_constraintEnd_toStartOf="@+id/faq">
+
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
+            app:srcCompat="@drawable/ic_tweet" />
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

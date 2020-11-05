@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui_fragments.casual.CasualFragment">
+    tools:context=".views.datehub_navigation.ui_fragments.casual.CasualFragment">
 
 
     <androidx.cardview.widget.CardView
@@ -14,7 +14,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="50dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
+        app:cardElevation="14dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -40,16 +40,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Paris night dinner"
-                    android:textSize="14sp"
+                    android:text="@string/paris_night_dinner"
+                    android:textSize="16sp"
                     android:fontFamily="@font/inter"
                     android:textAppearance="?attr/textAppearanceHeadline6"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FREE"
-                    android:textSize="16sp"
+                    android:text="@string/free"
+                    android:textSize="12sp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textAppearance="?attr/textAppearanceBody2"/>
 
@@ -65,7 +65,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="10dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
+        app:cardElevation="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/cappadocia" />
+                android:src="@drawable/meadow" />
 
             <!--Title and supporting text-->
             <LinearLayout
@@ -90,16 +90,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ballooning in the sunrise"
-                    android:textSize="12sp"
+                    android:text="@string/picnic_by_the_meadow"
+                    android:textSize="14sp"
                     android:fontFamily="@font/inter"
                     android:textAppearance="?attr/textAppearanceHeadline6"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FREE"
-                    android:textSize="16sp"
+                    android:text="@string/free"
+                    android:textSize="12sp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textAppearance="?attr/textAppearanceBody2"/>
 

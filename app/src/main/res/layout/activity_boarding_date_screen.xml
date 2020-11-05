@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BoardingDateScreen">
+    tools:context=".views.landing_screen.BoardingDateScreen">
 
     <VideoView
         android:id="@+id/thaiVideo"

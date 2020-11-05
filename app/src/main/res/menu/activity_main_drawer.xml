@@ -12,7 +12,7 @@
 
         <item
             android:id="@+id/nav_buy_dtc"
-            android:icon="@drawable/ic_buy_dtc"
+            android:icon="@drawable/ic_coins_dtc"
             android:iconTint="@color/date_night_purple"
             android:title="@string/buy_dtc" />
         <item
@@ -22,7 +22,7 @@
             android:title="@string/help" />
         <item
             android:id="@+id/nav_log_out"
-            android:icon="@drawable/ic_log_out"
+            android:icon="@drawable/ic_logout"
             android:iconTint="@color/date_night_purple"
             android:title="@string/log_out" />
     </group>

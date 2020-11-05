@@ -58,4 +58,21 @@
     <string name="average_date_rating">Your average date rating is </string>
 
     <string name="game_view_content_description">Game view</string>
+    <string name="already_a_user_login">Already a User ?<font color="#B048D1"> Login</font> </string>
+    <string name="paris_night_dinner">paris night dinner</string>
+    <string name="picnic_by_the_meadow">picnic by the meadow</string>
+    <string name="free">FREE</string>
+    <string name="love_in_the_clouds">love in the clouds</string>
+    <string name="save_changes">Save changes</string>
+    <string name="hint_email">daniel@gmail.com</string>
+    <string name="enter_your_username">Enter your username</string>
+    <string name="enter_your_date_of_birth">Enter your Date of birth</string>
+    <string name="hint_two">damola</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="text_pending_invitation">Your pending invitations are\nshown here</string>
+    <string name="text_sheduled_date">Click on the heart icon at the\nbottom to start a new date</string>
+    <string name="report_an_issue">Report an\nissue</string>
+    <string name="suggest_which_features_you_d_like_to_nsee">Suggest which features you\'d like to\nsee...</string>
+    <string name="tab_pending">Pending</string>
+    <string name="tab_scheduled">Scheduled</string>
 </resources>
