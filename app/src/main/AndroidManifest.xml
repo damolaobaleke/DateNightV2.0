@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.datenight_immersia_ltd">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -16,7 +20,32 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
-        <activity android:name=".views.datehub_navigation.ui_fragments.help.SuggestImprovement"></activity>
+        <uses-library
+            android:name="com.google.android.wearable"
+            android:required="true" />
+
+        <!--
+               Set to true if your app is Standalone, that is, it does not require the handheld
+               app to run.
+        -->
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
+        <activity
+            android:name=".views.datehub_navigation.ui_fragments.chats.StartNewChatActivity"
+            android:label="@string/title_activity_start_new_chat">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".views.datehub_navigation.ui_fragments.chats.ChatRoomActivity"
+            android:label="@string/title_activity_chat_room"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".views.datehub_navigation.ui_fragments.help.SuggestImprovement" />
         <activity android:name=".views.datehub_navigation.ui_fragments.help.ReportIssue" />
         <activity android:name=".views.user_profile.UserProfileActivity" />
         <activity android:name=".ActivityJ" />
