@@ -83,7 +83,7 @@ class ChatRoomViewModel(username: String,
             // TODO: Check to make sure both user Ids and usernames are not null
 
             // Send message
-            val message = ChatRoomMessage(currentUserId!!, "", messageText, System.currentTimeMillis())
+            val message = ChatRoomMessage(currentUserId!!, "", messageText, System.currentTimeMillis() / 1000)
             dbReference.child(DatabaseConstants.MESSAGES_NODE)
                     .child(chatRoomId)
                     .push()
