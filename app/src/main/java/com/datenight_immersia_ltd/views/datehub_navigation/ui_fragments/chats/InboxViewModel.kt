@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.datenight_immersia_ltd.DatabaseConstants
 import com.datenight_immersia_ltd.IntentConstants
@@ -17,29 +19,48 @@ import com.datenight_immersia_ltd.modelfirestore.Chat.ChatHead
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.firebase.ui.database.SnapshotParser
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import de.hdodenhof.circleimageview.CircleImageView
 
-class InboxViewModel( userId: String,
-                      username: String,
-                      private val parentContext: InboxFragment) : ViewModel() {
+class InboxViewModel( username: String, userFullName: String) : ViewModel() {
 
     // Firebase related variables
-    private val dbReference: DatabaseReference = FirebaseDatabase.getInstance().reference // TODO: Possibly move dbReferences to model
-    private var dbReferenceChatRooms: DatabaseReference
-    private var chatRoomDataParser: SnapshotParser<ChatHead?>
-    private var firebaseRecyclerViewOptions: FirebaseRecyclerOptions<ChatHead>
-    var chatHeadsFirebaseRecyclerViewAdapter: FirebaseRecyclerAdapter<ChatHead, ChatHeadViewHolder>
+    private val dbReferenceRealtimeDb = FirebaseDatabase.getInstance().reference // TODO: Possibly move dbReferences to model
+    private var dbReferenceChatRoomsRealtimeDb: DatabaseReference
+    private val dbReferenceFirestore = FirebaseFirestore.getInstance().collection(DatabaseConstants.USERS_NODE)
+    private lateinit var chatRoomDataParser: SnapshotParser<ChatHead?>
+    private lateinit var firebaseRecyclerViewOptions: FirebaseRecyclerOptions<ChatHead>
+    lateinit var chatHeadsFirebaseRecyclerViewAdapter: FirebaseRecyclerAdapter<ChatHead, ChatHeadViewHolder>
     val START_NEW_CHAT_REQUEST_CODE = 1001
 
     init {
-        currentUserName = username
-        currentUserId = userId
+        currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+        // Fetch current user details
+        val query = dbReferenceFirestore.document(currentUserId!!).get()
+                .addOnSuccessListener {docSnapShot ->
+                    if (docSnapShot != null){
+                        currentUsername = docSnapShot.get(DatabaseConstants.USERNAME_CHILD).toString()
+                        currentUserFullName = docSnapShot.get(DatabaseConstants.FULL_NAME_CHILD).toString()
+                        Log.e(TAG, "Found username: $currentUsername, name: $currentUserFullName")
+                    } else {
+                        Log.e(TAG, "Encountered retrieving detail for userId: $currentUserId")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.e(TAG, exception.message)
+                }
 
         // Set up Database reference and firebase recycler view adapter
-        dbReferenceChatRooms =
-                dbReference.child(DatabaseConstants.CHAT_ROOMS_NODE).child(currentUserId)
+        dbReferenceChatRoomsRealtimeDb =
+                dbReferenceRealtimeDb.child(DatabaseConstants.CHAT_ROOMS_NODE).child(currentUserId!!)
+
+    }
+
+    fun initializeFirebaseRecyclerView(parentContext: InboxFragment){
         chatRoomDataParser =
                 SnapshotParser<ChatHead?> { dataSnapshot ->
                     Log.e(TAG, dataSnapshot.value.toString())
@@ -48,7 +69,7 @@ class InboxViewModel( userId: String,
                     chatHead!!
                 }
         firebaseRecyclerViewOptions = FirebaseRecyclerOptions.Builder<ChatHead>() // TODO: Modify this so it selects sorts chat rooms
-                .setQuery(dbReferenceChatRooms.orderByChild(DatabaseConstants.MOST_RECENT_MESSAGE_TIMESTAMP), chatRoomDataParser)
+                .setQuery(dbReferenceChatRoomsRealtimeDb.orderByChild(DatabaseConstants.MOST_RECENT_MESSAGE_TIMESTAMP), chatRoomDataParser)
                 .setLifecycleOwner(parentContext)
                 .build()
         chatHeadsFirebaseRecyclerViewAdapter =
@@ -60,14 +81,20 @@ class InboxViewModel( userId: String,
                     }
 
                     override fun onBindViewHolder(holder: ChatHeadViewHolder, position: Int, data: ChatHead) {
-                        data.setChatParticipantDetails(currentUserId)
+                        data.setChatParticipantDetails(currentUserId!!)
                         holder.bind(data);
                         Log.e(TAG, "here after bind")
                     }
 
                     override fun onDataChanged() {
                         super.onDataChanged()
-                        // TODO: Implement
+                        if (itemCount > 0){
+                            parentContext.emptyInboxImage.visibility = View.INVISIBLE
+                            parentContext.emptyInboxText.visibility = View.INVISIBLE
+                        }else{
+                            parentContext.emptyInboxImage.visibility = View.VISIBLE
+                            parentContext.emptyInboxText.visibility = View.VISIBLE
+                        }
                     }
 
                     // Overriding to reverse order of chat room heads
@@ -77,25 +104,22 @@ class InboxViewModel( userId: String,
                 }
     }
 
-    fun startActivityToFindUser() {
+    fun startActivityToFindUser(parentContext: InboxFragment) {
         val intent = Intent(parentContext.requireActivity(), StartNewChatActivity::class.java)
                 .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
-        ActivityCompat.startActivityForResult(parentContext.requireActivity(), intent, START_NEW_CHAT_REQUEST_CODE, null)
+        parentContext.startActivityForResult(intent, START_NEW_CHAT_REQUEST_CODE)
     }
 
-    fun launchChatRoomActivityForNewChat(data: Intent?) {
+    fun launchChatRoomActivityForNewChat(data: Intent?, parentContext: InboxFragment) {
         val chatRoomActivityIntent = Intent(parentContext.requireActivity(), ChatRoomActivity::class.java)
-                .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
-                .putExtra(IntentConstants.USER_NAME_EXTRA, currentUserName)
-                .putExtra(IntentConstants.CHAT_ROOM_ID_EXTRA,
-                        data?.getStringExtra(IntentConstants.CHAT_ROOM_ID_EXTRA))
-                .putExtra(IntentConstants.CHAT_PARTICIPANT_ID_EXTRA,
-                        data?.getStringExtra(IntentConstants.CHAT_PARTICIPANT_ID_EXTRA))
-                .putExtra(IntentConstants.CHAT_PARTICIPANT_USER_NAME_EXTRA,
-                        data?.getStringExtra(IntentConstants.CHAT_PARTICIPANT_USER_NAME_EXTRA))
-                .putExtra(IntentConstants.CHAT_PARTICIPANT_PHOTO_URL_EXTRA,
-                        data?.getStringExtra(IntentConstants.CHAT_PARTICIPANT_PHOTO_URL_EXTRA))
-        ContextCompat.startActivity(parentContext.requireActivity(), chatRoomActivityIntent, null)
+                .putExtra(IntentConstants.USER_NAME_EXTRA, currentUsername)
+                .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, currentUserFullName)
+                .putExtra(IntentConstants.CHAT_ROOM_ID_EXTRA, data?.getStringExtra(IntentConstants.CHAT_ROOM_ID_EXTRA))
+                .putExtra(IntentConstants.CHAT_PARTICIPANT_ID_EXTRA, data?.getStringExtra(IntentConstants.CHAT_PARTICIPANT_ID_EXTRA))
+                .putExtra(IntentConstants.CHAT_PARTICIPANT_USER_NAME_EXTRA, data?.getStringExtra(IntentConstants.CHAT_PARTICIPANT_USER_NAME_EXTRA))
+                .putExtra(IntentConstants.CHAT_PARTICIPANT_FULL_NAME_EXTRA, data?.getStringExtra(IntentConstants.CHAT_PARTICIPANT_FULL_NAME_EXTRA))
+                .putExtra(IntentConstants.CHAT_PARTICIPANT_PHOTO_URL_EXTRA, data?.getStringExtra(IntentConstants.CHAT_PARTICIPANT_PHOTO_URL_EXTRA))
+        parentContext.startActivity(chatRoomActivityIntent, null)
     }
 
     class ChatHeadViewHolder(private val chatHeadView: View) :
@@ -110,6 +134,7 @@ class InboxViewModel( userId: String,
         private var mChatParticipantId: String? = null
         private var mParticipantPhotoUrl: String? = null
         private var mChatParticipantUsername: String? = null
+        private var mChatParticipantFullName: String? = null
 
         init {
             mChatHeadImage = itemView.findViewById(R.id.chatHeadImage)
@@ -132,13 +157,14 @@ class InboxViewModel( userId: String,
 
         fun bind(data: ChatHead) {
             // TODO: Uncomment some commented code and remove others
-            mChatHeadName?.text = data.participantUsername
+            mChatHeadName?.text = data.participantFullName
             mMostRecentMessage?.text = data.mostRecentMessage.text
             mChatRoomKey = data.key
-            Log.e(TAG, "Key within bind: $mChatRoomKey")
             mChatParticipantId = data.participantId
             mParticipantPhotoUrl = data.participantPhotoUrl //TODO: fix to photo url
             mChatParticipantUsername = data.participantUsername
+            mChatParticipantFullName = data.participantFullName
+            Log.e(TAG, "Key within bind: $mChatRoomKey")
         }
 
         private fun launchChatRoomActivityForExistingChat(
@@ -149,21 +175,31 @@ class InboxViewModel( userId: String,
                 mParticipantPhotoUrl: String?
         ) {
             val chatRoomActivityIntent = Intent(view.context, ChatRoomActivity::class.java)
-                    .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
-                    .putExtra(IntentConstants.USER_NAME_EXTRA, currentUserName)
+                    .putExtra(IntentConstants.USER_NAME_EXTRA, currentUsername)
+                    .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, currentUserFullName)
                     .putExtra(IntentConstants.CHAT_ROOM_ID_EXTRA, mChatRoomKey)
                     .putExtra(IntentConstants.CHAT_PARTICIPANT_ID_EXTRA, mChatParticipantId)
                     .putExtra(IntentConstants.CHAT_PARTICIPANT_USER_NAME_EXTRA, mChatParticipantUsername)
+                    .putExtra(IntentConstants.CHAT_PARTICIPANT_FULL_NAME_EXTRA, mChatParticipantFullName)
                     .putExtra(IntentConstants.CHAT_PARTICIPANT_PHOTO_URL_EXTRA, mParticipantPhotoUrl)
-            ContextCompat.startActivity(view.context, chatRoomActivityIntent, null)
+            startActivity(view.context, chatRoomActivityIntent, null)
         }
+    }
+
+    class InboxViewModelFactory(private val username: String,
+                                private val userFullName: String): ViewModelProvider.Factory{
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return InboxViewModel(username, userFullName) as T
+        }
+
     }
 
     companion object {
         const val TAG = "InboxActivity"
 
         // User values are here so they can be visible within onBind method of adapter
-        lateinit var currentUserId: String;
-        lateinit var currentUserName: String;
+        var currentUserId: String? = null;
+        lateinit var currentUsername: String;
+        lateinit var currentUserFullName: String;
     }
 }

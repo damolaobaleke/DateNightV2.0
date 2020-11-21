@@ -52,7 +52,7 @@ public class DateHubNavigation extends AppCompatActivity {
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_accounts, R.id.nav_buy_dtc, R.id.nav_help, R.id.nav_my_dates, R.id.nav_date_hub, R.id.nav_chats)
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_accounts, R.id.nav_buy_dtc, R.id.nav_help, R.id.nav_my_dates, R.id.nav_date_hub, R.id.nav_inbox)
                 .setOpenableLayout(drawer) //Drawer layout implements an openable interface
                 .build();
 

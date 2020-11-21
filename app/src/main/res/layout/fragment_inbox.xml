@@ -10,14 +10,14 @@
         android:id="@+id/newChatButton"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="48dp"
-        android:clickable="true"
-        app:backgroundTint="@color/date_night_purple"
+        android:layout_marginEnd="@dimen/fab_right_constraint"
+        android:layout_marginBottom="@dimen/fab_bottom_constraint"
         android:backgroundTint="@color/date_night_purple"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emptyInboxTextView"
-         />
+        android:clickable="true"
+        android:onClick="startActivityToFindUser"
+        app:backgroundTint="@color/date_night_purple"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/emptyInboxImageView"
@@ -71,6 +71,11 @@
         app:layout_constraintEnd_toEndOf="@+id/newChatButton"
         app:layout_constraintStart_toStartOf="@+id/newChatButton"
         app:layout_constraintTop_toBottomOf="@+id/image_person" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/inbox_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

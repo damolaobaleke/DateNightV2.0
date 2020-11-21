@@ -10,8 +10,9 @@ object DatabaseConstants {
     const val CHAT_ROOMS_NODE = "chatDb/chatRooms"
 
     //Users
-    const val USERS_NODE = "userData/"
+    const val USERS_NODE = "userData"
     const val USERNAME_CHILD = "username"
+    const val FULL_NAME_CHILD = "name"
     const val USER_PHOTO_CHILD = "username"
 
     //Delimiters

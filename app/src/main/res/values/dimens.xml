@@ -19,4 +19,6 @@
     inner_frame_layout_padding (below variable) on round screens.
     -->
     <dimen name="inner_frame_layout_padding">5dp</dimen>
+    <dimen name="fab_bottom_constraint">70dp</dimen>
+    <dimen name="fab_right_constraint">24dp</dimen>
 </resources>

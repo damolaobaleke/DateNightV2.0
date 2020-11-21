@@ -10,7 +10,7 @@
         android:icon="@drawable/ic_date_hub"
         android:title="@string/date_hub" />
     <item
-        android:id="@+id/nav_chats"
+        android:id="@+id/nav_inbox"
         android:icon="@drawable/ic_date_chats"
         android:title="@string/chats" />
 </menu>
