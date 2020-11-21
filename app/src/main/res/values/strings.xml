@@ -75,4 +75,7 @@
     <string name="suggest_which_features_you_d_like_to_nsee">Suggest which features you\'d like to\nsee...</string>
     <string name="tab_pending">Pending</string>
     <string name="tab_scheduled">Scheduled</string>
+    <string name="set_date_and_time">Set date and time</string>
+    <string name="_20_000">20,000</string>
+    <string name="_10_000">10,000</string>
 </resources>

@@ -34,6 +34,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.stripe.android.Stripe;
+import com.stripe.android.model.Customer;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -135,7 +137,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             } else {
                                 SignUpActivity.this.progressBarGone();
                                 Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                SignUpActivity.this.updateUI(null);
+                                updateUI(null);
                             }
                         }
                     });
@@ -147,8 +149,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 //        database.getReference("Users").child(task1.getResult().getUser().getUid()).child("email").setValue(emailInput.getText().toString());
         userId = mAuth.getCurrentUser().getUid();
 
+        //create stripe customer --POST REQUEST TO ENDPOINT
+
+
         UserStatsModel userStats = new UserStatsModel(0, 0, 0);
-        UserModel userModel = new UserModel(username.getText().toString(), null, null, emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), null, false,null,null, userStats);
+        UserModel userModel = new UserModel(username.getText().toString(), null, null, emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), null, false,null,null, userStats,"");
 
         userRef = db.collection("users").document(userId);
         userRef.set(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -163,6 +168,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 Log.e(TAG, Objects.requireNonNull(e.getLocalizedMessage()));
             }
         });
+
+    }
+
+    private void getStripeCustomer(){
 
     }
 
@@ -245,6 +254,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
             Date date = formatter.parse(dateStr);
             assert date != null;
+            //convert date to timestamp
             return new Timestamp(date);
         } catch (ParseException e) {
             System.out.println("Exception :" + e);

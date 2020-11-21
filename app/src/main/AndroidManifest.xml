@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
+        android:name=".utils.StripeConfiguration"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,7 +17,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
-        <activity android:name=".views.datehub_navigation.ui_fragments.help.SuggestImprovement"></activity>
+        <activity android:name=".views.readyplayerweb.CreatAvatarActivity"></activity>
+        <activity android:name=".views.date_schedule.InviteUserActivity" />
+        <activity android:name=".views.date_schedule.DateCreated" />
+        <activity android:name=".views.date_schedule.DateScheduleActivity" />
+        <activity android:name=".views.payment.PaymentActivity" />
+        <activity android:name=".views.datehub_navigation.ui_fragments.help.SuggestImprovement" />
         <activity android:name=".views.datehub_navigation.ui_fragments.help.ReportIssue" />
         <activity android:name=".views.user_profile.UserProfileActivity" />
         <activity android:name=".ActivityJ" />
@@ -38,7 +44,7 @@
             android:label="@string/title_activity_create_date"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".views.landing_screen.BoardingDateScreen" />
-        <activity android:name=".GetBitmojiActivity" />
+        <activity android:name=".views.datehub_navigation.redundant.GetBitmojiActivity" />
         <activity android:name=".views.authentication.SignUpActivity" />
         <activity android:name=".views.authentication.LoginActivity" />
         <activity android:name=".views.landing_screen.BoardingScreen" />

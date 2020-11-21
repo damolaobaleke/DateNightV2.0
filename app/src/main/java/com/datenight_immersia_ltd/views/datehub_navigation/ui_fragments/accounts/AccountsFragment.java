@@ -118,9 +118,9 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
             //requireActivity() = detaches listener when not in foreground in activity- not needed in fragments
             userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
-                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                public void onEvent(DocumentSnapshot value, FirebaseFirestoreException error) {
                     if (error != null) {
-                        Log.e(TAG, error.getMessage());
+                        Log.e(TAG, Objects.requireNonNull(error.getMessage()));
                         return;
                     }
 
@@ -138,10 +138,11 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
                     }
 
                     //doesn't work
-                    accountViewModel.getUserModelMutableLiveData().observe(getViewLifecycleOwner(), new Observer<UserModel>() {
+                    accountViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserModel>() {
                         @Override
                         public void onChanged(UserModel userModel) {
                             Toast.makeText(getContext(), "Using VM", Toast.LENGTH_LONG).show();
+
                             if (value.exists()) {
                                 userModel = value.toObject(UserModel.class); //recreate Object from document
                                 assert userModel != null;
@@ -155,6 +156,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
                             }
                         }
                     });
+                    //doesn't work
                 }
             });
         } else {
@@ -164,7 +166,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
 
     public void updateUser() {
         UserStatsModel userStats = new UserStatsModel(0, 0, 0);
-        UserModel userModel = new UserModel(username.getText().toString(), null, null, emailInput.getText().toString(), dateStringToTimestamp(dateOfBirth.getText().toString()), null, false, null, null, userStats);
+        UserModel userModel = new UserModel(username.getText().toString(), null, null, emailInput.getText().toString(), dateStringToTimestamp(dateOfBirth.getText().toString()), null, false, null, null, userStats,"");
         userRef.set(userModel).addOnSuccessListener(aVoid -> {
             progressBarGone();
             Toast.makeText(getContext(), "Your profile has been updated", Toast.LENGTH_SHORT).show();

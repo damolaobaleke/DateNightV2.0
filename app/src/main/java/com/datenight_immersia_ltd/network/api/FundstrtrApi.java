@@ -15,6 +15,10 @@ import retrofit2.http.Path;
 
 public interface FundstrtrApi {
 
+    //Retrieve Unity Object , each uid represents the Environment
+    //@GET("/unity-environment/:id/paris")
+    //Call<EnvironmentObject> getEnvironment(@Path("id") String environmentId); //annotate to tell retrofit to parse variable into block
+
     //Retrieve all pitches
     @GET("/investopp")
     Call<PitchLists> getPitches();

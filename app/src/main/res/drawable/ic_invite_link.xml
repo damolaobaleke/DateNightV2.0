@@ -1,0 +1,28 @@
+<!--
+  ~ Copyright 2020 Damola Obaleke. All rights reserved.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M20,20m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0"
+      android:strokeAlpha="0.4"
+      android:fillColor="#F5EFF7"
+      android:fillAlpha="0.4"/>
+  <path
+      android:pathData="M22.5858,14.5858C23.3668,13.8047 24.6331,13.8047 25.4142,14.5858C26.1952,15.3668 26.1952,16.6332 25.4142,17.4142L22.4142,20.4142C21.6331,21.1953 20.3668,21.1953 19.5858,20.4142C19.1952,20.0237 18.5621,20.0237 18.1716,20.4142C17.781,20.8047 17.781,21.4379 18.1716,21.8284C19.7336,23.3905 22.2663,23.3905 23.8284,21.8284L26.8284,18.8284C28.3905,17.2663 28.3905,14.7337 26.8284,13.1716C25.2663,11.6095 22.7337,11.6095 21.1716,13.1716L19.6716,14.6716C19.281,15.0621 19.281,15.6953 19.6716,16.0858C20.0621,16.4763 20.6952,16.4763 21.0858,16.0858L22.5858,14.5858ZM17.5858,19.5858C18.3668,18.8047 19.6332,18.8047 20.4142,19.5858C20.8047,19.9763 21.4379,19.9763 21.8284,19.5858C22.219,19.1953 22.219,18.5621 21.8284,18.1716C20.2663,16.6095 17.7337,16.6095 16.1716,18.1716L13.1716,21.1716C11.6095,22.7337 11.6095,25.2663 13.1716,26.8284C14.7337,28.3905 17.2663,28.3905 18.8284,26.8284L20.3284,25.3284C20.719,24.9379 20.719,24.3047 20.3284,23.9142C19.9379,23.5237 19.3047,23.5237 18.9142,23.9142L17.4142,25.4142C16.6332,26.1953 15.3668,26.1953 14.5858,25.4142C13.8047,24.6332 13.8047,23.3668 14.5858,22.5858L17.5858,19.5858Z"
+      android:fillColor="#B048D1"
+      android:fillType="evenOdd"/>
+</vector>

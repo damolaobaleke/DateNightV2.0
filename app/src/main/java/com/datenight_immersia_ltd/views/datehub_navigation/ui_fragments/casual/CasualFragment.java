@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.datenight_immersia_ltd.R;
+import com.datenight_immersia_ltd.views.date_schedule.DateScheduleActivity;
 import com.datenight_immersia_ltd.views.unity.UnityEnvironmentLoad;
 
 public class CasualFragment extends Fragment {
@@ -34,8 +35,7 @@ public class CasualFragment extends Fragment {
     }
 
     public void startParis(){
-        Toast.makeText(getContext(),"Paris", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getContext(), UnityEnvironmentLoad.class);
+        Intent intent = new Intent(getContext(), DateScheduleActivity.class);
         startActivity(intent);
     }
 

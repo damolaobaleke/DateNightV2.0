@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.datenight_immersia_ltd.R
+import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.help.viewmodel.ImprovementViewModel
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -15,6 +17,8 @@ class SuggestImprovement : AppCompatActivity() {
     lateinit var db: FirebaseFirestore
     lateinit var improvementRef: DocumentReference
 
+    lateinit var improvementViewModel: ImprovementViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_suggest_improvement)
@@ -22,19 +26,11 @@ class SuggestImprovement : AppCompatActivity() {
         suggestImpButton = findViewById(R.id.submit_suggestion)
         suggestForm = findViewById(R.id.features)
 
-        //initialize
-        db = FirebaseFirestore.getInstance()
-        //Reference
-        improvementRef = db.collection("help").document("improvementReports")
-
+        //Get instance of the view model
+        improvementViewModel = ViewModelProvider(this).get(ImprovementViewModel::class.java)
 
         suggestImpButton.setOnClickListener {
-            val suggestions: MutableMap<String, Any> = java.util.HashMap()
-            suggestions["suggestion"] = suggestForm.text.toString() // === bugs.put("suggestion", suggestForm.text.toString())
-
-            improvementRef.set(suggestions).addOnSuccessListener { Toast.makeText(this, "Thanks for the feedback", Toast.LENGTH_SHORT).show() }.addOnFailureListener { e ->
-                Toast.makeText(this, e.localizedMessage, Toast.LENGTH_SHORT).show()
-            }
+            improvementViewModel.suggestImprovement(suggestForm.text.toString())
         }
     }
 }

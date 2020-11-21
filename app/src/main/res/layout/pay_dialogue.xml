@@ -42,7 +42,7 @@
         android:textAllCaps="false"
         android:fontFamily="@font/inter"
         android:background="@drawable/custom_edittext"
-        android:text="Pay with card"
+        android:text="Pay amount with card"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
