@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/date_night_logo_text"
-    tools:context=".GetBitmojiActivity">
+    tools:context=".views.datehub_navigation.redundant.GetBitmojiActivity">
 
     <ImageView
         android:id="@+id/bitmoji"

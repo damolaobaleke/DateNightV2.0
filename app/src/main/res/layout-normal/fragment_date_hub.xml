@@ -30,7 +30,7 @@
                 app:srcCompat="@drawable/ic_avatar_img" />
 
             <TextView
-                android:id="@+id/editAvatar"
+                android:id="@+id/edit_avatar_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -53,7 +53,7 @@
                 app:cardCornerRadius="20dp"
                 app:layout_constraintEnd_toEndOf="@+id/cardView"
                 app:layout_constraintStart_toStartOf="@+id/cardView"
-                app:layout_constraintTop_toBottomOf="@+id/editAvatar">
+                app:layout_constraintTop_toBottomOf="@+id/edit_avatar_btn">
 
                 <ImageView
                     android:id="@+id/imageView8"
@@ -64,7 +64,8 @@
                     app:srcCompat="@drawable/ic_coins" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/dtc_balance"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="92dp"
                     android:layout_marginTop="20dp"
@@ -86,6 +87,7 @@
                     android:textSize="20sp" />
 
                 <Button
+                    android:id="@+id/top_up_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginStart="250dp"
@@ -237,8 +239,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="200dp"
-                    android:paddingBottom="30dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingBottom="30dp">
 
                     <ImageView
                         android:id="@+id/imageView7"
@@ -268,10 +270,10 @@
                         android:id="@+id/kisses_received"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="-50dp"
                         android:layout_marginTop="130dp"
                         android:fontFamily="@font/inter"
                         android:text="Kisses Received"
-                        android:layout_marginStart="-50dp"
                         android:textColor="@color/black" />
 
 

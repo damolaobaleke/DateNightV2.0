@@ -3,10 +3,10 @@ package com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.help
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.datenight_immersia_ltd.R
+import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.help.viewmodel.ReportViewModel
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -16,6 +16,8 @@ class ReportIssue : AppCompatActivity() {
     lateinit var db: FirebaseFirestore
     lateinit var bugRef: DocumentReference
 
+    lateinit var reportViewModel: ReportViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report_issue)
@@ -23,20 +25,26 @@ class ReportIssue : AppCompatActivity() {
         reportButton = findViewById(R.id.report_bug)
         bugForm = findViewById(R.id.editTextTextMultiLine2)
 
-        //initialize
-        db = FirebaseFirestore.getInstance()
+        reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
 
-        bugRef = db.collection("help").document("bugReports")
 
         reportButton.setOnClickListener {
-
-            val bugs: MutableMap<String, Any> = java.util.HashMap()
-            bugs["bugFound"] = bugForm.text.toString() // === bugs.put("bugFound", bugForm.text.toString())
-
-            bugRef.set(bugs).addOnSuccessListener { Toast.makeText(this, "Thanks for filing the bug", LENGTH_SHORT).show() }.addOnFailureListener { e ->
-                Toast.makeText(this, e.localizedMessage, LENGTH_SHORT).show()
-            }
+            reportViewModel.reportBug(bugForm.text.toString())
         }
 
     }
+
+    fun withoutVm() {
+        //initialize
+//        db = FirebaseFirestore.getInstance()
+//        bugRef = db.collection("help").document("bugReports")
+
+//        val bugs: MutableMap<String, Any> = java.util.HashMap()
+//            bugs["bugFound"] = bugForm.text.toString() // === bugs.put("bugFound", bugForm.text.toString())
+//
+//            bugRef.set(bugs).addOnSuccessListener { Toast.makeText(this, "Thanks for filing the bug", LENGTH_SHORT).show() }.addOnFailureListener { e ->
+//                Toast.makeText(this, e.localizedMessage, LENGTH_SHORT).show()
+//            }
+    }
+
 }

@@ -1,11 +1,13 @@
 package com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.scheduled;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.model.DateDataModel;
 import com.datenight_immersia_ltd.utils.DownloadImageTask;
 import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.CustomDatesAdapter;
+import com.datenight_immersia_ltd.views.unity.UnityEnvironmentLoad;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,15 +44,33 @@ public class ScheduledFragment extends Fragment {
             listOfDates.add(new DateDataModel("Paris date night with sharon", null, dateDay(), dateTime()));
             listOfDates.add(new DateDataModel("Paris date night with Emeka", getImageBitmap(), dateDay(), dateTime()));
 
-
             CustomDatesAdapter customDatesAdapter = new CustomDatesAdapter(requireContext(), R.layout.custom_dates_list_view, listOfDates);
             lv.setAdapter(customDatesAdapter);
+
+            lv.setOnItemClickListener((parent, view1, position, id) -> {
+                switch (position) {
+                    case 0:
+                        startScene();
+                        break;
+                    case 1:
+                        startScene();
+                        break;
+                }
+
+            });
+
         } catch (Exception e) {
             //When trying to get Image from Server if no internet
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
+
         return view;
+    }
+
+    public void startScene() {
+        Intent intent = new Intent(requireContext(), UnityEnvironmentLoad.class);
+        startActivity(intent);
     }
 
     public String dateTime() {

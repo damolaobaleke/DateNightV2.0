@@ -10,7 +10,7 @@ public class AuthUser {
 
     public AuthUser(boolean authenticated, String token,User user) {
         this.authenticated = authenticated;
-        this.token =token;
+        this.token = token;
         this.user = user;
     }
 

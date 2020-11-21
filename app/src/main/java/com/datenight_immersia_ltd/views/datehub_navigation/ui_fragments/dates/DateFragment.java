@@ -69,13 +69,10 @@ public class DateFragment extends Fragment {
     }
 
     public void openExperience() {
-        //should open a date schedule before this...
         createDate.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), ExperienceType.class);
             startActivity(intent);
         });
-
-        //joinDate.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.create_date_fab_button));
     }
 
     public void joinNewDate() {

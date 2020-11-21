@@ -1,0 +1,30 @@
+<!--
+  ~ Copyright 2020 Damola Obaleke. All rights reserved.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="42dp"
+    android:viewportWidth="40"
+    android:viewportHeight="42">
+  <path
+      android:pathData="M20,20m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0"
+      android:strokeAlpha="0.4"
+      android:fillColor="#F5EFF7"
+      android:fillAlpha="0.4"/>
+  <path
+      android:pathData="M20,20C22.2091,20 24,18.2091 24,16C24,13.7909 22.2091,12 20,12C17.7909,12 16,13.7909 16,16C16,18.2091 17.7909,20 20,20Z"
+      android:fillColor="#B048D1"/>
+  <path
+      android:pathData="M25.67,21.3305C25.4725,21.1491 25.2404,21.0092 24.9877,20.9193C24.735,20.8294 24.4668,20.7912 24.199,20.8071C23.9312,20.823 23.6694,20.8925 23.429,21.0116C23.1887,21.1308 22.9748,21.297 22.8,21.5005C22.4252,21.9677 21.9503,22.3447 21.4103,22.6038C20.8703,22.8629 20.279,22.9974 19.68,22.9974C19.0811,22.9974 18.4898,22.8629 17.9498,22.6038C17.4098,22.3447 16.9348,21.9677 16.56,21.5005C16.3844,21.2947 16.1688,21.1266 15.9263,21.0066C15.6838,20.8865 15.4195,20.8168 15.1493,20.8019C14.8791,20.7869 14.6087,20.827 14.3544,20.9195C14.1002,21.0121 13.8673,21.1553 13.67,21.3405L13.35,21.6505C12.2935,22.7082 11.5139,24.0099 11.08,25.4405C10.9935,25.737 10.9769,26.0494 11.0314,26.3534C11.0858,26.6574 11.21,26.9446 11.394,27.1926C11.578,27.4405 11.817,27.6425 12.0922,27.7827C12.3673,27.9229 12.6712,27.9974 12.98,28.0005H26.37C26.6828,28.0014 26.9914,27.929 27.2711,27.789C27.5508,27.6491 27.7937,27.4454 27.9804,27.1945C28.1672,26.9436 28.2924,26.6524 28.3462,26.3443C28.4,26.0362 28.3807,25.7198 28.29,25.4205C27.808,23.8428 26.9017,22.428 25.67,21.3305V21.3305Z"
+      android:fillColor="#B048D1"/>
+</vector>

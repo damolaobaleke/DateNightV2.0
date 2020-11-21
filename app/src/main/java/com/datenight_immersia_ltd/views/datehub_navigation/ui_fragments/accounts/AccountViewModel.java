@@ -7,13 +7,13 @@ import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
 
 public class AccountViewModel extends ViewModel {
 
-    private MutableLiveData<UserModel> userModelMutableLiveData;
+    private final MutableLiveData<UserModel> userData;
 
     public AccountViewModel() {
-        userModelMutableLiveData = new MutableLiveData<>();
+        userData = new MutableLiveData<>();
     }
 
-    public MutableLiveData<UserModel> getUserModelMutableLiveData() {
-        return userModelMutableLiveData;
+    public MutableLiveData<UserModel> getUserLiveData() {
+        return userData;
     }
 }
