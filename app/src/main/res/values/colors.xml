@@ -7,7 +7,7 @@
     <color name="teel_700">#018786</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="date_night_theme">#Fc3e7a</color>
+    <color name="date_night_theme">#B048D1</color>
     <color name="date_night_purple">#B048D1</color>
     <color name="date_night_logo_text">#293241</color>
     <color name ="login_button">#B048D1</color>
@@ -17,5 +17,6 @@
     <color name="yellow">#EFA506</color>
     <color name="date_night_grey">#7A8BA5</color>
     <color name="date_night_grey_700">#293241</color>
+    <color name="date_night_grey_400">#ABB7CA</color>
     <color name ="date_night_pear">#FFF8FA</color>
 </resources>

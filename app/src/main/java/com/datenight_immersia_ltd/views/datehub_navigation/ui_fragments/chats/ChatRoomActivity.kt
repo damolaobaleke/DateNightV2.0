@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -15,9 +16,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 class ChatRoomActivity : AppCompatActivity() {
     private lateinit var chatRoomHeader: TextView
-    private lateinit var chatRoomPhoto: CircleImageView
     private lateinit var messageEditText: EditText
-    private lateinit var sendMessageButton: Button
+    private lateinit var sendMessageButton: ImageButton
     private lateinit var chatRoomRecyclerView: RecyclerView
     private lateinit var chatRoomLayoutManager: LinearLayoutManager
     private lateinit var viewModel: ChatRoomViewModel
@@ -26,7 +26,7 @@ class ChatRoomActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_room)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.chatRoomToolbar))
 
         // Initialize chat participants' data
         val currentUsername = intent.getStringExtra(IntentConstants.USER_NAME_EXTRA)
@@ -57,9 +57,6 @@ class ChatRoomActivity : AppCompatActivity() {
         chatRoomLayoutManager.stackFromEnd = true
         chatRoomHeader = findViewById<TextView>(R.id.chatRoomLabel).apply{
             text = chatParticipantFullName
-        }
-        chatRoomPhoto = findViewById<CircleImageView>(R.id.chatRoomPhoto).apply{
-            //TODO: Fix image reference
         }
         sendMessageButton = findViewById(R.id.sendMessageButton)
         messageEditText = findViewById(R.id.chatRoomMessageEditText)

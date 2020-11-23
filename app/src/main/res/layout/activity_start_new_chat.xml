@@ -11,10 +11,13 @@
         android:id="@+id/startNewChatToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/white"
         android:minHeight="?attr/actionBarSize"
+        android:outlineProvider="none"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintTop_toTopOf="parent"
+        app:theme="@style/AppTheme.AppBarOverlay"
+        app:titleTextColor="@color/black"
         tools:layout_editor_absoluteX="0dp" />
 
     <EditText

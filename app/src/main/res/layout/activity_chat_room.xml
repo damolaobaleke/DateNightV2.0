@@ -10,39 +10,29 @@
         android:id="@+id/chatRoomToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/white"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/chatRoomPhoto"
-        android:layout_width="48dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:background="#00F6F3F3"
-        android:src="@drawable/ic_default_profile_img"
-        app:civ_circle_background_color="#FAFDFDFD"
-        app:layout_constraintBottom_toBottomOf="@+id/chatRoomToolbar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:theme="@style/AppTheme.AppBarOverlay" />
 
     <TextView
         android:id="@+id/chatRoomLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:gravity="center|left"
+        android:gravity="center"
         android:text="Abdulkareem Dolapo"
-        android:textAlignment="viewStart"
-        android:textColor="@color/design_default_color_background"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/chatRoomToolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/chatRoomPhoto"
+        app:layout_constraintStart_toStartOf="@+id/chatRoomToolbar"
         app:layout_constraintTop_toTopOf="@+id/chatRoomToolbar" />
 
     <EditText
@@ -52,37 +42,22 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/custom_edittext"
+        android:background="@drawable/custom_chatroom_edittext_bg"
         android:ems="10"
         android:gravity="center|center_vertical"
         android:hint="Type message..."
         android:inputType="text"
         android:maxLines="5"
         android:minHeight="40dp"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="45dp"
         android:textAlignment="viewStart"
         android:textColor="@color/date_night_grey_700"
         android:textSize="18sp"
+        android:verticalScrollbarPosition="right"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/sendMessageButton"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/sendMessageButton"
-        android:layout_width="73dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/custom_login_button"
-        android:gravity="center"
-        android:onClick="onSend"
-        android:text="Send"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRoomRecyclerView"
@@ -97,4 +72,17 @@
         app:layout_constraintTop_toBottomOf="@+id/chatRoomToolbar">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <ImageButton
+        android:id="@+id/sendMessageButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:background="@android:color/transparent"
+        android:onClick="onSend"
+        app:layout_constraintEnd_toEndOf="@+id/chatRoomMessageEditText"
+        app:layout_constraintTop_toTopOf="@+id/chatRoomMessageEditText"
+        app:srcCompat="@drawable/ic_send_message_button" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
