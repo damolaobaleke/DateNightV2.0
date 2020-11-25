@@ -11,29 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:elevation="@dimen/tool_bar_elevation"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:theme="@style/AppTheme.AppBarOverlay" />
-
-    <TextView
-        android:id="@+id/chatRoomLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center"
-        android:text="Abdulkareem Dolapo"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/chatRoomToolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/chatRoomToolbar"
-        app:layout_constraintTop_toTopOf="@+id/chatRoomToolbar" />
+        app:titleTextColor="@color/black" />
 
     <EditText
         android:id="@+id/chatRoomMessageEditText"

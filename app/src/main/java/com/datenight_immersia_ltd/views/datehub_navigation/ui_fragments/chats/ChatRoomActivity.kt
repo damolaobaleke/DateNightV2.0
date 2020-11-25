@@ -15,7 +15,6 @@ import com.datenight_immersia_ltd.R
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ChatRoomActivity : AppCompatActivity() {
-    private lateinit var chatRoomHeader: TextView
     private lateinit var messageEditText: EditText
     private lateinit var sendMessageButton: ImageButton
     private lateinit var chatRoomRecyclerView: RecyclerView
@@ -27,6 +26,8 @@ class ChatRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_room)
         setSupportActionBar(findViewById(R.id.chatRoomToolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         // Initialize chat participants' data
         val currentUsername = intent.getStringExtra(IntentConstants.USER_NAME_EXTRA)
@@ -55,9 +56,7 @@ class ChatRoomActivity : AppCompatActivity() {
 
         chatRoomLayoutManager = LinearLayoutManager(this)
         chatRoomLayoutManager.stackFromEnd = true
-        chatRoomHeader = findViewById<TextView>(R.id.chatRoomLabel).apply{
-            text = chatParticipantFullName
-        }
+        title = chatParticipantUsername
         sendMessageButton = findViewById(R.id.sendMessageButton)
         messageEditText = findViewById(R.id.chatRoomMessageEditText)
         chatRoomRecyclerView = findViewById<RecyclerView>(R.id.chatRoomRecyclerView).apply{
@@ -72,5 +71,11 @@ class ChatRoomActivity : AppCompatActivity() {
             viewModel.sendMessage(messageText)
             messageEditText.setText("")
         }
+    }
+
+    @Override
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
     }
 }

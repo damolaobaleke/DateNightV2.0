@@ -19,7 +19,7 @@
         <activity
             android:name=".views.datehub_navigation.ui_fragments.chats.StartNewChatActivity"
             android:label="@string/title_activity_start_new_chat"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".views.datehub_navigation.ui_fragments.chats.ChatRoomActivity"
@@ -55,7 +55,9 @@
         <activity android:name=".views.datehub_navigation.redundant.GetBitmojiActivity" />
         <activity android:name=".views.authentication.SignUpActivity" />
         <activity android:name=".views.authentication.LoginActivity" />
-        <activity android:name=".views.landing_screen.BoardingScreen" />
+        <activity
+            android:name=".views.landing_screen.BoardingScreen"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
