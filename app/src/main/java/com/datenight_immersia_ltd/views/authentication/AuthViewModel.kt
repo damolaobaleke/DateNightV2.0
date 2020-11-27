@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.*
 import kotlin.properties.Delegates
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
@@ -47,7 +48,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
                         //Add User to db
                         val userStats = UserStatsModel(0, 0, 0)
-                        val user = UserModel(username, null, null, email, dateStringToTimestamp(age), null, false, null, null, userStats, "")
+                        val user = UserModel(username, null, email, dateStringToTimestamp(age), 0, "BASIC", null, null,userStats, "", username.toLowerCase(Locale.ROOT));
 
                         createUserInDb(user)
 

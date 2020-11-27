@@ -53,12 +53,12 @@
     <string name="help">Help</string>
     <string name="log_out">Log Out</string>
     <string name="chats">chats</string>
-    <string name="date_hub">date hub</string>
-    <string name="my_dates">My dates</string>
+    <string name="date_hub">hub</string>
+    <string name="my_dates">my dates</string>
     <string name="average_date_rating">Your average date rating is </string>
 
     <string name="game_view_content_description">Game view</string>
-    <string name="already_a_user_login">Already a User ?<font color="#B048D1"> Login</font> </string>
+    <string name="already_a_user_login">Already a User ?<b><font color="#B048D1"> Login</font></b></string>
     <string name="paris_night_dinner">paris night dinner</string>
     <string name="picnic_by_the_meadow">picnic by the meadow</string>
     <string name="free">FREE</string>
@@ -72,10 +72,14 @@
     <string name="text_pending_invitation">Your pending invitations are\nshown here</string>
     <string name="text_sheduled_date">Click on the heart icon at the\nbottom to start a new date</string>
     <string name="report_an_issue">Report an\nissue</string>
-    <string name="suggest_which_features_you_d_like_to_nsee">Suggest which features you\'d like to\nsee...</string>
+    <string name="suggest_which_features_you_d_like_to_nsee">Suggest which features you\'d like to\nsee…</string>
     <string name="tab_pending">Pending</string>
     <string name="tab_scheduled">Scheduled</string>
     <string name="set_date_and_time">Set date and time</string>
     <string name="_20_000">20,000</string>
     <string name="_10_000">10,000</string>
+    <string name="enter_your_email_username">Enter your email address</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="no_user">No user found</string>
+    <string name="date_schedule_invite"><font color='#000000'><b>Salome Wasui</b></font> is inviting you to <font color='#000000'><b>paris datenight</b></font></string>
 </resources>

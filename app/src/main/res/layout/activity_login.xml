@@ -12,16 +12,17 @@
         style="@style/Username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="126dp"
+        android:layout_marginEnd="18dp"
         android:background="@drawable/custom_edittext"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Enter your email/username"
+        android:hint="@string/enter_your_email_username"
         android:inputType="textEmailAddress"
         android:paddingVertical="10dp"
         android:paddingStart="5dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="18dp"
+        android:paddingEnd="5dp"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -32,29 +33,31 @@
         android:id="@+id/password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="45dp"
+        app:hintEnabled="false"
+        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="@+id/emailLogin"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/emailLogin"
         app:layout_constraintTop_toBottomOf="@+id/emailLogin"
-        app:endIconMode="password_toggle"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/pass"
             style="@style/Username"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/custom_edittext"
-            android:gravity="start|top"
-            android:hint="Enter your password"
+            android:gravity="start"
+            android:hint="@string/enter_your_password"
             android:inputType="textPassword"
-            android:paddingVertical="10dp"
-            android:paddingStart="5dp" />
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:paddingVertical="10dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-<!--    app:passwordToggleDrawable="@drawable/ic_remove_eye_grey_20dp"-->
+    <!--    app:passwordToggleDrawable="@drawable/ic_remove_eye_grey_20dp"-->
 
 
     <TextView
@@ -63,9 +66,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:fontFamily="@font/inter"
-        android:textFontWeight="900"
         android:text="Enter your email :"
         android:textColor="@color/date_night_logo_text"
+        android:textFontWeight="900"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/emailLogin"
         app:layout_constraintTop_toTopOf="parent" />
@@ -77,8 +80,8 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/inter"
         android:text="Enter your password :"
-        android:textFontWeight="900"
         android:textColor="@color/date_night_logo_text"
+        android:textFontWeight="900"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/emailLogin"
         app:layout_constraintHorizontal_bias="0.0"
@@ -97,6 +100,8 @@
         android:textFontWeight="600"
         android:textSize="25sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/Username"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -108,23 +113,24 @@
         android:background="@drawable/custom_login_button"
         android:fontFamily="@font/inter"
         android:text="@string/login"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/password"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/password"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/textView8"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:text="OR SIGN IN WITH"-->
-<!--        android:textColor="@color/black"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/Log_In"-->
-<!--        app:layout_constraintHorizontal_bias="0.491"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/Log_In"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/Log_In" />-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView8"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="8dp"-->
+    <!--        android:text="OR SIGN IN WITH"-->
+    <!--        android:textColor="@color/black"-->
+    <!--        app:layout_constraintEnd_toEndOf="@+id/Log_In"-->
+    <!--        app:layout_constraintHorizontal_bias="0.491"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/Log_In"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/Log_In" />-->
 
     <View
         android:id="@+id/line"
@@ -146,6 +152,7 @@
         android:textColor="@color/black"
         android:textFontWeight="400"
         android:textSize="17sp"
+        android:fontFamily="@font/inter"
         app:layout_constraintEnd_toEndOf="@+id/line"
         app:layout_constraintHorizontal_bias="0.102"
         app:layout_constraintStart_toStartOf="@+id/line"
@@ -156,48 +163,48 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="14dp"
         android:fontFamily="@font/inter"
         android:text="@string/create_an_account"
-        android:textFontWeight="900"
         android:textColor="@color/date_night_purple"
+        android:textFontWeight="900"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="@+id/line"
         app:layout_constraintTop_toBottomOf="@+id/line" />
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:gravity="center"-->
-<!--        android:orientation="horizontal"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/Log_In"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/Log_In"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/textView8">-->
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:gravity="center"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        app:layout_constraintEnd_toEndOf="@+id/Log_In"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/Log_In"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/textView8">-->
 
-<!--        <ImageView-->
-<!--            android:id="@+id/facebookLogin"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="0dp"-->
-<!--            app:srcCompat="@drawable/facebook_logo" />-->
+    <!--        <ImageView-->
+    <!--            android:id="@+id/facebookLogin"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="0dp"-->
+    <!--            app:srcCompat="@drawable/facebook_logo" />-->
 
-<!--        <ImageView-->
-<!--            android:id="@+id/googleLogin"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="44dp"-->
-<!--            app:srcCompat="@drawable/google_logo" />-->
+    <!--        <ImageView-->
+    <!--            android:id="@+id/googleLogin"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="44dp"-->
+    <!--            app:srcCompat="@drawable/google_logo" />-->
 
-<!--        <ImageView-->
-<!--            android:id="@+id/twitterLogin"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="44dp"-->
-<!--            app:srcCompat="@drawable/twitter_logo"-->
-<!--            tools:layout_editor_absoluteX="272dp"-->
-<!--            tools:layout_editor_absoluteY="489dp" />-->
-<!--    </LinearLayout>-->
+    <!--        <ImageView-->
+    <!--            android:id="@+id/twitterLogin"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="44dp"-->
+    <!--            app:srcCompat="@drawable/twitter_logo"-->
+    <!--            tools:layout_editor_absoluteX="272dp"-->
+    <!--            tools:layout_editor_absoluteY="489dp" />-->
+    <!--    </LinearLayout>-->
 
     <ProgressBar
         android:id="@+id/progressBar3"
@@ -207,10 +214,12 @@
         android:layout_marginTop="70dp"
         android:elevation="10dp"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Log_In" />
+        app:layout_constraintTop_toBottomOf="@+id/Log_In"
+        app:layout_constraintVertical_bias="0.012" />
 
     <TextView
         android:id="@+id/textView14"

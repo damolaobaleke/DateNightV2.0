@@ -59,7 +59,8 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         Button closeWebView = view.findViewById(R.id.close_webview);
 
         readyPlayerWeb.getSettings().setJavaScriptEnabled(true);
-        readyPlayerWeb.loadUrl("https://www.google.com");
+        readyPlayerWeb.getSettings().setDomStorageEnabled(true);
+        readyPlayerWeb.loadUrl("https://datenight.readyplayer.me/avatar");
 
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         closeWebView.setOnClickListener(v -> {

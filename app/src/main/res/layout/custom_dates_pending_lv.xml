@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2020 Damola Obaleke. All rights reserved.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/invite_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/inter"
+        android:gravity="start"
+        android:text="@string/date_schedule_invite"
+        android:textColor="@color/black"
+        android:textFontWeight="600"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_invitation_heart" />
+
+    <TextView
+        android:id="@+id/time_created"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:layout_marginStart="72dp"
+        android:text="2 hours ago"
+        android:textColor="@color/date_night_grey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/edit_invite_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/custom_accept_invite_button"
+        android:lineHeight="17sp"
+        android:paddingHorizontal="12dp"
+        android:paddingStart="8dp"
+        android:paddingTop="7.5dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="7.5dp"
+        android:text="Edit Invite"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textFontWeight="500"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/cancel_invite_btn"
+        app:layout_constraintTop_toBottomOf="@+id/invite_description" />
+
+    <Button
+        android:id="@+id/cancel_invite_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginEnd="3dp"
+        android:background="@drawable/pill"
+        android:lineHeight="17sp"
+        android:paddingStart="8dp"
+        android:paddingTop="7.5dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="7.5dp"
+        android:text="Cancel Invite"
+        android:textAllCaps="false"
+        android:textColor="@color/date_night_grey"
+        android:textFontWeight="500"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/invite_description"
+        app:layout_constraintTop_toTopOf="@+id/edit_invite_btn" />
+
+    <View
+        android:id="@+id/view"
+        style="@style/horizontalLine"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="18dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_invite_btn"
+        tools:layout_editor_absoluteY="107dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

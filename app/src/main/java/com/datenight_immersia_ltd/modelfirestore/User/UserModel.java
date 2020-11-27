@@ -14,32 +14,34 @@ import java.util.List;
 public class UserModel {
     public String id;
     public String username;
-    public String firstName;
-    public String lastName;
-    //add full name field
+    public String fullName;
     public String email;
-    public Timestamp dateOfBirth; //Date equivalent firestore
-    public URL avatar;
-    public Boolean status;
+    public Timestamp dateOfBirth; //Date equivalent in firestore
+    public int avatar; //avatar = string in db .glb file :: android image resource takes int value
+    public String status; //BASIC || PREMIUM USER
     public String userdateId;
+    public String search; //as firestore query is case sensitive-- this field is used to store the lowercase of the username, and search string would be converted to lower case
+    int dtc;
+    String loginMethod;
     public String stripeCustomerId;///
-    List<DateModel> dates; //column--date_id
+    List<String> purchasedExperiences;
+    List<String> dateids; // String[]
     public UserStatsModel statistics;
 
     public UserModel(){
         /**Public no arg constructor needed*/
     }
 
-    public UserModel(String username, String firstName, String lastName, String email, Timestamp dateOfBirth, URL avatar, Boolean status, List<DateModel> dates, String userdateId,UserStatsModel statistics, String stripeCustomerId) {
+    public UserModel(String username, String fullname, String email, Timestamp dateOfBirth, int avatar, String status, List<String> dateid, String userdateId,UserStatsModel statistics, String stripeCustomerId, String search) {
         //this.id = id;
         this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.fullName = fullname;
+        this.search = search;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.avatar = avatar;
         this.status = status;
-        this.dates = dates;
+        this.dateids = dateid;
         this.userdateId = userdateId;
         this.statistics = statistics;
         this.stripeCustomerId = stripeCustomerId;
@@ -59,12 +61,8 @@ public class UserModel {
         return username;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
+    public String getFullName() {
+        return fullName;
     }
 
     public String getEmail() {
@@ -75,16 +73,16 @@ public class UserModel {
         return dateOfBirth;
     }
 
-    public URL getAvatar() {
+    public int getAvatar() {
         return avatar;
     }
 
-    public Boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public List<DateModel> getDates() {
-        return dates;
+    public List<String> getDates() {
+        return dateids;
     }
 
     public String getUserdateId() {
@@ -97,5 +95,9 @@ public class UserModel {
 
     public String getStripeCustomerId(){
         return  stripeCustomerId;
+    }
+
+    public String getLowCaseUsername(){
+        return  search;
     }
 }

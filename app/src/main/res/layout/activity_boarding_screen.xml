@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/datenight_bg"
+    android:background="@drawable/splash_screen"
     tools:context=".views.landing_screen.BoardingScreen">
 
 <!--    <VideoView-->
@@ -35,6 +35,7 @@
         android:background="@drawable/custom_login_button"
         android:fontFamily="@font/inter"
         android:text="@string/login"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -48,13 +49,16 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/custom_signup_button"
         android:fontFamily="@font/inter"
-        android:textFontWeight="900"
         android:text="@string/sign_up"
         android:textColor="@color/date_night_purple"
+        android:textFontWeight="900"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/Login"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/Login"
-        app:layout_constraintTop_toBottomOf="@+id/Login" />
+        app:layout_constraintTop_toBottomOf="@+id/Login"
+        app:layout_constraintVertical_bias="0.026" />
 
     <TextView
         android:id="@+id/welcome"

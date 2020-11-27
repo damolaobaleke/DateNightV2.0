@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright 2020 Damola Obaleke. All rights reserved.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="18dp"
+    android:height="18dp"
+    android:viewportWidth="18"
+    android:viewportHeight="18">
+  <path
+      android:pathData="M9,9m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0"
+      android:strokeWidth="0.888889"
+      android:fillColor="#00000000"
+      android:strokeColor="#FC3E7A"/>
+  <path
+      android:pathData="M9.4444,3.6667C9.4444,3.4212 9.2455,3.2222 9,3.2222C8.7545,3.2222 8.5556,3.4212 8.5556,3.6667H9.4444ZM9,9H8.5556V9.2379L8.7535,9.3698L9,9ZM12.7535,12.0365C12.9577,12.1726 13.2336,12.1175 13.3698,11.9132C13.506,11.709 13.4508,11.433 13.2465,11.2969L12.7535,12.0365ZM8.5556,3.6667V9H9.4444V3.6667H8.5556ZM8.7535,9.3698L12.7535,12.0365L13.2465,11.2969L9.2465,8.6302L8.7535,9.3698Z"
+      android:fillColor="#FC3E7A"/>
+</vector>

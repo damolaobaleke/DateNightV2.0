@@ -18,12 +18,15 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.datenight_immersia_ltd.R
-import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.datehub.DatehubFragment
+import com.datenight_immersia_ltd.views.datehub_navigation.DateHubNavigation
+import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.pending.PendingFragment
 import com.datenight_immersia_ltd.views.unity.UnityEnvironmentLoad
 
 class DateCreated : AppCompatActivity() {
     lateinit var backToDateHub: Button
     lateinit var inviteByUsername: Button
+    lateinit var userId: String
+    lateinit var userFullName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,16 +35,34 @@ class DateCreated : AppCompatActivity() {
         backToDateHub = findViewById(R.id.back_date_hub)
         inviteByUsername = findViewById(R.id.button_invite_by_username)
 
+        userId = intent.getStringExtra("userId")
+        userFullName = intent.getStringExtra("userFullName")
+        //Log.i("CongratsActivity", "The user id: $userId")
+
         backToDateHub.setOnClickListener {
-            val intent = Intent(this, DatehubFragment::class.java)
+            val intent = Intent(this, DateHubNavigation::class.java)
+            intent.putExtra("userId", userId)
+            intent.putExtra("userFullName", userFullName)//invitee
             startActivity(intent)
+
         }
 
         inviteByUsername.setOnClickListener {
-            startScene()
+            //startScene()
         }
 
 
+    }
+
+    fun toPendingFragment() {
+        val bundle = Bundle()
+        bundle.putString("userId", userId)
+        bundle.putString("userFullName", userFullName)
+
+        val fragmentManager = supportFragmentManager
+        val pendingFragment = PendingFragment()
+        pendingFragment.arguments = bundle
+        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, pendingFragment).commit()
     }
 
     private fun startScene() {

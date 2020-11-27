@@ -103,7 +103,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
         if (user != null) {
             userId = mAuth.getCurrentUser().getUid();
             Log.i(TAG, userId);
-            userRef = db.collection("users").document(userId);
+            userRef = db.collection("userData").document(userId);
         } else {
             Toast.makeText(getContext(), "Not Logged In", Toast.LENGTH_SHORT).show();
         }
@@ -126,7 +126,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
 
                     assert value != null;
                     if (value.exists()) {
-                        UserModel userModel = value.toObject(UserModel.class); //recreate Object from document
+                        UserModel userModel = value.toObject(UserModel.class); //recreate doc object from class
                         assert userModel != null;
                         userModel.setId(userId);
 
@@ -166,7 +166,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
 
     public void updateUser() {
         UserStatsModel userStats = new UserStatsModel(0, 0, 0);
-        UserModel userModel = new UserModel(username.getText().toString(), null, null, emailInput.getText().toString(), dateStringToTimestamp(dateOfBirth.getText().toString()), null, false, null, null, userStats,"");
+        UserModel userModel = new UserModel(username.getText().toString(), null, emailInput.getText().toString(), dateStringToTimestamp(dateOfBirth.getText().toString()), 0, null, null, null,userStats ,"",username.getText().toString().toLowerCase());
         userRef.set(userModel).addOnSuccessListener(aVoid -> {
             progressBarGone();
             Toast.makeText(getContext(), "Your profile has been updated", Toast.LENGTH_SHORT).show();
@@ -211,8 +211,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
         // hours*minutes*seconds*milliseconds  int oneDay = 24 * 60 * 60 * 1000;
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         Date date = timestamp.toDate();
-        String dateofbirth = formatter.format(date);
-        return dateofbirth;
+        return formatter.format(date);
     }
 
     @Override

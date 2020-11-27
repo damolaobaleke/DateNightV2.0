@@ -1,32 +1,55 @@
 package com.datenight_immersia_ltd.modelfirestore.Date;
 
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
+import com.google.firebase.Timestamp;
 
 import java.net.URL;
+import java.sql.Time;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DateModel {
     String id;
     String password; //library for encryption crypto random 8 bit value
     //List<UserModel> participants -- update
-    UserModel dateCreator;
-    UserModel participant1; //reference to userEntity or Model, association
-    UserModel participant2;
-    Date dateDuration;
-    Date dateTime;
-    Boolean dateStatus; //completed
-    URL inviteLink;
+    String dateCreator;
+    String dateInvitee;
+    HashMap<String, String> participants;  //id: fullName
+    Timestamp dateDuration;  //Date equivalent in java
+    String dateStatus; //completed || Ongoing
+    Map<HashMap<String, String>, ?> statistics;
+    String linkedexperienceId;
+    Timestamp timeCompleted;
+    Timestamp timeCreated;
+    Timestamp dateChosen;
+    Timestamp timeChosen;
+    Timestamp dateTime; //the time for the date
+    HashMap<String, String> participantStatus;
+    String inviteLink;
 
-    public DateModel(String id, String password, UserModel dateCreator, UserModel participant1, UserModel participant2, Date dateDuration, Date dateTime, Boolean dateStatus, URL inviteLink) {
+    public DateModel(String id, String password, String dateCreator, String dateinvitee, HashMap<String, String> participants, Timestamp dateDuration, Timestamp timeCreated, Timestamp dateTime, String dateStatus, String inviteLink, String linkedexperienceId, HashMap<String, String> participantstatus) {
         this.id = id;
         this.password = password;
         this.dateCreator = dateCreator;
-        this.participant1 = participant1;
-        this.participant2 = participant2;
+        this.dateInvitee = dateinvitee;
+        this.participants = participants;
         this.dateDuration = dateDuration;
+        this.timeCreated = timeCreated;
         this.dateTime = dateTime;
         this.dateStatus = dateStatus;
         this.inviteLink = inviteLink;
+        this.linkedexperienceId = linkedexperienceId;
+        this.participantStatus = participantstatus;
+    }
+
+    /**No arg constructor*/
+    public DateModel(){
+
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String setId(String id) {
@@ -37,31 +60,40 @@ public class DateModel {
         return password;
     }
 
-    public UserModel getDateCreator() {
+    public String getDateCreator() {
         return dateCreator;
     }
 
-    public UserModel getParticipant1() {
-        return participant1;
+    public String getDateInvitee() {
+        return dateInvitee;
     }
 
-    public UserModel getParticipant2() {
-        return participant2;
+    public HashMap<String, String> getParticipants() {
+        return participants;
     }
 
-    public Date getDateDuration() {
+    public Timestamp getDateDuration() {
         return dateDuration;
     }
 
-    public Date getDateTime() {
+    public Timestamp getDateTime() {
         return dateTime;
     }
 
-    public Boolean getDateStatus() {
+    public String getDateStatus() {
         return dateStatus;
     }
 
-    public URL getInviteLink() {
+    public Timestamp getTimeCreated() {
+        return timeCreated;
+    }
+
+
+    public String getInviteLink() {
         return inviteLink;
+    }
+
+    public HashMap<String, String> getParticipantStatus() {
+        return participantStatus;
     }
 }

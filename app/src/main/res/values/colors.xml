@@ -10,11 +10,14 @@
     <color name="date_night_theme">#Fc3e7a</color>
     <color name="date_night_purple">#B048D1</color>
     <color name="date_night_logo_text">#293241</color>
+    <color name="custom_dates_list_border">#ABB7CA</color>
     <color name ="login_button">#B048D1</color>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="yellow">#EFA506</color>
     <color name="date_night_grey">#7A8BA5</color>
+    <color name="date_night_grey_two">#293241</color>
+    <color name="date_night_grey_200">#F1F3F5</color>
     <color name ="date_night_pear">#FFF8FA</color>
 </resources>

@@ -54,4 +54,17 @@
         <item name="android:background">?android:attr/listDivider</item>
     </style>
 
+
+    <style name="dateHubValueText">
+        <item name="android:textSize">34sp</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="lineHeight">41dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:text">0</item>
+    </style>
+
+    <style name="InviteUserTheme">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
 </resources>
