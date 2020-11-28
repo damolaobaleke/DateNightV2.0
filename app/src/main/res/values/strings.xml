@@ -89,4 +89,11 @@
     <string name="set_date_and_time">Set date and time</string>
     <string name="_20_000">20,000</string>
     <string name="_10_000">10,000</string>
+    <string name="your_date_is_over">Your date is now over</string>
+    <string name="what_to_do_next">What would you like to do next?</string>
+    <string name="repeat_date">Repeat Date</string>
+    <string name="rate_date">Rate Date</string>
+    <string name="to_chat">To Chats</string>
+    <string name="back_to_datehub">Back to DateHub</string>
+    <string name="help_us_improve">Help us Improve</string>
 </resources>
