@@ -36,11 +36,10 @@
         tools:layout="@layout/fragment_date_hub" />
 
     <fragment
-        android:id="@+id/nav_chats"
-        android:name="com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.chats.ChatFragment"
+        android:id="@+id/nav_inbox"
+        android:name="com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.chats.InboxFragment"
         android:label="Chats"
-        tools:layout="@layout/fragment_chats" />
-
+        tools:layout="@layout/fragment_inbox" />
 
 
 </navigation>

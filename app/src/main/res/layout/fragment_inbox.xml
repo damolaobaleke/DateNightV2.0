@@ -7,20 +7,20 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/newChatButton"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="48dp"
-        android:clickable="true"
-        app:backgroundTint="@color/date_night_purple"
+        android:layout_marginEnd="@dimen/fab_right_constraint"
+        android:layout_marginBottom="@dimen/fab_bottom_constraint"
         android:backgroundTint="@color/date_night_purple"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
-         />
+        android:clickable="true"
+        android:onClick="startActivityToFindUser"
+        app:backgroundTint="@color/date_night_purple"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/emptyInboxImageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -32,7 +32,7 @@
         app:srcCompat="@drawable/ic_person" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/emptyInboxTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
@@ -42,9 +42,9 @@
         android:gravity="center"
         android:lineHeight="22dp"
         android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView9"
-        app:layout_constraintStart_toStartOf="@+id/imageView9"
-        app:layout_constraintTop_toBottomOf="@+id/imageView9" />
+        app:layout_constraintEnd_toEndOf="@+id/emptyInboxImageView"
+        app:layout_constraintStart_toStartOf="@+id/emptyInboxImageView"
+        app:layout_constraintTop_toBottomOf="@+id/emptyInboxImageView" />
 
     <ImageView
         android:id="@+id/image_person"
@@ -52,9 +52,9 @@
         android:layout_height="20dp"
         android:elevation="20dp"
         android:layout_marginTop="7dp"
-        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
-        app:layout_constraintStart_toStartOf="@+id/floatingActionButton"
-        app:layout_constraintTop_toTopOf="@id/floatingActionButton"
+        app:layout_constraintEnd_toEndOf="@+id/newChatButton"
+        app:layout_constraintStart_toStartOf="@+id/newChatButton"
+        app:layout_constraintTop_toTopOf="@id/newChatButton"
         app:srcCompat="@drawable/ic_profile"
         tools:layout_editor_absoluteY="523dp" />
 
@@ -67,10 +67,30 @@
         android:text="Add"
         android:fontFamily="@font/inter"
         android:textColor="@color/white"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
-        app:layout_constraintStart_toStartOf="@+id/floatingActionButton"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/newChatButton"
+        app:layout_constraintStart_toStartOf="@+id/newChatButton"
         app:layout_constraintTop_toBottomOf="@+id/image_person" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/inbox_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="57dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton3"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/ic_rate_date_icon"
+        android:clickable="true"
+        app:backgroundTint="@android:color/transparent"
+        app:fabSize="normal"
+        app:maxImageSize="60dp"
+        app:srcCompat="@drawable/ic_rate_date_icon"
+        tools:layout_editor_absoluteX="231dp"
+        tools:layout_editor_absoluteY="693dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
