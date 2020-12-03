@@ -22,7 +22,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tabSelectedTextColor="@color/date_night_purple"
-            app:tabTextColor="@color/black">
+            app:tabTextColor="@color/black"
+            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget">
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/pending_tab"
@@ -49,8 +50,8 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="300dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginStart="320dp"
+        android:layout_marginTop="540dp"
         app:layout_constraintTop_toBottomOf="@+id/appbar">
 
         <TextView
@@ -61,7 +62,7 @@
             android:fontFamily="@font/inter"
             android:text="Join"
             android:textColor="@color/date_night_purple"
-            android:textSize="14sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/fabJoinDate"
             app:layout_constraintStart_toStartOf="@+id/fabJoinDate"
             app:layout_constraintTop_toBottomOf="@id/imageView4"
@@ -99,7 +100,7 @@
             android:fontFamily="@font/inter"
             android:text="Create"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/fabCreateDate"
             app:layout_constraintStart_toStartOf="@+id/fabCreateDate"
             app:layout_constraintTop_toBottomOf="@id/add"

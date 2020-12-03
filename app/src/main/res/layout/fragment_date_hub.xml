@@ -20,10 +20,10 @@
                 android:id="@+id/imageView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="80dp"
                 android:scaleType="center"
-                android:scaleX="1.5"
-                android:scaleY="1.5"
+                android:scaleX="2"
+                android:scaleY="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -33,23 +33,27 @@
                 android:id="@+id/edit_avatar_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:background="@drawable/edit_avatar_btn"
                 android:fontFamily="@font/inter"
+                android:layout_marginTop="80dp"
                 android:paddingHorizontal="5dp"
-                android:paddingVertical="8dp"
+                android:paddingStart="8dp"
+                android:paddingTop="8.5dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8.5dp"
                 android:text="Edit Avatar"
                 android:textColor="@color/white"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/imageView5"
                 app:layout_constraintHorizontal_bias="0.571"
                 app:layout_constraintStart_toStartOf="@+id/imageView5"
-                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+                app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardOne"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="26dp"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintEnd_toEndOf="@+id/cardView"
                 app:layout_constraintStart_toStartOf="@+id/cardView"
@@ -59,26 +63,25 @@
                     android:id="@+id/imageView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     app:srcCompat="@drawable/ic_coins" />
 
                 <TextView
                     android:id="@+id/dtc_balance"
+                    style="@style/dateHubValueText"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="92dp"
+                    android:layout_marginStart="105dp"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/inter"
-                    android:text="500"
-                    android:textColor="@color/black"
-                    android:textFontWeight="900"
+                    android:textFontWeight="700"
                     android:textSize="34sp" />
 
                 <TextView
+                    android:id="@+id/dtc_balance_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="92dp"
+                    android:layout_marginStart="105dp"
                     android:layout_marginTop="60dp"
                     android:fontFamily="@font/inter"
                     android:text="DTC Balance"
@@ -88,13 +91,19 @@
 
                 <Button
                     android:id="@+id/top_up_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="250dp"
+                    android:layout_width="55dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="280dp"
                     android:layout_marginTop="35dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="7.5dp"
+                    android:paddingBottom="7.5dp"
                     android:background="@drawable/top_up_btn"
                     android:text="Top up"
-                    android:textColor="@color/white" />
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
 
             </androidx.cardview.widget.CardView>
@@ -114,18 +123,16 @@
                 <LinearLayout
                     android:id="@+id/firstRow"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/imageView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="25dp"
-                        android:contentDescription=""
-                        android:scaleX="1.2"
-                        android:scaleY="1.2"
                         app:layout_constraintEnd_toEndOf="@+id/line1"
                         app:layout_constraintHorizontal_bias="0.108"
                         app:layout_constraintStart_toStartOf="@+id/line1"
@@ -134,15 +141,13 @@
 
                     <TextView
                         android:id="@+id/datesBeenOn"
+                        style="@style/dateHubValueText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="24dp"
                         android:layout_marginTop="25dp"
-                        android:fontFamily="@font/inter"
-                        android:text="50"
-                        android:textColor="@color/black"
-                        android:textFontWeight="900"
-                        android:textSize="40sp"
+                        android:textFontWeight="700"
+                        android:textSize="34sp"
                         app:layout_constraintStart_toEndOf="@+id/imageView6"
                         app:layout_constraintTop_toBottomOf="@+id/line1" />
 
@@ -150,20 +155,19 @@
                         android:id="@+id/textView10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="-48dp"
+                        android:layout_marginStart="-20dp"
                         android:layout_marginTop="50dp"
                         android:fontFamily="@font/inter"
                         android:text="Dates you've been on"
                         android:textColor="@color/black"
-                        app:layout_constraintStart_toStartOf="@+id/datesBeenOn"
-                        app:layout_constraintTop_toBottomOf="@+id/datesBeenOn" />
+                        app:layout_constraintStart_toStartOf="@+id/dtc_balance_label" />
 
                     <View
                         android:id="@+id/line1"
+                        style="@style/horizontalLine"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="-240dp"
-                        android:layout_marginTop="130dp"
+                        android:layout_marginStart="-230dp"
+                        android:layout_marginTop="110dp"
                         android:layout_marginEnd="20dp"
                         android:background="#DAE0E8"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -176,8 +180,9 @@
                 <LinearLayout
                     android:id="@+id/secondRow"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginTop="110dp"
                     android:orientation="horizontal">
 
                     <!--Give a style of horizontal progress-->
@@ -190,22 +195,19 @@
                         android:layout_marginTop="20dp"
                         android:progress="80"
                         android:progressDrawable="@drawable/progress_circle"
-                        android:scaleX="1.2"
-                        android:scaleY="1.2"
+                        android:scaleX="1"
+                        android:scaleY="1"
                         app:layout_constraintStart_toStartOf="@+id/imageView6"
                         app:layout_constraintTop_toBottomOf="@+id/view2" />
 
                     <TextView
                         android:id="@+id/avgDateRating"
+                        style="@style/dateHubValueText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginStart="34dp"
                         android:layout_marginTop="15dp"
-                        android:fontFamily="@font/inter"
-                        android:text="2"
-                        android:textColor="@color/black"
-                        android:textFontWeight="900"
-                        android:textSize="40sp"
+                        android:textFontWeight="700"
                         app:layout_constraintStart_toStartOf="@+id/datesBeenOn"
                         app:layout_constraintTop_toBottomOf="@+id/view2" />
 
@@ -213,107 +215,65 @@
                         android:id="@+id/avgtext"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="-25dp"
-                        android:layout_marginTop="42dp"
+                        android:layout_marginStart="-20dp"
+                        android:layout_marginTop="40dp"
                         android:fontFamily="@font/inter"
                         android:text="Your average date rating"
-                        android:textColor="@color/black"
-                        app:layout_constraintStart_toStartOf="@+id/avgDateRating"
-                        app:layout_constraintTop_toBottomOf="@+id/avgDateRating" />
+                        android:textColor="@color/black" />
 
                     <View
-                        android:id="@+id/line3"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="120dp"
-                        android:background="#DAE0E8"
-                        app:layout_constraintEnd_toEndOf="@+id/line1"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/view2"
-                        app:layout_constraintTop_toBottomOf="@+id/view2" />
-
+                        android:id="@+id/line2"
+                        style="@style/horizontalLine"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="-250dp"
+                        android:layout_marginTop="100dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="#DAE0E8" />
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/thirdRow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="200dp"
-                    android:orientation="horizontal"
-                    android:paddingBottom="30dp">
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="210dp"
+                    android:paddingBottom="10dp"
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/imageView7"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="88dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/line3"
                         app:srcCompat="@drawable/ic_date_kisses" />
 
                     <TextView
                         android:id="@+id/kissesReceived"
+                        style="@style/dateHubValueText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="100dp"
-                        android:fontFamily="@font/inter"
-                        android:text="24"
-                        android:textColor="@color/black"
-                        android:textFontWeight="900"
-                        android:textSize="40sp"
-                        app:layout_constraintStart_toStartOf="@+id/avgDateRating"
-                        app:layout_constraintTop_toBottomOf="@+id/line3" />
+                        android:layout_marginStart="22dp"
+                        android:layout_marginTop="15dp"
+                        android:textFontWeight="900" />
 
                     <TextView
                         android:id="@+id/kisses_received"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="-50dp"
-                        android:layout_marginTop="130dp"
                         android:fontFamily="@font/inter"
                         android:text="Kisses Received"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="-20dp"
+                        android:layout_marginTop="40dp"
                         android:textColor="@color/black" />
 
 
-                    <View
-                        android:id="@+id/line4"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginStart="-340dp"
-                        android:layout_marginTop="70dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="#DAE0E8"
-                        app:layout_constraintEnd_toEndOf="@+id/line1"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/line3"
-                        app:layout_constraintTop_toBottomOf="@+id/line3" />
-
-
-                    <RatingBar
-                        android:id="@+id/dateRatingBar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="150dp"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.496"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/line4" />
-
                 </LinearLayout>
-
-                <View
-                    android:id="@+id/view2"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="120dp"
-                    android:background="#DAE0E8"
-                    app:layout_constraintEnd_toEndOf="@+id/line1"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/line1"
-                    app:layout_constraintTop_toBottomOf="@+id/line1" />
 
 
             </androidx.cardview.widget.CardView>

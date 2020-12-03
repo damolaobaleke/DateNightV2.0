@@ -54,7 +54,9 @@
             android:name=".views.datehub_navigation.DateHubNavigation"
             android:label="@string/title_activity_create_date"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".views.landing_screen.BoardingDateScreen" />
+        <activity
+            android:name=".views.landing_screen.BoardingDateScreen"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".views.datehub_navigation.redundant.GetBitmojiActivity" />
         <activity android:name=".views.authentication.SignUpActivity" />
         <activity android:name=".views.authentication.LoginActivity" />

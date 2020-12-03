@@ -49,7 +49,7 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
         dateHubFragmentViewModel = new ViewModelProvider(this).get(DateHubFragmentViewModel.class);
 
         ratings = view.findViewById(R.id.progressBar);
-        stars = view.findViewById(R.id.dateRatingBar);
+//        stars = view.findViewById(R.id.dateRatingBar);
         averageDateRatingText = view.findViewById(R.id.avgtext);
         dtcBalance = view.findViewById(R.id.dtc_balance);
         datesBeenOn = view.findViewById(R.id.datesBeenOn);
@@ -62,23 +62,23 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
         //Store in DB
         //GET from DB Snapshot
 
-        stars.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
-            averageDateRatingText.setText(getString(R.string.average_date_rating) + " " + stars.getRating() + "/" + stars.getNumStars());
-
-            float x = ratingBar.getRating(); //gets the current rating(number of stars filled)
-
-            if (x == 1.0 || x == 1.5) {
-                ratings.setProgress(progressLevel1);
-            } else if (x == 2.0 || x == 2.5) {
-                ratings.setProgress(progressLevel2);
-            } else if (x == 3.0 || x == 3.5) {
-                ratings.setProgress(progressLevel3);
-            } else if (x == 4.0 || x == 4.5) {
-                ratings.setProgress(progressLevel4);
-            } else if (ratingBar.getRating() == 5.0) {
-                ratings.setProgress(progressLevel5);
-            }
-        });
+//        stars.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+//            averageDateRatingText.setText(getString(R.string.average_date_rating) + " " + stars.getRating() + "/" + stars.getNumStars());
+//
+//            float x = ratingBar.getRating(); //gets the current rating(number of stars filled)
+//
+//            if (x == 1.0 || x == 1.5) {
+//                ratings.setProgress(progressLevel1);
+//            } else if (x == 2.0 || x == 2.5) {
+//                ratings.setProgress(progressLevel2);
+//            } else if (x == 3.0 || x == 3.5) {
+//                ratings.setProgress(progressLevel3);
+//            } else if (x == 4.0 || x == 4.5) {
+//                ratings.setProgress(progressLevel4);
+//            } else if (ratingBar.getRating() == 5.0) {
+//                ratings.setProgress(progressLevel5);
+//            }
+//        });
 
         //dtc balance
         dateHubFragmentViewModel.getDtcBalance().observe(getViewLifecycleOwner(), new Observer<Integer>() {

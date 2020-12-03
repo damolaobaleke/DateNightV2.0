@@ -20,22 +20,18 @@
     android:layout_height="match_parent">
 
 
-    <WebView
-        android:id="@+id/ready_player_webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="184dp" />
-
     <Button
-        android:id="@+id/close_webview"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/ic_cancel"
+        android:id="@+id/toast_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/custom_login_button"
+        android:text="Button"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:paddingHorizontal="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.891"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

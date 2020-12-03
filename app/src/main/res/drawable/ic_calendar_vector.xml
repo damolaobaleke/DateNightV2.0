@@ -1,0 +1,26 @@
+<!--
+  ~ Copyright 2020 Damola Obaleke. All rights reserved.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="18dp"
+    android:height="18dp"
+    android:viewportWidth="18"
+    android:viewportHeight="18">
+  <path
+      android:strokeWidth="1"
+      android:pathData="M5.4444,4.5556V1M12.5556,4.5556V1M4.5556,8.1111H13.4444M2.7778,17H15.2222C16.2041,17 17,16.2041 17,15.2222V4.5556C17,3.5737 16.2041,2.7778 15.2222,2.7778H2.7778C1.7959,2.7778 1,3.5737 1,4.5556V15.2222C1,16.2041 1.7959,17 2.7778,17Z"
+      android:strokeLineJoin="round"
+      android:fillColor="#00000000"
+      android:strokeColor="#FC3E7A"
+      android:strokeLineCap="round"/>
+</vector>

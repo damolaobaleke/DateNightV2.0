@@ -27,7 +27,7 @@
         android:fontFamily="@font/inter"
         android:gravity="center"
         android:lineHeight="22dp"
-        android:text="Your date has been created,invite\na date partner to join you"
+        android:text="Your date has been created,click\n back to datehub to go\n to pending invites"
         android:textColor="@color/date_night_grey"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +49,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardOne"
         android:layout_width="0dp"
-        android:layout_height="140dp"
+        android:layout_height="144dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="20dp"
@@ -91,7 +91,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_marginTop="68dp"
+                android:layout_marginTop="70dp"
                 android:background="@color/date_night_grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -157,8 +157,11 @@
         android:textColor="@color/white"
         android:textFontWeight="900"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardOne"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/cardOne"
-        app:layout_constraintTop_toBottomOf="@+id/cardOne" />
+        app:layout_constraintTop_toBottomOf="@+id/cardOne"
+        app:layout_constraintVertical_bias="0.004" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

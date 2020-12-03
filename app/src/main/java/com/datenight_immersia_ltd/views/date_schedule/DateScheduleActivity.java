@@ -31,7 +31,9 @@ import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.views.unity.UnityEnvironmentLoad;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class DateScheduleActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -40,6 +42,8 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
     TextView timeChosen;
     Button scheduleDateTime;
     Button previewDateScene;
+
+    Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,8 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
 
         previewDateScene = findViewById(R.id.preview_button);
         previewDateScene.setOnClickListener(v -> previewDateScene());
+
+        calendar = Calendar.getInstance();
 
     }
 
@@ -82,11 +88,11 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
 
         createDateSchedule.setOnClickListener(v -> {
             Toast.makeText(this, "DONE", Toast.LENGTH_LONG).show();
-
-            //Congratulations Screen
-            Intent intent = new Intent(this, DateCreated.class);
+            //go search a user to invite
+            Intent intent = new Intent(this, InviteUserActivity.class);
+            intent.putExtra("dateChosen", dateChosen.getText());
+            intent.putExtra("timeChosen", timeChosen.getText());
             startActivity(intent);
-            //
         });
 
         bottomSheetDialog.setContentView(view);
@@ -101,7 +107,7 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
     }
 
     private void pickTime() {
-        TimePickerDialog timeDialog = new TimePickerDialog(this, this, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), true);
+        TimePickerDialog timeDialog = new TimePickerDialog(this, this,  Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), false);
         timeDialog.show();
 
     }
@@ -113,6 +119,16 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        timeChosen.setText(String.format(Locale.UK, "%01d:%01d", hourOfDay, minute));
+        String AM_PM="";
+
+        calendar = Calendar.getInstance();
+        if(calendar.get(Calendar.AM_PM) == Calendar.AM){
+            AM_PM = "am";
+        }else if(calendar.get(Calendar.AM_PM) == Calendar.PM){
+            AM_PM = "pm";
+        }else{
+            AM_PM = "";
+        }
+        timeChosen.setText(String.format(Locale.UK, "%01d:%02d %s", hourOfDay, minute, AM_PM));
     }
 }

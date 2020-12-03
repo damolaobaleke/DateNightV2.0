@@ -1,0 +1,25 @@
+<!--
+  ~ Copyright 2020 Damola Obaleke. All rights reserved.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:pathData="M20,20m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0"
+      android:fillColor="#FC3E7A"/>
+  <path
+      android:pathData="M26.8705,20.377L20.8312,26.3215L20.0458,27.0977L19.2865,26.3046L13.325,20.2289C12.5468,19.4229 12.1175,18.3435 12.1297,17.224C12.142,16.1044 12.5948,15.0347 13.3904,14.2459C14.1992,13.4748 15.2768,13.0485 16.395,13.057C17.5176,13.0639 18.5917,13.515 19.3818,14.3114L20.15,15.1134L20.9355,14.3283C21.7379,13.5529 22.8147,13.1256 23.9312,13.1394C25.0497,13.1534 26.1184,13.6036 26.9091,14.3937C27.6974,15.1928 28.136,16.2716 28.1288,17.3933C28.1215,18.5151 27.669,19.5881 26.8705,20.377Z"
+      android:fillColor="#ffffff"/>
+</vector>

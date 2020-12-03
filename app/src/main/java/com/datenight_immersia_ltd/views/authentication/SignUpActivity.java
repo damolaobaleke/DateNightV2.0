@@ -40,9 +40,11 @@ import com.stripe.android.model.Customer;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -51,7 +53,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     FirebaseAuth mAuth;
     String userId;
     FirebaseDatabase database;
-    EditText emailInput;
+    EditText emailInput, fullNameInput;
     EditText passwordInput;
     EditText username;
     EditText dateOfBirth;
@@ -78,6 +80,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         username = findViewById(R.id.username);
+        fullNameInput = findViewById(R.id.fullNameInput);
         ageInput = findViewById(R.id.Age);
 
         signUp = findViewById(R.id.Sign_Up);
@@ -96,10 +99,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void chooseAge(View v) {
-        DatePickerDialog dateDialog = new DatePickerDialog(
-                this,
-                this,
-                Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        DatePickerDialog dateDialog = new DatePickerDialog(this, this, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         dateDialog.show();
     }
 
@@ -151,11 +151,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         //create stripe customer --POST REQUEST TO ENDPOINT
 
+        List<String> dateIds = new ArrayList<>();
 
         UserStatsModel userStats = new UserStatsModel(0, 0, 0);
-        UserModel userModel = new UserModel(username.getText().toString(), null, null, emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), null, false,null,null, userStats,"");
+        UserModel userModel = new UserModel(username.getText().toString(), fullNameInput.getText().toString(),  emailInput.getText().toString() ,dateStringToTimestamp(ageInput.getText().toString()),0 ,"BASIC", dateIds,"",userStats,"",username.getText().toString().toLowerCase());
 
-        userRef = db.collection("users").document(userId);
+        userRef = db.collection("userData").document(userId);
         userRef.set(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
