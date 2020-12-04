@@ -20,6 +20,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -38,8 +39,9 @@ import java.util.Locale;
 
 public class DateScheduleActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    TextView dateChosen;
+    TextView dateChosen, experienceDescription, experienceCost;
     TextView timeChosen;
+    TextView experienceName;
     Button scheduleDateTime;
     Button previewDateScene;
 
@@ -59,6 +61,25 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
 
         calendar = Calendar.getInstance();
 
+        bindId();
+
+        Intent intent = getIntent();
+        Log.i("DateSchedule",intent.getStringExtra("experienceName") + intent.getStringExtra("experienceDesc") + intent.getStringExtra("experienceCost"));
+
+        experienceName.setText(intent.getStringExtra("experienceName"));
+        experienceDescription.setText(intent.getStringExtra("experienceDesc"));
+        if(intent.getStringExtra("experienceCost") != null) {
+            experienceCost.setText(intent.getStringExtra("experienceCost"));
+        }else{
+            experienceCost.setText(R.string.exp_val_free);
+        }
+
+    }
+
+    public void bindId(){
+        experienceName = findViewById(R.id.experience_name_in_schedule);
+        experienceDescription = findViewById(R.id.experience_descr);
+        experienceCost = findViewById(R.id.free_price);
     }
 
     public void previewDateScene() {

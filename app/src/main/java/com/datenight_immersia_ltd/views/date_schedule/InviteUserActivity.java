@@ -16,12 +16,10 @@ package com.datenight_immersia_ltd.views.date_schedule;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,7 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,13 +36,11 @@ import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.modelfirestore.Date.DateModel;
 import com.datenight_immersia_ltd.modelfirestore.Experience.ExperienceModel;
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
-import com.datenight_immersia_ltd.modelfirestore.User.UserStatsModel;
 import com.datenight_immersia_ltd.utils.RecylerViewAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -58,11 +53,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -81,18 +74,23 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
     String timeChosen;
     FirebaseAuth mAuth;
     String currentUser;
-    UserModel user; //invitee
+    UserModel dateinvitee; //invitee
     UserModel creatorUser;
     HashMap<String, String> participants;
     HashMap<String, String> participantStatus;
+    HashMap<String, HashMap<String, Integer>> dateStatistics;
     int mPosition;
     Date date;
     static String TAG = "InviteUserActivity";
+    protected final static String PENDING = "PENDING";
+    protected final static String ACCEPTED = "ACCEPTED";
 
     private RecyclerView recyclerView;
     private RecylerViewAdapter adapter; //bridge
     private RecyclerView.LayoutManager layoutManager;
     ArrayList<UserModel> users;
+
+    ExperienceModel experienceModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,12 +110,20 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
 
         usercollRef = db.collection("userData");
         userRef = db.collection("userData").document(mAuth.getCurrentUser().getUid());
+        experienceRef = db.collection("experiences").document("aNightInParis"); //change type to coll ref in future
 
 
         searchBoxClicked();
         searchUser();
         cancelButton();
 
+        /**TEST **/
+        Intent intent = getIntent();
+        dateChosen = intent.getStringExtra("dateChosen");
+        timeChosen = intent.getStringExtra("timeChosen");
+        Log.i(TAG, dateChosen + " at " + timeChosen);
+        Log.i(TAG, "The " + dateStringToTimestamp(dateChosen + timeChosen) + dateStringToTimestamp(dateChosen) + " " + dateStringToTimestamp(timeChosen));
+        /**TEST **/
     }
 
     public void searchBoxClicked() {
@@ -139,6 +145,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //suggestions ?
+                //searches based on lowercase username==== userSearch.getQuery().toString().toLowerCase()
             }
 
             @Override
@@ -150,18 +157,21 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                                     if (documentSnapshot.exists()) {
-                                        user = documentSnapshot.toObject(UserModel.class); //recreate doc object from the class
-                                        user.setId(documentSnapshot.getId());
+                                        dateinvitee = documentSnapshot.toObject(UserModel.class); //recreate doc object from the class
+                                        dateinvitee.setId(documentSnapshot.getId());
 
-                                        System.out.println(user.getUsername() + " " + user.getId());
-                                        Log.i(TAG, user.getUsername() + " " + user.getId());
+                                        System.out.println(dateinvitee.getUsername() + " " + dateinvitee.getId());
+                                        Log.i(TAG, dateinvitee.getUsername() + " " + dateinvitee.getId());
 
                                         //populate recycler view
                                         users = new ArrayList<>();
-                                        if (!(s.toString().length() <= 0) || user.getUsername() == null) {
-                                            users.add(new UserModel(user.getUsername(), null, null, null, R.drawable.avatar_ellipse, "BASIC", null, null, null, "", ""));
+                                        if (!(s.toString().length() <= 0) || dateinvitee.getUsername() == null) {
+                                            users.add(new UserModel(dateinvitee.getUsername(), null, null, null, R.drawable.avatar_ellipse, "BASIC", null, null, null, "", ""));
                                         } else {
                                             users.add(new UserModel("No user found", null, null, null, R.drawable.avatar_ellipse, "BASIC", null, null, null, "", ""));
+                                            //remove at that position in recycler view
+                                            users.remove(0);
+                                            adapter.notifyItemRemoved(0);
                                         }
 
                                         recyclerView.setHasFixedSize(true);
@@ -224,7 +234,9 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
         cancelSearchButton.setOnClickListener(v -> {
             if (userSearch.getText().length() >= 1) {
                 userSearch.setText("");
-                adapter.notifyDataSetChanged();
+
+                users.remove(0);
+                adapter.notifyItemRemoved(0);
                 return;
             }
         });
@@ -242,6 +254,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
         dateChosen = intent.getStringExtra("dateChosen");
         timeChosen = intent.getStringExtra("timeChosen");
         Log.i(TAG, dateChosen + " at " + timeChosen);
+        Log.i(TAG, "The" + dateStringToTimestamp(dateChosen) + " " + dateStringToTimestamp(timeChosen));
 
         adapter.setOnItemClickListener(new RecylerViewAdapter.OnItemClickListener() {
             @Override
@@ -249,17 +262,19 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                 mPosition = position;
                 // Create Date and go to congrats screen
                 createDateInDb();
-                Log.i(TAG, user.getUsername() + " :username");
-                congratulations(user.getId(), user.getFullName()); //the current pos of user being invited id
+                Log.i(TAG, dateinvitee.getUsername() + " :username");
+                congratulations(dateinvitee.getId(), dateinvitee.getFullName(), datesRef.getId()); //the current pos of user being invited id
+                //send notification
             }
         });
     }
 
-    public void congratulations(String userId, String userFullName) {
+    public void congratulations(String userId, String userFullName, String dateId) {
         //Congratulations Screen
         Intent intent = new Intent(this, DateCreated.class);
         intent.putExtra("userId", userId);
         intent.putExtra("userFullName", userFullName);
+        intent.putExtra("dateID", dateId);
         startActivity(intent);
     }
 
@@ -273,51 +288,76 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                 assert creatorUser != null;
                 creatorUser.setId(documentSnapshot.getId());
 
-                //Participants
+                //===Participants
                 participants = new HashMap<>();
                 participants.put(currentUser, creatorUser.getFullName());
-                participants.put(user.getId(), user.getFullName());
+                participants.put(dateinvitee.getId(), dateinvitee.getFullName()); //invitee
 
-                Log.i(TAG, creatorUser.getFullName() + " invited " + user.getFullName());
+                Log.i(TAG, creatorUser.getFullName() + " invited " + dateinvitee.getFullName());
                 //Participants
 
                 Log.i(TAG, "The creator user " + creatorUser.getUsername() + " " + creatorUser.getFullName());
 
-                //Participant Status
+                //===Participant Status
                 participantStatus = new HashMap<>();
-                participantStatus.put(creatorUser.getId(), "ACCEPTED");
-                participantStatus.put(user.getId(), "PENDING");
-                Log.i(TAG, "The participant status:" + participantStatus.get(creatorUser.getId()) + " " + participantStatus.get(user.getId()));
+                participantStatus.put(creatorUser.getId(), ACCEPTED);
+                participantStatus.put(dateinvitee.getId(), PENDING);
+                Log.i(TAG, "The participant status's:" + participantStatus.get(creatorUser.getId()) + " " + participantStatus.get(dateinvitee.getId()));
                 //Participant Status
-            }
-        });
 
-        //get experience
-        experienceRef = db.collection("experiences").document("aNightInParis");
-        experienceRef.get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
-                ExperienceModel experience = documentSnapshot.toObject(ExperienceModel.class); //recreate document object from class
-                assert experience != null;
-                experienceId = experience.getId();
-                Log.i(TAG, "The experience id:" + experience.getId());
+                //===Participants date statistics
+                dateStatistics = new HashMap<>();
+                //Rating
+                HashMap<String, Integer> participantRating = new HashMap<>();
+                participantRating.put(creatorUser.getId(), 0);
+                participantRating.put(dateinvitee.getId(), 0);
+
+                //Kisses
+                HashMap<String, Integer> participantKisses = new HashMap<>();
+                participantKisses.put(creatorUser.getId(), 0);
+                participantKisses.put(dateinvitee.getId(), 0);
+                //
+
+                dateStatistics.put("pRating", participantRating);
+                dateStatistics.put("pKisses", participantKisses);
+                //Participants date statistics
 
                 //create date in db with experience
-                DateModel dateModel = new DateModel(datesRef.getId(), "345678", mAuth.getCurrentUser().getUid(), user.getFullName(), participants, dateDuration(), currentTime(), dateStringToTimestamp(dateChosen + timeChosen), "", "https://datenight.co.uk/3456ghb7", experience.getId(), participantStatus);
-                datesRef.set(dateModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                experienceRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        toast();
-                        //Associate dates with user
-                        userRef.update("dateId", FieldValue.arrayUnion(datesRef.getId()));
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            experienceModel = documentSnapshot.toObject(ExperienceModel.class); //recreate doc object from model class
+                            assert experienceModel != null;
+                            Log.i(TAG, "The experience id: " + experienceModel.getName());
 
-                        Log.i(TAG,"The dateTime " +dateChosen+" "+timeChosen);
-                        //Log.i(TAG, String.valueOf(dateStringToTimestamp(dateChosen)));
-                        //go to congrats screen, should be here
+                            //create date in db
+                            DateModel dateModel = new DateModel(datesRef.getId(), "345678", mAuth.getCurrentUser().getUid(), dateinvitee.getFullName(), participants, dateDuration(), currentTime(), dateStringToTimestamp(dateChosen + timeChosen), "", "https://datenight.co.uk/3456ghb7", experienceModel.getId(), participantStatus, dateStatistics, dateinvitee.getId());
+                            datesRef.set(dateModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    toast();
+                                    //Associate dates with dateInvitee and dateCreator
+                                    userRef.update("dateId", FieldValue.arrayUnion(datesRef.getId())); //update the fieldValue(array)
+
+                                    DocumentReference dateInvitee = db.collection("userData").document(dateinvitee.getId());
+                                    dateInvitee.update("dateId", FieldValue.arrayUnion(datesRef.getId()));
+
+                                    Log.i(TAG, "The dateTime " + dateChosen + " " + timeChosen);
+                                    //Log.i(TAG, String.valueOf(dateStringToTimestamp(dateChosen)));
+                                    //go to congrats screen, can be here
+                                    //Send Notification
+
+                                }
+                            });
+                            //create date in db with experience
+
+                        }
                     }
                 });
-                //create date in db with experience
             }
         });
+
 
     }
 
@@ -361,17 +401,46 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
     }
 
     //Might rather take two arguments dateChosen, timeChosen rather than having to add the two values
-    public  Timestamp dateStringToTimestamp(String dateStr) {
+    public Timestamp dateStringToTimestamp(String dateStr) {
         try {
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm a", Locale.UK);
+            DateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss", Locale.UK);
             Date date = formatter.parse(dateStr);
             assert date != null;
+
             //convert date to timestamp
             return new Timestamp(date);
         } catch (ParseException e) {
             System.out.println("Exception :" + e);
             return null;
         }
+    }
+
+    public String getExperience() {
+        experienceRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    experienceModel = documentSnapshot.toObject(ExperienceModel.class); //recreate doc object from model class
+                    assert experienceModel != null;
+                    //Log.i(TAG, "The experience id: " + experienceModel.getName());
+                }
+            }
+        });
+        return experienceModel.getName();
+    }
+
+    public void populateRecyclerView() {
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(InviteUserActivity.this);
+        adapter = new RecylerViewAdapter(users);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void notifyUsers() {
+
     }
 
     /*Using a Search View has limitations*/

@@ -5,17 +5,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.views.authentication.LoginActivity;
+import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.pending.PendingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -24,7 +27,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class DateHubNavigation extends AppCompatActivity {
+public class DateHubNavigation extends AppCompatActivity implements View.OnClickListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     DrawerLayout drawer;
@@ -62,6 +65,7 @@ public class DateHubNavigation extends AppCompatActivity {
 
         //bottom nav view set up with navcontroller
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
 
     }
 
@@ -105,7 +109,7 @@ public class DateHubNavigation extends AppCompatActivity {
     }
 
     private void signOut() {
-        mAuth =  FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         mAuth.signOut();
         updateUI(null);
         Intent intent = new Intent(this, LoginActivity.class);
@@ -115,7 +119,7 @@ public class DateHubNavigation extends AppCompatActivity {
     public void updateUI(FirebaseUser user) {
         if (user != null) {
             String name = user.getDisplayName();
-            Log.i("Name",name);
+            Log.i("Name", name);
 
             Intent intent = new Intent(this, DateHubNavigation.class);
             startActivity(intent);
@@ -127,4 +131,19 @@ public class DateHubNavigation extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.nav_my_dates:
+                Fragment pendingFragment = new PendingFragment();
+                Bundle arguments = new Bundle();
+
+                arguments.putString("dateId", getIntent().getStringExtra("dateID"));
+                pendingFragment.setArguments(arguments);
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, pendingFragment).commit();
+                break;
+        }
+
+    }
 }

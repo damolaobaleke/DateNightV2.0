@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/free_price" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/experience_name_in_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="240dp"
@@ -64,9 +64,9 @@
         android:text="Value"
         android:textColor="@color/date_night_theme"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView19"
-        app:layout_constraintStart_toStartOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+        app:layout_constraintEnd_toEndOf="@+id/experience_name_in_schedule"
+        app:layout_constraintStart_toStartOf="@+id/experience_name_in_schedule"
+        app:layout_constraintTop_toBottomOf="@+id/experience_name_in_schedule" />
 
     <Button
         android:id="@+id/preview_button"
@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/schedule_date" />
 
     <TextView
-        android:id="@+id/textView17"
+        android:id="@+id/experience_descr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -89,9 +89,9 @@
         android:textColor="@color/white"
         android:textFontWeight="400"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView19"
-        app:layout_constraintStart_toStartOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+        app:layout_constraintEnd_toEndOf="@+id/experience_name_in_schedule"
+        app:layout_constraintStart_toStartOf="@+id/experience_name_in_schedule"
+        app:layout_constraintTop_toBottomOf="@+id/experience_name_in_schedule" />
 
     <TextView
         android:id="@+id/textView20"

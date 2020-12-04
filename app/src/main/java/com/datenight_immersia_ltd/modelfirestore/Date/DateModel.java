@@ -15,10 +15,11 @@ public class DateModel {
     //List<UserModel> participants -- update
     String dateCreator;
     String dateInvitee;
+    String dateInviteeId;
     HashMap<String, String> participants;  //id: fullName
     Timestamp dateDuration;  //Date equivalent in java
     String dateStatus; //completed || Ongoing
-    Map<HashMap<String, String>, ?> statistics;
+    HashMap<String, HashMap<String, Integer>> statistics;
     String linkedexperienceId;
     Timestamp timeCompleted;
     Timestamp timeCreated;
@@ -28,7 +29,7 @@ public class DateModel {
     HashMap<String, String> participantStatus;
     String inviteLink;
 
-    public DateModel(String id, String password, String dateCreator, String dateinvitee, HashMap<String, String> participants, Timestamp dateDuration, Timestamp timeCreated, Timestamp dateTime, String dateStatus, String inviteLink, String linkedexperienceId, HashMap<String, String> participantstatus) {
+    public DateModel(String id, String password, String dateCreator, String dateinvitee, HashMap<String, String> participants, Timestamp dateDuration, Timestamp timeCreated, Timestamp dateTime, String dateStatus, String inviteLink, String linkedexperienceId, HashMap<String, String> participantstatus, HashMap<String, HashMap<String, Integer>> dateStats, String dateInviteeId) {
         this.id = id;
         this.password = password;
         this.dateCreator = dateCreator;
@@ -41,10 +42,14 @@ public class DateModel {
         this.inviteLink = inviteLink;
         this.linkedexperienceId = linkedexperienceId;
         this.participantStatus = participantstatus;
+        this.dateInviteeId = dateInviteeId;
+        this.statistics = dateStats;
     }
 
-    /**No arg constructor*/
-    public DateModel(){
+    /**
+     * No arg constructor
+     */
+    public DateModel() {
 
     }
 
@@ -95,5 +100,17 @@ public class DateModel {
 
     public HashMap<String, String> getParticipantStatus() {
         return participantStatus;
+    }
+
+    public String getLinkedexperienceId() {
+        return linkedexperienceId;
+    }
+
+    public Map<String, HashMap<String, Integer>> getStatistics() {
+        return statistics;
+    }
+
+    public String getDateInviteeId() {
+        return dateInviteeId;
     }
 }

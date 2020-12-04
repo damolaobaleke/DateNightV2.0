@@ -60,7 +60,7 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
 
         readyPlayerWeb.getSettings().setJavaScriptEnabled(true);
         readyPlayerWeb.getSettings().setDomStorageEnabled(true);
-        readyPlayerWeb.loadUrl("https://datenight.readyplayer.me/avatar");
+        readyPlayerWeb.loadUrl("https://eazifunds.com"); //datenight.readyplayer.me/avatar
 
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         closeWebView.setOnClickListener(v -> {

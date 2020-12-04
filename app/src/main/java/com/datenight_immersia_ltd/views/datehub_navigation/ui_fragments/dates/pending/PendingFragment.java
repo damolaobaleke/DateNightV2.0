@@ -3,17 +3,14 @@ package com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.p
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -25,14 +22,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.datenight_immersia_ltd.R;
-import com.datenight_immersia_ltd.model.DateDataModel;
 import com.datenight_immersia_ltd.modelfirestore.Date.DateModel;
+import com.datenight_immersia_ltd.modelfirestore.Experience.ExperienceModel;
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
 import com.datenight_immersia_ltd.utils.DownloadImageTask;
 import com.datenight_immersia_ltd.utils.RecyclerViewAdapterPending;
-import com.datenight_immersia_ltd.utils.RecylerViewAdapter;
 import com.datenight_immersia_ltd.views.date_schedule.InviteUserActivity;
-import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.CustomDatesAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -43,31 +38,32 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.nimbusds.jose.util.ArrayUtils;
 
-import org.w3c.dom.Text;
-
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.Objects;
 
 public class PendingFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     FirebaseFirestore db;
     CollectionReference datesCollRef;
     CollectionReference userCollRef;
-    DocumentReference datesRef;
-    DocumentReference userdocRef;
+    DocumentReference datesRef, experienceRef;
+    DocumentReference userdocRef, inviteeDocRef;
     FirebaseAuth mAuth;
     FirebaseUser user;
     TextView dateChosen;
@@ -82,8 +78,12 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
 
     HashMap<String, String> participants;
     String userFullName;//invitee
-    String userId;//invitee
+    String inviteeId;//invitee
+    String dateId;
 
+    ExperienceModel experienceModel;
+    UserModel userModel;
+    DateModel dateModel;
 
     @Nullable
     @Override
@@ -95,17 +95,24 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
         recyclerView = view.findViewById(R.id.date_list_pending_recyler_view);
         pendingHint = view.findViewById(R.id.pending_hint);
 
+
+        //everything here currently null as i haven't passed from datehub nav, which is intent before this. decided to store them as its easier/better/more maintainable
+        // than passing intent extras everywhere
+
+        dateId = getActivity().getIntent().getStringExtra("dateID");
+        inviteeId = getActivity().getIntent().getStringExtra("userId"); //invitee
+        userFullName = getActivity().getIntent().getStringExtra("userFullName"); //invitee
+
         userdocRef = db.collection("userData").document(mAuth.getCurrentUser().getUid());
-        datesRef = db.collection("dates").document();
+
+
         datesCollRef = db.collection("dates");
         userCollRef = db.collection("userData");
+        experienceRef = db.collection("experiences").document("aNightInParis"); //move to coll reference in future
 
-        userId = getActivity().getIntent().getStringExtra("userId"); //invitee
-        userFullName = getActivity().getIntent().getStringExtra("userFullName"); //invitee
-        Log.i(TAG, "The user id:" + userId + " " + userFullName);
+        Log.i(TAG, "The user id:" + inviteeId + " " + userFullName);
 
         dateList = new ArrayList<>();
-        //dateList.add(new DateModel(datesRef.getId(), null, mAuth.getCurrentUser().getUid(), userFullName, participants, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), "", "", "https://datenight.co.uk/34f6784F234001", null));
 
         if (dateList.size() >= 1) {
             pendingHint = view.findViewById(R.id.pending_hint);
@@ -121,13 +128,33 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
         return view;
     }
 
+    public List<String> getPendingDatess() {
+        //if (dateId != null) {
+        datesRef = db.collection("dates").document("UcRxOp8vaMA4Cu5uYcIN");
+        //}
+
+        userCollRef.whereArrayContains("dateId", datesRef.getId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    if (documentSnapshot.exists()) {
+                        userModel = documentSnapshot.toObject(UserModel.class);
+                        Log.i(TAG, userModel.getDates().toString());
+
+                    }
+                }
+            }
+        });
+        return userModel.getDates();
+    }
+
     //POPULATE BASED ON FILTER, COMPOUND QUERY
     public void getPendingDatesFiltered() {
         Task query1 = datesCollRef.whereEqualTo("dateId", datesRef.getId()).get();  //snapshot1 where in collection dateId === dateDocId explicitly
         Task query2 = userCollRef.whereArrayContains("dateId", datesRef.getId()).get();  //snapshot 2 where in user coll arr dateId == dateDocId
         //3rd condition, where the participant status of the invitee(userId) id is pending
-        if (userId != null) {
-            Task query3 = datesCollRef.whereEqualTo(userId, "PENDING").get();
+        if (inviteeId != null) {
+            Task query3 = datesCollRef.whereEqualTo(inviteeId, "PENDING").get();
         }
 
         Task<List<QuerySnapshot>> allQueries = Tasks.whenAllSuccess(query1, query2);
@@ -143,7 +170,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
 
                             Log.i(TAG, "The information: " + dateModel.getId());
 
-                            dateList.add(new DateModel(dateModel.getId(), null, mAuth.getCurrentUser().getUid(), dateModel.getDateInvitee(), participants, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), "", "", "https://datenight.co.uk/34f6784F234001", null));
+                            dateList.add(new DateModel(dateModel.getId(), null, mAuth.getCurrentUser().getUid(), dateModel.getDateInvitee(), participants, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), "", "", "https://datenight.co.uk/34f6784F234001", null, null, null));
 
                             if (dateList.size() >= 1) {
                                 pendingHint.setVisibility(View.GONE);
@@ -172,8 +199,9 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 }
             }
         });
-        //POPULATE BASED ON FILTER, COMPOUND QUERY
     }
+    //POPULATE BASED ON FILTER, COMPOUND QUERY
+
 
     //UNFILTERED
     public void getPendingDates() {
@@ -182,31 +210,57 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                 if (documentSnapshot.exists()) {
                     DateModel dateModel = documentSnapshot.toObject(DateModel.class); //recreate doc object from class
+                    Log.i(TAG, "The invitee status " + dateModel.getParticipantStatus().get(dateModel.getDateInviteeId()));
 
-                    dateList.add(new DateModel(dateModel.getId(), null, mAuth.getCurrentUser().getUid(), dateModel.getDateInvitee(), participants, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), "", "", "https://datenight.co.uk/34f6784F234001", null));
+                    inviteeDocRef = db.collection("userData").document(dateModel.getDateInviteeId());
 
-                    if (dateList.size() >= 1) {
-                        pendingHint.setVisibility(View.GONE);
-                    } else {
-                        pendingHint.setVisibility(View.VISIBLE);
+                    if (dateModel.getDateInviteeId() != null) {
+                        datesRef = db.collection("dates").document(dateModel.getId());
+
+                        //if date id is in array
+                        Task check2 = userCollRef.whereArrayContains("dateId", datesRef.getId()).get().addOnSuccessListener(queryDocumentSnapshots1 -> queryDocumentSnapshots1.forEach(documentSnapshot1 -> {
+                            if (documentSnapshot1.exists()) {
+                                userModel = documentSnapshot1.toObject(UserModel.class);
+                                Log.i(TAG, "The date id's " + dateModel.getId() + "--get dates keeps returning--" + userModel.getDates() + documentSnapshot1.get("dateId"));
+                            }
+                        }));
+
+                        check2.addOnSuccessListener(o -> {
+
+                            Log.i(TAG, "Success");
+
+                            //Check status of date invitee is pending and id of the date is in the dateid array of the user\\
+                            if (dateModel.getParticipantStatus().get(dateModel.getDateInviteeId()).equals("PENDING")) {//&& Objects.equals(documentSnapshot.get("dateId"), dateModel.getId())
+
+                                dateList.add(new DateModel(dateModel.getId(), null, mAuth.getCurrentUser().getUid(), dateModel.getDateInvitee(), participants, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), "", "", dateModel.getLinkedexperienceId(), null, null, dateModel.getDateInviteeId()));
+
+                                populateRecyclerView();
+
+                                if (dateList.size() >= 1) {
+                                    pendingHint.setVisibility(View.GONE);
+                                } else {
+                                    pendingHint.setVisibility(View.VISIBLE);
+                                }
+
+                                //remove Date /Edit Date
+                                pendingAdapter.setOnItemClickListener(new RecyclerViewAdapterPending.OnItemClickListener() {
+                                    @Override
+                                    public void onCancelInvite(int position) {
+                                        removeDate(position);
+                                    }
+
+                                    @Override
+                                    public void onEditInvite(int position) {
+                                        //Alert Dialogue
+                                        editInvite(position);
+                                    }
+                                });
+
+                            } else {
+                                Log.i(TAG, "Not found");
+                            }
+                        });
                     }
-
-                    populateRecyclerView();
-
-                    //remove Date /Edit Date
-                    pendingAdapter.setOnItemClickListener(new RecyclerViewAdapterPending.OnItemClickListener() {
-                        @Override
-                        public void onCancelInvite(int position) {
-                            removeDate(position);
-                        }
-
-                        @Override
-                        public void onEditInvite(int position) {
-                            //Alert Dialogue
-                            editInvite(position);
-                        }
-                    });
-
                 }
             }
         });
@@ -226,6 +280,19 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
 
     public void removeDate(int pos) {
         dateList.remove(pos);
+        //if date creator deletes from dates collections or invitee rejects invite
+        //delete date
+        datesRef.delete();
+
+        //
+        //remove from dateCreator dateid[]
+        HashMap<String, Object> updateUser = new HashMap<>();
+        updateUser.put("dateId", FieldValue.arrayRemove(datesRef.getId()));
+        userdocRef.update(updateUser);
+
+        //remove from dateid[] in dateInvitee
+        inviteeDocRef.update(updateUser);
+        //
         pendingAdapter.notifyItemRemoved(pos);
     }
 
@@ -235,12 +302,12 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
         pendingAdapter.notifyDataSetChanged(); //notify adapter with what is going on
     }
 
-    public void alertDialogue(DateModel pos) {
+    public void alertDialogue(DateModel datemodel) {
         View view = getLayoutInflater().inflate(R.layout.edit_invite_dialogue, null);
         view.setBackgroundResource(android.R.color.transparent);
 
         TextView dateDescTitle = view.findViewById(R.id.date_descr_title);
-        dateDescTitle.setText("Date night with " + pos.getDateInvitee());
+        dateDescTitle.setText("Date night with " + datemodel.getDateInvitee());
 
         Button startDate = view.findViewById(R.id.start_date_btn);
         Button editDate = view.findViewById(R.id.edit_date_btn);
@@ -252,10 +319,10 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
         }); //Start environment load
 
         editDate.setOnClickListener(v -> {
-            scheduleDateTime(pos);
+            scheduleDateTime(datemodel);
         });
 
-        cancel.setOnClickListener(v -> alertDialog.dismiss());
+        //cancel.setOnClickListener(v -> alertDialog.dismiss());
 
         pendingAdapter.notifyDataSetChanged();
         alertDialog.setView(view);
@@ -377,5 +444,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
         assert avatarBitmap != null;
         return avatarBitmap.get(0); //gets image in position 0 based on url }
     }
+
 
 }

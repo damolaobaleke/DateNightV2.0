@@ -15,18 +15,27 @@ package com.datenight_immersia_ltd.views.date_schedule
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.datenight_immersia_ltd.R
+import com.datenight_immersia_ltd.utils.RecyclerViewAdapterPending
 import com.datenight_immersia_ltd.views.datehub_navigation.DateHubNavigation
 import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.pending.PendingFragment
 import com.datenight_immersia_ltd.views.unity.UnityEnvironmentLoad
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class DateCreated : AppCompatActivity() {
     lateinit var backToDateHub: Button
     lateinit var inviteByUsername: Button
-    lateinit var userId: String
+
+    companion object {
+        lateinit var userId: String
+    }
+
     lateinit var userFullName: String
+    lateinit var dateId: String
+    lateinit var adapterPending: RecyclerViewAdapterPending
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +44,17 @@ class DateCreated : AppCompatActivity() {
         backToDateHub = findViewById(R.id.back_date_hub)
         inviteByUsername = findViewById(R.id.button_invite_by_username)
 
-        userId = intent.getStringExtra("userId")
+        userId = intent.getStringExtra("userId")  //invitee
         userFullName = intent.getStringExtra("userFullName")
-        //Log.i("CongratsActivity", "The user id: $userId")
+        dateId = intent.getStringExtra("dateID")
+
+        Log.i("CongratsActivity", "The user invitee info: $userId $userFullName $dateId")
 
         backToDateHub.setOnClickListener {
             val intent = Intent(this, DateHubNavigation::class.java)
             intent.putExtra("userId", userId)
             intent.putExtra("userFullName", userFullName)//invitee
+            intent.putExtra("dateID", dateId)//invitee
             startActivity(intent)
 
         }
@@ -69,4 +81,8 @@ class DateCreated : AppCompatActivity() {
         val intent = Intent(this, UnityEnvironmentLoad::class.java)
         startActivity(intent)
     }
+
+//    companion object {
+//        lateinit var userId: String
+//    }
 }

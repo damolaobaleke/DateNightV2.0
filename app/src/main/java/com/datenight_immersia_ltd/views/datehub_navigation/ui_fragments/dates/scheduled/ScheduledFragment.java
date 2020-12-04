@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,33 +18,40 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.modelfirestore.Date.DateModel;
+import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
 import com.datenight_immersia_ltd.utils.DownloadImageTask;
-import com.datenight_immersia_ltd.utils.RecyclerViewAdapterPending;
 import com.datenight_immersia_ltd.utils.RecyclerViewAdapterScheduled;
 import com.datenight_immersia_ltd.views.unity.UnityEnvironmentLoad;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ScheduledFragment extends Fragment {
     FirebaseFirestore db;
     CollectionReference datesCollRef;
     CollectionReference userCollRef;
     DocumentReference datesRef;
-    DocumentReference userdocRef;
+    DocumentReference userdocRef, inviteeDocRef;
     FirebaseAuth mAuth;
     FirebaseUser user;
     TextView dateChosen;
@@ -60,9 +66,12 @@ public class ScheduledFragment extends Fragment {
 
     HashMap<String, String> participants;
     String userFullName;//invitee
-    String userId;//invitee
+    String inviteeId;//invitee
 
     DateModel dateModel;
+    UserModel userModel;
+
+    QueryDocumentSnapshot mDocumentSnapshot;
 
 
     @Nullable
@@ -79,9 +88,9 @@ public class ScheduledFragment extends Fragment {
         mapCollectionsMapDocuments();
 
 
-        userId = getActivity().getIntent().getStringExtra("userId"); //invitee
+        inviteeId = getActivity().getIntent().getStringExtra("userId"); //invitee
         userFullName = getActivity().getIntent().getStringExtra("userFullName"); //invitee
-        Log.i(TAG, "The user id:" + userId + " " + userFullName);
+        Log.i(TAG, "The user id:" + inviteeId + " " + userFullName);
 
         dateList = new ArrayList<>();
 
@@ -92,7 +101,7 @@ public class ScheduledFragment extends Fragment {
             scheduledHint.setVisibility(View.VISIBLE);
         }
 
-        //getScheduledDates();
+        getScheduledDates();
 
         return view;
     }
@@ -100,42 +109,80 @@ public class ScheduledFragment extends Fragment {
     public void getScheduledDates() {
         //Add Filter, using Query
         //condition 1= where (userId)invitee or participant status == accepted and datecreator status  == accepted
+
         datesCollRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                 if (documentSnapshot.exists()) {
                     dateModel = documentSnapshot.toObject(DateModel.class); //recreate doc object from class
 
-                    dateList.add(new DateModel(dateModel.getId(), null, mAuth.getCurrentUser().getUid(), dateModel.getDateInvitee(), participants, dateCreatedTime(), dateCreatedTime(), dateModel.getDateTime(), "", "", "https://datenight.co.uk/34f6784F234001", null));
+                    inviteeDocRef = db.collection("userData").document(dateModel.getDateInviteeId());
 
-                    if (dateList.size() >= 1) {
-                        scheduledHint.setVisibility(View.GONE);
-                    } else {
-                        scheduledHint.setVisibility(View.VISIBLE);
+                    if (dateModel.getDateInviteeId() != null) {
+                        datesRef = db.collection("dates").document(dateModel.getId());
+
+                        //if date id is in array
+                        Task check2 = userCollRef.whereArrayContains("dateId", datesRef.getId()).get().addOnSuccessListener(queryDocumentSnapshots1 -> queryDocumentSnapshots1.forEach(documentSnapshot1 -> {
+                            if (documentSnapshot1.exists()) {
+                                userModel = documentSnapshot1.toObject(UserModel.class);
+                                Log.i(TAG, "The date id's " + dateModel.getId() + "--get dates keeps returning--" + userModel.getDates() + documentSnapshot1.get("dateId"));
+                            }
+                        }));
+
+                        check2.addOnSuccessListener(o -> {
+
+                            if (Objects.equals(dateModel.getParticipantStatus().get(dateModel.getDateInviteeId()), "ACCEPTED")) {
+                                Log.i(TAG, dateModel.getDateInviteeId() + " " + dateModel.getParticipantStatus().get(dateModel.getDateInviteeId()));
+
+                                dateList.add(new DateModel(dateModel.getId(), null, mAuth.getCurrentUser().getUid(), dateModel.getDateInvitee(), participants, dateCreatedTime(), dateCreatedTime(), dateModel.getDateTime(), "", "", "https://datenight.co.uk/34f6784F234001", null, null, null));
+
+                                if (dateList.size() >= 1) {
+                                    scheduledHint.setVisibility(View.GONE);
+                                } else {
+                                    scheduledHint.setVisibility(View.VISIBLE);
+                                }
+
+                                populateRecyclerView();
+
+                                //remove Date /Edit Date
+                                scheduledAdapter.setOnItemClickListener(new RecyclerViewAdapterScheduled.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(int position) {
+                                        alertDialogue(position);
+                                    }
+
+                                    @Override
+                                    public void onCancelInvite(int position) {
+                                        //reject Invite
+                                        removeDate(position);
+                                    }
+
+                                    @Override
+                                    public void onStartDate(int position) {
+                                        //startScene();
+                                    }
+                                });
+                            }
+                        });
                     }
-
-                    populateRecyclerView();
-
-                    //remove Date /Edit Date
-                    scheduledAdapter.setOnItemClickListener(new RecyclerViewAdapterScheduled.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(int position) {
-                            alertDialogue(position);
-                        }
-
-                        @Override
-                        public void onCancelInvite(int position) {
-
-                        }
-
-                        @Override
-                        public void onStartDate(int position) {
-                            //startScene();
-                        }
-                    });
-
                 }
             }
         });
+    }
+
+    public List<String> getPendingDatess() {
+        userCollRef.whereArrayContains("dateId", datesRef.getId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                queryDocumentSnapshots.forEach(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        mDocumentSnapshot = documentSnapshot;
+                        userModel = documentSnapshot.toObject(UserModel.class); //recreate doc obj from model class
+                        Log.i(TAG, userModel.getDates().toString());
+                    }
+                });
+            }
+        });
+        return (List<String>) mDocumentSnapshot.get("dateId"); //should be this==>userModel.getDates(), but using alternative
     }
 
 
@@ -144,7 +191,7 @@ public class ScheduledFragment extends Fragment {
         startActivity(intent);
     }
 
-    public void mapCollectionsMapDocuments(){
+    public void mapCollectionsMapDocuments() {
         userdocRef = db.collection("userData").document(mAuth.getCurrentUser().getUid());
         datesRef = db.collection("dates").document();
         datesCollRef = db.collection("dates");
@@ -164,7 +211,18 @@ public class ScheduledFragment extends Fragment {
     }
 
     public void removeDate(int pos) {
+        //remove from position in recyler view
         dateList.remove(pos);
+        //delete date from db
+        datesRef.delete();
+        //remove from dateCreator dateid[]
+        HashMap<String, Object> updateUser = new HashMap<>();
+        updateUser.put("dateId", FieldValue.arrayRemove(datesRef.getId()));
+        userdocRef.update(updateUser);
+
+        //remove from dateid[] in dateInvitee
+        inviteeDocRef.update(updateUser);
+        //
         scheduledAdapter.notifyItemRemoved(pos);
     }
 

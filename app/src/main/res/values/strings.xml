@@ -82,4 +82,7 @@
     <string name="enter_your_password">Enter your password</string>
     <string name="no_user">No user found</string>
     <string name="date_schedule_invite"><font color='#000000'><b>Salome Wasui</b></font> is inviting you to <font color='#000000'><b>paris datenight</b></font></string>
+    <string name="reject_invite">Reject Invite</string>
+    <string name="accept_invite">Accept Invite</string>
+    <string name="exp_val_free">Free</string>
 </resources>

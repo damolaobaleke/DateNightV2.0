@@ -64,6 +64,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
     EditText dateOfBirth;
     Button saveChanges;
     ProgressBar load;
+    static Date date;
 
     View view;
 
@@ -136,27 +137,6 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
 
                         Log.i(TAG, "The id of the user:" + userModel.getId());
                     }
-
-                    //doesn't work
-                    accountViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserModel>() {
-                        @Override
-                        public void onChanged(UserModel userModel) {
-                            Toast.makeText(getContext(), "Using VM", Toast.LENGTH_LONG).show();
-
-                            if (value.exists()) {
-                                userModel = value.toObject(UserModel.class); //recreate Object from document
-                                assert userModel != null;
-
-                                userModel.setId(userId);
-                                Log.i(TAG, "The id of the user:" + userModel.getId());
-
-                                dateOfBirth.setText(timeStamptoString(userModel.getDateOfBirth()));
-                                username.setText(userModel.getUsername());
-                                emailInput.setText(userModel.getEmail());
-                            }
-                        }
-                    });
-                    //doesn't work
                 }
             });
         } else {
@@ -210,7 +190,9 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
     public static String timeStamptoString(Timestamp timestamp) {
         // hours*minutes*seconds*milliseconds  int oneDay = 24 * 60 * 60 * 1000;
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        Date date = timestamp.toDate();
+        if(timestamp != null) {
+           date = timestamp.toDate();
+        }
         return formatter.format(date);
     }
 
