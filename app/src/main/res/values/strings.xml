@@ -75,9 +75,27 @@
     <string name="suggest_which_features_you_d_like_to_nsee">Suggest which features you\'d like to\nsee…</string>
     <string name="tab_pending">Pending</string>
     <string name="tab_scheduled">Scheduled</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_chat_room">ChatRoomActivity</string>
+    <string name="title_activity_start_new_chat">StartNewChatActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="search_new_user_chat_hint">Search username...</string>
+    <string name="search">Search</string>
     <string name="set_date_and_time">Set date and time</string>
     <string name="_20_000">20,000</string>
     <string name="_10_000">10,000</string>
+    <string name="your_date_is_over">Your date is now over</string>
+    <string name="what_to_do_next">What would you like to do next?</string>
+    <string name="repeat_date">Repeat Date</string>
+    <string name="rate_date">Rate Date</string>
+    <string name="to_chat">To Chats</string>
+    <string name="back_to_datehub">Back to DateHub</string>
+    <string name="help_us_improve">Help us Improve</string>
     <string name="enter_your_email_username">Enter your email address</string>
     <string name="enter_your_password">Enter your password</string>
     <string name="no_user">No user found</string>

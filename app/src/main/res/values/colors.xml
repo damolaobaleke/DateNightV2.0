@@ -7,7 +7,7 @@
     <color name="teel_700">#018786</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="date_night_theme">#Fc3e7a</color>
+    <color name="date_night_theme">#B048D1</color>
     <color name="date_night_purple">#B048D1</color>
     <color name="date_night_logo_text">#293241</color>
     <color name="custom_dates_list_border">#ABB7CA</color>
@@ -17,7 +17,11 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="yellow">#EFA506</color>
     <color name="date_night_grey">#7A8BA5</color>
-    <color name="date_night_grey_two">#293241</color>
+    <color name="date_night_grey_300">#DAE0E8</color>
+    <color name="date_night_grey_700">#293241</color>
+    <color name="date_night_grey_400">#ABB7CA</color>
+    <color name="date_night_grey_two">#293241</color> <!-- Change this to date_night_grey_200 --> 
     <color name="date_night_grey_200">#F1F3F5</color>
     <color name ="date_night_pear">#FFF8FA</color>
+    <color name ="date_night_pear_500">#FC3E7A</color>
 </resources>
