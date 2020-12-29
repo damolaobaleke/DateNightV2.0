@@ -27,7 +27,8 @@ public class CasualFragment extends Fragment {
         paris = view.findViewById(R.id.paris);
 
         paris.setOnClickListener(v->{
-           startParis();
+            //startParis();
+            startScene();
         });
 
 
@@ -36,6 +37,11 @@ public class CasualFragment extends Fragment {
 
     public void startParis(){
         Intent intent = new Intent(getContext(), DateScheduleActivity.class);
+        startActivity(intent);
+    }
+
+    public void startScene() {
+        Intent intent = new Intent(requireContext(), UnityEnvironmentLoad.class);
         startActivity(intent);
     }
 
