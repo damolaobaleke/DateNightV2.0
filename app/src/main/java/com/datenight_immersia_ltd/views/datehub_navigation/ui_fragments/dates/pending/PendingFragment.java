@@ -25,6 +25,7 @@ import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.modelfirestore.Date.DateModel;
 import com.datenight_immersia_ltd.modelfirestore.Experience.ExperienceModel;
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
+import com.datenight_immersia_ltd.network.api.User;
 import com.datenight_immersia_ltd.utils.DownloadImageTask;
 import com.datenight_immersia_ltd.utils.RecyclerViewAdapterPending;
 import com.datenight_immersia_ltd.views.date_schedule.InviteUserActivity;
@@ -85,6 +86,11 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
     UserModel userModel;
     DateModel dateModel;
 
+    String inviteeKey;
+    String creator;
+
+    String inv;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -95,14 +101,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
         recyclerView = view.findViewById(R.id.date_list_pending_recyler_view);
         pendingHint = view.findViewById(R.id.pending_hint);
 
-
-        //everything here currently null as i haven't passed from datehub nav, which is intent before this. decided to store them as its easier/better/more maintainable
-        // than passing intent extras everywhere
-
-        dateId = getActivity().getIntent().getStringExtra("dateID");
-        inviteeId = getActivity().getIntent().getStringExtra("userId"); //invitee
-        userFullName = getActivity().getIntent().getStringExtra("userFullName"); //invitee
-
         userdocRef = db.collection("userData").document(mAuth.getCurrentUser().getUid());
 
 
@@ -110,7 +108,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
         userCollRef = db.collection("userData");
         experienceRef = db.collection("experiences").document("aNightInParis"); //move to coll reference in future
 
-        Log.i(TAG, "The user id:" + inviteeId + " " + userFullName);
 
         dateList = new ArrayList<>();
 
@@ -128,25 +125,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
         return view;
     }
 
-    public List<String> getPendingDatess() {
-        //if (dateId != null) {
-        datesRef = db.collection("dates").document("UcRxOp8vaMA4Cu5uYcIN");
-        //}
-
-        userCollRef.whereArrayContains("dateId", datesRef.getId()).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    if (documentSnapshot.exists()) {
-                        userModel = documentSnapshot.toObject(UserModel.class);
-                        Log.i(TAG, userModel.getDates().toString());
-
-                    }
-                }
-            }
-        });
-        return userModel.getDates();
-    }
 
     //POPULATE BASED ON FILTER, COMPOUND QUERY
     public void getPendingDatesFiltered() {
@@ -170,7 +148,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
 
                             Log.i(TAG, "The information: " + dateModel.getId());
 
-                            dateList.add(new DateModel(dateModel.getId(), null, mAuth.getCurrentUser().getUid(), dateModel.getDateInvitee(), participants, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), "", "", "https://datenight.co.uk/34f6784F234001", null, null, null));
+                            dateList.add(new DateModel(dateModel.getId(), "", mAuth.getCurrentUser().getUid(), participants, null, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedexperienceId(), null, null));
 
                             if (dateList.size() >= 1) {
                                 pendingHint.setVisibility(View.GONE);
@@ -203,36 +181,72 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
     //POPULATE BASED ON FILTER, COMPOUND QUERY
 
 
-    //UNFILTERED
+    //FILTERED
     public void getPendingDates() {
+        //for each date
+        //if the date id is in the user array date id
+        //and the date participant invitee states pending show
+
         //Get and filter query
         datesCollRef.orderBy("timeCreated", Query.Direction.DESCENDING).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                 if (documentSnapshot.exists()) {
                     DateModel dateModel = documentSnapshot.toObject(DateModel.class); //recreate doc object from class
-                    Log.i(TAG, "The invitee status " + dateModel.getParticipantStatus().get(dateModel.getDateInviteeId()));
+                    Log.i(TAG, dateModel.getId());
 
-                    inviteeDocRef = db.collection("userData").document(dateModel.getDateInviteeId());
+                    for (String key : dateModel.getParticipants().keySet()) {
+                        if (key.equals(dateModel.getCreator())) {
+                            creator = key;
+                            Log.i(TAG, "key 1 and status " + creator + " " + dateModel.getParticipantStatus().get(creator));
+                        } else {
+                            inviteeKey = key;
+                            Log.i(TAG, "key 2 and status " + inviteeKey + " " + dateModel.getParticipantStatus().get(inviteeKey));
+                        }
+                    }
 
-                    if (dateModel.getDateInviteeId() != null) {
-                        datesRef = db.collection("dates").document(dateModel.getId());
+                    ////////
+                    inviteeDocRef = db.collection("userData").document(inviteeKey); //to update invitee dateId[]
+                    datesRef = db.collection("dates").document(dateModel.getId()); //to delete date
+                    ///////
+
+                    Log.i(TAG, "The invitee status " + dateModel.getParticipantStatus().get(dateModel.getParticipants().get(inviteeKey)));
+
+                    if (dateModel.getParticipants().get(inviteeKey) != null) {
+
+                        userdocRef.get().addOnSuccessListener(documentSnapshot2 -> {
+                            if (documentSnapshot2.exists()) {
+                                userModel = documentSnapshot2.toObject(UserModel.class); //INVITER
+                                assert userModel != null;
+                                userModel.setId(mAuth.getCurrentUser().getUid());
+                                Log.i(TAG, userModel.getId() + "\n" + userModel.getEmail() + userModel.getDateId());
+                            }
+                        });
+
+                        //converting List<String> to String[]
+
 
                         //if date id is in array
                         Task check2 = userCollRef.whereArrayContains("dateId", datesRef.getId()).get().addOnSuccessListener(queryDocumentSnapshots1 -> queryDocumentSnapshots1.forEach(documentSnapshot1 -> {
                             if (documentSnapshot1.exists()) {
                                 userModel = documentSnapshot1.toObject(UserModel.class);
-                                Log.i(TAG, "The date id's " + dateModel.getId() + "--get dates keeps returning--" + userModel.getDates() + documentSnapshot1.get("dateId"));
+                                Log.i(TAG, "The date id's " + dateModel.getId() + "--get dates keeps returning--" + userModel.getDateId() + documentSnapshot1.get("dateId"));
                             }
                         }));
 
                         check2.addOnSuccessListener(o -> {
 
-                            Log.i(TAG, "Success");
+                            dateModel.getParticipants().keySet().forEach(key -> {
+                                if (!key.equals(dateModel.getCreator())) {
+                                    inv = key;
+                                }
+                            });
 
                             //Check status of date invitee is pending and id of the date is in the dateid array of the user\\
-                            if (dateModel.getParticipantStatus().get(dateModel.getDateInviteeId()).equals("PENDING")) {//&& Objects.equals(documentSnapshot.get("dateId"), dateModel.getId())
+                            if (Objects.equals(dateModel.getParticipantStatus().get(inv), "PENDING")) {
 
-                                dateList.add(new DateModel(dateModel.getId(), null, mAuth.getCurrentUser().getUid(), dateModel.getDateInvitee(), participants, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), "", "", dateModel.getLinkedexperienceId(), null, null, dateModel.getDateInviteeId()));
+                                //ADDING TWICE DUE TO ARRAY LENGTH/FOR LOOP - SOLVE
+                                dateList.add(new DateModel(dateModel.getId(), "86654", mAuth.getCurrentUser().getUid(), dateModel.getParticipants(), null, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedexperienceId(), null, null));
+
 
                                 populateRecyclerView();
 
@@ -307,7 +321,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
         view.setBackgroundResource(android.R.color.transparent);
 
         TextView dateDescTitle = view.findViewById(R.id.date_descr_title);
-        dateDescTitle.setText("Date night with " + datemodel.getDateInvitee());
+        dateDescTitle.setText(String.format("Date night with %s", datemodel.getParticipants().get(inviteeKey)));
 
         Button startDate = view.findViewById(R.id.start_date_btn);
         Button editDate = view.findViewById(R.id.edit_date_btn);

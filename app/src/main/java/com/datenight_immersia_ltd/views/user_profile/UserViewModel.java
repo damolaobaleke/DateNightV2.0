@@ -12,9 +12,9 @@ import com.datenight_immersia_ltd.repository.UserRepository;
 import java.util.List;
 
 public class UserViewModel extends AndroidViewModel {
-    private UserRepository userRepository;
-    private LiveData<UserObject> userObject;
-    private LiveData<List<UserObject>> allUsers;
+    private final UserRepository userRepository;
+    private final LiveData<UserObject> userObject;
+    private final LiveData<List<UserObject>> allUsers;
 
 
     public UserViewModel(@NonNull Application application) {

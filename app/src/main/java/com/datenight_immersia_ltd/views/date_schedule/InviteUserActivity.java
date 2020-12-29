@@ -78,6 +78,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
     UserModel creatorUser;
     HashMap<String, String> participants;
     HashMap<String, String> participantStatus;
+    HashMap<String, String> participantUsernames;
     HashMap<String, HashMap<String, Integer>> dateStatistics;
     int mPosition;
     Date date;
@@ -96,7 +97,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_user);
-        setTheme(R.style.InviteUserTheme);
+        //setTheme(R.style.InviteUserTheme);
         setTitle("Invite a user");
         //initialize db
         db = FirebaseFirestore.getInstance();
@@ -117,13 +118,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
         searchUser();
         cancelButton();
 
-        /**TEST **/
-        Intent intent = getIntent();
-        dateChosen = intent.getStringExtra("dateChosen");
-        timeChosen = intent.getStringExtra("timeChosen");
-        Log.i(TAG, dateChosen + " at " + timeChosen);
-        Log.i(TAG, "The " + dateStringToTimestamp(dateChosen + timeChosen) + dateStringToTimestamp(dateChosen) + " " + dateStringToTimestamp(timeChosen));
-        /**TEST **/
+
     }
 
     public void searchBoxClicked() {
@@ -157,18 +152,26 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                                     if (documentSnapshot.exists()) {
-                                        dateinvitee = documentSnapshot.toObject(UserModel.class); //recreate doc object from the class
+                                        dateinvitee = documentSnapshot.toObject(UserModel.class); //recreate document object from the model class
                                         dateinvitee.setId(documentSnapshot.getId());
 
                                         System.out.println(dateinvitee.getUsername() + " " + dateinvitee.getId());
                                         Log.i(TAG, dateinvitee.getUsername() + " " + dateinvitee.getId());
 
-                                        //populate recycler view
+                                        HashMap<String, Integer> avtr = new HashMap<>();
+                                        avtr.put("avatarHead", R.drawable.avatar_ellipse); //R.drawable.avatar_ellipse
+                                        avtr.put("avatarFullBody", R.drawable.avatar_ellipse);
+
+                                        HashMap<String, String> avatar = new HashMap<>();
+                                        avatar.put("avatarHead", ""); //R.drawable.avatar_ellipse
+                                        avatar.put("avatarFullBody", "");
+
+                                        //populate recycler view-- uses different constructor
                                         users = new ArrayList<>();
-                                        if (!(s.toString().length() <= 0) || dateinvitee.getUsername() == null) {
-                                            users.add(new UserModel(dateinvitee.getUsername(), null, null, null, R.drawable.avatar_ellipse, "BASIC", null, null, null, "", ""));
+                                        if (s.toString().length() >= 1 || dateinvitee.getUsername() != null) {
+                                            users.add(new UserModel(dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, avatar, "BASIC", null, null, "", ""));
                                         } else {
-                                            users.add(new UserModel("No user found", null, null, null, R.drawable.avatar_ellipse, "BASIC", null, null, null, "", ""));
+                                            users.add(new UserModel("No user found", null, null, null, avatar, "BASIC", null, null, "", ""));
                                             //remove at that position in recycler view
                                             users.remove(0);
                                             adapter.notifyItemRemoved(0);
@@ -222,14 +225,6 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
         cancelSearchButton.setVisibility(View.VISIBLE);
     }
 
-    public CharSequence cancelButtonClicked() {
-        if (userSearch.getText().toString().length() > 1) {
-            return "";
-        } else {
-            return userSearch.getText().toString();
-        }
-    }
-
     public void cancelButton() {
         cancelSearchButton.setOnClickListener(v -> {
             if (userSearch.getText().length() >= 1) {
@@ -254,7 +249,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
         dateChosen = intent.getStringExtra("dateChosen");
         timeChosen = intent.getStringExtra("timeChosen");
         Log.i(TAG, dateChosen + " at " + timeChosen);
-        Log.i(TAG, "The" + dateStringToTimestamp(dateChosen) + " " + dateStringToTimestamp(timeChosen));
+        Log.i(TAG, "The " + dateStringToTimestamp(dateChosen + " " + timeChosen));
 
         adapter.setOnItemClickListener(new RecylerViewAdapter.OnItemClickListener() {
             @Override
@@ -296,6 +291,12 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                 Log.i(TAG, creatorUser.getFullName() + " invited " + dateinvitee.getFullName());
                 //Participants
 
+                //Participant usernames
+                participantUsernames = new HashMap<>();
+                participantUsernames.put(creatorUser.getId(), creatorUser.getUsername());
+                participantUsernames.put(dateinvitee.getId(), dateinvitee.getUsername());
+                //Participant usernames
+
                 Log.i(TAG, "The creator user " + creatorUser.getUsername() + " " + creatorUser.getFullName());
 
                 //===Participant Status
@@ -318,8 +319,8 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                 participantKisses.put(dateinvitee.getId(), 0);
                 //
 
-                dateStatistics.put("pRating", participantRating);
-                dateStatistics.put("pKisses", participantKisses);
+                dateStatistics.put("participantRating", participantRating);
+                dateStatistics.put("participantKisses", participantKisses);
                 //Participants date statistics
 
                 //create date in db with experience
@@ -332,7 +333,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                             Log.i(TAG, "The experience id: " + experienceModel.getName());
 
                             //create date in db
-                            DateModel dateModel = new DateModel(datesRef.getId(), "345678", mAuth.getCurrentUser().getUid(), dateinvitee.getFullName(), participants, dateDuration(), currentTime(), dateStringToTimestamp(dateChosen + timeChosen), "", "https://datenight.co.uk/3456ghb7", experienceModel.getId(), participantStatus, dateStatistics, dateinvitee.getId());
+                            DateModel dateModel = new DateModel(datesRef.getId(), "345678", mAuth.getCurrentUser().getUid(), participants, participantUsernames, dateDuration(), currentTime(), dateStringToTimestamp(dateChosen +" "+ timeChosen), experienceModel.getId(), participantStatus, dateStatistics);
                             datesRef.set(dateModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -344,7 +345,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                                     dateInvitee.update("dateId", FieldValue.arrayUnion(datesRef.getId()));
 
                                     Log.i(TAG, "The dateTime " + dateChosen + " " + timeChosen);
-                                    //Log.i(TAG, String.valueOf(dateStringToTimestamp(dateChosen)));
+                                    Log.i(TAG, String.valueOf(dateStringToTimestamp(dateChosen +" "+ timeChosen)));
                                     //go to congrats screen, can be here
                                     //Send Notification
 
@@ -401,16 +402,15 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
     }
 
     //Might rather take two arguments dateChosen, timeChosen rather than having to add the two values
-    public Timestamp dateStringToTimestamp(String dateStr) {
+    public static Timestamp dateStringToTimestamp(final String dateStr) {
         try {
-            DateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss", Locale.UK);
+            DateFormat formatter = new SimpleDateFormat("MM-dd-yyyy hh:mm", Locale.UK); //EE- Day name in week
             Date date = formatter.parse(dateStr);
-            assert date != null;
 
             //convert date to timestamp
             return new Timestamp(date);
         } catch (ParseException e) {
-            System.out.println("Exception :" + e);
+            System.out.println("Error :" + e);
             return null;
         }
     }

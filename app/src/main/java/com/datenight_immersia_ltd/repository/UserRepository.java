@@ -14,9 +14,9 @@ import java.util.List;
 
 //Abstraction Layer
 public class UserRepository {
-    private UserDAO userDAO;
-    private LiveData<List<UserObject>> userObjectList;
-    private LiveData<UserObject> userObject;
+    private final UserDAO userDAO;
+    private final LiveData<List<UserObject>> userObjectList;
+    private final LiveData<UserObject> userObject;
 
     public UserRepository(Application app) {
         DateNightDatabase database = DateNightDatabase.getInstance(app);
@@ -47,7 +47,7 @@ public class UserRepository {
 
     //static - so its independent, has no ref to repository class
     private static class createUserAsyncTask extends AsyncTask<UserObject, Void, Void> {
-        private UserDAO userDAO;
+        private final UserDAO userDAO;
 
         private createUserAsyncTask(UserDAO userDAO) {
             this.userDAO = userDAO;
@@ -61,7 +61,7 @@ public class UserRepository {
     }
 
     private static class updateUserAsyncTask extends AsyncTask<UserObject, Void, Void> {
-        private UserDAO userDAO;
+        private final UserDAO userDAO;
 
         private updateUserAsyncTask(UserDAO userDAO) {
             this.userDAO = userDAO;
@@ -75,7 +75,7 @@ public class UserRepository {
     }
 
     private static class deleteUserAsyncTask extends AsyncTask<UserObject, Void, Void> {
-        private UserDAO userDAO;
+        private final UserDAO userDAO;
 
         private deleteUserAsyncTask(UserDAO userDAO) {
             this.userDAO = userDAO;

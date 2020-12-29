@@ -21,22 +21,22 @@
 
     <EditText
         android:id="@+id/avatar_link_input"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="224dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
-        android:paddingHorizontal="10dp"
         android:background="@drawable/custom_edittext"
         android:ems="10"
-        android:hint="Paste your avatar link here"
         android:gravity="start|top"
+        android:hint="Paste your avatar link here"
         android:inputType="textMultiLine"
+        android:paddingHorizontal="10dp"
         android:paddingVertical="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/webView" />
 
     <Button
         android:id="@+id/submit_avatar_btn"
@@ -61,11 +61,51 @@
         android:fontFamily="@font/inter"
         android:text="Forgot to copy your link ?"
         android:textColor="@color/date_night_theme"
-        android:textFontWeight="600"
+        android:textFontWeight="500"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/submit_avatar_btn"
         app:layout_constraintStart_toStartOf="@+id/submit_avatar_btn"
         app:layout_constraintTop_toBottomOf="@+id/submit_avatar_btn"
         app:layout_constraintVertical_bias="0.017" />
+
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="10dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--    <androidx.cardview.widget.CardView-->
+    <!--        android:id="@+id/card_web_view"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="200dp"-->
+    <!--        android:layout_marginHorizontal="10dp"-->
+    <!--        android:layout_marginTop="20dp"-->
+    <!--        app:cardElevation="4dp"-->
+    <!--        app:cardCornerRadius="15dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent">-->
+
+    <!--        <WebView-->
+    <!--            android:id="@+id/webView"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:layout_marginTop="20dp"-->
+    <!--            android:visibility="visible"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintHorizontal_bias="0.0"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+
+    <!--    </androidx.cardview.widget.CardView>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

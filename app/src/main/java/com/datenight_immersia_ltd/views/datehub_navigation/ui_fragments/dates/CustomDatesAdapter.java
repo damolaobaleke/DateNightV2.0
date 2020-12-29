@@ -17,9 +17,9 @@ import java.util.List;
 
 public class CustomDatesAdapter extends ArrayAdapter {
 
-    private int layoutResource;
-    private Context context;
-    private List<DateDataModel> itemsInList;
+    private final int layoutResource;
+    private final Context context;
+    private final List<DateDataModel> itemsInList;
     ImageView avatar;
 
     public CustomDatesAdapter(@NonNull Context context, int layoutResource, List<DateDataModel> itemsInList) {

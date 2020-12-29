@@ -31,7 +31,7 @@
         <activity android:name=".views.readyplayerweb.CreatAvatarActivity" />
         <activity android:name=".views.date_schedule.InviteUserActivity" />
         <activity android:name=".views.date_schedule.DateCreated" />
-        <activity android:name=".views.date_schedule.DateScheduleActivity" />
+        <activity android:name=".views.date_schedule.DateScheduleActivity"/>
         <activity android:name=".views.payment.PaymentActivity" />
         <activity android:name=".views.datehub_navigation.ui_fragments.help.SuggestImprovement" />
         <activity android:name=".views.datehub_navigation.ui_fragments.help.ReportIssue" />

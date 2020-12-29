@@ -26,7 +26,7 @@ class InboxFragment : Fragment() {
     // Layout related variables
     private lateinit var chatHeadsRecyclerView: RecyclerView
     private lateinit var chatHeadsLayoutManager: RecyclerView.LayoutManager
-    private lateinit var newChatFloatingButton: FloatingActionButton;
+    private lateinit var newChatFloatingButton: FloatingActionButton
     lateinit var emptyInboxImage: ImageView
     lateinit var emptyInboxText: TextView
 
@@ -36,13 +36,10 @@ class InboxFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this,
-                InboxViewModel.InboxViewModelFactory( "tempUsername", "tempName" ))
-                .get(InboxViewModel::class.java)
+        viewModel = ViewModelProvider(this, InboxViewModel.InboxViewModelFactory( "tempUsername", "tempName" )).get(InboxViewModel::class.java)
         viewModel.initializeFirebaseRecyclerView(this)
     }
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         inboxFragmentView =  inflater.inflate(R.layout.fragment_inbox, container, false)
         emptyInboxImage = inboxFragmentView.findViewById(R.id.emptyInboxImageView)
         emptyInboxText = inboxFragmentView.findViewById(R.id.emptyInboxTextView)

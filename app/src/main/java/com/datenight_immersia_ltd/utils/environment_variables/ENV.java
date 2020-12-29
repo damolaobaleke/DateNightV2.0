@@ -14,5 +14,5 @@
 package com.datenight_immersia_ltd.utils.environment_variables;
 
 public enum ENV {
-    STRIPE_PUBLIC_KEY ;
+    STRIPE_PUBLIC_KEY
 }

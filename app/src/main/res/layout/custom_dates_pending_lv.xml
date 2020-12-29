@@ -29,7 +29,7 @@
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/inter"
         android:gravity="start"
-        android:text="@string/date_schedule_invite"
+        android:text="Loading"
         android:textColor="@color/black"
         android:textFontWeight="600"
         android:textSize="17sp"

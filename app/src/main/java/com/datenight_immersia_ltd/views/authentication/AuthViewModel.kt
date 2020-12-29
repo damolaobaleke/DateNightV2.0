@@ -1,7 +1,6 @@
 package com.datenight_immersia_ltd.views.authentication
 
 import android.app.Application
-import android.content.Context
 import android.os.Build
 import android.util.Log
 import android.view.View
@@ -13,7 +12,6 @@ import com.datenight_immersia_ltd.modelfirestore.User.UserStatsModel
 import com.datenight_immersia_ltd.views.authentication.SignUpActivity.dateStringToTimestamp
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
@@ -43,12 +41,16 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                     e.printStackTrace()
                 })
                 .addOnCompleteListener(getApplication<Application>().applicationContext.mainExecutor, OnCompleteListener<AuthResult?> { task ->
-                    if (task.isSuccessful()) {
+                    if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
+
+                        val avatar = HashMap<String, String>()
+                        avatar["avatarHead"] = ""
+                        avatar["avatarFullBody"] = ""
 
                         //Add User to db
                         val userStats = UserStatsModel(0, 0, 0)
-                        val user = UserModel(username, null, email, dateStringToTimestamp(age), 0, "BASIC", null, null,userStats, "", username.toLowerCase(Locale.ROOT));
+                        val user = UserModel(username, null, email, dateStringToTimestamp(age), avatar, "BASIC", null, userStats, "", username.toLowerCase(Locale.ROOT))
 
                         createUserInDb(user)
 
@@ -83,9 +85,6 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-    override fun onCleared() {
-        super.onCleared()
-    }
 }
 
 

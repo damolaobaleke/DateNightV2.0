@@ -28,7 +28,7 @@ class StartNewChatViewModel: ViewModel() {
 
     fun searchForUserByUsername(username: String, parentContext: StartNewChatActivity){
         queryUserName = username
-        parentContext.foundUserLayout.isVisible = false;
+        parentContext.foundUserLayout.isVisible = false
         parentContext.foundUserLayout.isVisible = false
         val query = dbReferenceUser.whereEqualTo("username", queryUserName).get()
                 .addOnSuccessListener {querySnapShot ->
@@ -38,7 +38,7 @@ class StartNewChatViewModel: ViewModel() {
                             foundUserId = documents[0].get("id").toString()
                             foundUserFullName = documents[0].get("name").toString()
                             foundUserPhotoUrl = "" // TODO: Populate photo appropriately
-                            Log.e(TAG, "Found user: $queryUserName, id: $foundUserId, name: $foundUserFullName")
+                            Log.i(TAG, "Found user: $queryUserName, id: $foundUserId, name: $foundUserFullName")
 
                             // Display found user
                             parentContext.foundUserNameTextView.text = username
@@ -61,7 +61,7 @@ class StartNewChatViewModel: ViewModel() {
                             foundUserId = null
                             foundUserFullName = null
                             foundUserPhotoUrl = null
-                            Log.e(TAG, "Invalid number of users (possibly more than 1) matching username: $username")
+                            Log.i(TAG, "Invalid number of users (possibly more than 1) matching username: $username")
                             val toastMessage = "No user found for $username"
                             Toast.makeText(parentContext, toastMessage, Toast.LENGTH_SHORT).show()
                         }
@@ -75,7 +75,7 @@ class StartNewChatViewModel: ViewModel() {
                     }
                 }
                 .addOnFailureListener { exception ->
-                    Log.e(TAG, exception.message)
+                    Log.i(TAG, exception.message)
 
                 }
 
@@ -91,7 +91,7 @@ class StartNewChatViewModel: ViewModel() {
             } else {
                 "$foundUserId,$currentUserId"
             }
-            Log.e(TAG, "Found ID: $newChatRoomId, Found name: $queryUserName")
+            Log.i(TAG, "Found ID: $newChatRoomId, Found name: $queryUserName")
 
             // End Activity and return found user details
             val intent = Intent()

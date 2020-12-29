@@ -2,7 +2,7 @@ package com.datenight_immersia_ltd
 
 object DatabaseConstants {
     // Messages
-    const val MESSAGES_NODE = "chatDb/chatRoomMessages";
+    const val MESSAGES_NODE = "chatDb/chatRoomMessages"
     const val MOST_RECENT_MESSAGE_TIMESTAMP = "mostRecentMessage/timeStamp"
 
 

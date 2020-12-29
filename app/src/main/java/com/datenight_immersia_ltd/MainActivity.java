@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import com.datenight_immersia_ltd.views.landing_screen.BoardingScreen;
 
 public class MainActivity extends AppCompatActivity {
-    private static String TAG = "Getting Image";
+    private static final String TAG = "Getting Image";
     private static final long SPLASH_TIME_OUT = 4000;
     private ImageView dateNightLogo;
     private ImageView dateNightTextLogo;

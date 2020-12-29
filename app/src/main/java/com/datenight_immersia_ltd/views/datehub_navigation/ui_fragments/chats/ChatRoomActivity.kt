@@ -44,10 +44,7 @@ class ChatRoomActivity : AppCompatActivity() {
         else {
 
         }
-        viewModel = ViewModelProvider(this,
-                ChatRoomViewModel.ChatRoomViewModelFactory(currentUsername!!,
-                        currentUserFullName!!,
-                        chatParticipantId!!,
+        viewModel = ViewModelProvider(this, ChatRoomViewModel.ChatRoomViewModelFactory(currentUsername!!, currentUserFullName!!, chatParticipantId!!,
                         chatParticipantUsername!!,
                         chatParticipantFullName!!,
                         chatRoomID!!,

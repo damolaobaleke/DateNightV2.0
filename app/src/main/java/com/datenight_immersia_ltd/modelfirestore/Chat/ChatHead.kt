@@ -1,9 +1,7 @@
 package com.datenight_immersia_ltd.modelfirestore.Chat
 
-class ChatHead(val participants: Map<String?, String?>,
-               val usernames: Map<String?, String?>,
-               val mostRecentMessage: ChatRoomMessage){
-    var key: String? = null;
+class ChatHead(val participants: Map<String?, String?>, val usernames: Map<String?, String?>, val mostRecentMessage: ChatRoomMessage){
+    var key: String? = null
     var participantId: String? = null
     var participantUsername: String? = null
     var participantFullName: String? = null

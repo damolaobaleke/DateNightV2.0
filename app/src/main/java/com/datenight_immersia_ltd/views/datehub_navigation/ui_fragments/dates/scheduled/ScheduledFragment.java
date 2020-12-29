@@ -73,6 +73,9 @@ public class ScheduledFragment extends Fragment {
 
     QueryDocumentSnapshot mDocumentSnapshot;
 
+    String creator;
+    String inviteeKey;
+
 
     @Nullable
     @Override
@@ -87,10 +90,6 @@ public class ScheduledFragment extends Fragment {
 
         mapCollectionsMapDocuments();
 
-
-        inviteeId = getActivity().getIntent().getStringExtra("userId"); //invitee
-        userFullName = getActivity().getIntent().getStringExtra("userFullName"); //invitee
-        Log.i(TAG, "The user id:" + inviteeId + " " + userFullName);
 
         dateList = new ArrayList<>();
 
@@ -115,55 +114,64 @@ public class ScheduledFragment extends Fragment {
                 if (documentSnapshot.exists()) {
                     dateModel = documentSnapshot.toObject(DateModel.class); //recreate doc object from class
 
-                    inviteeDocRef = db.collection("userData").document(dateModel.getDateInviteeId());
+                    for (String key : dateModel.getParticipants().keySet()) {
+                        if (key.equals(dateModel.getCreator())) {
+                            creator = key;
+                        } else {
+                            inviteeKey = key;
+                        }
+                    }
 
-                    if (dateModel.getDateInviteeId() != null) {
-                        datesRef = db.collection("dates").document(dateModel.getId());
 
-                        //if date id is in array
-                        Task check2 = userCollRef.whereArrayContains("dateId", datesRef.getId()).get().addOnSuccessListener(queryDocumentSnapshots1 -> queryDocumentSnapshots1.forEach(documentSnapshot1 -> {
-                            if (documentSnapshot1.exists()) {
-                                userModel = documentSnapshot1.toObject(UserModel.class);
-                                Log.i(TAG, "The date id's " + dateModel.getId() + "--get dates keeps returning--" + userModel.getDates() + documentSnapshot1.get("dateId"));
+                    //if (dateModel.getDateInviteeId() != null) {
+                    inviteeDocRef = db.collection("userData").document(inviteeKey);
+
+                    datesRef = db.collection("dates").document(dateModel.getId());
+
+                    //if date id is in array
+                    Task check2 = userCollRef.whereArrayContains("dateId", datesRef.getId()).get().addOnSuccessListener(queryDocumentSnapshots1 -> queryDocumentSnapshots1.forEach(documentSnapshot1 -> {
+                        if (documentSnapshot1.exists()) {
+                            userModel = documentSnapshot1.toObject(UserModel.class);
+                            Log.i(TAG, "The date id's " + dateModel.getId() + "--get dates keeps returning--" + userModel.getDateId() + documentSnapshot1.get("dateId"));
+                        }
+                    }));
+
+                    check2.addOnSuccessListener(o -> {
+
+                        if (Objects.equals(dateModel.getParticipantStatus().get(inviteeKey), "ACCEPTED")) {
+                            Log.i(TAG, inviteeKey + " " + dateModel.getParticipantStatus().get(inviteeKey));
+
+                            dateList.add(new DateModel(dateModel.getId(),"86654", mAuth.getCurrentUser().getUid(), participants, null,dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedexperienceId(), null, null));
+
+                            if (dateList.size() >= 1) {
+                                scheduledHint.setVisibility(View.GONE);
+                            } else {
+                                scheduledHint.setVisibility(View.VISIBLE);
                             }
-                        }));
 
-                        check2.addOnSuccessListener(o -> {
+                            populateRecyclerView();
 
-                            if (Objects.equals(dateModel.getParticipantStatus().get(dateModel.getDateInviteeId()), "ACCEPTED")) {
-                                Log.i(TAG, dateModel.getDateInviteeId() + " " + dateModel.getParticipantStatus().get(dateModel.getDateInviteeId()));
-
-                                dateList.add(new DateModel(dateModel.getId(), null, mAuth.getCurrentUser().getUid(), dateModel.getDateInvitee(), participants, dateCreatedTime(), dateCreatedTime(), dateModel.getDateTime(), "", "", "https://datenight.co.uk/34f6784F234001", null, null, null));
-
-                                if (dateList.size() >= 1) {
-                                    scheduledHint.setVisibility(View.GONE);
-                                } else {
-                                    scheduledHint.setVisibility(View.VISIBLE);
+                            //remove Date /Edit Date
+                            scheduledAdapter.setOnItemClickListener(new RecyclerViewAdapterScheduled.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(int position) {
+                                    alertDialogue(position);
                                 }
 
-                                populateRecyclerView();
+                                @Override
+                                public void onCancelInvite(int position) {
+                                    //reject Invite
+                                    removeDate(position);
+                                }
 
-                                //remove Date /Edit Date
-                                scheduledAdapter.setOnItemClickListener(new RecyclerViewAdapterScheduled.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(int position) {
-                                        alertDialogue(position);
-                                    }
-
-                                    @Override
-                                    public void onCancelInvite(int position) {
-                                        //reject Invite
-                                        removeDate(position);
-                                    }
-
-                                    @Override
-                                    public void onStartDate(int position) {
-                                        //startScene();
-                                    }
-                                });
-                            }
-                        });
-                    }
+                                @Override
+                                public void onStartDate(int position) {
+                                    //startScene();
+                                }
+                            });
+                        }
+                    });
+                    //}
                 }
             }
         });
@@ -177,7 +185,7 @@ public class ScheduledFragment extends Fragment {
                     if (documentSnapshot.exists()) {
                         mDocumentSnapshot = documentSnapshot;
                         userModel = documentSnapshot.toObject(UserModel.class); //recreate doc obj from model class
-                        Log.i(TAG, userModel.getDates().toString());
+                        Log.i(TAG, userModel.getDateId().toString());
                     }
                 });
             }
@@ -233,7 +241,7 @@ public class ScheduledFragment extends Fragment {
         dateModel = dateList.get(pos);
 
         TextView dateDescTitle = view.findViewById(R.id.date_descr_title);
-        dateDescTitle.setText("Datenight with" + dateModel.getDateInvitee());
+        dateDescTitle.setText(String.format("Datenight with %s", dateModel.getParticipants().get(inviteeKey)));
 
         AlertDialog alertDialog = new AlertDialog.Builder(requireContext()).create();
 

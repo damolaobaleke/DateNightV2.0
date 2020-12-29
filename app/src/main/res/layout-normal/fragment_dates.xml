@@ -24,6 +24,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
             app:tabSelectedTextColor="@color/date_night_purple"
             app:tabTextColor="@color/black">
 
@@ -64,6 +65,7 @@
             android:text="Join"
             android:textColor="@color/date_night_purple"
             android:textSize="12sp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="@+id/fabJoinDate"
             app:layout_constraintStart_toStartOf="@+id/fabJoinDate"
             app:layout_constraintTop_toBottomOf="@id/imageView4"
@@ -77,6 +79,7 @@
             android:layout_marginStart="6dp"
             android:layout_marginBottom="28dp"
             android:elevation="20dp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/fabJoinDate"
             app:layout_constraintEnd_toEndOf="@+id/fabJoinDate"
             app:layout_constraintHorizontal_bias="0.384"
@@ -88,6 +91,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             app:backgroundTint="@color/white"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.912"
             app:layout_constraintStart_toStartOf="parent"

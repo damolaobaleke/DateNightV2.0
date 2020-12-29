@@ -50,7 +50,7 @@
         android:maxLines="1"
         android:paddingStart="30dp"
         android:paddingEnd="40dp"
-        android:textAlignment="viewStart"
+        android:textAlignment="textStart"
         android:textColor="@color/date_night_grey_700"
         android:textColorHint="@color/date_night_grey"
         android:textSize="15sp"

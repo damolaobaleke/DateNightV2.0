@@ -25,6 +25,7 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:tabTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
             android:background="?attr/colorPrimary">
 
             <com.google.android.material.tabs.TabItem

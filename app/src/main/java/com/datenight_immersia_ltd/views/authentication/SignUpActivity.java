@@ -66,7 +66,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     FirebaseFirestore db;
     DocumentReference userRef;
     Task<AuthResult> task1;
-    private static String TAG = "Sign Up";
+    private static final String TAG = "Sign Up";
 
 
     @Override
@@ -117,7 +117,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     .addOnSuccessListener(authResult -> Toast.makeText(this, "Registered Successfully", Toast.LENGTH_SHORT).show())
 
                     .addOnFailureListener(this, e -> {
-                        Log.i("Failed", e.getLocalizedMessage().toString());
+                        Log.i("Failed", e.getLocalizedMessage());
                         Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     })
@@ -145,16 +145,18 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void createUser() {
-//        database = FirebaseDatabase.getInstance();
-//        database.getReference("Users").child(task1.getResult().getUser().getUid()).child("email").setValue(emailInput.getText().toString());
         userId = mAuth.getCurrentUser().getUid();
 
         //create stripe customer --POST REQUEST TO ENDPOINT
 
         List<String> dateIds = new ArrayList<>();
 
+        HashMap<String,String> avatar = new HashMap<>();
+        avatar.put("avatarHead","");
+        avatar.put("avatarFullBody", "");
+
         UserStatsModel userStats = new UserStatsModel(0, 0, 0);
-        UserModel userModel = new UserModel(username.getText().toString(), fullNameInput.getText().toString(),  emailInput.getText().toString() ,dateStringToTimestamp(ageInput.getText().toString()),0 ,"BASIC", dateIds,"",userStats,"",username.getText().toString().toLowerCase());
+        UserModel userModel = new UserModel(username.getText().toString(), fullNameInput.getText().toString(),  emailInput.getText().toString() ,dateStringToTimestamp(ageInput.getText().toString()),avatar ,"BASIC", dateIds,userStats,"",username.getText().toString().toLowerCase());
 
         userRef = db.collection("userData").document(userId);
         userRef.set(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {

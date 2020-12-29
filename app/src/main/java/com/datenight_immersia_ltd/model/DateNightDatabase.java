@@ -51,7 +51,7 @@ public abstract class DateNightDatabase extends RoomDatabase {
     }
 
     //Add random data on database created-- FOR TEST
-    private static RoomDatabase.Callback roomCallBack = new RoomDatabase.Callback() {
+    private static final RoomDatabase.Callback roomCallBack = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
@@ -60,7 +60,7 @@ public abstract class DateNightDatabase extends RoomDatabase {
     };
 
     private static class populateDBAsyncTask extends AsyncTask<Void, Void, Void> {
-        private UserDAO userDAO;
+        private final UserDAO userDAO;
 
         private populateDBAsyncTask(DateNightDatabase db) {
             userDAO = db.userDAO();

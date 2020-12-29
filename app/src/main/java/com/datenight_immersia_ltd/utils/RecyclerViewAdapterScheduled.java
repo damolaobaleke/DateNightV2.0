@@ -13,6 +13,7 @@
 
 package com.datenight_immersia_ltd.utils;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +25,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.modelfirestore.Date.DateModel;
+import com.datenight_immersia_ltd.modelfirestore.Experience.ExperienceModel;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 public class RecyclerViewAdapterScheduled extends RecyclerView.Adapter<RecyclerViewAdapterScheduled.ScheduledDatesViewHolder> {
-    private ArrayList<DateModel> mDateLists;
+    private final ArrayList<DateModel> mDateLists;
+    DocumentReference datesRef,expDocRef;
+    FirebaseFirestore db;
+    FirebaseAuth mAuth;
+    String creatorKey;
+    String inviteeKey;
+
+    DateModel date;
 
 
     //Listeners
@@ -37,11 +51,11 @@ public class RecyclerViewAdapterScheduled extends RecyclerView.Adapter<RecyclerV
     //interface for listener
     public interface OnItemClickListener {
         //methods on click
-        public void onItemClick(int position);
+        void onItemClick(int position);
 
-        public void onCancelInvite(int position);
+        void onCancelInvite(int position);
 
-        public void onStartDate(int position);
+        void onStartDate(int position);
     }
 
     //click listener method
@@ -102,7 +116,7 @@ public class RecyclerViewAdapterScheduled extends RecyclerView.Adapter<RecyclerV
     @NonNull
     @Override
     public ScheduledDatesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_date_schedule_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_dates_sch_list_view, parent, false);
 
         return new ScheduledDatesViewHolder(view, mListener);
     }
@@ -111,12 +125,72 @@ public class RecyclerViewAdapterScheduled extends RecyclerView.Adapter<RecyclerV
     public void onBindViewHolder(@NonNull ScheduledDatesViewHolder holder, int position) {
         DateModel dateModel = mDateLists.get(position); //position in recy view for datelist
 
-        holder.dateTitle.setText(dateModel.getPassword());
-        holder.avatar.setImageResource(R.drawable.avatar_ellipse);
-        holder.dayChosen.setText(dateModel.getDateTime().toString());
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        datesRef = db.collection("dates").document(dateModel.getId());
 
-        long daySecondsToDate = dateModel.getDateTime().getSeconds()/60*60; //divide by the hr to get day
-        holder.timeChosen.setText(String.valueOf(daySecondsToDate));
+        datesRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+
+                date = documentSnapshot.toObject(DateModel.class);
+                assert date != null;
+
+
+                for (String key : date.getParticipants().keySet()) {
+                    if (key.equals(mAuth.getCurrentUser().getUid()) && key.equals(date.getCreator())) {
+                        creatorKey = key;
+                    } else {
+                        inviteeKey = key;
+                    }
+                }
+
+                if (!dateModel.getCreator().equals(mAuth.getCurrentUser().getUid())) { //so invitee
+
+                    expDocRef = db.collection("experiences").document(date.getLinkedexperienceId());
+
+                    expDocRef.get().addOnSuccessListener(expdocumentSnapshot -> {
+                        if (expdocumentSnapshot.exists()) {
+                            ExperienceModel experience = expdocumentSnapshot.toObject(ExperienceModel.class);
+                            assert experience != null;
+
+
+                            holder.dateTitle.setText(String.format("Scheduled %s with %s", experience.getName(), dateModel.getParticipants().get(creatorKey)));
+                        }
+                    });
+
+
+                    holder.avatar.setImageResource(R.drawable.avatar_ellipse);
+                    if (dateModel.getDateTime() != null) {
+                        holder.dayChosen.setText(dateModel.getDateTime().toString());
+
+                        long daySecondsToDate = dateModel.getDateTime().getSeconds() / 60 * 60; //divide by the hr to get day
+                        holder.timeChosen.setText(String.valueOf(daySecondsToDate));
+                    } else {
+                        holder.dayChosen.setText("Day");
+                        holder.timeChosen.setText("Time");
+                    }
+
+                }else{
+                    //creator
+                    if(date.getLinkedexperienceId() != null) {
+                        expDocRef = db.collection("experiences").document(date.getLinkedexperienceId());
+
+                        expDocRef.get().addOnSuccessListener(expdocumentSnapshot -> {
+                            if (expdocumentSnapshot.exists()) {
+                                ExperienceModel experience = expdocumentSnapshot.toObject(ExperienceModel.class);
+                                assert experience != null;
+
+
+                                holder.dateTitle.setText(String.format("%s with %s", experience.getName(), dateModel.getParticipants().get(inviteeKey)));
+                            }
+                        });
+                    }
+                }
+            }
+
+        });
+
+
     }
 
     @Override

@@ -12,10 +12,7 @@ import java.util.Map;
 public class DateModel {
     String id;
     String password; //library for encryption crypto random 8 bit value
-    //List<UserModel> participants -- update
-    String dateCreator;
-    String dateInvitee;
-    String dateInviteeId;
+    String creator;
     HashMap<String, String> participants;  //id: fullName
     Timestamp dateDuration;  //Date equivalent in java
     String dateStatus; //completed || Ongoing
@@ -27,13 +24,13 @@ public class DateModel {
     Timestamp timeChosen;
     Timestamp dateTime; //the time for the date
     HashMap<String, String> participantStatus;
+    public HashMap<String, String> participantUsernames;
     String inviteLink;
 
-    public DateModel(String id, String password, String dateCreator, String dateinvitee, HashMap<String, String> participants, Timestamp dateDuration, Timestamp timeCreated, Timestamp dateTime, String dateStatus, String inviteLink, String linkedexperienceId, HashMap<String, String> participantstatus, HashMap<String, HashMap<String, Integer>> dateStats, String dateInviteeId) {
+    public DateModel(String id, String password, String creator, HashMap<String, String> participants, HashMap<String, String> participantUsernames ,Timestamp dateDuration, Timestamp timeCreated, Timestamp dateTime, String linkedexperienceId, HashMap<String, String> participantstatus, HashMap<String, HashMap<String, Integer>> dateStats) {
         this.id = id;
         this.password = password;
-        this.dateCreator = dateCreator;
-        this.dateInvitee = dateinvitee;
+        this.creator = creator;
         this.participants = participants;
         this.dateDuration = dateDuration;
         this.timeCreated = timeCreated;
@@ -42,7 +39,7 @@ public class DateModel {
         this.inviteLink = inviteLink;
         this.linkedexperienceId = linkedexperienceId;
         this.participantStatus = participantstatus;
-        this.dateInviteeId = dateInviteeId;
+        this.participantUsernames = participantUsernames;
         this.statistics = dateStats;
     }
 
@@ -65,12 +62,8 @@ public class DateModel {
         return password;
     }
 
-    public String getDateCreator() {
-        return dateCreator;
-    }
-
-    public String getDateInvitee() {
-        return dateInvitee;
+    public String getCreator() {
+        return creator;
     }
 
     public HashMap<String, String> getParticipants() {
@@ -110,7 +103,7 @@ public class DateModel {
         return statistics;
     }
 
-    public String getDateInviteeId() {
-        return dateInviteeId;
+    public HashMap<String, String> getParticipantUsernames() {
+        return participantUsernames;
     }
 }

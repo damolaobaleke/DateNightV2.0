@@ -13,6 +13,7 @@
 
 package com.datenight_immersia_ltd.utils;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,9 +87,10 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecylerViewAdapter.
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         //update contents with item at given position and get specific item position
         UserModel currentUser = mUserList.get(position);
+        Log.i("Adapter User", currentUser.getId() +" "+currentUser.getUsername());
 
-        holder.mUserImage.setImageResource(currentUser.getAvatar()); //set user avatar pic in spec pos
-        if (currentUser.getUsername().length() <= 0 || currentUser.getUsername() == null) {
+        holder.mUserImage.setImageResource(R.drawable.avatar_ellipse); //set user avatar pic in spec pos >>currentUser.getAvatar()
+        if (currentUser.getUsername() == null) { //currentUser.getUsername().length() <= 0 ||
             holder.mUsername.setText(R.string.no_user);
         } else {
             holder.mUsername.setText(currentUser.getUsername());

@@ -26,8 +26,4 @@ class DateHubFragmentViewModel : ViewModel() {
     }
 
 
-
-    override fun onCleared() {
-        super.onCleared()
-    }
 }

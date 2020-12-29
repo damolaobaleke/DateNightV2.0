@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +32,9 @@ import com.datenight_immersia_ltd.modelfirestore.Date.DateModel;
 import com.datenight_immersia_ltd.modelfirestore.Experience.ExperienceModel;
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
 import com.datenight_immersia_ltd.views.date_schedule.DateCreated;
+import com.datenight_immersia_ltd.views.date_schedule.InviteUserActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -51,7 +54,7 @@ public class RecyclerViewAdapterPending extends RecyclerView.Adapter<RecyclerVie
     ArrayList<DateModel> mDateLists;
     DocumentReference datesRef;
     DocumentReference userCreatorRef, dateInviteeRef, expRef;
-    CollectionReference experienceCollRef;
+    CollectionReference experienceCollRef, userCollRef;
     UserModel dateCreator;
     ExperienceModel experienceModel;
     UserModel userModel;
@@ -61,6 +64,8 @@ public class RecyclerViewAdapterPending extends RecyclerView.Adapter<RecyclerVie
     String result;
 
     Intent intent;
+    String inviteeKey;
+    String creatorKey;
 
     protected final static String PENDING = "PENDING";
     protected final static String ACCEPTED = "ACCEPTED";
@@ -71,9 +76,9 @@ public class RecyclerViewAdapterPending extends RecyclerView.Adapter<RecyclerVie
 
     //refactor
     public interface OnItemClickListener {
-        public void onCancelInvite(int position);
+        void onCancelInvite(int position);
 
-        public void onEditInvite(int position);
+        void onEditInvite(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -139,14 +144,15 @@ public class RecyclerViewAdapterPending extends RecyclerView.Adapter<RecyclerVie
     @Override
     public void onBindViewHolder(@NonNull PendingDatesViewHolder holder, int position) {
         DateModel dateModel = mDateLists.get(position); //get position of item in recy view
+        Log.i(TAG, "Date doc\n" + dateModel.getId() + "\n" + dateModel.getLinkedexperienceId() + "\n" + dateModel.getParticipantUsernames() +"\n"+ dateModel.getPassword());
 
-        datesRef = db.collection("dates").document(dateModel.getId());
+        datesRef = db.collection("dates").document(dateModel.getId()); //id of date in position
 
         userCreatorRef.get().addOnSuccessListener(documentSnapshot -> {
 
             dateCreator = documentSnapshot.toObject(UserModel.class);//currentUser
             assert dateCreator != null;
-            dateCreator.setId(dateModel.getDateCreator());
+            dateCreator.setId(dateModel.getCreator());
 
             datesRef.get().addOnSuccessListener(datedocumentSnapshot -> {
 
@@ -154,83 +160,91 @@ public class RecyclerViewAdapterPending extends RecyclerView.Adapter<RecyclerVie
                     DateModel dateModel1 = datedocumentSnapshot.toObject(DateModel.class);
                     assert dateModel1 != null;
                     mDateModel = dateModel1; //
-                    Timestamp timeCreated = dateModel1.getTimeCreated();
+                    Log.i(TAG, "Date doc\n" + dateModel1.getId() + "\n" + dateModel1.getLinkedexperienceId() + "\n" + dateModel1.getParticipantUsernames());
 
-                    dateInviteeRef = db.collection("userData").document(dateModel1.getDateInviteeId()); //add invitee id
+                    //get experience name
+                    //expRef = db.collection("experiences").document(dateModel1.getLinkedexperienceId());
 
-                    //paris night dinner shouldn't be hard coded, experience name should be gotten based on experience clicked. Only there for test
-                    if (dateModel1.getId() != null && dateModel1.getDateCreator().equals(mAuth.getCurrentUser().getUid())) {
+                    for (String key : dateModel1.getParticipants().keySet()) {
+                        if (key.equals(mAuth.getCurrentUser().getUid()) && key.equals(dateModel1.getCreator())) { //key.equals(mAuth.getCurrentUser().getUid())
+                            creatorKey = key;
+                            Log.i(TAG, "creator: " + key);
+                        } else {
+                            inviteeKey = key;
+                        }
+                    }
 
-                        //get experience name
-                        expRef = db.collection("experiences").document(dateModel1.getLinkedexperienceId());
 
-                        expRef.get().addOnSuccessListener(documentSnapshot1 -> {
-                            if (documentSnapshot1.exists()) {
-                                experienceModel = documentSnapshot1.toObject(ExperienceModel.class);
-                                assert experienceModel != null;
-                                Log.i(TAG, experienceModel.getName());
-                                //Log.i(TAG, "The exp name: " + getExperienceName());
+                    //If creator is the current user
+                    if (dateModel1.getCreator().equals(mAuth.getCurrentUser().getUid())) {
 
-                                holder.mInvitee.setText(String.format("Waiting for %s to accept your invite to " + experienceModel.getName(), dateModel.getDateInvitee()));
-                                Log.i(TAG, "Date creator id: " + dateCreator.getId() + " " + mAuth.getCurrentUser().getUid() + " " + dateModel1.getDateInviteeId() + " " + dateModel1.getId());
-                            }
-                        });
-                        //experience
+//                        expRef.get().addOnSuccessListener(documentSnapshot1 -> {
+//                            if (documentSnapshot1.exists()) {
+//                                experienceModel = documentSnapshot1.toObject(ExperienceModel.class);
+//                                assert experienceModel != null;
+//                                Log.i(TAG, experienceModel.getName());
+
+
+                                holder.mInvitee.setText(String.format("Waiting for %s to accept your invite to paris" , dateModel1.getParticipants().get(inviteeKey)));
+
+                                result = String.valueOf(DateUtils.getRelativeTimeSpanString(dateModel1.getTimeCreated().getSeconds() * 1000, currentTime().getSeconds() * 1000, 0));
+                                Log.i("AdapterPending", result);
+
+                                holder.timeCreated.setText(result);
+//                            }
+//                        });
 
                     } else {
-                        Log.i(TAG, "invitee id: " + dateModel1.getDateInviteeId() + " " + mAuth.getCurrentUser().getUid());
 
-                        expRef.get().addOnSuccessListener(documentSnapshot1 -> {
-                            if (documentSnapshot1.exists()) {
-                                experienceModel = documentSnapshot1.toObject(ExperienceModel.class);
-                                assert experienceModel != null;
+//                        expRef.get().addOnSuccessListener(documentSnapshot1 -> {
+//                            if (documentSnapshot1.exists()) {
+//                                experienceModel = documentSnapshot1.toObject(ExperienceModel.class);
+//                                assert experienceModel != null;
 
-                                holder.mInvitee.setText(String.format("%s is inviting you to " + experienceModel.getName(), dateModel1.getParticipants().get(dateModel1.getDateCreator())));
+                                ////
+                                Log.i(TAG, "invitee id: " + inviteeKey);
+                                Log.i(TAG, "invitee name: " + dateModel1.getParticipants().get(inviteeKey));
+
+                                holder.mInvitee.setText(String.format("%s is inviting you to paris", dateModel1.getParticipants().get(dateModel1.getCreator())));
                                 holder.editInvite.setText(R.string.accept_invite);
 
                                 //change /override default click listener function to "ACCEPT" invite function
                                 holder.editInvite.setOnClickListener(v -> {
-                                    HashMap<String, Object> participantStatus = new HashMap<>();
-                                    participantStatus.put(dateModel1.getParticipants().get(dateModel1.getDateCreator()), ACCEPTED);
-                                    participantStatus.put(dateModel1.getParticipants().get(dateModel1.getDateInviteeId()), ACCEPTED); //put invitee
 
-                                    Log.i("Adapter Pending", DateCreated.userId + "Now accepted");
-                                    datesRef.update(participantStatus);
+                                    for (String key : dateModel1.getParticipants().keySet()) {
+                                        if (key.equals(dateModel1.getCreator())) {
+                                            creatorKey = key;
+                                            Log.i(TAG, "creator: " + key);
+                                        } else {
+                                            inviteeKey = key;
+                                        }
+                                    }
+
+                                    HashMap<String, Object> participantStatus = new HashMap<>();
+                                    participantStatus.put(inviteeKey, ACCEPTED); //invitee now ACCEPTED
+                                    participantStatus.put(dateModel1.getCreator(), ACCEPTED);
+
+                                    Log.i("Adapter Pending", dateModel1.getParticipants().get(inviteeKey) + " The invitee Now accepted");
+                                    datesRef.update("participantStatus", participantStatus);
+
+
+                                    //after accept clicked remove position from pending fragment, show in scheduled
+                                    mDateLists.remove(position);
+
                                 });
+
                                 holder.cancelInvite.setText(R.string.reject_invite);
+                                holder.timeCreated.setText(result);
+                                ////
+
+                                dateInviteeRef = db.collection("userData").document(inviteeKey); //add invitee id
 
                             }
-                        });
-
-                    }
-
-                    String time = calculateTimeCreated(position);//used this method i created gets right value within itself, although wierd return of null for all values asides date in last position on set
-                    Log.i("AdapterPending", "The time " + time);
-                    //holder.timeCreated.setText(time);
-
-                    result = String.valueOf(DateUtils.getRelativeTimeSpanString(timeCreated.getSeconds() * 1000, currentTime().getSeconds() * 1000, 0));
-                    Log.i("AdapterPending", result);
-
-                    holder.timeCreated.setText(result);
-
-                }
-            });
-
-
-            datesRef.get().addOnSuccessListener(datedocumentSnapshot -> {
-                if (datedocumentSnapshot.exists()) {
-                    DateModel dateModel1 = datedocumentSnapshot.toObject(DateModel.class);
-                    assert dateModel1 != null;
-                    Timestamp timeCreated = dateModel1.getTimeCreated();
-
-                    result = String.valueOf(DateUtils.getRelativeTimeSpanString(timeCreated.getSeconds() * 1000, currentTime().getSeconds() * 1000, 0));
-                    Log.i("AdapterPending", result);
-
-                    holder.timeCreated.setText(result);
+//                        });
+//                    }
                 }
             });
         });
-
     }
 
     @Override
@@ -308,5 +322,77 @@ public class RecyclerViewAdapterPending extends RecyclerView.Adapter<RecyclerVie
         });
         return userModel.getId();
     }
+
+
+    public void redundant() {
+        //paris night dinner shouldn't be hard coded, experience name should be gotten based on experience clicked. Only there for test
+//        if (dateModel1.getId() != null && dateModel1.getDateCreator().equals(mAuth.getCurrentUser().getUid())) {
+//
+//            //get experience name
+//            expRef = db.collection("experiences").document(dateModel1.getLinkedexperienceId());
+//
+//            expRef.get().addOnSuccessListener(documentSnapshot1 -> {
+//                if (documentSnapshot1.exists()) {
+//                    experienceModel = documentSnapshot1.toObject(ExperienceModel.class);
+//                    assert experienceModel != null;
+//                    Log.i(TAG, experienceModel.getName());
+//                    //Log.i(TAG, "The exp name: " + getExperienceName());
+//
+//                    holder.mInvitee.setText(String.format("Waiting for %s to accept your invite to " + experienceModel.getName(), dateModel.getDateInvitee()));
+//                    Log.i(TAG, "Date creator id: " + dateCreator.getId() + " " + mAuth.getCurrentUser().getUid() + " " + dateModel1.getDateInviteeId() + " " + dateModel1.getId());
+//
+//                    result = String.valueOf(DateUtils.getRelativeTimeSpanString(timeCreated.getSeconds() * 1000, currentTime().getSeconds() * 1000, 0));
+//                    Log.i("AdapterPending", result);
+//
+//                    holder.timeCreated.setText(result);
+//                }
+//            });
+//            //experience
+//
+//        } else {
+//            Log.i(TAG, "invitee id: " + dateModel1.getDateInviteeId() + " " + mAuth.getCurrentUser().getUid());
+//
+////                        expRef.get().addOnSuccessListener(documentSnapshot1 -> {
+////                            if (documentSnapshot1.exists()) {
+////                                experienceModel = documentSnapshot1.toObject(ExperienceModel.class);
+////                                assert experienceModel != null;
+//
+//            holder.mInvitee.setText(String.format("%s is inviting you to " + "experience", dateModel1.getParticipants().get(dateModel1.getDateCreator())));
+//            holder.editInvite.setText(R.string.accept_invite);
+//
+//            //change /override default click listener function to "ACCEPT" invite function
+//            holder.editInvite.setOnClickListener(v -> {
+//                HashMap<String, Object> participantStatus = new HashMap<>();
+//                participantStatus.put(dateModel1.getParticipants().get(dateModel1.getDateCreator()), ACCEPTED);
+//                participantStatus.put(dateModel1.getParticipants().get(dateModel1.getDateInviteeId()), ACCEPTED); //put invitee
+//
+//                Log.i("Adapter Pending", DateCreated.userId + "Now accepted");
+//                datesRef.update(participantStatus);
+//            });
+//            holder.cancelInvite.setText(R.string.reject_invite);
+//
+//            result = String.valueOf(DateUtils.getRelativeTimeSpanString(timeCreated.getSeconds() * 1000, currentTime().getSeconds() * 1000, 0));
+//            Log.i("AdapterPending", result);
+//
+//            holder.timeCreated.setText(result);
+////                            }
+////                        });
+
+
+//        datesRef.get().addOnSuccessListener(datedocumentSnapshot -> {
+//            if (datedocumentSnapshot.exists()) {
+//                DateModel dateModel1 = datedocumentSnapshot.toObject(DateModel.class);
+//                assert dateModel1 != null;
+//                Timestamp timeCreated = dateModel1.getTimeCreated();
+//
+//                result = String.valueOf(DateUtils.getRelativeTimeSpanString(timeCreated.getSeconds() * 1000, currentTime().getSeconds() * 1000, 0));
+//                Log.i("AdapterPending", result);
+//
+//                holder.timeCreated.setText(result);
+//            }
+//        });
+
+    }
+
 
 }

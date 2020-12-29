@@ -19,13 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class ChatRoomViewModel(username: String,
-                        fullName: String,
-                        participantId: String,
-                        participantUsername: String,
-                        participantFullName: String,
-                        roomId: String,
-                        private val parentContext: ChatRoomActivity) : ViewModel() {
+class ChatRoomViewModel(username: String, fullName: String, participantId: String, participantUsername: String, participantFullName: String, roomId: String, private val parentContext: ChatRoomActivity) : ViewModel() {
 
     private val currentUserId: String? = FirebaseAuth.getInstance().currentUser?.uid
     private val currentUsername: String = username
@@ -41,8 +35,7 @@ class ChatRoomViewModel(username: String,
     private lateinit var dbReferenceMessages: DatabaseReference
     private lateinit var messageDataParser: SnapshotParser<ChatRoomMessage?>
     private lateinit var firebaseRecyclerViewOptions: FirebaseRecyclerOptions<ChatRoomMessage>
-    var messagesFirebaseRecyclerAdapter:
-            FirebaseRecyclerAdapter<ChatRoomMessage, ChatRoomMessageViewHolder>
+    var messagesFirebaseRecyclerAdapter: FirebaseRecyclerAdapter<ChatRoomMessage, ChatRoomMessageViewHolder>
 
     init{
         mapUsernames = mapOf(currentUserId to currentUsername, chatParticipantId to chatParticipantUsername)
@@ -59,11 +52,9 @@ class ChatRoomViewModel(username: String,
                 .setQuery(dbReferenceMessages, messageDataParser)
                 .setLifecycleOwner(parentContext)
                 .build()
-        messagesFirebaseRecyclerAdapter =
-                object : FirebaseRecyclerAdapter<ChatRoomMessage, ChatRoomMessageViewHolder>(firebaseRecyclerViewOptions){
+        messagesFirebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<ChatRoomMessage, ChatRoomMessageViewHolder>(firebaseRecyclerViewOptions){
                     override fun onCreateViewHolder(parent: ViewGroup, type: Int): ChatRoomMessageViewHolder {
-                        val newMessage = LayoutInflater.from(parent.context)
-                                .inflate(R.layout.item_chat_room_message, parent, false)
+                        val newMessage = LayoutInflater.from(parent.context).inflate(R.layout.item_chat_room_message, parent, false)
                         return ChatRoomMessageViewHolder(newMessage)
                     }
 
@@ -71,11 +62,7 @@ class ChatRoomViewModel(username: String,
                         holder.bind(data, mapUsernames)
                     }
 
-                    override fun onDataChanged() {
-                        // There's nothing extra that needs doing
-                        super.onDataChanged()
-                    }
-                }
+        }
     }
 
     fun sendMessage(messageText: String){
@@ -148,6 +135,6 @@ class ChatRoomViewModel(username: String,
     }
 
     companion object{
-        const val TAG = "ChatRoomActivity";
+        const val TAG = "ChatRoomActivity"
     }
 }

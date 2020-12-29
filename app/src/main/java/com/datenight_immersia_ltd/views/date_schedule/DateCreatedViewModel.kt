@@ -19,7 +19,4 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.datehub.DatehubFragment
 
-class DateCreatedViewModel(application: Application) : AndroidViewModel(application) {
-
-
-}
+class DateCreatedViewModel(application: Application) : AndroidViewModel(application)

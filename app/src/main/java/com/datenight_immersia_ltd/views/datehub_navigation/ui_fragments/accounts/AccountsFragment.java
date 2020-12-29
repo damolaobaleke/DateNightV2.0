@@ -145,8 +145,13 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
     }
 
     public void updateUser() {
+        HashMap<String,String> avatar = new HashMap<>();
+        avatar.put("avatarHead",""); //R.drawable.avatar_ellipse
+        avatar.put("avatarFullBody", "");
+
         UserStatsModel userStats = new UserStatsModel(0, 0, 0);
-        UserModel userModel = new UserModel(username.getText().toString(), null, emailInput.getText().toString(), dateStringToTimestamp(dateOfBirth.getText().toString()), 0, null, null, null,userStats ,"",username.getText().toString().toLowerCase());
+
+        UserModel userModel = new UserModel(username.getText().toString(), null, emailInput.getText().toString(), dateStringToTimestamp(dateOfBirth.getText().toString()), avatar, null, null, userStats,"" ,username.getText().toString().toLowerCase());
         userRef.set(userModel).addOnSuccessListener(aVoid -> {
             progressBarGone();
             Toast.makeText(getContext(), "Your profile has been updated", Toast.LENGTH_SHORT).show();

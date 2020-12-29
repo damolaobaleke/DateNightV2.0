@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.datenight_immersia_ltd.R
 import de.hdodenhof.circleimageview.CircleImageView
 
+
 class StartNewChatActivity : AppCompatActivity() {
     private lateinit var usernameEditText: EditText
     private lateinit var usernameSearchButton: Button
@@ -40,8 +41,8 @@ class StartNewChatActivity : AppCompatActivity() {
         foundUserPhoto = findViewById(R.id.foundUserPhoto)
         noSuchUserTextView = findViewById(R.id.noUserFoundMessage)
         foundUserLayout.isVisible = false
-        noSuchUserTextView.isVisible = false;
-        clearSearchEditText.isVisible = false;
+        noSuchUserTextView.isVisible = false
+        clearSearchEditText.isVisible = false
         usernameEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequnce: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 

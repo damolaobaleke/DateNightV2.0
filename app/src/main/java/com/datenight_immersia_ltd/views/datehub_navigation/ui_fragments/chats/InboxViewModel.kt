@@ -82,7 +82,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
 
                     override fun onBindViewHolder(holder: ChatHeadViewHolder, position: Int, data: ChatHead) {
                         data.setChatParticipantDetails(currentUserId!!)
-                        holder.bind(data);
+                        holder.bind(data)
                         Log.e(TAG, "here after bind")
                     }
 
@@ -198,8 +198,8 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
         const val TAG = "InboxActivity"
 
         // User values are here so they can be visible within onBind method of adapter
-        var currentUserId: String? = null;
-        lateinit var currentUsername: String;
-        lateinit var currentUserFullName: String;
+        var currentUserId: String? = null
+        lateinit var currentUsername: String
+        lateinit var currentUserFullName: String
     }
 }

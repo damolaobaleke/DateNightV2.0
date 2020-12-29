@@ -44,17 +44,14 @@ class DateCreated : AppCompatActivity() {
         backToDateHub = findViewById(R.id.back_date_hub)
         inviteByUsername = findViewById(R.id.button_invite_by_username)
 
-        userId = intent.getStringExtra("userId")  //invitee
-        userFullName = intent.getStringExtra("userFullName")
-        dateId = intent.getStringExtra("dateID")
+//        userId = intent.getStringExtra("userId")  //invitee
+//        userFullName = intent.getStringExtra("userFullName")
+//        dateId = intent.getStringExtra("dateID")
 
-        Log.i("CongratsActivity", "The user invitee info: $userId $userFullName $dateId")
+        //Log.i("CongratsActivity", "The user invitee info: $userId $userFullName $dateId")
 
         backToDateHub.setOnClickListener {
             val intent = Intent(this, DateHubNavigation::class.java)
-            intent.putExtra("userId", userId)
-            intent.putExtra("userFullName", userFullName)//invitee
-            intent.putExtra("dateID", dateId)//invitee
             startActivity(intent)
 
         }
