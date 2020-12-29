@@ -100,7 +100,12 @@
     <string name="enter_your_password">Enter your password</string>
     <string name="no_user">No user found</string>
     <string name="date_schedule_invite"><font color='#000000'><b>Salome Wasui</b></font> is inviting you to <font color='#000000'><b>paris datenight</b></font></string>
-    <string name="reject_invite">Reject Invite</string>
-    <string name="accept_invite">Accept Invite</string>
-    <string name="exp_val_free">Free</string>
+    <string name="what_did_you_like">What did you like?</string>
+    <string name="what_didnt_you_like">What didn\'t you like?</string>
+    <string name="neg_review_hint">I didn\'t quite like...</string>
+    <string name="pos_review_hint">I liked...</string>
+    <string name="submit_response">Submit response</string>
+    <string name="rate_your_Experience">Rate your experience</string>
+    <string name="submit_rating">Submit Rating</string>
+    <string name="Experiences">Experiences</string>
 </resources>

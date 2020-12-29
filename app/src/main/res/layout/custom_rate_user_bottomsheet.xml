@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2020 Damola Obaleke. All rights reserved.
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/how_was_date_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/inter"
+        android:text="How was your date?"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/rateUserBottomSheetLine"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/date_night_grey_300"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout3"
+        app:layout_constraintTop_toBottomOf="@+id/how_was_date_textview" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout4"
+        android:layout_width="0dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/how_was_date_textview">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/emoji_rating_1"
+            android:layout_width="69dp"
+            android:layout_height="match_parent"
+            android:onClick="setEmojiRatingOnClick"
+            android:src="@drawable/ic_image_rating_1"
+            app:civ_border_color="@android:color/transparent"
+            app:civ_border_width="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/emoji_rating_2"
+            android:layout_width="69dp"
+            android:layout_height="match_parent"
+            android:onClick="setEmojiRatingOnClick"
+            android:src="@drawable/ic_image_rating_2"
+            app:civ_border_color="@android:color/transparent"
+            app:civ_border_width="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/emoji_rating_3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/emoji_rating_1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/emoji_rating_3"
+            android:layout_width="69dp"
+            android:layout_height="match_parent"
+            android:onClick="setEmojiRatingOnClick"
+            android:src="@drawable/ic_image_rating_3"
+            app:civ_border_color="@android:color/transparent"
+            app:civ_border_width="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/emoji_rating_4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/emoji_rating_2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/emoji_rating_4"
+            android:layout_width="69dp"
+            android:layout_height="match_parent"
+            android:onClick="setEmojiRatingOnClick"
+            android:src="@drawable/ic_image_rating_4"
+            app:civ_border_color="@android:color/transparent"
+            app:civ_border_width="5dp"
+            app:layout_constraintEnd_toStartOf="@+id/emoji_rating_5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/emoji_rating_3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/emoji_rating_5"
+            android:layout_width="69dp"
+            android:layout_height="match_parent"
+            android:onClick="setEmojiRatingOnClick"
+            android:src="@drawable/ic_image_rating_5"
+            app:civ_border_color="@android:color/transparent"
+            app:civ_border_width="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/submitUserRatingButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/custom_login_button"
+        android:onClick="submitUserRatingOnClick"
+        android:text="@string/submit_rating"
+        android:textAllCaps="false"
+        android:textColor="@color/date_night_pear"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+</androidx.constraintlayout.widget.ConstraintLayout>

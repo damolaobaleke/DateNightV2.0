@@ -24,6 +24,9 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import de.hdodenhof.circleimageview.CircleImageView
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.*
 
 class InboxViewModel( username: String, userFullName: String) : ViewModel() {
 
@@ -128,6 +131,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
         private var mChatHeadImage: CircleImageView? = null
         private var mChatHeadName: TextView? = null
         private var mMostRecentMessage: TextView? = null
+        private var mChatHeadTimeStamp: TextView? = null
 
         // Data
         private var mChatRoomKey: String? = null
@@ -140,6 +144,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
             mChatHeadImage = itemView.findViewById(R.id.chatHeadImage)
             mChatHeadName = itemView.findViewById(R.id.chatHeadLabel)
             mMostRecentMessage = itemView.findViewById(R.id.chatHeadMostRecentMessage)
+            mChatHeadTimeStamp = itemView.findViewById(R.id.chatHeadTimeStamp)
 
             // TODO: Set on click listener for view here to spawn new activity
             chatHeadView.setOnClickListener {
@@ -156,15 +161,17 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
         }
 
         fun bind(data: ChatHead) {
-            // TODO: Uncomment some commented code and remove others
+            // Data for views
             mChatHeadName?.text = data.participantFullName
             mMostRecentMessage?.text = data.mostRecentMessage.text
+            mChatHeadTimeStamp?.text = constructChatHeadTime(data.mostRecentMessage.timeStamp)
+
+            // Metadata
             mChatRoomKey = data.key
             mChatParticipantId = data.participantId
             mParticipantPhotoUrl = data.participantPhotoUrl //TODO: fix to photo url
             mChatParticipantUsername = data.participantUsername
             mChatParticipantFullName = data.participantFullName
-            Log.e(TAG, "Key within bind: $mChatRoomKey")
         }
 
         private fun launchChatRoomActivityForExistingChat(
@@ -183,6 +190,33 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
                     .putExtra(IntentConstants.CHAT_PARTICIPANT_FULL_NAME_EXTRA, mChatParticipantFullName)
                     .putExtra(IntentConstants.CHAT_PARTICIPANT_PHOTO_URL_EXTRA, mParticipantPhotoUrl)
             startActivity(view.context, chatRoomActivityIntent, null)
+        }
+
+        private fun constructChatHeadTime(seconds: Long): String{
+            var rVal = ""
+            val messageTime = Calendar.getInstance()
+            messageTime.timeInMillis = seconds * 1000
+            val currentTime = Calendar.getInstance()
+
+            if(messageTime.get(Calendar.YEAR) == currentTime.get(Calendar.YEAR) &&
+                    messageTime.get(Calendar.MONTH) == currentTime.get(Calendar.MONTH) &&
+                    messageTime.get(Calendar.WEEK_OF_MONTH) == currentTime.get(Calendar.WEEK_OF_MONTH)){
+
+                if (messageTime.get(Calendar.DAY_OF_WEEK) == currentTime.get(Calendar.DAY_OF_WEEK)){
+                    // Format time to show hours and minutes
+                    rVal = SimpleDateFormat("h:mm a", Locale.getDefault()).format(messageTime.time)
+                } else if(currentTime.get(Calendar.DAY_OF_WEEK) - messageTime.get(Calendar.DAY_OF_WEEK) == 1){
+                    rVal = "Yesterday"
+                } else{
+                    // Format time to show day of week as in Tuesday
+                    rVal = SimpleDateFormat("E", Locale.getDefault()).format(messageTime.time)
+                }
+
+            } else{
+                // Format time to show only date
+                rVal = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(messageTime.time)
+            }
+            return rVal
         }
     }
 

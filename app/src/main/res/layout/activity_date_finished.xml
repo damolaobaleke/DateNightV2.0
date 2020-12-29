@@ -51,7 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/date_night_grey_300"
-        app:layout_constraintBottom_toTopOf="@+id/backToDateHubButton"
+        app:layout_constraintBottom_toTopOf="@+id/helpUsImproveTextView"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout3"
@@ -114,6 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:onClick="unveilRateUserBottomSheet"
             app:layout_constraintEnd_toStartOf="@+id/toChatsButton"
             app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toEndOf="@+id/repeatDateButton"
@@ -125,6 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:onClick="backToInboxFragment"
             app:layout_constraintEnd_toEndOf="@+id/textView24"
             app:layout_constraintStart_toStartOf="@+id/textView24"
             app:layout_constraintTop_toTopOf="parent"
@@ -146,39 +148,43 @@
         android:id="@+id/backToDateHubButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginBottom="52dp"
         android:background="@drawable/custom_back_to_datehub_button"
+        android:onClick="backToDateHubFragment"
         android:text="@string/back_to_datehub"
         android:textAllCaps="false"
         android:textColor="@color/date_night_pear_500"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout3"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout3" />
 
     <ImageView
         android:id="@+id/imageView9"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/helpUsImproveTextView"
+        app:layout_constraintBottom_toTopOf="@+id/backToDateHubButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backToDateHubButton"
+        app:layout_constraintTop_toBottomOf="@+id/helpUsImproveTextView"
+        app:layout_constraintVertical_bias="0.508"
         app:srcCompat="@drawable/datenight_text_logo_white" />
 
     <TextView
         android:id="@+id/helpUsImproveTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginTop="60dp"
         android:fontFamily="@font/inter"
+        android:onClick="launchRateDateActivity"
         android:text="@string/help_us_improve"
         android:textAllCaps="true"
         android:textColor="@color/date_night_pear"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

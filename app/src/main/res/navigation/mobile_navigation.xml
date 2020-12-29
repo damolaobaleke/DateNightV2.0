@@ -27,7 +27,14 @@
         android:id="@+id/nav_my_dates"
         android:name="com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.DateFragment"
         android:label="My Dates"
-        tools:layout="@layout/fragment_dates" />
+        tools:layout="@layout/fragment_dates" >
+        <action
+            android:id="@+id/action_nav_my_dates_to_nav_date_hub"
+            app:destination="@id/nav_date_hub" />
+        <action
+            android:id="@+id/action_nav_my_dates_to_nav_inbox"
+            app:destination="@id/nav_inbox" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_date_hub"

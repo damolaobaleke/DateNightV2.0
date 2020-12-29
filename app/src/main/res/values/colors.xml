@@ -24,4 +24,5 @@
     <color name="date_night_grey_200">#F1F3F5</color>
     <color name ="date_night_pear">#FFF8FA</color>
     <color name ="date_night_pear_500">#FC3E7A</color>
+    <color name ="date_night_transparent">#00ff0000</color>
 </resources>

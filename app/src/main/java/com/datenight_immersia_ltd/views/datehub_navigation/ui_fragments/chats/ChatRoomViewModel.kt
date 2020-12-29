@@ -18,8 +18,16 @@ import com.firebase.ui.database.SnapshotParser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.text.SimpleDateFormat
+import java.util.*
 
-class ChatRoomViewModel(username: String, fullName: String, participantId: String, participantUsername: String, participantFullName: String, roomId: String, private val parentContext: ChatRoomActivity) : ViewModel() {
+class ChatRoomViewModel(username: String,
+                        fullName: String,
+                        participantId: String,
+                        participantUsername: String,
+                        participantFullName: String,
+                        roomId: String,
+                        private val parentContext: ChatRoomActivity) : ViewModel() {
 
     private val currentUserId: String? = FirebaseAuth.getInstance().currentUser?.uid
     private val currentUsername: String = username
@@ -35,7 +43,8 @@ class ChatRoomViewModel(username: String, fullName: String, participantId: Strin
     private lateinit var dbReferenceMessages: DatabaseReference
     private lateinit var messageDataParser: SnapshotParser<ChatRoomMessage?>
     private lateinit var firebaseRecyclerViewOptions: FirebaseRecyclerOptions<ChatRoomMessage>
-    var messagesFirebaseRecyclerAdapter: FirebaseRecyclerAdapter<ChatRoomMessage, ChatRoomMessageViewHolder>
+    var messagesFirebaseRecyclerAdapter:
+            FirebaseRecyclerAdapter<ChatRoomMessage, ChatRoomMessageViewHolder>
 
     init{
         mapUsernames = mapOf(currentUserId to currentUsername, chatParticipantId to chatParticipantUsername)
@@ -52,17 +61,30 @@ class ChatRoomViewModel(username: String, fullName: String, participantId: Strin
                 .setQuery(dbReferenceMessages, messageDataParser)
                 .setLifecycleOwner(parentContext)
                 .build()
-        messagesFirebaseRecyclerAdapter = object : FirebaseRecyclerAdapter<ChatRoomMessage, ChatRoomMessageViewHolder>(firebaseRecyclerViewOptions){
+        messagesFirebaseRecyclerAdapter =
+                object : FirebaseRecyclerAdapter<ChatRoomMessage, ChatRoomMessageViewHolder>(firebaseRecyclerViewOptions){
+                    private lateinit var parentRecyclerView : RecyclerView
+
                     override fun onCreateViewHolder(parent: ViewGroup, type: Int): ChatRoomMessageViewHolder {
-                        val newMessage = LayoutInflater.from(parent.context).inflate(R.layout.item_chat_room_message, parent, false)
+                        val newMessage = LayoutInflater.from(parent.context)
+                                .inflate(R.layout.item_chat_room_message, parent, false)
                         return ChatRoomMessageViewHolder(newMessage)
                     }
 
                     override fun onBindViewHolder(holder: ChatRoomMessageViewHolder, position: Int, data: ChatRoomMessage){
                         holder.bind(data, mapUsernames)
+                        parentRecyclerView.smoothScrollToPosition(position)
                     }
 
-        }
+                    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+                        super.onAttachedToRecyclerView(recyclerView)
+                        parentRecyclerView = recyclerView
+                    }
+                    override fun onDataChanged() {
+                        // There's nothing extra that needs doing
+                        super.onDataChanged()
+                    }
+                }
     }
 
     fun sendMessage(messageText: String){
@@ -104,6 +126,7 @@ class ChatRoomViewModel(username: String, fullName: String, participantId: Strin
         init{
             mChatMessageText = itemView.findViewById(R.id.messageBodyTextView)
             mChatMessageSender = itemView.findViewById(R.id.messageSenderTextView)
+            mTime = itemView.findViewById(R.id.messageTimeStampTextView)
 
             // Set on click listener if need be
         }
@@ -111,8 +134,39 @@ class ChatRoomViewModel(username: String, fullName: String, participantId: Strin
         fun bind(data: ChatRoomMessage, mapUsernames: Map<String?, String?>){
             mChatMessageText?.text = data.text
             mChatMessageSender?.text = mapUsernames[data.senderId]
+            mTime?.text = constructMessageTime(data.timeStamp)
             mTimestamp = data.timeStamp
             imageUrl = data.imageUrl
+        }
+
+        private fun constructMessageTime(seconds: Long): String{
+            var rVal = ""
+            val messageTime = Calendar.getInstance()
+            messageTime.timeInMillis = seconds * 1000
+            val currentTime = Calendar.getInstance()
+
+            if(messageTime.get(Calendar.YEAR) == currentTime.get(Calendar.YEAR) &&
+                    messageTime.get(Calendar.MONTH) == currentTime.get(Calendar.MONTH) &&
+                    messageTime.get(Calendar.WEEK_OF_MONTH) == currentTime.get(Calendar.WEEK_OF_MONTH)){
+
+                if (messageTime.get(Calendar.DAY_OF_WEEK) == currentTime.get(Calendar.DAY_OF_WEEK)){
+                    // Format time to show hours and minutes
+                    rVal = "• " + SimpleDateFormat("h:mm a", Locale.getDefault()).format(messageTime.time)
+                } else if(currentTime.get(Calendar.DAY_OF_WEEK) - messageTime.get(Calendar.DAY_OF_WEEK) == 1){
+                    // Format time to prev day + time as in "• Yesterday, 2.40pm"
+                    rVal = "• Yesterday, " +  SimpleDateFormat("h:mm a", Locale.getDefault()).format(messageTime.time)
+                } else{
+                    // Format time to show day of week + time as in "• Tuesday, 2.40pm"
+                    rVal = "• " + SimpleDateFormat("E", Locale.getDefault()).format(messageTime.time) +
+                            ", " + SimpleDateFormat("h:mm a", Locale.getDefault()).format(messageTime.time)
+                }
+
+            } else{
+                // Format time to show date + time as in "• 2020-11-01, 2.40pm"
+                rVal = "• " + SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(messageTime.time) +
+                        ", " + SimpleDateFormat("h:mm a", Locale.getDefault()).format(messageTime.time)
+            }
+            return rVal
         }
     }
 
@@ -135,6 +189,6 @@ class ChatRoomViewModel(username: String, fullName: String, participantId: Strin
     }
 
     companion object{
-        const val TAG = "ChatRoomActivity"
+        const val TAG = "ChatRoomActivity";
     }
 }

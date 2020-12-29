@@ -13,4 +13,9 @@ object IntentConstants {
     const val CHAT_PARTICIPANT_FULL_NAME_EXTRA = "participantFullName"
     const val CHAT_PARTICIPANT_USER_NAME_EXTRA = "participantName"
     const val CHAT_PARTICIPANT_PHOTO_URL_EXTRA = "participantPhotoUrl"
+
+    // EXTRAS -- Date Hub Nav Fragments to launch
+    const val FRAGMENT_TO_LOAD = "fragmentToLoad"
+    const val INBOX_FRAGMENT = "inboxFragment"
+    const val DATE_HUB_FRAGMENT = "dateHubFragment"
 }

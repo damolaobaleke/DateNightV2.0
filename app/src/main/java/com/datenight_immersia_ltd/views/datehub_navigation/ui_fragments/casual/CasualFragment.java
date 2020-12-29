@@ -67,7 +67,8 @@ public class CasualFragment extends Fragment {
         });
 
         paris.setOnClickListener(v->{
-           startParis();
+            //startParis();
+            startScene();
         });
 
         cappaducia.setOnClickListener(v->startCappaducia());
@@ -94,6 +95,11 @@ public class CasualFragment extends Fragment {
         intent.putExtra("experienceName", experienceNameCappaduc.getText()); //OR experienceModel.getName()
         intent.putExtra("experienceDesc", experienceModel1.getDescription());
         intent.putExtra("experienceCost", experienceModel1.getPrice());
+        startActivity(intent);
+    }
+
+    public void startScene() {
+        Intent intent = new Intent(requireContext(), UnityEnvironmentLoad.class);
         startActivity(intent);
     }
 
