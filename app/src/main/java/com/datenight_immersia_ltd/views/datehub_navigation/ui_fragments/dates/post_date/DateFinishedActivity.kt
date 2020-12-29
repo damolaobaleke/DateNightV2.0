@@ -13,13 +13,126 @@
 
 package com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.post_date
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.datenight_immersia_ltd.R
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import de.hdodenhof.circleimageview.CircleImageView
 
 class DateFinishedActivity : AppCompatActivity() {
+    //Views
+    private lateinit var viewModel: DateFinishedViewModel
+    private lateinit var howWasDateTextView: TextView
+    private lateinit var emojiRatingsCircleImageViewArray: List<CircleImageView>
+    private lateinit var submitUserRatingButton: Button
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var bottomSheetDialogView: View
+
+    // Data
+    private var emojiRating: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_date_finished)
+
+        bottomSheetDialog = BottomSheetDialog(this)
+        viewModel = ViewModelProvider(this).get(DateFinishedViewModel::class.java)
     }
+
+    fun launchRateDateActivity(v: View){
+       viewModel.launchRateDateNightActivity(this)
+    }
+
+    fun backToInboxFragment(v: View){
+        // TODO: Navigate back to inbox fragment
+        viewModel.backToInboxFragment(this)
+    }
+
+    fun backToDateHubFragment(v: View){
+        viewModel.backToDateHubFragment(this)
+    }
+
+    fun unveilRateUserBottomSheet(v: View){
+        // Show bottom sheet
+        bottomSheetDialogView = layoutInflater.inflate(R.layout.custom_rate_user_bottomsheet, null)
+        howWasDateTextView = bottomSheetDialogView.findViewById(R.id.how_was_date_textview)
+        val titleText = "How was your date with " + "Bobo" + "?"
+        howWasDateTextView.text = titleText
+        submitUserRatingButton = bottomSheetDialogView.findViewById(R.id.submitUserRatingButton)
+        emojiRatingsCircleImageViewArray = listOf(bottomSheetDialogView.findViewById(R.id.emoji_rating_1),
+                bottomSheetDialogView.findViewById(R.id.emoji_rating_2),
+                bottomSheetDialogView.findViewById(R.id.emoji_rating_3),
+                bottomSheetDialogView.findViewById(R.id.emoji_rating_4),
+                bottomSheetDialogView.findViewById(R.id.emoji_rating_5)
+        )
+
+        // Create and show dialog
+        bottomSheetDialog.setContentView(bottomSheetDialogView)
+        bottomSheetDialog.create()
+        bottomSheetDialog.show()
+    }
+
+    fun setEmojiRatingOnClick(v: View){
+        when(v.id){
+            R.id.emoji_rating_1 -> {
+                updateSelectedEmoji(0)
+                emojiRating = 1
+            }
+            R.id.emoji_rating_2 -> {
+                updateSelectedEmoji(1)
+                emojiRating = 2
+            }
+            R.id.emoji_rating_3 -> {
+                updateSelectedEmoji(2)
+                emojiRating = 3
+            }
+            R.id.emoji_rating_4 -> {
+                updateSelectedEmoji(3)
+                emojiRating = 4
+            }
+            R.id.emoji_rating_5 -> {
+                updateSelectedEmoji(4)
+                emojiRating = 5
+            }
+        }
+
+    }
+
+     fun updateSelectedEmoji(selectedPosition: Int){
+        if(viewModel.userRating == null ){
+            // Highlight selected pos
+            emojiRatingsCircleImageViewArray[selectedPosition].borderColor =  ContextCompat.getColor(this, R.color.date_night_purple)
+            emojiRatingsCircleImageViewArray[selectedPosition].circleBackgroundColor =  ContextCompat.getColor(this, R.color.date_night_purple)
+        } else {
+            val currentSelectedPosition = viewModel.userRating!! - 1
+            if (currentSelectedPosition != selectedPosition){
+                // Update viewModel rating
+                viewModel.userRating = selectedPosition + 1
+                // Remove purple tint and border
+                emojiRatingsCircleImageViewArray[currentSelectedPosition].borderColor =  ContextCompat.getColor(this, R.color.date_night_transparent)
+                emojiRatingsCircleImageViewArray[currentSelectedPosition].circleBackgroundColor =  ContextCompat.getColor(this, R.color.date_night_transparent)
+                // Highlight selected pos
+                emojiRatingsCircleImageViewArray[selectedPosition].borderColor =  ContextCompat.getColor(this, R.color.date_night_purple)
+                emojiRatingsCircleImageViewArray[selectedPosition].circleBackgroundColor =  ContextCompat.getColor(this, R.color.date_night_purple)
+            }
+        }
+        viewModel.userRating = selectedPosition + 1
+    }
+
+    fun submitUserRatingOnClick(v: View){
+        viewModel.submitUserRating();
+        bottomSheetDialog.dismiss()
+
+    }
+
+     fun onCancel(v: View){
+        bottomSheetDialog.dismiss()
+        viewModel.userRating = null
+    }
+
 }

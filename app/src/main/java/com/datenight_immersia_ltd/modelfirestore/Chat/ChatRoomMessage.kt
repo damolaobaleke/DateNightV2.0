@@ -1,5 +1,7 @@
 package com.datenight_immersia_ltd.modelfirestore.Chat
 
+import java.util.*
+
 class ChatRoomMessage(val senderId: String,
                       val imageUrl: String,
                       val text: String,
@@ -9,7 +11,7 @@ class ChatRoomMessage(val senderId: String,
     // Default Empty Constructor needed for firebase
     constructor(): this("","","",0)
 
-    fun calculateTimeFromTimeStamp(timeStamp: Long): String{
-        return ""
+    fun calculateTimeFromTimeStamp(seconds: Long): Date{
+        return Date(seconds * 1000)
     }
 }

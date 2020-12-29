@@ -22,8 +22,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tabSelectedTextColor="@color/date_night_purple"
-            app:tabTextColor="@color/black"
-            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget">
+            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+            app:tabTextColor="@color/black">
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/pending_tab"
@@ -44,15 +44,20 @@
         android:id="@+id/pager_dates"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </androidx.viewpager.widget.ViewPager>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="320dp"
-        android:layout_marginTop="540dp"
-        app:layout_constraintTop_toBottomOf="@+id/appbar">
+        android:layout_gravity="bottom|right"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="70dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingBottom="5dp">
 
         <TextView
             android:id="@+id/textView2"
@@ -86,9 +91,9 @@
             android:id="@+id/fabJoinDate"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            app:backgroundTint="@color/white"
+            app:backgroundTint="@color/date_night_pear"
+            app:elevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.912"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -126,6 +131,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="24dp"
             app:backgroundTint="@color/date_night_purple"
+            app:elevation="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/fabJoinDate"
             app:layout_constraintHorizontal_bias="0.0"
