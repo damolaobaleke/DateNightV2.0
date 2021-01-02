@@ -108,4 +108,7 @@
     <string name="rate_your_Experience">Rate your experience</string>
     <string name="submit_rating">Submit Rating</string>
     <string name="Experiences">Experiences</string>
+    <string name="reject_invite">Reject Invite</string>
+    <string name="accept_invite">Accept Invite</string>
+    <string name="exp_val_free">Free</string>
 </resources>
