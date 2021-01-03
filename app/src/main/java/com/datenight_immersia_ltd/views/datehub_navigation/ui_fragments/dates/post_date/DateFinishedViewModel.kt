@@ -16,18 +16,34 @@ package com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.p
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Database
+import com.datenight_immersia_ltd.DatabaseConstants
 import com.datenight_immersia_ltd.IntentConstants
 import com.datenight_immersia_ltd.views.datehub_navigation.DateHubNavigation
+import com.google.firebase.firestore.FirebaseFirestore
 
-class DateFinishedViewModel : ViewModel() {
+class  DateFinishedViewModel : ViewModel() {
+    private val dbReference = FirebaseFirestore.getInstance()
     var userRating: Int? = null
 
     fun launchRateDateNightActivity(parentContext: DateFinishedActivity){
         parentContext.startActivity(Intent(parentContext, RateDateNightActivity::class.java))
     }
 
-    fun submitUserRating(){
-        // TODO: Submit rating
+    fun submitUserRating(dateId: String, dateParticipantId: String){
+        if (userRating != null){
+            // Update user's rating within the date node
+            val data = hashMapOf(DatabaseConstants.USER_RATING_FIELD to userRating);
+            dbReference.collection(DatabaseConstants.DATES_COLLECTION)
+                    .document(dateId)
+                    .collection(DatabaseConstants.STATISTICS_NODE)
+                    .document(dateParticipantId)
+                    .set(data); // TODO: Update to update
+
+            // Update average date statistics rating
+            // TODO: Implement
+
+        }
         userRating = null
     }
 

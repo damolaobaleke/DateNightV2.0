@@ -77,10 +77,15 @@ class RateDateNightActivity : AppCompatActivity() {
     }
 
     fun onSubmit(v: View){
-        viewModel.addRating(starRating,
+        // TODO: Implement
+        /*
+        viewModel.addRating(experienceId,
+                starRating,
                 positiveReviewEditText.text.toString(),
                 negativeFeedbackEditText.text.toString()
         )
+
+         */
     }
 
     @Override

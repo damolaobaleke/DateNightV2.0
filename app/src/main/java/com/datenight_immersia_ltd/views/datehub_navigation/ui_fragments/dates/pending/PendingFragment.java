@@ -25,10 +25,8 @@ import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.modelfirestore.Date.DateModel;
 import com.datenight_immersia_ltd.modelfirestore.Experience.ExperienceModel;
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
-import com.datenight_immersia_ltd.network.api.User;
 import com.datenight_immersia_ltd.utils.DownloadImageTask;
 import com.datenight_immersia_ltd.utils.RecyclerViewAdapterPending;
-import com.datenight_immersia_ltd.views.date_schedule.InviteUserActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -38,21 +36,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.nimbusds.jose.util.ArrayUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -148,7 +142,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
 
                             Log.i(TAG, "The information: " + dateModel.getId());
 
-                            dateList.add(new DateModel(dateModel.getId(), "", mAuth.getCurrentUser().getUid(), participants, null, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedexperienceId(), null, null));
+                            dateList.add(new DateModel(dateModel.getId(), "", mAuth.getCurrentUser().getUid(), participants, null, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedExperienceId(), null, null));
 
                             if (dateList.size() >= 1) {
                                 pendingHint.setVisibility(View.GONE);
@@ -245,7 +239,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                             if (Objects.equals(dateModel.getParticipantStatus().get(inv), "PENDING")) {
 
                                 //ADDING TWICE DUE TO ARRAY LENGTH/FOR LOOP - SOLVE
-                                dateList.add(new DateModel(dateModel.getId(), "86654", mAuth.getCurrentUser().getUid(), dateModel.getParticipants(), null, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedexperienceId(), null, null));
+                                dateList.add(new DateModel(dateModel.getId(), "86654", mAuth.getCurrentUser().getUid(), dateModel.getParticipants(), null, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedExperienceId(), null, null));
 
 
                                 populateRecyclerView();

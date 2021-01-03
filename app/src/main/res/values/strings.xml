@@ -58,7 +58,7 @@
     <string name="average_date_rating">Your average date rating is </string>
 
     <string name="game_view_content_description">Game view</string>
-    <string name="already_a_user_login">Already a User ?<b><font color="#B048D1"> Login</font></b></string>
+    <string name="already_a_user_login">Already a User?<b><font color="#B048D1"> Login</font></b></string>
     <string name="paris_night_dinner">paris night dinner</string>
     <string name="picnic_by_the_meadow">picnic by the meadow</string>
     <string name="free">FREE</string>
@@ -95,7 +95,7 @@
     <string name="rate_date">Rate Date</string>
     <string name="to_chat">To Chats</string>
     <string name="back_to_datehub">Back to DateHub</string>
-    <string name="help_us_improve">Help us Improve</string>
+    <string name="help_us_improve"><u>Help us Improve</u></string>
     <string name="enter_your_email_username">Enter your email address</string>
     <string name="enter_your_password">Enter your password</string>
     <string name="no_user">No user found</string>
@@ -111,4 +111,10 @@
     <string name="reject_invite">Reject Invite</string>
     <string name="accept_invite">Accept Invite</string>
     <string name="exp_val_free">Free</string>
+    <string name="enter_email_username">Enter email</string>
+    <string name="enter_password">Enter password</string>
+    <string name="new_to_datenight">New to DateNight?</string>
+    <string name="create_account">Create account</string>
+    <string name="congratulations">Congratulations</string>
+    <string name="date_created_message">Your date has been created, click button <br>below to return to DateHub</br></string>
 </resources>

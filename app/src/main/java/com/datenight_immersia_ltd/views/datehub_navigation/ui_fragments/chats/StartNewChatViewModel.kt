@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_start_new_chat.*
 
 class StartNewChatViewModel: ViewModel() {
     private val dbReference = FirebaseFirestore.getInstance()
-    private val dbReferenceUser = dbReference.collection(DatabaseConstants.USERS_NODE)
+    private val dbReferenceUser = dbReference.collection(DatabaseConstants.USER_DATA_NODE)
     private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
     var foundUserId: String? = null
     var foundUserFullName: String? = null

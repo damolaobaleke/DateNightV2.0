@@ -38,7 +38,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -141,7 +140,7 @@ public class ScheduledFragment extends Fragment {
                         if (Objects.equals(dateModel.getParticipantStatus().get(inviteeKey), "ACCEPTED")) {
                             Log.i(TAG, inviteeKey + " " + dateModel.getParticipantStatus().get(inviteeKey));
 
-                            dateList.add(new DateModel(dateModel.getId(),"86654", mAuth.getCurrentUser().getUid(), participants, null,dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedexperienceId(), null, null));
+                            dateList.add(new DateModel(dateModel.getId(),"86654", mAuth.getCurrentUser().getUid(), participants, null,dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedExperienceId(), null, null));
 
                             if (dateList.size() >= 1) {
                                 scheduledHint.setVisibility(View.GONE);

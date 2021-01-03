@@ -14,9 +14,28 @@
 package com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.post_date
 
 import androidx.lifecycle.ViewModel
+import com.datenight_immersia_ltd.DatabaseConstants
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class RateDateNightViewModel: ViewModel() {
-    fun addRating(numericalRating: Int, positiveFeedback: String, negativeFeedback: String) {
-        // TODO: Send to database
+    private val dbReference = FirebaseFirestore.getInstance()
+    private val currentUserId: String? = FirebaseAuth.getInstance().currentUser?.uid
+
+    fun addRating(experienceId: String, numericalRating: Int, positiveFeedback: String, negativeFeedback: String) {
+        if(currentUserId != null){
+            val data = hashMapOf(
+                    DatabaseConstants.RATING_FIELD to numericalRating,
+                    DatabaseConstants.LIKED_TEXT_FIELD to positiveFeedback,
+                    DatabaseConstants.DISLIKED_TEXT_FIELD to negativeFeedback
+            )
+
+            dbReference.collection(DatabaseConstants.FEEDBACK_NODE)
+                    .document(experienceId)
+                    .collection(DatabaseConstants.USERS_NODE)
+                    .document(currentUserId)
+                    .set(data)
+        }
+
     }
 }

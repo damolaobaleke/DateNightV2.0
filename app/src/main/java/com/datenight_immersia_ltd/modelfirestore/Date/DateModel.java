@@ -1,11 +1,7 @@
 package com.datenight_immersia_ltd.modelfirestore.Date;
 
-import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
 import com.google.firebase.Timestamp;
 
-import java.net.URL;
-import java.sql.Time;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +13,7 @@ public class DateModel {
     Timestamp dateDuration;  //Date equivalent in java
     String dateStatus; //completed || Ongoing
     HashMap<String, HashMap<String, Integer>> statistics;
-    String linkedexperienceId;
+    String linkedExperienceId;
     Timestamp timeCompleted;
     Timestamp timeCreated;
     Timestamp dateChosen;
@@ -27,7 +23,7 @@ public class DateModel {
     public HashMap<String, String> participantUsernames;
     String inviteLink;
 
-    public DateModel(String id, String password, String creator, HashMap<String, String> participants, HashMap<String, String> participantUsernames ,Timestamp dateDuration, Timestamp timeCreated, Timestamp dateTime, String linkedexperienceId, HashMap<String, String> participantstatus, HashMap<String, HashMap<String, Integer>> dateStats) {
+    public DateModel(String id, String password, String creator, HashMap<String, String> participants, HashMap<String, String> participantUsernames , Timestamp dateDuration, Timestamp timeCreated, Timestamp dateTime, String linkedExperienceId, HashMap<String, String> participantstatus, HashMap<String, HashMap<String, Integer>> dateStats) {
         this.id = id;
         this.password = password;
         this.creator = creator;
@@ -37,7 +33,7 @@ public class DateModel {
         this.dateTime = dateTime;
         this.dateStatus = dateStatus;
         this.inviteLink = inviteLink;
-        this.linkedexperienceId = linkedexperienceId;
+        this.linkedExperienceId = linkedExperienceId;
         this.participantStatus = participantstatus;
         this.participantUsernames = participantUsernames;
         this.statistics = dateStats;
@@ -95,8 +91,8 @@ public class DateModel {
         return participantStatus;
     }
 
-    public String getLinkedexperienceId() {
-        return linkedexperienceId;
+    public String getLinkedExperienceId() {
+        return linkedExperienceId;
     }
 
     public Map<String, HashMap<String, Integer>> getStatistics() {
