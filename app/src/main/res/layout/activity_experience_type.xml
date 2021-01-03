@@ -13,13 +13,14 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar2"
+            android:id="@+id/experienceTypeFragmentToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/Experiences"
-            app:titleTextColor="@color/black" />
+            app:titleTextColor="@color/black"
+            app:theme="@style/ThemeOverlay.AppCompat.Light"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"

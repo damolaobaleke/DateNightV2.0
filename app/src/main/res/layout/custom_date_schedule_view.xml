@@ -16,36 +16,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="80dp"
     app:layout_constraintCircleRadius="25dp">
 
     <TextView
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:fontFamily="@font/inter"
         android:text="@string/set_date_and_time"
         android:textColor="@color/black"
         android:textFontWeight="600"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.084"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:targetApi="p" />
 
     <TextView
         android:id="@+id/dateTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/inter"
-        android:text="Paris night time dinner under\nthe sky"
+        android:text="Paris night time dinner under the sky"
         android:textColor="@color/black"
         android:textFontWeight="600"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/textView16"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/line" />
 
     <View
@@ -59,11 +61,80 @@
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <Button
+        android:id="@+id/cancel_schedule_creation"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ic_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateTitle">
+
+        <Button
+            android:id="@+id/pick_date"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/ic_date_schedule"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/dateChosen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:text="Pick date"
+            android:textColor="@color/date_night_grey"
+            android:textFontWeight="400"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/pick_date"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/pick_time"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/ic_time_schedule"
+            android:text=""
+            app:layout_constraintStart_toEndOf="@+id/dateChosen"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/timeChosen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Pick time"
+            android:textColor="@color/date_night_grey"
+            android:textFontWeight="400"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/pick_time"
+            app:layout_constraintStart_toEndOf="@+id/pick_time"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
         android:id="@+id/create_date_schedule"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/custom_login_button"
         android:fontFamily="@font/inter"
         android:text="Create Date"
@@ -71,65 +142,10 @@
         android:textColor="@color/white"
         android:textFontWeight="900"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/textView16"
-        app:layout_constraintTop_toBottomOf="@+id/pick_date" />
-
-    <Button
-        android:id="@+id/cancel_schedule_creation"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="160dp"
-        android:background="@drawable/ic_cancel"
-        app:layout_constraintStart_toEndOf="@+id/textView16"
-        app:layout_constraintTop_toTopOf="@+id/textView16" />
-
-    <Button
-        android:id="@+id/pick_date"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="40dp"
-        android:text=""
-        android:background="@drawable/ic_date_schedule"
-        app:layout_constraintStart_toStartOf="@+id/dateTitle"
-        app:layout_constraintTop_toBottomOf="@+id/dateTitle" />
-
-    <Button
-        android:id="@+id/pick_time"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/ic_time_schedule"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="@+id/dateTitle"
-        app:layout_constraintTop_toBottomOf="@+id/dateTitle" />
-
-    <TextView
-        android:id="@+id/dateChosen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="20dp"
-        android:text="Pick date"
-        android:textColor="@color/date_night_grey"
-        android:textFontWeight="400"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/pick_date"
-        app:layout_constraintStart_toEndOf="@+id/pick_date" />
-
-    <TextView
-        android:id="@+id/timeChosen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="20dp"
-        android:text="Pick time"
-        android:textColor="@color/date_night_grey"
-        android:textFontWeight="400"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/pick_time"
-        app:layout_constraintStart_toEndOf="@+id/pick_time" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

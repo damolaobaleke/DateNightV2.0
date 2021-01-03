@@ -48,7 +48,6 @@ public class DateFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dates, container, false);
 
         createDate = view.findViewById(R.id.fabCreateDate);
-        joinDate = view.findViewById(R.id.fabJoinDate);
 
         ViewPager viewPager = view.findViewById(R.id.pager_dates);
 
@@ -61,9 +60,7 @@ public class DateFragment extends Fragment {
         TabLayout tabs = view.findViewById(R.id.date_tabs);
         tabs.setupWithViewPager(viewPager);
 
-
         openExperience();
-        joinNewDate();
 
         return view;
     }
@@ -74,14 +71,6 @@ public class DateFragment extends Fragment {
             startActivity(intent);
         });
     }
-
-    public void joinNewDate() {
-        joinDate.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), JoinDate.class);
-            startActivity(intent);
-        });
-    }
-
 
     public String dateTime() {
         Date c = Calendar.getInstance().getTime();

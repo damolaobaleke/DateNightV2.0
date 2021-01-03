@@ -143,7 +143,7 @@ public class RecyclerViewAdapterScheduled extends RecyclerView.Adapter<RecyclerV
 
                 if (!dateModel.getCreator().equals(mAuth.getCurrentUser().getUid())) { //so invitee
 
-                    expDocRef = db.collection("experiences").document(date.getLinkedexperienceId());
+                    expDocRef = db.collection("experiences").document(date.getLinkedExperienceId());
 
                     expDocRef.get().addOnSuccessListener(expdocumentSnapshot -> {
                         if (expdocumentSnapshot.exists()) {
@@ -169,16 +169,14 @@ public class RecyclerViewAdapterScheduled extends RecyclerView.Adapter<RecyclerV
 
                 }else{
                     //creator
-                    if(date.getLinkedexperienceId() != null) {
-                        expDocRef = db.collection("experiences").document(date.getLinkedexperienceId());
+                    if(date.getLinkedExperienceId() != null) {
+                        expDocRef = db.collection("experiences").document(date.getLinkedExperienceId());
 
                         expDocRef.get().addOnSuccessListener(expdocumentSnapshot -> {
                             if (expdocumentSnapshot.exists()) {
                                 ExperienceModel experience = expdocumentSnapshot.toObject(ExperienceModel.class);
                                 assert experience != null;
-
-
-                                holder.dateTitle.setText(String.format("%s with %s", experience.getName(), dateModel.getParticipants().get(inviteeKey)));
+                                //holder.dateTitle.setText(String.format("%s with %s", experience.getName(), dateModel.getParticipants().get(inviteeKey)));
                             }
                         });
                     }
