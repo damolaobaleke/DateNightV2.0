@@ -14,8 +14,8 @@ android {
         applicationId "com.datenight_immersia_ltd"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 3
-        versionName "1.2"
+        versionCode 5
+        versionName "1.3"
         ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -65,9 +65,9 @@ dependencies {
     //android x library components
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation "com.google.android.material:material:$material_ui"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.3'
-    implementation 'androidx.navigation:navigation-fragment:2.3.1'
-    implementation 'androidx.navigation:navigation-ui:2.3.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.navigation:navigation-fragment:2.3.2'
+    implementation 'androidx.navigation:navigation-ui:2.3.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     // For control over item selection of both touch and mouse driven selection
@@ -98,6 +98,7 @@ dependencies {
 
     //Firebase UI
     implementation 'com.firebaseui:firebase-ui-database:6.3.0'
+    implementation 'com.firebaseui:firebase-ui-firestore:6.3.0'
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -120,6 +121,9 @@ dependencies {
 
     //AndroidX Browser Library
     implementation "androidx.browser:browser:1.3.0"
+
+    //
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 }
 apply plugin: 'com.android.application'

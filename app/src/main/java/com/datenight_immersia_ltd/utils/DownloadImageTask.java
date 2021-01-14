@@ -59,6 +59,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, ArrayList<Bitmap>
     protected void onPostExecute(ArrayList<Bitmap> bitmaps) {
         super.onPostExecute(bitmaps);
         //If URL strings explicitly declared in url set bitmap here
+        bitmaps.get(0);
     }
 
 

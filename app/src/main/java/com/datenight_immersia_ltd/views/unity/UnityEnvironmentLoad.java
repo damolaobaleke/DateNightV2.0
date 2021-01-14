@@ -3,10 +3,12 @@ package com.datenight_immersia_ltd.views.unity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
 import com.datenight_immersia_ltd.R;
+import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.post_date.DateFinishedActivity;
 import com.unity3d.player.UnityPlayer;
 
 public class UnityEnvironmentLoad extends AppCompatActivity {
@@ -66,5 +68,7 @@ public class UnityEnvironmentLoad extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         //DATE FINISHED IMPLEMENTATION
+        Intent intent  = new Intent(this, DateFinishedActivity.class);
+        startActivity(intent);
     }
 }

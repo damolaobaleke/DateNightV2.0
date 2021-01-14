@@ -44,7 +44,7 @@ public class DateModel {
     }
 
     /**
-     * No arg constructor
+     * No arg constructor for recreating the doc object from db using the datemodel
      */
     public DateModel() {
 

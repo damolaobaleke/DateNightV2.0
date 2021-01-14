@@ -107,5 +107,8 @@
     <string name="submit_response">Submit response</string>
     <string name="rate_your_Experience">Rate your experience</string>
     <string name="submit_rating">Submit Rating</string>
+    <string name="accept_invite">Accept Invite</string>
+    <string name="reject_invite">Reject Invite</string>
+    <string name="exp_val_free">Free</string>
     <string name="Experiences">Experiences</string>
 </resources>

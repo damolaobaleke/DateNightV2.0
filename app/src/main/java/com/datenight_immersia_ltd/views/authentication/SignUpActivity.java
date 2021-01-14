@@ -2,9 +2,13 @@ package com.datenight_immersia_ltd.views.authentication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabColorSchemeParams;
+import androidx.browser.customtabs.CustomTabsIntent;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -61,7 +65,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     EditText ageInput;
     Button signUp;
     CheckBox terms;
-    TextView LogIn;
+    TextView LogIn, termsText;
     ProgressBar load;
     FirebaseFirestore db;
     DocumentReference userRef;
@@ -86,6 +90,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         signUp = findViewById(R.id.Sign_Up);
         LogIn = findViewById(R.id.loginText);
         terms = findViewById(R.id.checkTerms);
+        termsText = findViewById(R.id.Terms);
 
         LogIn.setOnClickListener(this);
 
@@ -101,6 +106,25 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void chooseAge(View v) {
         DatePickerDialog dateDialog = new DatePickerDialog(this, this, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         dateDialog.show();
+    }
+
+    public void customTabLoadAvatar(View v) {
+        String url = "https://www.immersia.co.uk/files/Terms%20and%20conditions%20for%20supply%20of%20services%20to%20consumers%20via%20a%20website.pdf";
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        CustomTabsIntent intent = builder.build();
+        intent.launchUrl(this, Uri.parse(url));
+
+        //color of addressbar
+        int pink = Color.parseColor("#Fc3e7a"); //datenight pink
+        int white = Color.parseColor("#Fc3e7a"); //datenight white
+
+        CustomTabColorSchemeParams.Builder colorBuilder = new CustomTabColorSchemeParams.Builder();
+        colorBuilder.setToolbarColor(pink);
+        colorBuilder.setNavigationBarDividerColor(white);
+        colorBuilder.build();
+
+        //builder.setDefaultColorSchemeParams()
+
     }
 
     public String ageValidate() {

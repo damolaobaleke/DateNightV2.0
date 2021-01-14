@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Bitmap;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +28,11 @@ import com.datenight_immersia_ltd.modelfirestore.Experience.ExperienceModel;
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
 import com.datenight_immersia_ltd.network.api.User;
 import com.datenight_immersia_ltd.utils.DownloadImageTask;
+import com.datenight_immersia_ltd.utils.PendingAdapter;
 import com.datenight_immersia_ltd.utils.RecyclerViewAdapterPending;
 import com.datenight_immersia_ltd.views.date_schedule.InviteUserActivity;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -77,6 +81,8 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
     private RecyclerView.LayoutManager layoutManager;
     ArrayList<DateModel> dateList;
 
+    private PendingAdapter adapter;
+
     HashMap<String, String> participants;
     String userFullName;//invitee
     String inviteeId;//invitee
@@ -103,181 +109,92 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
 
         userdocRef = db.collection("userData").document(mAuth.getCurrentUser().getUid());
 
-
         datesCollRef = db.collection("dates");
         userCollRef = db.collection("userData");
         experienceRef = db.collection("experiences").document("aNightInParis"); //move to coll reference in future
 
-
         dateList = new ArrayList<>();
 
-        if (dateList.size() >= 1) {
-            pendingHint = view.findViewById(R.id.pending_hint);
-            pendingHint.setVisibility(View.GONE);
-        } else {
-            pendingHint.setVisibility(View.VISIBLE);
-        }
+//        if (dateList.size() >= 1) {
+//            pendingHint = view.findViewById(R.id.pending_hint);
+//            pendingHint.setVisibility(View.GONE);
+//        } else {
+//            pendingHint.setVisibility(View.VISIBLE);
+//        }
 
         //Get Dates
-        //getPendingDatesFiltered();
-        getPendingDates();
+        //getPendd();
+        setUpRecyclerView();
 
         return view;
     }
 
 
-    //POPULATE BASED ON FILTER, COMPOUND QUERY
-    public void getPendingDatesFiltered() {
-        Task query1 = datesCollRef.whereEqualTo("dateId", datesRef.getId()).get();  //snapshot1 where in collection dateId === dateDocId explicitly
-        Task query2 = userCollRef.whereArrayContains("dateId", datesRef.getId()).get();  //snapshot 2 where in user coll arr dateId == dateDocId
-        //3rd condition, where the participant status of the invitee(userId) id is pending
-        if (inviteeId != null) {
-            Task query3 = datesCollRef.whereEqualTo(inviteeId, "PENDING").get();
-        }
+    private void setUpRecyclerView() {
+        userdocRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                userModel = documentSnapshot.toObject(UserModel.class);
+                Log.i(TAG, "The date ids:" + userModel.getDateId().toString());
 
-        Task<List<QuerySnapshot>> allQueries = Tasks.whenAllSuccess(query1, query2);
-        allQueries.addOnSuccessListener(new OnSuccessListener<List<QuerySnapshot>>() {
-            @Override
-            public void onSuccess(List<QuerySnapshot> querySnapshots) {
-                for (QuerySnapshot querySnapshot : querySnapshots) {
-                    Log.i(TAG, querySnapshot.getMetadata().toString());
 
-                    for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
-                        if (documentSnapshot.exists()) { //if doc exists that meets all query requirements
-                            DateModel dateModel = documentSnapshot.toObject(DateModel.class); //recreate doc object from class
+                //where the date doc id is in the user array of dateids
+                //Creates and returns a new Query with the additional filter that documents must contain the specified field and the value must equal one of the values from the provided list.
+                //.whereIn("id", Collections.singletonList(userModel.getDateId())) .orderBy("timeCreated", Query.Direction.DESCENDING)
 
-                            Log.i(TAG, "The information: " + dateModel.getId());
+                Query query = datesCollRef.whereIn("id", Collections.singletonList(userModel.getDateId())).orderBy("timeCreated", Query.Direction.DESCENDING);
 
-                            dateList.add(new DateModel(dateModel.getId(), "", mAuth.getCurrentUser().getUid(), participants, null, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedexperienceId(), null, null));
 
-                            if (dateList.size() >= 1) {
-                                pendingHint.setVisibility(View.GONE);
-                            } else {
-                                pendingHint.setVisibility(View.VISIBLE);
-                            }
+                //getting query into adapter
+                FirestoreRecyclerOptions<DateModel> options = new FirestoreRecyclerOptions.Builder<DateModel>()
+                        .setQuery(query, DateModel.class)
+                        .setLifecycleOwner(this)
+                        .build();
 
-                            populateRecyclerView();
 
-                            //remove Date /Edit Date
-                            pendingAdapter.setOnItemClickListener(new RecyclerViewAdapterPending.OnItemClickListener() {
-                                @Override
-                                public void onCancelInvite(int position) {
-                                    removeDate(position);
-                                }
+                adapter = new PendingAdapter(options);
 
-                                @Override
-                                public void onEditInvite(int position) {
-                                    //Alert Dialogue
-                                    editInvite(position);
-                                }
-                            });
+                //populate recycler view
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-                        }
+                adapter.startListening(); //start listening for db changes and populate the adapter
+                recyclerView.setAdapter(adapter);
+
+
+                //adapter.notifyDataSetChanged();
+
+                adapter.setOnItemClickListener(new PendingAdapter.OnItemClickListener() {
+                    @Override
+                    public void onCancelInvite(int position) {
+
                     }
-                }
+
+                    @Override
+                    public void onEditInvite(int position) {
+
+                    }
+                });
+
+                //populate recycler view
+
+
             }
         });
     }
-    //POPULATE BASED ON FILTER, COMPOUND QUERY
 
 
-    //FILTERED
-    public void getPendingDates() {
-        //for each date
-        //if the date id is in the user array date id
-        //and the date participant invitee states pending show
+    @Override
+    public void onStart() {
+        super.onStart();
+        //this line is supposed to start listening for db changes and populate the adapter, the view but throws an error
+        //adapter.startListening();
 
-        //Get and filter query
-        datesCollRef.orderBy("timeCreated", Query.Direction.DESCENDING).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                if (documentSnapshot.exists()) {
-                    DateModel dateModel = documentSnapshot.toObject(DateModel.class); //recreate doc object from class
-                    Log.i(TAG, dateModel.getId());
+    }
 
-                    for (String key : dateModel.getParticipants().keySet()) {
-                        if (key.equals(dateModel.getCreator())) {
-                            creator = key;
-                            Log.i(TAG, "key 1 and status " + creator + " " + dateModel.getParticipantStatus().get(creator));
-                        } else {
-                            inviteeKey = key;
-                            Log.i(TAG, "key 2 and status " + inviteeKey + " " + dateModel.getParticipantStatus().get(inviteeKey));
-                        }
-                    }
-
-                    ////////
-                    inviteeDocRef = db.collection("userData").document(inviteeKey); //to update invitee dateId[]
-                    datesRef = db.collection("dates").document(dateModel.getId()); //to delete date
-                    ///////
-
-                    Log.i(TAG, "The invitee status " + dateModel.getParticipantStatus().get(dateModel.getParticipants().get(inviteeKey)));
-
-                    if (dateModel.getParticipants().get(inviteeKey) != null) {
-
-                        userdocRef.get().addOnSuccessListener(documentSnapshot2 -> {
-                            if (documentSnapshot2.exists()) {
-                                userModel = documentSnapshot2.toObject(UserModel.class); //INVITER
-                                assert userModel != null;
-                                userModel.setId(mAuth.getCurrentUser().getUid());
-                                Log.i(TAG, userModel.getId() + "\n" + userModel.getEmail() + userModel.getDateId());
-                            }
-                        });
-
-                        //converting List<String> to String[]
-
-
-                        //if date id is in array
-                        Task check2 = userCollRef.whereArrayContains("dateId", datesRef.getId()).get().addOnSuccessListener(queryDocumentSnapshots1 -> queryDocumentSnapshots1.forEach(documentSnapshot1 -> {
-                            if (documentSnapshot1.exists()) {
-                                userModel = documentSnapshot1.toObject(UserModel.class);
-                                Log.i(TAG, "The date id's " + dateModel.getId() + "--get dates keeps returning--" + userModel.getDateId() + documentSnapshot1.get("dateId"));
-                            }
-                        }));
-
-                        check2.addOnSuccessListener(o -> {
-
-                            dateModel.getParticipants().keySet().forEach(key -> {
-                                if (!key.equals(dateModel.getCreator())) {
-                                    inv = key;
-                                }
-                            });
-
-                            //Check status of date invitee is pending and id of the date is in the dateid array of the user\\
-                            if (Objects.equals(dateModel.getParticipantStatus().get(inv), "PENDING")) {
-
-                                //ADDING TWICE DUE TO ARRAY LENGTH/FOR LOOP - SOLVE
-                                dateList.add(new DateModel(dateModel.getId(), "86654", mAuth.getCurrentUser().getUid(), dateModel.getParticipants(), null, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedexperienceId(), null, null));
-
-
-                                populateRecyclerView();
-
-                                if (dateList.size() >= 1) {
-                                    pendingHint.setVisibility(View.GONE);
-                                } else {
-                                    pendingHint.setVisibility(View.VISIBLE);
-                                }
-
-                                //remove Date /Edit Date
-                                pendingAdapter.setOnItemClickListener(new RecyclerViewAdapterPending.OnItemClickListener() {
-                                    @Override
-                                    public void onCancelInvite(int position) {
-                                        removeDate(position);
-                                    }
-
-                                    @Override
-                                    public void onEditInvite(int position) {
-                                        //Alert Dialogue
-                                        editInvite(position);
-                                    }
-                                });
-
-                            } else {
-                                Log.i(TAG, "Not found");
-                            }
-                        });
-                    }
-                }
-            }
-        });
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 
     public void populateRecyclerView() {
@@ -457,6 +374,76 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
 
         assert avatarBitmap != null;
         return avatarBitmap.get(0); //gets image in position 0 based on url }
+    }
+
+
+    public void getPendd() {
+        userdocRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                userModel = documentSnapshot.toObject(UserModel.class);
+                Log.i(TAG, "The date ids:" + userModel.getDateId().toString());
+
+
+                //where the date doc id is in the user array of dateids
+                //Creates and returns a new Query with the additional filter that documents must contain the specified field and the value must equal one of the values from the provided list.
+                //.whereIn("id", Collections.singletonList(userModel.getDateId())) .orderBy("timeCreated", Query.Direction.DESCENDING)
+
+                datesCollRef.whereIn("id", Collections.singletonList(userModel.getDateId())).orderBy("timeCreated", Query.Direction.DESCENDING).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot documentSnapshot1 : queryDocumentSnapshots) {
+                        if (documentSnapshot1.exists()) {
+                            DateModel dateModel = documentSnapshot1.toObject(DateModel.class);
+
+                            for (String key : dateModel.getParticipants().keySet()) {
+                                if (key.equals(dateModel.getCreator())) {
+                                    creator = key;
+                                    Log.i(TAG, "key 1: " + creator + ":" + dateModel.getParticipantStatus().get(creator));
+                                } else {
+                                    inviteeKey = key;
+                                    Log.i(TAG, "key 2: " + inviteeKey + ":" + dateModel.getParticipantStatus().get(inviteeKey));
+                                }
+                            }
+
+                            inviteeDocRef = db.collection("userData").document(inviteeKey); //to update invitee dateId[]
+                            datesRef = db.collection("dates").document(dateModel.getId()); //to delete date
+
+                            //Check status of date invitee is pending and id of the date is in the dateid array of the user\\
+                            if (Objects.equals(dateModel.getParticipantStatus().get(inviteeKey), "PENDING")) {
+
+                                Log.i(TAG, dateModel.getId());
+                                dateList.add(new DateModel(dateModel.getId(), "86654", mAuth.getCurrentUser().getUid(), dateModel.getParticipants(), null, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedexperienceId(), null, null));
+
+                                populateRecyclerView();
+
+                                if (dateList.size() >= 1) {
+                                    pendingHint.setVisibility(View.GONE);
+                                } else {
+                                    pendingHint.setVisibility(View.VISIBLE);
+                                }
+
+                                //remove Date /Edit Date
+                                pendingAdapter.setOnItemClickListener(new RecyclerViewAdapterPending.OnItemClickListener() {
+                                    @Override
+                                    public void onCancelInvite(int position) {
+                                        removeDate(position);
+                                    }
+
+                                    @Override
+                                    public void onEditInvite(int position) {
+                                        //Alert Dialogue
+                                        editInvite(position);
+                                    }
+                                });
+
+                            } else {
+                                Log.i(TAG, "Not found");
+                            }
+                        } else {
+                            Log.i(TAG, "Not found 2");
+                        }
+                    }
+                });
+            }
+        });
     }
 
 

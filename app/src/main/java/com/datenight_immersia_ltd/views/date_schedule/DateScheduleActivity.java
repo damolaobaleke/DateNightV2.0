@@ -27,6 +27,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.views.unity.UnityEnvironmentLoad;
@@ -46,6 +47,9 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
     Button previewDateScene;
 
     Calendar calendar;
+    Intent intent;
+
+    VideoView videoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +67,7 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
 
         bindId();
 
-        Intent intent = getIntent();
+        intent = getIntent();
         Log.i("DateSchedule",intent.getStringExtra("experienceName") + intent.getStringExtra("experienceDesc") + intent.getStringExtra("experienceCost"));
 
         experienceName.setText(intent.getStringExtra("experienceName"));
@@ -80,6 +84,28 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
         experienceName = findViewById(R.id.experience_name_in_schedule);
         experienceDescription = findViewById(R.id.experience_descr);
         experienceCost = findViewById(R.id.free_price);
+        videoView = findViewById(R.id.videoView);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        backgroundVideo();
+    }
+
+    public void backgroundVideo(){
+        if(intent.getStringExtra("experienceName").equals("Dinner in Paris")){
+            videoView.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.paris_one);
+            videoView.setOnPreparedListener(mp->{
+                mp.setLooping(true);
+                mp.start();
+            });
+
+        }else if(intent.getStringExtra("experienceName").equals("Picnic in the Meadow")){
+
+        }else{
+
+        }
     }
 
     public void previewDateScene() {

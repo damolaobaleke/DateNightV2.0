@@ -22,10 +22,6 @@
         <activity
             android:name=".views.datehub_navigation.ui_fragments.dates.post_date.DateFinishedActivity"
             android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".views.datehub_navigation.ui_fragments.chats.StartNewChatActivity"
@@ -38,7 +34,7 @@
         <activity android:name=".views.readyplayerweb.CreatAvatarActivity" />
         <activity android:name=".views.date_schedule.InviteUserActivity" />
         <activity android:name=".views.date_schedule.DateCreated" />
-        <activity android:name=".views.date_schedule.DateScheduleActivity"/>
+        <activity android:name=".views.date_schedule.DateScheduleActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".views.payment.PaymentActivity" />
         <activity android:name=".views.datehub_navigation.ui_fragments.help.SuggestImprovement" />
         <activity android:name=".views.datehub_navigation.ui_fragments.help.ReportIssue" />
@@ -70,6 +66,7 @@
         <activity
             android:name=".views.landing_screen.BoardingScreen"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"

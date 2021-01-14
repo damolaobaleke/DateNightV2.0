@@ -158,9 +158,12 @@
             android:layout_marginStart="10dp"
             android:gravity="center"
             android:text="@string/i_accept_the_terms_amp_conditions"
+            android:onClick="customTabLoadAvatar"
+            android:clickable="true"
             app:layout_constraintBottom_toBottomOf="@+id/ll"
             app:layout_constraintEnd_toEndOf="@+id/ll"
-            app:layout_constraintStart_toEndOf="@+id/checkTerms" />
+            app:layout_constraintStart_toEndOf="@+id/checkTerms"
+            android:focusable="true" />
 
     </LinearLayout>
 

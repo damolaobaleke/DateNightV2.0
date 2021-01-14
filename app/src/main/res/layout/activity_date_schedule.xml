@@ -19,6 +19,13 @@
     android:background="@drawable/date_schedule_bg_gradient"
     tools:context=".views.date_schedule.DateScheduleActivity">
 
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/schedule_date"
@@ -49,6 +56,7 @@
         android:textColor="@color/white"
         android:textFontWeight="700"
         android:textSize="30sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -73,6 +81,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
+        android:visibility="invisible"
         android:background="@drawable/custom_augreality_button"
         app:layout_constraintEnd_toEndOf="@+id/schedule_date"
         app:layout_constraintStart_toStartOf="@+id/schedule_date"
@@ -89,6 +98,7 @@
         android:textColor="@color/white"
         android:textFontWeight="400"
         android:textSize="15sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/experience_name_in_schedule"
         app:layout_constraintStart_toStartOf="@+id/experience_name_in_schedule"
         app:layout_constraintTop_toBottomOf="@+id/experience_name_in_schedule" />
@@ -121,6 +131,8 @@
         app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="@+id/textView20"
         app:layout_constraintTop_toTopOf="@+id/textView20" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
