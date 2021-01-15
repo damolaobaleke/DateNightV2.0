@@ -19,10 +19,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,20 +29,15 @@ import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.modelfirestore.Date.DateModel;
 import com.datenight_immersia_ltd.modelfirestore.Experience.ExperienceModel;
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
-import com.datenight_immersia_ltd.views.date_schedule.DateCreated;
-import com.datenight_immersia_ltd.views.date_schedule.InviteUserActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -144,7 +137,7 @@ public class RecyclerViewAdapterPending extends RecyclerView.Adapter<RecyclerVie
     @Override
     public void onBindViewHolder(@NonNull PendingDatesViewHolder holder, int position) {
         DateModel dateModel = mDateLists.get(position); //get position of item in recy view
-        Log.i(TAG, "Date doc\n" + dateModel.getId() + "\n" + dateModel.getLinkedexperienceId() + "\n" + dateModel.getParticipantUsernames() +"\n"+ dateModel.getPassword());
+        Log.i(TAG, "Date doc\n" + dateModel.getId() + "\n" + dateModel.getLinkedExperienceId() + "\n" + dateModel.getParticipantUsernames() +"\n"+ dateModel.getPassword());
 
         datesRef = db.collection("dates").document(dateModel.getId()); //id of date in position
 
@@ -160,7 +153,7 @@ public class RecyclerViewAdapterPending extends RecyclerView.Adapter<RecyclerVie
                     DateModel dateModel1 = datedocumentSnapshot.toObject(DateModel.class);
                     assert dateModel1 != null;
                     mDateModel = dateModel1; //
-                    Log.i(TAG, "Date doc\n" + dateModel1.getId() + "\n" + dateModel1.getLinkedexperienceId() + "\n" + dateModel1.getParticipantUsernames());
+                    Log.i(TAG, "Date doc\n" + dateModel1.getId() + "\n" + dateModel1.getLinkedExperienceId() + "\n" + dateModel1.getParticipantUsernames());
 
                     //get experience name
                     //expRef = db.collection("experiences").document(dateModel1.getLinkedexperienceId());
@@ -300,7 +293,7 @@ public class RecyclerViewAdapterPending extends RecyclerView.Adapter<RecyclerVie
 
         //==========================\\
         //experience
-        expRef = db.collection("experiences").document(mDateModel.getLinkedexperienceId());
+        expRef = db.collection("experiences").document(mDateModel.getLinkedExperienceId());
         expRef.get().addOnSuccessListener(documentSnapshot1 -> {
             if (documentSnapshot1.exists()) {
                 experienceModel = documentSnapshot1.toObject(ExperienceModel.class);

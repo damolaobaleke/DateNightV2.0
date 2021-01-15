@@ -57,6 +57,10 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         View view = binding.getRoot();
         setContentView(view);
 
+
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
         userDocRef = db.collection("userData").document(mAuth.getCurrentUser().getUid());
 
         //webViewImplmentTwo();

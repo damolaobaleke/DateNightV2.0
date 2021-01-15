@@ -13,7 +13,6 @@
 
 package com.datenight_immersia_ltd.utils;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +25,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.modelfirestore.Date.DateModel;
 import com.datenight_immersia_ltd.modelfirestore.Experience.ExperienceModel;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -116,7 +113,7 @@ public class RecyclerViewAdapterScheduled extends RecyclerView.Adapter<RecyclerV
     @NonNull
     @Override
     public ScheduledDatesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_dates_sch_list_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_scheduled_date, parent, false);
 
         return new ScheduledDatesViewHolder(view, mListener);
     }
@@ -146,7 +143,7 @@ public class RecyclerViewAdapterScheduled extends RecyclerView.Adapter<RecyclerV
 
                 if (!dateModel.getCreator().equals(mAuth.getCurrentUser().getUid())) { //so invitee
 
-                    expDocRef = db.collection("experiences").document(date.getLinkedexperienceId());
+                    expDocRef = db.collection("experiences").document(date.getLinkedExperienceId());
 
                     expDocRef.get().addOnSuccessListener(expdocumentSnapshot -> {
                         if (expdocumentSnapshot.exists()) {
@@ -172,16 +169,14 @@ public class RecyclerViewAdapterScheduled extends RecyclerView.Adapter<RecyclerV
 
                 }else{
                     //creator
-                    if(date.getLinkedexperienceId() != null) {
-                        expDocRef = db.collection("experiences").document(date.getLinkedexperienceId());
+                    if(date.getLinkedExperienceId() != null) {
+                        expDocRef = db.collection("experiences").document(date.getLinkedExperienceId());
 
                         expDocRef.get().addOnSuccessListener(expdocumentSnapshot -> {
                             if (expdocumentSnapshot.exists()) {
                                 ExperienceModel experience = expdocumentSnapshot.toObject(ExperienceModel.class);
                                 assert experience != null;
-
-
-                                holder.dateTitle.setText(String.format("%s with %s", experience.getName(), dateModel.getParticipants().get(inviteeKey)));
+                                //holder.dateTitle.setText(String.format("%s with %s", experience.getName(), dateModel.getParticipants().get(inviteeKey)));
                             }
                         });
                     }

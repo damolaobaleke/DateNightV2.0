@@ -17,12 +17,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
-        <activity android:name=".views.datehub_navigation.ui_fragments.dates.post_date.RateDateNightActivity"
+        <activity android:name=".views.authentication.ForgotPassword"></activity>
+        <activity
+            android:name=".views.datehub_navigation.ui_fragments.dates.post_date.RateDateNightActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.datehub_navigation.ui_fragments.dates.post_date.DateFinishedActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".views.datehub_navigation.ui_fragments.chats.StartNewChatActivity"
             android:label="@string/title_activity_start_new_chat"
@@ -34,7 +35,9 @@
         <activity android:name=".views.readyplayerweb.CreatAvatarActivity" />
         <activity android:name=".views.date_schedule.InviteUserActivity" />
         <activity android:name=".views.date_schedule.DateCreated" />
-        <activity android:name=".views.date_schedule.DateScheduleActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".views.date_schedule.DateScheduleActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".views.payment.PaymentActivity" />
         <activity android:name=".views.datehub_navigation.ui_fragments.help.SuggestImprovement" />
         <activity android:name=".views.datehub_navigation.ui_fragments.help.ReportIssue" />
@@ -66,13 +69,13 @@
         <activity
             android:name=".views.landing_screen.BoardingScreen"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -410,7 +410,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                             if (Objects.equals(dateModel.getParticipantStatus().get(inviteeKey), "PENDING")) {
 
                                 Log.i(TAG, dateModel.getId());
-                                dateList.add(new DateModel(dateModel.getId(), "86654", mAuth.getCurrentUser().getUid(), dateModel.getParticipants(), null, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedexperienceId(), null, null));
+                                dateList.add(new DateModel(dateModel.getId(), "86654", mAuth.getCurrentUser().getUid(), dateModel.getParticipants(), null, dateCreatedTime(), dateCreatedTime(), dateStringToTimestamp(""), dateModel.getLinkedExperienceId(), null, null));
 
                                 populateRecyclerView();
 

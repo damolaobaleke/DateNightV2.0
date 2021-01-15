@@ -1,5 +1,7 @@
 package com.datenight_immersia_ltd.views.authentication;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,6 +17,8 @@ import android.widget.Toast;
 
 import com.datenight_immersia_ltd.views.datehub_navigation.DateHubNavigation;
 import com.datenight_immersia_ltd.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,6 +42,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setTitle("Log In");
 
         email = findViewById(R.id.emailLogin);
         password = findViewById(R.id.pass);
@@ -69,6 +78,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
+    public void forgotPassword(View v) {
+        Intent intent = new Intent(this, ForgotPassword.class);
+        startActivity(intent);
+    }
+
+
     public void SignUp() {
         SignUp.setOnClickListener(this);
     }
@@ -95,16 +110,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             mAuth = FirebaseAuth.getInstance();
             if (formValidated) {
+
                 mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                         .addOnCompleteListener(this, task -> {
                             if (task.isSuccessful()) {
-                                progressBarGone();
+                                if (mAuth.getCurrentUser().isEmailVerified()) {
+                                    progressBarGone();
 
-                                Log.i("SignIn", "Successful");
-                                Toast.makeText(LoginActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
+                                    Log.i("SignIn", "Successful");
+                                    Toast.makeText(LoginActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
 
-                                Intent intent = new Intent(LoginActivity.this, DateHubNavigation.class);
-                                startActivity(intent);
+                                    Intent intent = new Intent(LoginActivity.this, DateHubNavigation.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "Please verify your email address", Toast.LENGTH_SHORT).show();
+                                    progressBarGone();
+                                }
+
                             } else {
                                 progressBarGone();
                                 //Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
@@ -185,5 +207,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }
+
 
 }

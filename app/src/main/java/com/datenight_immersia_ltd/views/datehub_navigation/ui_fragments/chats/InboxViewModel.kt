@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -24,7 +22,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import de.hdodenhof.circleimageview.CircleImageView
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,7 +30,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
     // Firebase related variables
     private val dbReferenceRealtimeDb = FirebaseDatabase.getInstance().reference // TODO: Possibly move dbReferences to model
     private var dbReferenceChatRoomsRealtimeDb: DatabaseReference
-    private val dbReferenceFirestore = FirebaseFirestore.getInstance().collection(DatabaseConstants.USERS_NODE)
+    private val dbReferenceFirestore = FirebaseFirestore.getInstance().collection(DatabaseConstants.USER_DATA_NODE)
     private lateinit var chatRoomDataParser: SnapshotParser<ChatHead?>
     private lateinit var firebaseRecyclerViewOptions: FirebaseRecyclerOptions<ChatHead>
     lateinit var chatHeadsFirebaseRecyclerViewAdapter: FirebaseRecyclerAdapter<ChatHead, ChatHeadViewHolder>

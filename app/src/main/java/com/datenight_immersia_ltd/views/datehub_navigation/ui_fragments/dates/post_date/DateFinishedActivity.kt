@@ -125,9 +125,8 @@ class DateFinishedActivity : AppCompatActivity() {
     }
 
     fun submitUserRatingOnClick(v: View){
-        viewModel.submitUserRating();
+        // viewModel.submitUserRating(dateId, userIdToBeRated);
         bottomSheetDialog.dismiss()
-
     }
 
      fun onCancel(v: View){

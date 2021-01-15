@@ -74,11 +74,12 @@ public class ScheduledAdapter extends FirestoreRecyclerAdapter<DateModel, Schedu
 
     @Override
     protected void onBindViewHolder(@NonNull ScheduledViewHolder holder, int position, @NonNull DateModel model) {
-        expRef = db.collection("experiences").document(model.getLinkedexperienceId());
+
+        /*expRef = db.collection("experiences").document(model.getLinkedExperienceId());
         expRef.get().addOnSuccessListener(documentSnapshot -> {
             experienceModel = documentSnapshot.toObject(ExperienceModel.class);
 
-        });
+        });*/
 
         holder.avatar.setImageResource(R.drawable.avatar_ellipse);
 

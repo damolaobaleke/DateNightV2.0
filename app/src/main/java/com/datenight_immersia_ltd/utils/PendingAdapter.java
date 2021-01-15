@@ -66,8 +66,8 @@ public class PendingAdapter extends FirestoreRecyclerAdapter<DateModel, PendingA
     @Override
     protected void onBindViewHolder(@NonNull PendingViewHolder holder, int position, @NonNull DateModel model) {
 
-        Log.i(TAG, "The exp id: " + model.getLinkedexperienceId());
-        expRef = db.collection("experiences").document(model.getLinkedexperienceId());
+        Log.i(TAG, "The exp id: " + model.getLinkedExperienceId());
+        expRef = db.collection("experiences").document(model.getLinkedExperienceId());
         expRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 experienceModel = documentSnapshot.toObject(ExperienceModel.class);
