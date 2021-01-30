@@ -13,6 +13,7 @@
 
 package com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.post_date
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -20,8 +21,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.datenight_immersia_ltd.IntentConstants
 import com.datenight_immersia_ltd.R
+import com.datenight_immersia_ltd.utils.DateNight
+import com.datenight_immersia_ltd.views.unity.UnityEnvironmentLoad
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
 
 class DateFinishedActivity : AppCompatActivity() {
@@ -32,7 +37,14 @@ class DateFinishedActivity : AppCompatActivity() {
     private lateinit var submitUserRatingButton: Button
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var bottomSheetDialogView: View
-
+    // App Data
+    private lateinit var appState: DateNight
+    // Extras
+    private val currentUserId = FirebaseAuth.getInstance().uid
+    private lateinit var dateParticipantId: String
+    private lateinit var dateParticipantName: String
+    private lateinit var dateExperienceId: String
+    private lateinit var dateId: String
     // Data
     private var emojiRating: Int? = null
 
@@ -42,6 +54,20 @@ class DateFinishedActivity : AppCompatActivity() {
 
         bottomSheetDialog = BottomSheetDialog(this)
         viewModel = ViewModelProvider(this).get(DateFinishedViewModel::class.java)
+
+        //Get user data
+        appState = this.application as DateNight
+        // Get intent extras
+        dateParticipantId = intent.getStringExtra(IntentConstants.PARTICIPANT_ID_EXTRA)!!
+        dateParticipantName = intent.getStringExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA)!!
+        dateExperienceId = intent.getStringExtra(IntentConstants.EXPERIENCE_ID)!!
+        dateId = intent.getStringExtra(IntentConstants.DATE_ID)!!
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // TODO: Uncomment
+        //viewModel.submitUserRating(dateId, dateParticipantId)
     }
 
     fun launchRateDateActivity(v: View){
@@ -49,7 +75,6 @@ class DateFinishedActivity : AppCompatActivity() {
     }
 
     fun backToInboxFragment(v: View){
-        // TODO: Navigate back to inbox fragment
         viewModel.backToInboxFragment(this)
     }
 
@@ -57,11 +82,22 @@ class DateFinishedActivity : AppCompatActivity() {
         viewModel.backToDateHubFragment(this)
     }
 
+    fun repeatDate(v: View){
+        val intent: Intent = Intent(this, UnityEnvironmentLoad::class.java)
+                .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
+                .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).currentUser.fullName)
+                .putExtra(IntentConstants.DATE_ID, dateId)
+                .putExtra(IntentConstants.EXPERIENCE_ID, dateExperienceId)
+                .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, dateParticipantId)
+                .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, dateParticipantName)
+        startActivity(intent)
+    }
+
     fun unveilRateUserBottomSheet(v: View){
         // Show bottom sheet
         bottomSheetDialogView = layoutInflater.inflate(R.layout.custom_rate_user_bottomsheet, null)
         howWasDateTextView = bottomSheetDialogView.findViewById(R.id.how_was_date_textview)
-        val titleText = "How was your date with " + "Bobo" + "?"
+        val titleText = "How was your date with $dateParticipantName?"
         howWasDateTextView.text = titleText
         submitUserRatingButton = bottomSheetDialogView.findViewById(R.id.submitUserRatingButton)
         emojiRatingsCircleImageViewArray = listOf(bottomSheetDialogView.findViewById(R.id.emoji_rating_1),
@@ -125,7 +161,6 @@ class DateFinishedActivity : AppCompatActivity() {
     }
 
     fun submitUserRatingOnClick(v: View){
-        // viewModel.submitUserRating(dateId, userIdToBeRated);
         bottomSheetDialog.dismiss()
     }
 

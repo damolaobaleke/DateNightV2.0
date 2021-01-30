@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
-        android:name=".utils.StripeConfiguration"
+        android:name=".utils.DateNight"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,13 +17,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
-        <activity android:name=".views.authentication.ForgotPassword"></activity>
+        <activity android:name=".views.authentication.ForgotPassword" />
         <activity
             android:name=".views.datehub_navigation.ui_fragments.dates.post_date.RateDateNightActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.datehub_navigation.ui_fragments.dates.post_date.DateFinishedActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.datehub_navigation.ui_fragments.chats.StartNewChatActivity"
             android:label="@string/title_activity_start_new_chat"
@@ -75,7 +75,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

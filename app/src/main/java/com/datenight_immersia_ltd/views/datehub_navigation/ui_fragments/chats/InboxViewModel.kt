@@ -115,10 +115,10 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
                 .putExtra(IntentConstants.USER_NAME_EXTRA, currentUsername)
                 .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, currentUserFullName)
                 .putExtra(IntentConstants.CHAT_ROOM_ID_EXTRA, data?.getStringExtra(IntentConstants.CHAT_ROOM_ID_EXTRA))
-                .putExtra(IntentConstants.CHAT_PARTICIPANT_ID_EXTRA, data?.getStringExtra(IntentConstants.CHAT_PARTICIPANT_ID_EXTRA))
-                .putExtra(IntentConstants.CHAT_PARTICIPANT_USER_NAME_EXTRA, data?.getStringExtra(IntentConstants.CHAT_PARTICIPANT_USER_NAME_EXTRA))
-                .putExtra(IntentConstants.CHAT_PARTICIPANT_FULL_NAME_EXTRA, data?.getStringExtra(IntentConstants.CHAT_PARTICIPANT_FULL_NAME_EXTRA))
-                .putExtra(IntentConstants.CHAT_PARTICIPANT_PHOTO_URL_EXTRA, data?.getStringExtra(IntentConstants.CHAT_PARTICIPANT_PHOTO_URL_EXTRA))
+                .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, data?.getStringExtra(IntentConstants.PARTICIPANT_ID_EXTRA))
+                .putExtra(IntentConstants.PARTICIPANT_USER_NAME_EXTRA, data?.getStringExtra(IntentConstants.PARTICIPANT_USER_NAME_EXTRA))
+                .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, data?.getStringExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA))
+                .putExtra(IntentConstants.PARTICIPANT_PHOTO_URL_EXTRA, data?.getStringExtra(IntentConstants.PARTICIPANT_PHOTO_URL_EXTRA))
         parentContext.startActivity(chatRoomActivityIntent, null)
     }
 
@@ -182,10 +182,10 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
                     .putExtra(IntentConstants.USER_NAME_EXTRA, currentUsername)
                     .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, currentUserFullName)
                     .putExtra(IntentConstants.CHAT_ROOM_ID_EXTRA, mChatRoomKey)
-                    .putExtra(IntentConstants.CHAT_PARTICIPANT_ID_EXTRA, mChatParticipantId)
-                    .putExtra(IntentConstants.CHAT_PARTICIPANT_USER_NAME_EXTRA, mChatParticipantUsername)
-                    .putExtra(IntentConstants.CHAT_PARTICIPANT_FULL_NAME_EXTRA, mChatParticipantFullName)
-                    .putExtra(IntentConstants.CHAT_PARTICIPANT_PHOTO_URL_EXTRA, mParticipantPhotoUrl)
+                    .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, mChatParticipantId)
+                    .putExtra(IntentConstants.PARTICIPANT_USER_NAME_EXTRA, mChatParticipantUsername)
+                    .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, mChatParticipantFullName)
+                    .putExtra(IntentConstants.PARTICIPANT_PHOTO_URL_EXTRA, mParticipantPhotoUrl)
             startActivity(view.context, chatRoomActivityIntent, null)
         }
 
@@ -206,7 +206,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
                     rVal = "Yesterday"
                 } else{
                     // Format time to show day of week as in Tuesday
-                    rVal = SimpleDateFormat("E", Locale.getDefault()).format(messageTime.time)
+                    rVal = SimpleDateFormat("EEEE", Locale.getDefault()).format(messageTime.time)
                 }
 
             } else{

@@ -9,10 +9,16 @@ object IntentConstants {
 
     // EXTRAS -- Chat
     const val CHAT_ROOM_ID_EXTRA = "roomId"
-    const val CHAT_PARTICIPANT_ID_EXTRA = "participantId"
-    const val CHAT_PARTICIPANT_FULL_NAME_EXTRA = "participantFullName"
-    const val CHAT_PARTICIPANT_USER_NAME_EXTRA = "participantName"
-    const val CHAT_PARTICIPANT_PHOTO_URL_EXTRA = "participantPhotoUrl"
+
+    // EXTRAS -- Participant data
+    const val PARTICIPANT_ID_EXTRA = "participantId"
+    const val PARTICIPANT_FULL_NAME_EXTRA = "participantFullName"
+    const val PARTICIPANT_USER_NAME_EXTRA = "participantUserName"
+    const val PARTICIPANT_PHOTO_URL_EXTRA = "participantPhotoUrl"
+
+    // EXTRAS -- Unity/date data
+    const val EXPERIENCE_ID = "experienceId"
+    const val DATE_ID = "dateId"
 
     // EXTRAS -- Date Hub Nav Fragments to launch
     const val FRAGMENT_TO_LOAD = "fragmentToLoad"

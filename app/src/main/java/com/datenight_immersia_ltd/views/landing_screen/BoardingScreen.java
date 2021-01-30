@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.datenight_immersia_ltd.utils.DateNight;
 import com.datenight_immersia_ltd.views.datehub_navigation.DateHubNavigation;
 import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.views.authentication.LoginActivity;
@@ -80,11 +81,19 @@ public class BoardingScreen extends AppCompatActivity {
             assert name != null;
             Log.i("Name", name);
 
-            Intent intent = new Intent(this, DateHubNavigation.class);
-            startActivity(intent);
+            DateNight appState = ((DateNight)this.getApplication());
+            if (appState.getAppData(user.getUid()) == null){
+                // Fetch required launch data and then launch DateHubNavigation class
+                appState.initializeAppData(user.getUid(), this);
+            } else {
+                Intent intent = new Intent(this, DateHubNavigation.class);
+                startActivity(intent);
+            }
+
 
             Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
         } else {
+            // TODO: Log user out
             Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
 
         }

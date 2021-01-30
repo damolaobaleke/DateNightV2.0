@@ -10,7 +10,7 @@
         android:id="@+id/dateTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/inter"
         android:text="dateTitle"
@@ -31,14 +31,14 @@
         android:background="@drawable/circle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateTitle"
-        app:srcCompat="@drawable/avatar_ellipse" />
+        app:srcCompat="@drawable/ic_invitation_heart" />
 
     <TextView
         android:id="@+id/dateDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
         android:layout_marginTop="13dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/pill"
         android:fontFamily="@font/inter"
@@ -51,14 +51,14 @@
         android:textColor="@color/date_night_theme"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintStart_toEndOf="@+id/dateImage"
+        app:layout_constraintEnd_toStartOf="@+id/dateTime"
         app:layout_constraintTop_toBottomOf="@+id/dateTitle" />
 
     <TextView
         android:id="@+id/dateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/pill"
         android:fontFamily="@font/inter"
         android:paddingStart="30dp"
@@ -69,7 +69,7 @@
         android:textAlignment="center"
         android:textColor="@color/date_night_theme"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/dateDate"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dateDate" />
 
     <ImageView

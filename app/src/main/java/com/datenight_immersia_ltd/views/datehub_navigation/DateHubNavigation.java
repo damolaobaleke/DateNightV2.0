@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.datenight_immersia_ltd.IntentConstants;
 import com.datenight_immersia_ltd.R;
+import com.datenight_immersia_ltd.utils.DateNight;
 import com.datenight_immersia_ltd.views.authentication.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -119,6 +120,8 @@ public class DateHubNavigation extends AppCompatActivity {
     }
 
     private void signOut() {
+        DateNight appState = ((DateNight)this.getApplication());
+        appState.clearAppData();
         mAuth =  FirebaseAuth.getInstance();
         mAuth.signOut();
         updateUI(null);

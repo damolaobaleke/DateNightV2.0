@@ -23,6 +23,7 @@ import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
 import com.datenight_immersia_ltd.modelfirestore.User.UserStatsModel;
 import com.datenight_immersia_ltd.network.api.User;
+import com.datenight_immersia_ltd.utils.DateNight;
 import com.datenight_immersia_ltd.views.authentication.LoginActivity;
 import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.premium.PremiumModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -207,6 +208,8 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
     }
 
     private void signOut() {
+        DateNight appState = ((DateNight)this.getActivity().getApplication());
+        appState.clearAppData();
         mAuth.signOut();
         updateUI(null);
         Intent intent = new Intent(requireContext(), LoginActivity.class);
