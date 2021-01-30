@@ -51,7 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/date_night_grey_300"
-        app:layout_constraintBottom_toTopOf="@+id/helpUsImproveTextView"
+        app:layout_constraintBottom_toTopOf="@+id/helpUsImproveButton"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout3"
@@ -73,74 +73,74 @@
             android:id="@+id/textView25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:fontFamily="@font/inter"
             android:text="@string/repeat_date"
             android:textAllCaps="true"
             android:textColor="@color/date_night_pear"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/repeatDateButton" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textView24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:fontFamily="@font/inter"
             android:text="@string/to_chat"
             android:textAllCaps="true"
             android:textColor="@color/date_night_pear"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toChatsButton" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/textView23"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:fontFamily="@font/inter"
             android:text="@string/rate_date"
             android:textAllCaps="true"
             android:textColor="@color/date_night_pear"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/rateDateButton"
-            app:layout_constraintStart_toStartOf="@+id/rateDateButton"
-            app:layout_constraintTop_toBottomOf="@+id/rateDateButton" />
+            app:layout_constraintStart_toStartOf="@+id/rateDateButton" />
 
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/rateDateButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="8dp"
             android:onClick="unveilRateUserBottomSheet"
+            android:src="@drawable/ic_rate_date_icon"
+            app:layout_constraintBottom_toTopOf="@+id/textView23"
             app:layout_constraintEnd_toStartOf="@+id/toChatsButton"
-            app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toEndOf="@+id/repeatDateButton"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_rate_date_icon" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/toChatsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="8dp"
             android:onClick="backToInboxFragment"
+            android:src="@drawable/ic_go_to_chat_icon"
+            app:layout_constraintBottom_toTopOf="@+id/textView24"
             app:layout_constraintEnd_toEndOf="@+id/textView24"
             app:layout_constraintStart_toStartOf="@+id/textView24"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_go_to_chat_icon" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/repeatDateButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="repeatDate"
+            android:src="@drawable/ic_repeat_date_icon"
+            app:layout_constraintBottom_toTopOf="@+id/textView25"
             app:layout_constraintEnd_toEndOf="@+id/textView25"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_repeat_date_icon" />
+            app:layout_constraintStart_toStartOf="@+id/textView25"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -168,19 +168,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/helpUsImproveTextView"
-        app:layout_constraintVertical_bias="0.508"
+        app:layout_constraintTop_toBottomOf="@+id/helpUsImproveButton"
         app:srcCompat="@drawable/datenight_text_logo_white" />
 
-    <TextView
-        android:id="@+id/helpUsImproveTextView"
+    <Button
+        android:id="@+id/helpUsImproveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
+        android:background="@drawable/custom_help_us_improve_button"
         android:fontFamily="@font/inter"
         android:onClick="launchRateDateActivity"
+        android:paddingStart="5dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="2dp"
         android:text="@string/help_us_improve"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textColor="@color/date_night_pear"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

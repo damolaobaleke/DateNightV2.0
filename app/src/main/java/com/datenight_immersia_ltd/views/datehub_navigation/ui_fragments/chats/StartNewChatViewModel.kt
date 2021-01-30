@@ -16,10 +16,10 @@ class StartNewChatViewModel: ViewModel() {
     private val dbReference = FirebaseFirestore.getInstance()
     private val dbReferenceUser = dbReference.collection(DatabaseConstants.USER_DATA_NODE)
     private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
-    var foundUserId: String? = null
-    var foundUserFullName: String? = null
-    var foundUserPhotoUrl: String? = null
-    var queryUserName: String? = null
+    private var foundUserId: String? = null
+    private var foundUserFullName: String? = null
+    private var foundUserPhotoUrl: String? = null
+    private var queryUserName: String? = null
 
 
     init {
@@ -96,10 +96,10 @@ class StartNewChatViewModel: ViewModel() {
             // End Activity and return found user details
             val intent = Intent()
                     .putExtra(IntentConstants.CHAT_ROOM_ID_EXTRA, newChatRoomId)
-                    .putExtra(IntentConstants.CHAT_PARTICIPANT_ID_EXTRA, foundUserId)
-                    .putExtra(IntentConstants.CHAT_PARTICIPANT_FULL_NAME_EXTRA, foundUserFullName)
-                    .putExtra(IntentConstants.CHAT_PARTICIPANT_USER_NAME_EXTRA, queryUserName)
-                    .putExtra(IntentConstants.CHAT_PARTICIPANT_PHOTO_URL_EXTRA, foundUserPhotoUrl)
+                    .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, foundUserId)
+                    .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, foundUserFullName)
+                    .putExtra(IntentConstants.PARTICIPANT_USER_NAME_EXTRA, queryUserName)
+                    .putExtra(IntentConstants.PARTICIPANT_PHOTO_URL_EXTRA, foundUserPhotoUrl)
             parentContext.setResult(AppCompatActivity.RESULT_OK, intent)
             parentContext.finish()
         }

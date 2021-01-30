@@ -20,25 +20,32 @@ import androidx.room.Database
 import com.datenight_immersia_ltd.DatabaseConstants
 import com.datenight_immersia_ltd.IntentConstants
 import com.datenight_immersia_ltd.views.datehub_navigation.DateHubNavigation
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class  DateFinishedViewModel : ViewModel() {
     private val dbReference = FirebaseFirestore.getInstance()
+    private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
     var userRating: Int? = null
 
     fun launchRateDateNightActivity(parentContext: DateFinishedActivity){
-        parentContext.startActivity(Intent(parentContext, RateDateNightActivity::class.java))
+        //TODO: Uncomment
+        val intent = Intent(parentContext, RateDateNightActivity::class.java)
+        //        .putExtra(IntentConstants.EXPERIENCE_ID, parentContext.dateExperienceId)
+        parentContext.startActivity(intent)
     }
 
     fun submitUserRating(dateId: String, dateParticipantId: String){
         if (userRating != null){
             // Update user's rating within the date node
-            val data = hashMapOf(DatabaseConstants.USER_RATING_FIELD to userRating);
-            dbReference.collection(DatabaseConstants.DATES_COLLECTION)
+            val data = mapOf(DatabaseConstants.USER_RATING_FIELD to userRating)
+            dbReference.collection(DatabaseConstants.USER_DATA_NODE)
+                    .document(currentUserId!!)
+                    .collection(DatabaseConstants.DATES_COLLECTION)
                     .document(dateId)
                     .collection(DatabaseConstants.STATISTICS_NODE)
                     .document(dateParticipantId)
-                    .set(data); // TODO: Update to update
+                    .update(data)
 
             // Update average date statistics rating
             // TODO: Implement

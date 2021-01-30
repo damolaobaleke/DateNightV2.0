@@ -1,6 +1,5 @@
 package com.datenight_immersia_ltd.views.authentication;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,10 +14,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.datenight_immersia_ltd.utils.DateNight;
 import com.datenight_immersia_ltd.views.datehub_navigation.DateHubNavigation;
 import com.datenight_immersia_ltd.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.datenight_immersia_ltd.views.landing_screen.BoardingScreen;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -120,8 +119,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Log.i("SignIn", "Successful");
                                     Toast.makeText(LoginActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
 
-                                    Intent intent = new Intent(LoginActivity.this, DateHubNavigation.class);
-                                    startActivity(intent);
+                                    //TODO: Initiate a progress bar
+                                    DateNight appState = ((DateNight)this.getApplication());
+                                    if (appState.getAppData(mAuth.getUid()) == null){
+                                        // Fetch required launch data and then launch DateHubNavigation class
+                                        appState.initializeAppData(mAuth.getUid(), LoginActivity.this);
+                                    } else {
+                                        Intent intent = new Intent(LoginActivity.this, DateHubNavigation.class);
+                                        startActivity(intent);
+                                    }
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Please verify your email address", Toast.LENGTH_SHORT).show();
                                     progressBarGone();
@@ -208,5 +214,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivity(intent);
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        Intent intent = new Intent(this, BoardingScreen.class);
+        startActivity(intent);
+        return false;
+    }
 }

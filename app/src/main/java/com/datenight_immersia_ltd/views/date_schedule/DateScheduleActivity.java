@@ -161,13 +161,15 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        dateChosen.setText(String.format(Locale.UK, "%02d-%02d-%02d", dayOfMonth, month + 1, year)); //add one to the month as array pos jan is 0
+        dateChosen.setText(String.format(Locale.getDefault(), "%02d-%02d-%02d", dayOfMonth, month + 1, year)); //add one to the month as array pos jan is 0
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        int hour12HourClock;
         String AM_PM="";
 
+        /*
         calendar = Calendar.getInstance();
         if(calendar.get(Calendar.AM_PM) == Calendar.AM){
             AM_PM = "am";
@@ -176,6 +178,23 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
         }else{
             AM_PM = "";
         }
-        timeChosen.setText(String.format(Locale.UK, "%01d:%02d %s", hourOfDay, minute, AM_PM));
+
+        */
+
+        if (hourOfDay == 0){ // 12.00 AM
+            AM_PM = "AM";
+            hour12HourClock = 12;
+        }
+        else if (hourOfDay < 12){
+            AM_PM = "AM";
+            hour12HourClock = hourOfDay;
+        }  else if (hourOfDay == 12){ // 12:00 PM
+            AM_PM = "PM";
+            hour12HourClock = hourOfDay;
+        } else {
+            AM_PM = "PM";
+            hour12HourClock = hourOfDay - 12;
+        }
+        timeChosen.setText(String.format(Locale.getDefault(), "%01d:%02d %s", hour12HourClock, minute, AM_PM));
     }
 }

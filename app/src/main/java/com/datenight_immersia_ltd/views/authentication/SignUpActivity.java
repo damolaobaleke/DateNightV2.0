@@ -331,7 +331,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
-
         }
     }
 

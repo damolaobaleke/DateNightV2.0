@@ -92,14 +92,14 @@ public class ScheduledAdapter extends FirestoreRecyclerAdapter<DateModel, Schedu
         }
 
         if (!model.getCreator().equals(mAuth.getCurrentUser().getUid()) && model.getParticipantStatus().get(inviteeKey).equals(ACCEPTED)) { //invitee
-            holder.dateTitle.setText(String.format("Scheduled %s with %s", experienceModel.getName(), model.getParticipants().get(creatorKey)));
+            //holder.dateTitle.setText(String.format("Scheduled %s with %s", experienceModel.getName(), model.getParticipants().get(creatorKey)));
             holder.dayChosen.setText(model.getDateTime().toString());
 
             long daySecondsToDate = model.getDateTime().getSeconds() / 60 * 60; //divide by the hr to get day
             holder.timeChosen.setText(String.valueOf(daySecondsToDate));
 
         } else if (model.getParticipantStatus().get(inviteeKey).equals(ACCEPTED) && model.getCreator().equals(mAuth.getCurrentUser().getUid())) {
-            holder.dateTitle.setText(String.format("Scheduled %s with %s", experienceModel.getName(), model.getParticipants().get(inviteeKey)));
+          //  holder.dateTitle.setText(String.format("Scheduled %s with %s", experienceModel.getName(), model.getParticipants().get(inviteeKey)));
 
         }
     }

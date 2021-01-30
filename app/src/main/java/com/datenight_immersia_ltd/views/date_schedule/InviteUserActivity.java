@@ -33,6 +33,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.datenight_immersia_ltd.DatabaseConstants;
 import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.modelfirestore.Date.DateModel;
 import com.datenight_immersia_ltd.modelfirestore.Experience.ExperienceModel;
@@ -58,13 +59,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 public class InviteUserActivity extends AppCompatActivity implements View.OnClickListener {
     FirebaseFirestore db;
-    DocumentReference userRef, datesRef, experienceRef;
-    CollectionReference usercollRef;
+    DocumentReference userRef, experienceRef;
+    CollectionReference usercollRef, datesRef;
     EditText userSearch;
     Button cancelSearchButton;
     TextView cancelSearchTextView;
@@ -74,7 +74,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
     String dateChosen;
     String timeChosen;
     FirebaseAuth mAuth;
-    String currentUser;
+    String currentUserId;
     UserModel dateinvitee; //invitee
     UserModel creatorUser;
     HashMap<String, String> participants;
@@ -107,7 +107,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        currentUser = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+        currentUserId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
         userSearch = findViewById(R.id.search_user);
         cancelSearchButton = findViewById(R.id.cancel_search_btn);
@@ -278,7 +278,10 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void createDateInDb() {
-        datesRef = db.collection("dates").document();
+        // TODO: Edit this
+        datesRef = db.collection(DatabaseConstants.USER_DATA_NODE)
+                .document(currentUserId)
+                .collection(DatabaseConstants.DATES_COLLECTION);
 
         //get creator User
         userRef.get().addOnSuccessListener(documentSnapshot -> {
@@ -289,7 +292,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
 
                 //===Participants
                 participants = new HashMap<>();
-                participants.put(currentUser, creatorUser.getFullName());
+                participants.put(currentUserId, creatorUser.getFullName());
                 participants.put(dateinvitee.getId(), dateinvitee.getFullName()); //invitee
 
                 Log.i(TAG, creatorUser.getFullName() + " invited " + dateinvitee.getFullName());
@@ -337,25 +340,16 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                             Log.i(TAG, "The experience id: " + experienceModel.getName());
 
                             //create date in db
-                            DateModel dateModel = new DateModel(datesRef.getId(), "345678", mAuth.getCurrentUser().getUid(), participants, participantUsernames, dateDuration(), currentTime(), dateStringToTimestamp(dateChosen +" "+ timeChosen), experienceModel.getId(), participantStatus, dateStatistics);
-                            datesRef.set(dateModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    toast();
-                                    //Associate dates with dateInvitee and dateCreator
-                                    userRef.update("dateId", FieldValue.arrayUnion(datesRef.getId())); //update the fieldValue(array)
-
-                                    DocumentReference dateInvitee = db.collection("userData").document(dateinvitee.getId());
-                                    dateInvitee.update("dateId", FieldValue.arrayUnion(datesRef.getId()));
-
-                                    Log.i(TAG, "The dateTime " + dateChosen + " " + timeChosen);
-                                    Log.i(TAG, String.valueOf(dateStringToTimestamp(dateChosen +" "+ timeChosen)));
-                                    //go to congrats screen, can be here
-                                    //Send Notification
-
-                                }
-                            });
-                            //create date in db with experience
+                            String newDateId = datesRef.document().getId();
+                            DateModel dateModel = new DateModel(newDateId, "345678", mAuth.getCurrentUser().getUid(),
+                                                                participants, participantUsernames, dateDuration(),
+                                                                dateStringToTimestamp(dateChosen +" "+ timeChosen),
+                                                                experienceModel.getId(), participantStatus);
+                            datesRef.document(newDateId).set(dateModel);
+                            Log.i(TAG, "The dateTime " + dateChosen + " " + timeChosen);
+                            Log.i(TAG, String.valueOf(dateStringToTimestamp(dateChosen +" "+ timeChosen)));
+                            //go to congrats screen, can be here
+                            //Send Notification
 
                         }
                     }
@@ -408,7 +402,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
     //Might rather take two arguments dateChosen, timeChosen rather than having to add the two values
     public static Timestamp dateStringToTimestamp(final String dateStr) {
         try {
-            DateFormat formatter = new SimpleDateFormat("MM-dd-yyyy hh:mm", Locale.UK); //EE- Day name in week
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm", Locale.getDefault()); //EE- Day name in week
             Date date = formatter.parse(dateStr);
 
             //convert date to timestamp
@@ -452,52 +446,4 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
         onBackPressed();
         return super.onSupportNavigateUp();
     }
-
-    /*Using a Search View has limitations*/
-    public void usingSearchView() {
-//        userSearch.setQueryHint("Search for a user to invite");
-//        userSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                //called on search button pressed
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                //called on text input change
-//                textInSearch = newText;
-//                usercollRef.whereEqualTo("search", newText.toLowerCase()) //searches based on lowercase username==== userSearch.getQuery().toString().toLowerCase()
-//                        .get()
-//                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-//                                    if (documentSnapshot.exists()) {
-//                                        UserModel user = documentSnapshot.toObject(UserModel.class); //recreate object from the class
-//                                        user.setId(documentSnapshot.getId());
-//
-//                                        System.out.println(user.getUsername());
-//                                    }
-//                                }
-//                            }
-//                        }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(InviteUserActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//
-//                return false;
-//            }
-//        });
-//    }
-//
-//    if (userSearch.getQuery().toString().length() > 1) {
-//        return "";
-//    } else {
-//        return userSearch.getQuery().toString();
-//    }
-    }
-
 }

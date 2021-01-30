@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
+import com.datenight_immersia_ltd.IntentConstants
 import com.datenight_immersia_ltd.R
 import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.chats.StartNewChatViewModel
 import kotlinx.android.synthetic.main.activity_rate_date_night.*
@@ -15,10 +16,11 @@ class RateDateNightActivity : AppCompatActivity() {
     private lateinit var ratingStarArray: List<ImageView>
     private lateinit var positiveFeedbackEditText: EditText
     private lateinit var negativeFeedbackEditText: EditText
-
     // Data
-    private var starRating = 1;
+    private var starRating = 0;
     private lateinit var viewModel: RateDateNightViewModel;
+    // Intent extras
+    private lateinit var dateExperienceId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,9 @@ class RateDateNightActivity : AppCompatActivity() {
         negativeFeedbackEditText = findViewById(R.id.negativeReviewEditText)
 
         viewModel = ViewModelProvider(this).get(RateDateNightViewModel::class.java)
+
+        //TODO: Uncomment
+        //dateExperienceId = intent.getStringExtra(IntentConstants.EXPERIENCE_ID)!!
     }
 
     fun setRatingOnStarClick(v: View){
@@ -68,7 +73,7 @@ class RateDateNightActivity : AppCompatActivity() {
     // Fills stars up to fillUpToIdx, then clears stars up to clearToIdx
     private fun updateStars(fillUpToIdx: Int, clearUpToIdx: Int){
         for(i in ratingStarArray.indices){
-            if (i in 1 .. fillUpToIdx){
+            if (i in 0 .. fillUpToIdx){
                 ratingStarArray[i].setImageResource(R.drawable.ic_closed_star)
             } else if (i in (fillUpToIdx + 1 until clearUpToIdx)) {
                 ratingStarArray[i].setImageResource(R.drawable.ic_open_star)
@@ -78,14 +83,15 @@ class RateDateNightActivity : AppCompatActivity() {
 
     fun onSubmit(v: View){
         // TODO: Implement
-        /*
-        viewModel.addRating(experienceId,
-                starRating,
-                positiveReviewEditText.text.toString(),
-                negativeFeedbackEditText.text.toString()
-        )
-
-         */
+        val positiveReview = positiveReviewEditText.text.toString().trim()
+        val negativeReview = negativeFeedbackEditText.text.toString().trim()
+        if (starRating > 0 || positiveReview.isNotBlank() || negativeReview.isNotBlank()){
+            viewModel.addRating(dateExperienceId,
+                                starRating,
+                                positiveReviewEditText.text.toString(),
+                                negativeFeedbackEditText.text.toString()
+            )
+        }
     }
 
     @Override

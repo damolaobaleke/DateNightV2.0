@@ -15,19 +15,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/bg_dialogue_edit_invite">
 
     <TextView
         android:id="@+id/date_descr_title"
-        android:layout_width="wrap_content"
+        android:layout_width="211dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
         android:fontFamily="@font/inter"
         android:gravity="center"
-        android:text="Paris date night\nwith sharon"
+        android:text="Paris date night with sharon"
         android:textColor="@color/black"
         android:textFontWeight="600"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +40,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="110dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="110dp"
         android:background="@drawable/custom_login_button"
         android:fontFamily="@font/inter"
@@ -47,9 +50,9 @@
         android:textFontWeight="500"
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_descr_title" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
         android:id="@+id/edit_date_btn"
@@ -57,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@drawable/custom_signup_button"
-        android:text="Edit"
+        android:text="Edit Date"
         android:textAllCaps="false"
         android:textColor="@color/date_night_purple"
         android:textFontWeight="500"
@@ -71,13 +74,27 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/custom_signup_button"
-        android:text="Cancel"
+        android:text="Cancel Date"
         android:textAllCaps="false"
         android:textColor="@color/date_night_purple"
         android:textFontWeight="500"
         android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/edit_date_btn"
         app:layout_constraintStart_toStartOf="@+id/edit_date_btn"
         app:layout_constraintTop_toBottomOf="@+id/edit_date_btn" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/inter"
+        android:text="What would you like to do?"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/date_descr_title"
+        app:layout_constraintStart_toStartOf="@+id/date_descr_title"
+        app:layout_constraintTop_toBottomOf="@+id/date_descr_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>
