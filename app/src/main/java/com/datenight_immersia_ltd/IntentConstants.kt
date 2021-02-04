@@ -18,4 +18,5 @@ object IntentConstants {
     const val FRAGMENT_TO_LOAD = "fragmentToLoad"
     const val INBOX_FRAGMENT = "inboxFragment"
     const val DATE_HUB_FRAGMENT = "dateHubFragment"
+    const val BUY_DTC_FRAGMENT = "buyDtcFragment"
 }

@@ -32,29 +32,21 @@ public interface FundstrtrApi {
     @GET("/investopp/pitch/{id}/discussion")
     Call<List<Pitch>> getDiscussions(@Path("id") String pitchId);
 
-    @GET("/users")
-    Call<List<UserObject>> getUsers();
-
-    @GET("/users/{id}")
-    Call<User> getUser(@Path("id") String userId);
-
-    @GET("/my-profile/{id}/portfolio")
-    Call<User> getUserPortfolio(@Path("id") String... userId);
-
-    @POST("/signup")
-    Call<PostAuthUser> signUp(@Header ("token") String token, @Body PostAuthUser user);
+//    @POST("/signup")
+//    Call<PostAuthUser> signUp(@Header("token") String token, @Body PostAuthUser user);
 
 
     //Another method to post to server
 
-//    @Headers({"Static-Header: 123", ""})
-    //form url encoding
-    @FormUrlEncoded
-    @POST("/login")
-    Call<PostAuthUser> logIn(@Header ("token") String token, @Field("email") String email, @Field("password") String password);
+    //@Headers({"Static-Header: 123", ""})
 
-    @PUT("/my-profile/complete-form/{id}")
-    Call<User> updateUser(@Path("id") String userId, @Body User userbody);
+    //form url encoding
+//    @FormUrlEncoded
+//    @POST("/login")
+//    Call<PostAuthUser> logIn(@Header ("token") String token, @Field("email") String email, @Field("password") String password);
+//
+//    @PUT("/my-profile/complete-form/{id}")
+//    Call<User> updateUser(@Path("id") String userId, @Body User userbody);
 
 
     //--Testing consuming endpoint with or (if) query string e.g /post?userId=1

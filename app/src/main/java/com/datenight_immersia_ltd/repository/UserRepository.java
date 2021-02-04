@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import com.datenight_immersia_ltd.model.DateNightDatabase;
 import com.datenight_immersia_ltd.model.User.UserDAO;
 import com.datenight_immersia_ltd.model.User.UserObject;
-import com.datenight_immersia_ltd.network.api.User;
+
 
 import java.util.List;
 

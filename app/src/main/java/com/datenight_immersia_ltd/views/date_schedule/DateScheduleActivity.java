@@ -30,8 +30,13 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.datenight_immersia_ltd.R;
+import com.datenight_immersia_ltd.modelfirestore.Experience.ExperienceModel;
 import com.datenight_immersia_ltd.views.unity.UnityEnvironmentLoad;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,7 +47,7 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
 
     TextView dateChosen, experienceDescription, experienceCost;
     TextView timeChosen;
-    TextView experienceName;
+    TextView experienceName, comingSoonText;
     Button scheduleDateTime;
     Button previewDateScene;
 
@@ -50,6 +55,9 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
     Intent intent;
 
     VideoView videoView;
+    DocumentReference expRef;
+    FirebaseFirestore db;
+    ExperienceModel experience;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,23 +76,23 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
         bindId();
 
         intent = getIntent();
-        Log.i("DateSchedule",intent.getStringExtra("experienceName") + intent.getStringExtra("experienceDesc") + intent.getStringExtra("experienceCost"));
+        Log.i("DateSchedule", intent.getStringExtra("experienceName") + intent.getStringExtra("experienceDesc") + intent.getStringExtra("experienceCost"));
 
-        experienceName.setText(intent.getStringExtra("experienceName"));
-        experienceDescription.setText(intent.getStringExtra("experienceDesc"));
-        if(intent.getStringExtra("experienceCost") != null) {
+
+        if (intent.getStringExtra("experienceCost") != null) {
             experienceCost.setText(intent.getStringExtra("experienceCost"));
-        }else{
+        } else {
             experienceCost.setText(R.string.exp_val_free);
         }
 
     }
 
-    public void bindId(){
+    public void bindId() {
         experienceName = findViewById(R.id.experience_name_in_schedule);
         experienceDescription = findViewById(R.id.experience_descr);
         experienceCost = findViewById(R.id.free_price);
         videoView = findViewById(R.id.videoView);
+        comingSoonText = findViewById(R.id.coming_soon_text);
     }
 
     @Override
@@ -93,19 +101,35 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
         backgroundVideo();
     }
 
-    public void backgroundVideo(){
-        if(intent.getStringExtra("experienceName").equals("Dinner in Paris")){
+    public void backgroundVideo() {
+        if (intent.getStringExtra("experienceName").equals("Dinner in Paris")) {
             videoView.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.paris_one);
-            videoView.setOnPreparedListener(mp->{
+            videoView.setOnPreparedListener(mp -> {
                 mp.setLooping(true);
                 mp.start();
             });
 
-        }else if(intent.getStringExtra("experienceName").equals("Picnic in the Meadow")){
+        } else if (intent.getStringExtra("experienceName").equals("Picnic in the Meadow")) {
+            videoView.setVisibility(View.INVISIBLE);
+            scheduleDateTime.setVisibility(View.INVISIBLE);
+            comingSoonText.setVisibility(View.VISIBLE);
+            setExperienceVisibility();
 
-        }else{
-
+        } else if (intent.getStringExtra("experienceName").equals("Love in the Clouds ☁")) {
+            setExperienceVisibility();
+            videoView.setVideoPath("android.resource://" + getPackageName() + "/" + R.raw.paris_one);
+            videoView.setOnPreparedListener(mp -> {
+                mp.setLooping(true);
+                mp.start();
+            });
         }
+    }
+
+    public void setExperienceVisibility() {
+        experienceName.setVisibility(View.VISIBLE);
+        experienceDescription.setVisibility(View.VISIBLE);
+        experienceName.setText(intent.getStringExtra("experienceName"));
+        experienceDescription.setText(intent.getStringExtra("experienceDesc"));
     }
 
     public void previewDateScene() {
@@ -154,7 +178,7 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
     }
 
     private void pickTime() {
-        TimePickerDialog timeDialog = new TimePickerDialog(this, this,  Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), false);
+        TimePickerDialog timeDialog = new TimePickerDialog(this, this, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), false);
         timeDialog.show();
 
     }
@@ -166,16 +190,33 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        String AM_PM="";
+        String AM_PM = "";
 
         calendar = Calendar.getInstance();
-        if(calendar.get(Calendar.AM_PM) == Calendar.AM){
+        if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
             AM_PM = "am";
-        }else if(calendar.get(Calendar.AM_PM) == Calendar.PM){
+        } else if (calendar.get(Calendar.AM_PM) == Calendar.PM) {
             AM_PM = "pm";
-        }else{
+        } else {
             AM_PM = "";
         }
         timeChosen.setText(String.format(Locale.UK, "%01d:%02d %s", hourOfDay, minute, AM_PM));
+    }
+
+    public ExperienceModel getExperience() {
+        //Instance of db
+        db = FirebaseFirestore.getInstance();
+        //Ref to Doc
+        expRef = db.collection("experiences").document("capBalloonRide");
+
+        expRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                experience = documentSnapshot.toObject(ExperienceModel.class);
+                assert experience != null;
+                Log.i("DateSchedule", experience.getName());
+            }
+        });
+        return experience;
     }
 }

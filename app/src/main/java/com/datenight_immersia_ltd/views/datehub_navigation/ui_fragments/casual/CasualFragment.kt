@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.opengl.Visibility
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +15,6 @@ import android.view.ViewGroup
 import android.widget.*
 import android.widget.Toast.LENGTH_LONG
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.datenight_immersia_ltd.R
@@ -26,6 +24,7 @@ import com.datenight_immersia_ltd.views.unity.UnityEnvironmentLoad
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
@@ -33,8 +32,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URL
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class CasualFragment : Fragment() {
@@ -53,6 +50,7 @@ class CasualFragment : Fragment() {
     lateinit var parisNightDinner: ImageView
     lateinit var meadowPicnic: ImageView
     lateinit var progressBar: ProgressBar
+    lateinit var progressBarMeadow: ProgressBar
 
     lateinit var imageBitmaps: ArrayList<Bitmap>
     lateinit var bitmap: Bitmap
@@ -75,6 +73,7 @@ class CasualFragment : Fragment() {
         experienceName = view.findViewById(R.id.experience_name)
         experienceNameCappaduc = view.findViewById(R.id.experience_name_capp)
         progressBar = view.findViewById(R.id.progressBar4)
+        progressBarMeadow = view.findViewById(R.id.progressBarM)
 
 
         db = FirebaseFirestore.getInstance()
@@ -101,22 +100,36 @@ class CasualFragment : Fragment() {
             }
         }
 
-        //
-        if (isNetworkAvailable()) {
-            progressBar.isVisible = false
-            try {
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/datenight-f491f.appspot.com/o/experiencePreviewImages%2Fparispreviewimg.png?alt=media&token=57e42db7-bc7f-4e9e-9a02-0b58cce33587").networkPolicy(NetworkPolicy.OFFLINE).into(parisNightDinner); //cache image for offline
-                Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/datenight-f491f.appspot.com/o/experiencePreviewImages%2Fpicnic.png?alt=media&token=570eccb0-304c-4ff4-83d5-ba9ad0660328").into(meadowPicnic);
-            } catch (e: Error) {
-                Log.i(TAG, "Failed to load:" + e.message)
+
+        //TODO: Load images from array-strings in long run
+
+        //paris
+        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/datenight-f491f.appspot.com/o/experiencePreviewImages%2Fparispreviewimg.png?alt=media&token=57e42db7-bc7f-4e9e-9a02-0b58cce33587").networkPolicy(NetworkPolicy.OFFLINE).into(parisNightDinner, object : Callback { //cahce image for offline
+            override fun onSuccess() {
+                progressBar.isVisible = false
             }
-        } else {
-            progressBar.isVisible = true
-            parisNightDinner.setImageResource(R.color.white)
-            meadowPicnic.setImageResource(R.color.white)
-            Toast.makeText(context, "You are not connected to the internet", LENGTH_LONG).show()
-        }
-        //
+            override fun onError(e: Exception) {
+                progressBar.isVisible = true
+                parisNightDinner.setImageResource(R.color.white)
+                meadowPicnic.setImageResource(R.color.white)
+                Toast.makeText(context, e.message, LENGTH_LONG).show()
+            }
+        })
+
+        //cap
+        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/datenight-f491f.appspot.com/o/experiencePreviewImages%2Fpicnic.png?alt=media&token=570eccb0-304c-4ff4-83d5-ba9ad0660328").into(meadowPicnic, object : Callback {
+            override fun onSuccess() {
+                progressBarMeadow.isVisible = false
+            }
+
+            override fun onError(e: Exception) {
+                progressBarMeadow.isVisible = true
+                parisNightDinner.setImageResource(R.color.white)
+                meadowPicnic.setImageResource(R.color.white)
+                Toast.makeText(context, e.message, LENGTH_LONG).show()
+            }
+        })
+
 
         //Co-routine scope , Main dispatcher, as we have some UI
         GlobalScope.launch(Dispatchers.Main) {

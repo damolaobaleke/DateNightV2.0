@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class RecylerViewAdapter extends RecyclerView.Adapter<RecylerViewAdapter.UserViewHolder> {
     private final ArrayList<UserModel> mUserList;
-
+    UserModel currentUser;
     private OnItemClickListener mListener;
 
     //listener to listen on recycler view item or items clicked
@@ -46,7 +46,7 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecylerViewAdapter.
 
     // ViewHolder describes an item view and metadata about its place within the RecyclerView.
     public static class UserViewHolder extends RecyclerView.ViewHolder {
-        public TextView mUsername;
+        public TextView mUsername, mFirstLetterFullName, userFullName;
         ImageView mUserImage;
         public Button inviteButton;
 
@@ -55,6 +55,8 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecylerViewAdapter.
             mUsername = itemView.findViewById(R.id.user_username);
             mUserImage = itemView.findViewById(R.id.user_image);
             inviteButton = itemView.findViewById(R.id.invite_btn);
+            mFirstLetterFullName = itemView.findViewById(R.id.first_letter_name);
+            userFullName = itemView.findViewById(R.id.full_name_search);
 
             //On invite clicked
             inviteButton.setOnClickListener(v -> {
@@ -86,14 +88,16 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecylerViewAdapter.
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         //update contents with item at given position and get specific item position
-        UserModel currentUser = mUserList.get(position);
-        Log.i("Adapter User", currentUser.getId() +" "+currentUser.getUsername());
+        currentUser = mUserList.get(position);
+        Log.i("Adapter User", currentUser.getId() + " " + currentUser.getUsername());
 
         holder.mUserImage.setImageResource(R.drawable.avatar_ellipse); //set user avatar pic in spec pos >>currentUser.getAvatar()
-        if (currentUser.getUsername() == null) { //currentUser.getUsername().length() <= 0 ||
+        if (currentUser.getUsername() == null || currentUser.getUsername().length() < 1) {
             holder.mUsername.setText(R.string.no_user);
         } else {
             holder.mUsername.setText(currentUser.getUsername());
+            holder.mFirstLetterFullName.setText(firstLetterUserName());
+            holder.userFullName.setText(currentUser.getFullName());
         }
     }
 
@@ -101,6 +105,11 @@ public class RecylerViewAdapter extends RecyclerView.Adapter<RecylerViewAdapter.
     public int getItemCount() {
         //return amount of items in list
         return mUserList.size();
+    }
+
+    public String firstLetterUserName() {
+        String[] split = currentUser.getUsername().split("");
+        return split[0];
     }
 
 

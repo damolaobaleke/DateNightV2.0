@@ -45,12 +45,11 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                         // Sign in success, update UI with the signed-in user's information
 
                         val avatar = HashMap<String, String>()
-                        avatar["avatarHead"] = ""
-                        avatar["avatarFullBody"] = ""
+                        avatar["avatar"] = ""
 
                         //Add User to db
-                        val userStats = UserStatsModel(0, 0, 0)
-                        val user = UserModel(username, null, email, dateStringToTimestamp(age), avatar, "BASIC", null, userStats, "", username.toLowerCase(Locale.ROOT))
+                        val userStats = UserStatsModel(0, 0, 0,0)
+                        val user = UserModel("", username, email, null,  dateStringToTimestamp(age), avatar, null, null, userStats, username.toLowerCase(Locale.ROOT))
 
                         createUserInDb(user)
 

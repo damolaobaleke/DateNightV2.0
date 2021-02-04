@@ -14,17 +14,30 @@
 package com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.dates.post_date
 
 import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Database
 import com.datenight_immersia_ltd.DatabaseConstants
 import com.datenight_immersia_ltd.IntentConstants
+import com.datenight_immersia_ltd.modelfirestore.User.UserModel
 import com.datenight_immersia_ltd.views.datehub_navigation.DateHubNavigation
+import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.datehub.DatehubFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.custom_date_schedule_view.*
 
 class  DateFinishedViewModel : ViewModel() {
     private val dbReference = FirebaseFirestore.getInstance()
     var userRating: Int? = null
+    var mAuth : FirebaseAuth? = null
+    lateinit var userDocRef: DocumentReference
+
+
+    init{
+        mAuth = FirebaseAuth.getInstance()
+    }
 
     fun launchRateDateNightActivity(parentContext: DateFinishedActivity){
         parentContext.startActivity(Intent(parentContext, RateDateNightActivity::class.java))
@@ -50,6 +63,8 @@ class  DateFinishedViewModel : ViewModel() {
     fun backToDateHubFragment(parentContext: DateFinishedActivity){
         val intent = Intent(parentContext, DateHubNavigation::class.java)
                 .putExtra(IntentConstants.FRAGMENT_TO_LOAD, IntentConstants.DATE_HUB_FRAGMENT)
+        //Increment date count
+        incrementDateCount()
         parentContext.startActivity(intent)
     }
 
@@ -57,6 +72,27 @@ class  DateFinishedViewModel : ViewModel() {
         val intent = Intent(parentContext, DateHubNavigation::class.java)
                 .putExtra(IntentConstants.FRAGMENT_TO_LOAD, IntentConstants.INBOX_FRAGMENT)
         parentContext.startActivity(intent)
+    }
+
+
+    private fun incrementDateCount(){
+        userDocRef = dbReference.collection(DatabaseConstants.USER_DATA_COLLECTION).document(mAuth!!.currentUser!!.uid)
+        userDocRef.get().addOnSuccessListener { documentSnapshot ->
+            if(documentSnapshot.exists()){
+                val user =  documentSnapshot.toObject(UserModel::class.java)
+                Log.i("DateFinishedVM","Date count before date: ${user!!.getAvgDateStats().dateCount}")
+
+                var currentDateCount: Int = user.getAvgDateStats().dateCount
+                val updateDateCount = currentDateCount++
+                Log.i("DateFinishedVM","Date count after date: $updateDateCount")
+
+
+                userDocRef.update("avgDateStats.rating",updateDateCount).addOnSuccessListener {
+                    Log.i("DateFinishedVM","Dates been on updated")
+                }
+
+            }
+        }
     }
 
 }

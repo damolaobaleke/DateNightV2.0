@@ -28,7 +28,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_avatar_img" />
+                app:srcCompat="@drawable/datehub_logo" />
 
             <TextView
                 android:id="@+id/edit_avatar_btn"
@@ -42,7 +42,7 @@
                 android:paddingTop="8.5dp"
                 android:paddingEnd="8dp"
                 android:paddingBottom="8.5dp"
-                android:text="Edit Avatar"
+                android:text="Create avatar"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="@+id/imageView5"
@@ -62,11 +62,11 @@
 
                 <ImageView
                     android:id="@+id/imageView8"
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    app:srcCompat="@drawable/ic_coins" />
+                    android:layout_marginTop="12dp"
+                    app:srcCompat="@drawable/dtc_coin" />
 
                 <TextView
                     android:id="@+id/dtc_balance"
@@ -76,7 +76,7 @@
                     android:layout_marginStart="105dp"
                     android:layout_marginTop="20dp"
                     android:textFontWeight="700"
-                    android:textSize="34sp" />
+                    android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/dtc_balance_label"
@@ -88,16 +88,16 @@
                     android:text="DTC Balance"
                     android:textColor="@color/black"
                     android:textFontWeight="400"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/top_up_btn"
-                    android:layout_width="55dp"
+                    android:layout_width="60dp"
                     android:layout_height="32dp"
-                    android:layout_marginStart="280dp"
+                    android:layout_marginStart="270dp"
                     android:layout_marginTop="35dp"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
+                    android:paddingStart="1dp"
+                    android:paddingEnd="0dp"
                     android:paddingTop="7.5dp"
                     android:paddingBottom="7.5dp"
                     android:background="@drawable/top_up_btn"
@@ -148,7 +148,7 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="25dp"
                         android:textFontWeight="700"
-                        android:textSize="34sp"
+                        android:textSize="30sp"
                         app:layout_constraintStart_toEndOf="@+id/imageView6"
                         app:layout_constraintTop_toBottomOf="@+id/line1" />
 
@@ -156,8 +156,8 @@
                         android:id="@+id/textView10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="-20dp"
-                        android:layout_marginTop="50dp"
+                        android:layout_marginStart="-18dp"
+                        android:layout_marginTop="54dp"
                         android:fontFamily="@font/inter"
                         android:text="Dates you've been on"
                         android:textColor="@color/black"
@@ -194,7 +194,8 @@
                         android:layout_height="50dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
-                        android:progress="80"
+                        android:progress="30"
+                        android:layoutDirection="ltr"
                         android:progressDrawable="@drawable/progress_circle"
                         android:scaleX="1"
                         android:scaleY="1"
@@ -270,7 +271,7 @@
                         android:text="Kisses Received"
                         android:layout_marginBottom="10dp"
                         android:layout_marginStart="-20dp"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="38dp"
                         android:textColor="@color/black" />
 
 

@@ -33,4 +33,7 @@ object DatabaseConstants {
 
     //Delimiters
     const val PARTICIPANTS_DELIMITER = ","
+
+    //Auth Method
+    const val LOCAL_AUTH = "EMAIL_PASSWORD"
 }

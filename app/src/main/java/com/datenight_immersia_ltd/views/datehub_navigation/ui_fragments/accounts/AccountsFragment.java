@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
 import com.datenight_immersia_ltd.modelfirestore.User.UserStatsModel;
-import com.datenight_immersia_ltd.network.api.User;
 import com.datenight_immersia_ltd.views.authentication.LoginActivity;
 import com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.premium.PremiumModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +36,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.stripe.android.CustomerSession;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -131,7 +131,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
                         assert userModel != null;
                         userModel.setId(userId);
 
-                        dateOfBirth.setText(timeStamptoString(userModel.getDateOfBirth()));
+                        dateOfBirth.setText(userModel.getDateOfBirth() != null ? timeStamptoString(userModel.getDateOfBirth()) : "");
                         username.setText(userModel.getUsername());
                         emailInput.setText(userModel.getEmail());
 
@@ -146,12 +146,12 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
 
     public void updateUser() {
         HashMap<String,String> avatar = new HashMap<>();
-        avatar.put("avatarHead",""); //R.drawable.avatar_ellipse
-        avatar.put("avatarFullBody", "");
+        avatar.put("avatar",""); //R.drawable.avatar_ellipse
 
-        UserStatsModel userStats = new UserStatsModel(0, 0, 0);
 
-        UserModel userModel = new UserModel(username.getText().toString(), null, emailInput.getText().toString(), dateStringToTimestamp(dateOfBirth.getText().toString()), avatar, null, null, userStats,"" ,username.getText().toString().toLowerCase());
+        UserStatsModel userStats = new UserStatsModel(0, 0, 0,0);
+
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), username.getText().toString(), "", emailInput.getText().toString(),dateStringToTimestamp(dateOfBirth.getText().toString()), avatar, null,null ,userStats ,username.getText().toString().toLowerCase());
         userRef.set(userModel).addOnSuccessListener(aVoid -> {
             progressBarGone();
             Toast.makeText(getContext(), "Your profile has been updated", Toast.LENGTH_SHORT).show();
@@ -208,6 +208,9 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
 
     private void signOut() {
         mAuth.signOut();
+        //stripe
+        CustomerSession.endCustomerSession();
+        //stripe
         updateUI(null);
         Intent intent = new Intent(requireContext(), LoginActivity.class);
         startActivity(intent);

@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.datenight_immersia_ltd.R
@@ -16,11 +17,13 @@ class StartNewChatActivity : AppCompatActivity() {
     private lateinit var usernameEditText: EditText
     private lateinit var usernameSearchButton: Button
     private lateinit var clearSearchEditText: ImageView
-    private lateinit var foundUserLayout: LinearLayout
+    private lateinit var foundUserLayout: ConstraintLayout
     lateinit var foundUserNameTextView: TextView
     lateinit var foundUserPhoto: CircleImageView
     lateinit var noSuchUserTextView: TextView
     private lateinit var viewModel: StartNewChatViewModel
+    lateinit var userFullName: TextView
+    lateinit var firstLetterUser: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +41,14 @@ class StartNewChatActivity : AppCompatActivity() {
         clearSearchEditText = findViewById(R.id.clearSearchEditText)
         foundUserLayout = findViewById(R.id.foundUserLayout)
         foundUserNameTextView = findViewById(R.id.foundUserNameTextView)
-        foundUserPhoto = findViewById(R.id.foundUserPhoto)
+        //foundUserPhoto = findViewById(R.id.foundUserPhoto)
+        firstLetterUser = findViewById(R.id.first_letter_name_chat)
+        userFullName = findViewById(R.id.user_full_name_chat)
         noSuchUserTextView = findViewById(R.id.noUserFoundMessage)
         foundUserLayout.isVisible = false
         noSuchUserTextView.isVisible = false
         clearSearchEditText.isVisible = false
+
         usernameEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequnce: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 

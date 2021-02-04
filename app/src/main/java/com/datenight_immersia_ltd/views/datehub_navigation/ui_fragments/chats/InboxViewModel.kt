@@ -75,8 +75,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
         chatHeadsFirebaseRecyclerViewAdapter =
                 object : FirebaseRecyclerAdapter<ChatHead, ChatHeadViewHolder>(firebaseRecyclerViewOptions) {
                     override fun onCreateViewHolder(parent: ViewGroup, type: Int): ChatHeadViewHolder {
-                        val newChatHead = LayoutInflater.from(parent.context)
-                                .inflate(R.layout.item_chat_head, parent, false)
+                        val newChatHead = LayoutInflater.from(parent.context).inflate(R.layout.item_chat_head, parent, false)
                         return ChatHeadViewHolder(newChatHead)
                     }
 
@@ -127,6 +126,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
         // Layouts
         private var mChatHeadImage: CircleImageView? = null
         private var mChatHeadName: TextView? = null
+        private var mChatFullNameFirstLetter: TextView? = null
         private var mMostRecentMessage: TextView? = null
         private var mChatHeadTimeStamp: TextView? = null
 
@@ -142,6 +142,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
             mChatHeadName = itemView.findViewById(R.id.chatHeadLabel)
             mMostRecentMessage = itemView.findViewById(R.id.chatHeadMostRecentMessage)
             mChatHeadTimeStamp = itemView.findViewById(R.id.chatHeadTimeStamp)
+            mChatFullNameFirstLetter = itemView.findViewById(R.id.first_letter_name_chat_head)
 
             // TODO: Set on click listener for view here to spawn new activity
             chatHeadView.setOnClickListener {
@@ -163,6 +164,10 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
             mMostRecentMessage?.text = data.mostRecentMessage.text
             mChatHeadTimeStamp?.text = constructChatHeadTime(data.mostRecentMessage.timeStamp)
 
+            //--
+            val firstLetterName = data.participantFullName!!.split("")
+            mChatFullNameFirstLetter?.text =  firstLetterName[1]
+
             // Metadata
             mChatRoomKey = data.key
             mChatParticipantId = data.participantId
@@ -170,6 +175,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
             mChatParticipantUsername = data.participantUsername
             mChatParticipantFullName = data.participantFullName
         }
+
 
         private fun launchChatRoomActivityForExistingChat(
                 view: View,
@@ -217,6 +223,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
         }
     }
 
+
     class InboxViewModelFactory(private val username: String,
                                 private val userFullName: String): ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -224,6 +231,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
         }
 
     }
+
 
     companion object {
         const val TAG = "InboxActivity"

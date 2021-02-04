@@ -27,13 +27,14 @@ public class Pitch {
     int amountRaised;
     int sharePrice;
     int daysLeftToInvest;
-    TeamObject teamMember1;
-    TeamObject teamMember2;
-    TeamObject teamMember3;
-    TeamObject teamMember4;
-    TeamObject teamMember5;
+//    TeamObject teamMember1;
+//    TeamObject teamMember2;
+//    TeamObject teamMember3;
+//    TeamObject teamMember4;
+//    TeamObject teamMember5;
 
-    public Pitch(String pitchId, String email, String[] companyCountry, String[] businessType, String[] corporateStructure, int raisingAmount, int[] amountReceived, String[] investor, String firstname, String lastname, Long phoneNumber, String raisingType, String companyNumber, String registeredCompanyName, String tradingName, String addressLine1, String addressLine2, String city, String executiveSummary, String milestone, String equityOffer, String premoneyValuation, String idea, int amountRaised, int sharePrice, int daysLeftToInvest, TeamObject teamMember1, TeamObject teamMember2, TeamObject teamMember3, TeamObject teamMember4, TeamObject teamMember5) {
+    //TeamObject teamMember1, TeamObject teamMember2, TeamObject teamMember3, TeamObject teamMember4, TeamObject teamMember5
+    public Pitch(String pitchId, String email, String[] companyCountry, String[] businessType, String[] corporateStructure, int raisingAmount, int[] amountReceived, String[] investor, String firstname, String lastname, Long phoneNumber, String raisingType, String companyNumber, String registeredCompanyName, String tradingName, String addressLine1, String addressLine2, String city, String executiveSummary, String milestone, String equityOffer, String premoneyValuation, String idea, int amountRaised, int sharePrice, int daysLeftToInvest) {
         this._id = pitchId;
         this.email = email;
         this.companyCountry = companyCountry;
@@ -60,11 +61,11 @@ public class Pitch {
         this.amountRaised = amountRaised;
         this.sharePrice = sharePrice;
         this.daysLeftToInvest = daysLeftToInvest;
-        this.teamMember1 = teamMember1;
-        this.teamMember2 = teamMember2;
-        this.teamMember3 = teamMember3;
-        this.teamMember4 = teamMember4;
-        this.teamMember5 = teamMember5;
+//        this.teamMember1 = teamMember1;
+//        this.teamMember2 = teamMember2;
+//        this.teamMember3 = teamMember3;
+//        this.teamMember4 = teamMember4;
+//        this.teamMember5 = teamMember5;
     }
 
     //@SerializedName("_id")--Not working
@@ -172,23 +173,23 @@ public class Pitch {
         return daysLeftToInvest;
     }
 
-    public TeamObject getTeamMember1() {
-        return teamMember1;
-    }
-
-    public TeamObject getTeamMember2() {
-        return teamMember2;
-    }
-
-    public TeamObject getTeamMember3() {
-        return teamMember3;
-    }
-
-    public TeamObject getTeamMember4() {
-        return teamMember4;
-    }
-
-    public TeamObject getTeamMember5() {
-        return teamMember5;
-    }
+//    public TeamObject getTeamMember1() {
+//        return teamMember1;
+//    }
+//
+//    public TeamObject getTeamMember2() {
+//        return teamMember2;
+//    }
+//
+//    public TeamObject getTeamMember3() {
+//        return teamMember3;
+//    }
+//
+//    public TeamObject getTeamMember4() {
+//        return teamMember4;
+//    }
+//
+//    public TeamObject getTeamMember5() {
+//        return teamMember5;
+//    }
 }

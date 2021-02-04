@@ -118,4 +118,5 @@
     <string name="congratulations">Congratulations</string>
     <string name="date_created_message">Your date has been created, click button <br>below to return to DateHub</br></string>
     <string name="valid_username">Username already exists</string>
+    <string name="invite_a_special_someone">Invite a special someone</string>
 </resources>

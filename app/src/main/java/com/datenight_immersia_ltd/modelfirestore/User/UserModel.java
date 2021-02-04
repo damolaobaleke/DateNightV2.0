@@ -15,29 +15,29 @@ public class UserModel {
     public Timestamp dateOfBirth; //Date equivalent in firestore
     public HashMap<String, String> avatar; //avatar = string in db .glb file :: android image resource takes int value  >>String,String || String, Integer<<
     public String status; //BASIC || PREMIUM USER
-    public String search; //as firestore query is case sensitive-- this field is used to store the lowercase of the username, and search string would be converted to lower case
-    int dtc;
-    String loginMethod;
-    public String stripeCustomerId;///
+    public int dtc;
+    public String loginMethod;
+    public String stripeCustomerId;
+    public String ephemeralKey;
     List<String> purchasedExperiences;
-    List<String> dateId; // String[]
-    public UserStatsModel statistics;
+    UserPreferences userPreferences;
+    List<String> dateId;
+    public UserStatsModel avgDateStats;
 
     public UserModel() {
         /**Public no arg constructor needed*/
     }
 
-    public UserModel(String username, String name, String email, Timestamp dateOfBirth, HashMap<String, String> avatar, String status, List<String> dateId, UserStatsModel statistics, String stripeCustomerId, String search) {
-        //this.id = id;
+    public UserModel(String id, String username, String name, String email, Timestamp dateOfBirth, HashMap<String, String> avatar, String status, List<String> dateId, UserStatsModel statistics, String stripeCustomerId) {
+        this.id = id;
         this.username = username;
         this.name = name;
-        this.search = search;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.avatar = avatar;
         this.status = status;
         this.dateId = dateId;
-        this.statistics = statistics;
+        this.avgDateStats = statistics;
         this.stripeCustomerId = stripeCustomerId;
     }
 
@@ -84,12 +84,27 @@ public class UserModel {
         return dateId;
     }
 
-    public UserStatsModel getStatistics() {
-        return statistics;
+    public UserStatsModel getAvgDateStats() {
+        return avgDateStats;
     }
 
     public String getStripeCustomerId() {
         return stripeCustomerId;
     }
 
+    public String getEphemeralKey() {
+        return ephemeralKey;
+    }
+
+    public int getDtc() {
+        return dtc;
+    }
+
+    public void setDtc(int dtc) {
+        this.dtc = dtc;
+    }
+
+    public void setAvgDateStats(UserStatsModel avgDateStats) {
+        this.avgDateStats = avgDateStats;
+    }
 }

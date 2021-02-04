@@ -41,6 +41,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -82,8 +84,7 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         Toast.makeText(this, binding.avatarLinkInput.getText().toString(), Toast.LENGTH_LONG).show();
 
         HashMap<String, Object> avatar = new HashMap<>();
-        avatar.put("avatarFullBody", binding.avatarLinkInput.getText().toString());
-        avatar.put("avatarHead", "");
+        avatar.put("avatar", binding.avatarLinkInput.getText().toString());
 
         userDocRef.update("avatar",avatar).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

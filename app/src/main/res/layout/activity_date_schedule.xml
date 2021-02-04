@@ -24,6 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,8 +33,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="80dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginBottom="18dp"
         android:background="@drawable/custom_login_button"
         android:fontFamily="@font/inter"
         android:text="Schedule Date"
@@ -41,16 +42,16 @@
         android:textColor="@color/white"
         android:textFontWeight="900"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/free_price" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/experience_name_in_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="420dp"
         android:fontFamily="@font/inter"
         android:text="Date Environment Title"
         android:textColor="@color/white"
@@ -65,27 +66,29 @@
         android:id="@+id/free_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
         android:background="@drawable/custom_value_bg"
         android:paddingHorizontal="15dp"
         android:paddingVertical="6dp"
         android:text="Value"
         android:textColor="@color/date_night_theme"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/experience_name_in_schedule"
-        app:layout_constraintStart_toStartOf="@+id/experience_name_in_schedule"
-        app:layout_constraintTop_toBottomOf="@+id/experience_name_in_schedule" />
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.891"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/videoView" />
 
     <Button
         android:id="@+id/preview_button"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:visibility="invisible"
+        android:layout_marginTop="36dp"
         android:background="@drawable/custom_augreality_button"
-        app:layout_constraintEnd_toEndOf="@+id/schedule_date"
-        app:layout_constraintStart_toStartOf="@+id/schedule_date"
-        app:layout_constraintTop_toBottomOf="@+id/schedule_date" />
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/experience_descr"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="@+id/experience_descr"
+        app:layout_constraintTop_toBottomOf="@+id/experience_descr" />
 
     <TextView
         android:id="@+id/experience_descr"
@@ -97,6 +100,7 @@
         android:text="A Paris night time dinner under a\n starlit sky... Enchante!"
         android:textColor="@color/white"
         android:textFontWeight="400"
+        android:paddingHorizontal="8dp"
         android:textSize="15sp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/experience_name_in_schedule"
@@ -132,6 +136,21 @@
         app:layout_constraintStart_toStartOf="@+id/textView20"
         app:layout_constraintTop_toTopOf="@+id/textView20" />
 
+    <TextView
+        android:id="@+id/coming_soon_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="88dp"
+        android:text="Coming Soon"
+        android:textColor="@color/white"
+        android:textFontWeight="700"
+        android:textSize="30sp"
+        android:textAllCaps="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/experience_name_in_schedule"
+        app:layout_constraintEnd_toEndOf="@+id/experience_name_in_schedule"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="@+id/experience_name_in_schedule" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

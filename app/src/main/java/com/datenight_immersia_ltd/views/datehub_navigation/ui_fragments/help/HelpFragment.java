@@ -1,6 +1,7 @@
 package com.datenight_immersia_ltd.views.datehub_navigation.ui_fragments.help;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.datenight_immersia_ltd.R;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,6 +49,9 @@ public class HelpFragment extends Fragment {
     }
 
     public void tweet(){
-        Toast.makeText(requireContext(),"Tweet about us ?", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent();
+        intent.setType(Intent.CATEGORY_BROWSABLE);
+        intent.setData(Uri.parse("https://twitter.com/ImmersiaLimited"));
+        startActivity(intent);
     }
 }

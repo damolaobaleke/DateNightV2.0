@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/WhiteActionBarStyle"
     tools:context=".views.datehub_navigation.ui_fragments.chats.StartNewChatActivity">
 
 
@@ -40,11 +39,10 @@
         android:id="@+id/usernameSearchEditText"
         android:layout_width="0dp"
         android:layout_height="35dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/custom_edittext"
-        android:gravity="center"
         android:hint="@string/search_new_user_chat_hint"
         android:inputType="text"
         android:maxLines="1"
@@ -63,7 +61,7 @@
         android:id="@+id/usernameSearchButton"
         android:layout_width="66dp"
         android:layout_height="35dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:background="@android:color/transparent"
         android:onClick="onSearchUsername"
@@ -96,50 +94,89 @@
         app:layout_constraintTop_toTopOf="@+id/usernameSearchEditText"
         app:srcCompat="@drawable/ic_cancel" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/foundUserLayout"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:orientation="horizontal"
+        android:paddingVertical="5dp"
         android:paddingEnd="8dp"
         android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/usernameSearchButton"
+        app:layout_constraintStart_toStartOf="@+id/usernameSearchEditText"
         app:layout_constraintTop_toBottomOf="@+id/usernameSearchEditText">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/foundUserPhoto"
-            android:layout_width="69dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/ic_default_profile_img" />
+        <!--        <de.hdodenhof.circleimageview.CircleImageView-->
+        <!--            android:id="@+id/foundUserPhoto"-->
+        <!--            android:layout_width="69dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_marginRight="8dp"-->
+        <!--            android:src="@drawable/ic_default_profile_img" />-->
+
+        <TextView
+            android:id="@+id/first_letter_name_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_letter_circle"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="0dp"
+            android:text="d"
+            android:textAllCaps="true"
+            android:textColor="@color/date_night_purple"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/foundUserLayout"
+            app:layout_constraintTop_toTopOf="@+id/foundUserLayout" />
 
         <TextView
             android:id="@+id/foundUserNameTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/inter"
             android:text="bobola_d"
             android:textAlignment="textStart"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textFontWeight="900"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/first_letter_name_chat"
+            app:layout_constraintTop_toTopOf="@+id/foundUserLayout" />
+
+        <TextView
+            android:id="@+id/user_full_name_chat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Full Name"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textFontWeight="700"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/foundUserNameTextView"
+            app:layout_constraintTop_toBottomOf="@+id/foundUserNameTextView"
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/chatFoundUserButton"
-            android:layout_width="215dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/custom_button_radius_5dp"
             android:onClick="onChat"
             android:text="Chat"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

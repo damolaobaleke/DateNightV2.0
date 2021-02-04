@@ -18,69 +18,87 @@
     android:layout_height="match_parent"
     tools:context=".views.date_schedule.InviteUserActivity">
 
-<!--    <com.google.android.material.appbar.AppBarLayout-->
-<!--        android:id="@+id/app_bar_search"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@color/white"-->
-<!--        android:paddingTop="20dp"-->
-<!--        android:paddingBottom="20dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent">-->
+    <!--    <com.google.android.material.appbar.AppBarLayout-->
+    <!--        android:id="@+id/app_bar_search"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:background="@color/white"-->
+    <!--        android:paddingTop="20dp"-->
+    <!--        android:paddingBottom="20dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent">-->
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
-
-
-            <EditText
-                android:id="@+id/search_user"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/custom_textbox_search"
-                android:fontFamily="@font/inter"
-                android:hint="Search for a user"
-                android:paddingVertical="7dp"
-                android:paddingStart="30dp"
-                android:paddingEnd="8dp"
-                android:textColorHint="@color/date_night_grey"
-                android:textFontWeight="400"
-                android:textSize="17sp"
-                android:textCursorDrawable="@null"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/cancel_search_btn"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/ic_cancel"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="@+id/search_user"
-                app:layout_constraintTop_toTopOf="@+id/search_user" />
+    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent">-->
 
 
-            <ImageView
-                android:id="@+id/star3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/search_user"
-                app:layout_constraintStart_toStartOf="@+id/search_user"
-                app:layout_constraintTop_toTopOf="@+id/search_user"
-                app:srcCompat="@drawable/ic_search_icon_grey" />
+    <EditText
+        android:id="@+id/search_user"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/custom_textbox_search"
+        android:fontFamily="@font/inter"
+        android:hint="Search for a user"
+        android:paddingVertical="7dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="8dp"
+        android:textColorHint="@color/date_night_grey"
+        android:textCursorDrawable="@null"
+        android:textFontWeight="400"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/cancel_search_btn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/ic_cancel"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/search_user"
+        app:layout_constraintTop_toTopOf="@+id/search_user" />
 
 
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+    <ImageView
+        android:id="@+id/star3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/search_user"
+        app:layout_constraintStart_toStartOf="@+id/search_user"
+        app:layout_constraintTop_toTopOf="@+id/search_user"
+        app:srcCompat="@drawable/ic_search_icon_grey" />
 
-<!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+    <!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+
+    <Button
+        android:id="@+id/share"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:background="?android:selectableItemBackground"
+        android:fontFamily="@font/inter"
+        android:paddingStart="50dp"
+        android:text="@string/invite_a_special_someone"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/date_night_grey_two"
+        app:layout_constraintEnd_toEndOf="@+id/search_user"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/search_user"
+        app:layout_constraintTop_toBottomOf="@+id/search_user" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/user_search_recyler_view"
@@ -88,11 +106,38 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:scrollbars="vertical"
-        app:layout_constraintStart_toStartOf="@+id/search_user"
-        app:layout_constraintEnd_toEndOf="@+id/search_user"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_user"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="208dp" />
+        app:layout_constraintEnd_toEndOf="@+id/search_user"
+        app:layout_constraintStart_toStartOf="@+id/search_user"
+        app:layout_constraintTop_toBottomOf="@+id/search_user" />
+
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/share"
+        app:layout_constraintStart_toStartOf="@+id/share"
+        app:layout_constraintTop_toTopOf="@+id/share"
+        app:srcCompat="@drawable/ic_baseline_share_24"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="291dp" />
+
+    <ImageView
+        android:id="@+id/share_arrow"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/share"
+        app:layout_constraintEnd_toEndOf="@+id/share"
+        app:layout_constraintTop_toTopOf="@+id/share"
+        app:layout_constraintVertical_bias="0.4"
+        app:srcCompat="@drawable/ic_datenigh_grey_arrow"
+        android:contentDescription="TODO" />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

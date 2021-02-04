@@ -37,11 +37,15 @@ class StartNewChatViewModel: ViewModel() {
                         if (documents.size == 1){
                             foundUserId = documents[0].get("id").toString()
                             foundUserFullName = documents[0].get("name").toString()
+
+
                             foundUserPhotoUrl = "" // TODO: Populate photo appropriately
-                            Log.i(TAG, "Found user: $queryUserName, id: $foundUserId, name: $foundUserFullName")
+                            Log.i(TAG, "Found user: $queryUserName, id: $foundUserId, name: $foundUserFullName, firstLetter:${getFirstLetter()}")
 
                             // Display found user
                             parentContext.foundUserNameTextView.text = username
+                            parentContext.firstLetterUser.text = getFirstLetter()
+                            parentContext.userFullName.text = foundUserFullName
                             // parentContext.foundUserPhoto.setImageResource(); //TODO: Fix!
                             parentContext.noSuchUserTextView.isVisible = false
                             parentContext.foundUserLayout.isVisible = true
@@ -104,6 +108,12 @@ class StartNewChatViewModel: ViewModel() {
             parentContext.finish()
         }
 
+    }
+
+    fun getFirstLetter(): String{
+        val split = foundUserFullName!!.split("")
+        Log.i(TAG, "The first letter: $split[1]")
+        return split[1]
     }
 
     companion object{

@@ -21,8 +21,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
@@ -66,7 +69,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
     DocumentReference userRef, datesRef, experienceRef;
     CollectionReference usercollRef;
     EditText userSearch;
-    Button cancelSearchButton;
+    Button cancelSearchButton,shareButton;
     TextView cancelSearchTextView;
     String textInSearch;
     String userId;
@@ -111,6 +114,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
 
         userSearch = findViewById(R.id.search_user);
         cancelSearchButton = findViewById(R.id.cancel_search_btn);
+        shareButton = findViewById(R.id.share);
         recyclerView = findViewById(R.id.user_search_recyler_view);
 
         usercollRef = db.collection("userData");
@@ -121,8 +125,22 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
         searchBoxClicked();
         searchUser();
         cancelButton();
+        share();
 
 
+    }
+
+    private void share(){
+        shareButton.setOnClickListener(v->{
+            Uri link = Uri.parse("https://play.google.com/console/u/0/developers/8421302216223559919/app/4972918314666606268/tracks/4699075429511113233/releases/7/details");
+            Spanned smiley = Html.fromHtml("&#U+263A",Html.FROM_HTML_MODE_LEGACY);
+
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Are you tired of the endless talking stages ? I have an invite for you to join. Join Date night now\nHere is the link "+ link).putExtra(Intent.EXTRA_SUBJECT,"Date Night");
+            shareIntent.setType("text/plain");
+            startActivity(shareIntent);
+        });
     }
 
     public void searchBoxClicked() {
@@ -149,7 +167,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void afterTextChanged(Editable s) {
-                usercollRef.whereEqualTo("search", s.toString().toLowerCase()) //searches based on lowercase username==== userSearch.getQuery().toString().toLowerCase()
+                usercollRef.whereEqualTo("username", s.toString().toLowerCase()) //searches based on lowercase username==== userSearch.getQuery().toString().toLowerCase()
                         .get()
                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
@@ -163,19 +181,18 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                                         Log.i(TAG, dateinvitee.getUsername() + " " + dateinvitee.getId());
 
                                         HashMap<String, Integer> avtr = new HashMap<>();
-                                        avtr.put("avatarHead", R.drawable.avatar_ellipse); //R.drawable.avatar_ellipse
-                                        avtr.put("avatarFullBody", R.drawable.avatar_ellipse);
+                                        avtr.put("avatar", R.drawable.avatar_ellipse); //R.drawable.avatar_ellipse
 
                                         HashMap<String, String> avatar = new HashMap<>();
-                                        avatar.put("avatarHead", ""); //R.drawable.avatar_ellipse
-                                        avatar.put("avatarFullBody", "");
+                                        avatar.put("avatar", ""); //R.drawable.avatar_ellipse
+
 
                                         //populate recycler view-- uses different constructor
                                         users = new ArrayList<>();
                                         if (s.toString().length() >= 1 || dateinvitee.getUsername() != null) {
-                                            users.add(new UserModel(dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, avatar, "BASIC", null, null, "", ""));
+                                            users.add(new UserModel(null, dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, null, null, null, null, null));
                                         } else {
-                                            users.add(new UserModel("No user found", null, null, null, avatar, "BASIC", null, null, "", ""));
+                                            users.add(new UserModel("No user found", null, null, null, null, avatar, "BASIC", null, null, ""));
                                             //remove at that position in recycler view
                                             users.remove(0);
                                             adapter.notifyItemRemoved(0);
@@ -337,7 +354,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                             Log.i(TAG, "The experience id: " + experienceModel.getName());
 
                             //create date in db
-                            DateModel dateModel = new DateModel(datesRef.getId(), "345678", mAuth.getCurrentUser().getUid(), participants, participantUsernames, dateDuration(), currentTime(), dateStringToTimestamp(dateChosen +" "+ timeChosen), experienceModel.getId(), participantStatus, dateStatistics);
+                            DateModel dateModel = new DateModel(datesRef.getId(), "345678", mAuth.getCurrentUser().getUid(), participants, participantUsernames, dateDuration(), currentTime(), dateStringToTimestamp(dateChosen + " " + timeChosen), experienceModel.getId(), participantStatus, dateStatistics);
                             datesRef.set(dateModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -349,7 +366,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                                     dateInvitee.update("dateId", FieldValue.arrayUnion(datesRef.getId()));
 
                                     Log.i(TAG, "The dateTime " + dateChosen + " " + timeChosen);
-                                    Log.i(TAG, String.valueOf(dateStringToTimestamp(dateChosen +" "+ timeChosen)));
+                                    Log.i(TAG, String.valueOf(dateStringToTimestamp(dateChosen + " " + timeChosen)));
                                     //go to congrats screen, can be here
                                     //Send Notification
 

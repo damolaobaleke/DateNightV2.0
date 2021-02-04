@@ -96,9 +96,9 @@
     </style>
 
     <style name="dateHubValueText">
-        <item name="android:textSize">34sp</item>
+        <item name="android:textSize">30sp</item>
         <item name="fontFamily">@font/inter</item>
-        <item name="lineHeight">41dp</item>
+        <item name="lineHeight">40dp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:text">0</item>
     </style>

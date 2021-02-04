@@ -47,7 +47,6 @@ public class BoardingScreen extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
 
-        //instantiate firebase auth class
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
@@ -75,7 +74,7 @@ public class BoardingScreen extends AppCompatActivity {
     }
 
     public void updateUI(FirebaseUser user) {
-        if (user != null) {
+        if (user != null  && user.isEmailVerified()) {
             String name = user.getEmail();
             assert name != null;
             Log.i("Name", name);
@@ -85,8 +84,14 @@ public class BoardingScreen extends AppCompatActivity {
 
             Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
         } else {
+            mAuth.signOut();
             Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
 
+            if(user != null) {
+                if (!user.isEmailVerified()) {
+                    Toast.makeText(this, "You need to verify your email first", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 

@@ -116,31 +116,34 @@ public class ScheduledFragment extends Fragment {
         userdocRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 userModel = documentSnapshot.toObject(UserModel.class);
-                Log.i(TAG, "The date ids:" + userModel.getDateId().toString());
+                if(userModel.getDateId() != null) {
+                    Log.i(TAG, "The date ids:" + userModel.getDateId().toString());
 
 
-                //where the date doc id is in the user array of dateids
-                //Creates and returns a new Query with the additional filter that documents must contain the specified field and the value must equal one of the values from the provided list.
-                //.whereIn("id", Collections.singletonList(userModel.getDateId())) .orderBy("timeCreated", Query.Direction.DESCENDING)
+                    //where the date doc id is in the user array of dateids
+                    //Creates and returns a new Query with the additional filter that documents must contain the specified field and the value must equal one of the values from the provided list.
+                    //.whereIn("id", Collections.singletonList(userModel.getDateId())) .orderBy("timeCreated", Query.Direction.DESCENDING)
 
-                Query query = datesCollRef.orderBy("timeCreated", Query.Direction.DESCENDING);
+                    Query query = datesCollRef.orderBy("timeCreated", Query.Direction.DESCENDING);
 
-                //getting query into adapter
-                FirestoreRecyclerOptions<DateModel> options = new FirestoreRecyclerOptions.Builder<DateModel>()
-                        .setQuery(query, DateModel.class)
-                        .build();
+                    //getting query into adapter
+                    FirestoreRecyclerOptions<DateModel> options = new FirestoreRecyclerOptions.Builder<DateModel>()
+                            .setQuery(query, DateModel.class)
+                            .build();
 
 
-                adapter = new ScheduledAdapter(options);
+                    adapter = new ScheduledAdapter(options);
 
-                //populate recycler view
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-                adapter.startListening();
+                    //populate recycler view
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                    adapter.startListening();
 
-                recyclerView.setAdapter(adapter);
+                    recyclerView.setAdapter(adapter);
 
-                adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
+
+                }
 
             }
         });

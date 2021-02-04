@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.datenight_immersia_ltd.utils.stripe.config.DateNightEphemeralKeyProvider;
 import com.datenight_immersia_ltd.views.datehub_navigation.DateHubNavigation;
 import com.datenight_immersia_ltd.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.stripe.android.CustomerSession;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -120,8 +122,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Log.i("SignIn", "Successful");
                                     Toast.makeText(LoginActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
 
-                                    Intent intent = new Intent(LoginActivity.this, DateHubNavigation.class);
-                                    startActivity(intent);
+                                    /*STRIPE -- initialize customer session to retrieve ephemeral key from server side*/
+                                    CustomerSession.initCustomerSession(this, new DateNightEphemeralKeyProvider());
+                                    goToDatehub();
+
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Please verify your email address", Toast.LENGTH_SHORT).show();
                                     progressBarGone();
@@ -174,6 +178,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         return valid;
+    }
+
+    private void goToDatehub() {
+        Intent intent = new Intent(LoginActivity.this, DateHubNavigation.class);
+        startActivity(intent);
     }
 
     public void progressBarGone() {

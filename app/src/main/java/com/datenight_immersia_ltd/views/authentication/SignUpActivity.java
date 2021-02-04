@@ -1,6 +1,7 @@
 package com.datenight_immersia_ltd.views.authentication;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Size;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
@@ -9,7 +10,6 @@ import androidx.core.content.ContextCompat;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,12 +25,12 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.datenight_immersia_ltd.ActivityJ;
-import com.datenight_immersia_ltd.model.User.UserObject;
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
 import com.datenight_immersia_ltd.modelfirestore.User.UserStatsModel;
+import com.datenight_immersia_ltd.network.api.DatenightApi;
+import com.datenight_immersia_ltd.network.api.UserObject;
 import com.datenight_immersia_ltd.views.datehub_navigation.DateHubNavigation;
 import com.datenight_immersia_ltd.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,13 +44,16 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.stripe.android.Stripe;
-import com.stripe.android.model.Customer;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.stripe.android.EphemeralKeyProvider;
+import com.stripe.android.EphemeralKeyUpdateListener;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -63,13 +66,21 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener{
     FirebaseAuth mAuth;
     String userId;
     FirebaseDatabase database;
     EditText emailInput, fullNameInput;
     EditText passwordInput;
-    EditText username;
+    EditText usernameInput;
     EditText dateOfBirth;
     EditText confirmPasswordInput;
     EditText ageInput;
@@ -81,6 +92,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     DocumentReference userRef, userNameRef;
     Task<AuthResult> task1;
     private static final String TAG = "Sign Up";
+
+    private static final String BASE_URL = "http://192.168.88.24:3000"; //http://api.datenight.com
+    DatenightApi api;
+    //final CompositeDisposable compositeDisposable;  //to handle async response Reactive Java
 
     CollectionReference usernames;
     Editable mUserNameText;
@@ -103,7 +118,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
-        username = findViewById(R.id.username);
+        usernameInput = findViewById(R.id.username);
         fullNameInput = findViewById(R.id.fullNameInput);
         ageInput = findViewById(R.id.Age);
 
@@ -116,11 +131,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         LogIn.setOnClickListener(this);
 
-        checkUserAlreadyExists();
 
         signUp.setOnClickListener(v -> {
             progressBarShown();
             validateForm();
+            checkUserAlreadyExists();
             signUp();
         });
 
@@ -128,7 +143,34 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void checkUserAlreadyExists() {
-        username.addTextChangedListener(new TextWatcher() {
+        usernames.whereEqualTo("username", usernameInput.getText().toString().toLowerCase().trim()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                if (queryDocumentSnapshot.exists()) {
+
+                    //toast
+                    Toast.makeText(SignUpActivity.this, R.string.valid_username, Toast.LENGTH_SHORT).show();
+
+                    //show error
+                    usernameLabel = findViewById(R.id.username_label);
+                    usernameLabel.setText(R.string.valid_username);
+                    usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.holo_red_light));
+
+                    //disable button
+                    signUp.setEnabled(false);
+                    signUp.setVisibility(View.INVISIBLE);
+                    signUp.setOnClickListener(v -> finish());
+                    return;
+                }
+
+                usernameLabel.setText("Give yourself a username");
+                usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
+                signUp.setVisibility(View.VISIBLE);
+                signUp.setEnabled(true);
+            }
+        });
+
+
+        usernameInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -138,36 +180,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //called whenever text typed in or character removed
                 mUserName = s;
-                usernames.whereEqualTo("username", s.toString().toLowerCase().trim()).get().addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
-                        if(queryDocumentSnapshot.exists()){
 
-                            //toast
-                            Toast.makeText(SignUpActivity.this, "Username already exists", Toast.LENGTH_SHORT).show();
-
-                            //show error
-                            usernameLabel = findViewById(R.id.username_label);
-                            usernameLabel.setText(R.string.valid_username);
-                            usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.holo_red_light));
-
-                            //disable button
-                            signUp.setEnabled(false);
-                            signUp.setVisibility(View.INVISIBLE);
-                            signUp.setOnClickListener(v->finish());
-
-                        }else{
-                            usernameLabel.setText("Give yourself a username");
-                            usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
-                            signUp.setVisibility(View.VISIBLE);
-                            signUp.setEnabled(true);
-                        }
-                    }
-                });
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length() == 0){ }
+                if (s.length() == 0) {
+                }
 
                 mUserNameText = s;
 
@@ -230,14 +249,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 assert user != null;
                                 user.sendEmailVerification().addOnCompleteListener(task2 -> {
                                     if (task2.isSuccessful()) {
-                                        Toast.makeText(SignUpActivity.this, "Email sent.",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignUpActivity.this, "Email sent.", Toast.LENGTH_SHORT).show();
                                         emailInput.setText("");
                                         passwordInput.setText("");
 
                                         //go to LogIn, then to datehub
                                         goToLogin();
-                                    }else{
-                                        Toast.makeText(SignUpActivity.this, task2.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(SignUpActivity.this, task2.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                                     }
                                 });
@@ -256,19 +275,21 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void createUser() {
         userId = mAuth.getCurrentUser().getUid();
 
-        /**create stripe customer --POST REQUEST TO ENDPOINT*/
+        /*create stripe customer --POST REQUEST TO ENDPOINT*/
+        setUpNetworkRequest();
+        createStripeCustomer();
+        /*create stripe customer --POST REQUEST TO ENDPOINT*/
 
         List<String> dateIds = new ArrayList<>();
 
         HashMap<String, String> avatar = new HashMap<>();
-        avatar.put("avatarHead", "");
-        avatar.put("avatarFullBody", "");
+        avatar.put("avatarUrl", "");
 
-        UserStatsModel userStats = new UserStatsModel(0, 0, 0);
-        UserModel userModel = new UserModel(username.getText().toString(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", dateIds, userStats, "", username.getText().toString().toLowerCase());
+        UserStatsModel userStats = new UserStatsModel(0, 0, 0, 0);
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", dateIds, userStats, "");
 
         userRef = db.collection("userData").document(userId);
-        userNameRef = db.collection("usernames").document(mUserName.toString());
+        userNameRef = db.collection("usernames").document(usernameInput.getText().toString().toLowerCase());
 
         userRef.set(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -283,14 +304,58 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
-        Map<String , String> username =  new HashMap<>();
-        username.put("username", mUserName.toString());
+        Map<String, String> username = new HashMap<>();
+        username.put("username", usernameInput.getText().toString().toLowerCase());
         userNameRef.set(username);
 
     }
 
-    private void getStripeCustomer() {
+    private void setUpNetworkRequest() {
+        Gson gson = new GsonBuilder().serializeNulls().create();//to be able to see null value fields
 
+        //Logging (Http)REQUEST and RESPONSE
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+        //Logging Request and Response
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create()) //GSON convert java object to JSON
+                .client(okHttpClient)
+                .build();
+        api = retrofit.create(DatenightApi.class);
+    }
+
+    private void createStripeCustomer() {
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), null, "BASIC", null, null, "");
+
+        //UserObject user = new UserObject(false, "", userModel);
+
+        Call<UserObject> userObjectCall = api.createStripeCustomer(userModel);
+
+        userObjectCall.enqueue(new Callback<UserObject>() {
+            @Override
+            public void onResponse(@NotNull Call<UserObject> call, @NotNull Response<UserObject> response) {
+                if (!response.isSuccessful()) {
+                    Log.i("Error", "The error code while getting the response " + response.code() + "\n" + response.message());
+                    return; //Leave method, data would be null if response not successful
+                }
+
+                UserObject user = response.body();
+
+                assert user != null;
+                Log.i(TAG, user.isSuccess() + " " + user.getMessage() + " " + user.getData().getEphemeralKey());
+            }
+
+            @Override
+            public void onFailure(Call<UserObject> call, Throwable e) {
+                Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private boolean validateForm() {
@@ -305,9 +370,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             progressBarShown();
         }
 
-//        if(email.getText().length() == 0){
-//
-//        }
         if (TextUtils.isEmpty(passwordInput.getText().toString()) || passwordInput.getText().length() < 8) {
             passwordInput.setError("Required." + "You must have a minimum of 8 characters in your password");
             progressBarGone();
@@ -330,7 +392,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
             Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -351,7 +413,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void goToLogin(){
+    private void goToLogin() {
         Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
         startActivity(intent);
 
@@ -386,6 +448,21 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    public static Timestamp dateCreated() {
+        try {
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+            Date date = formatter.parse(String.valueOf(Calendar.getInstance().getTime()));
+            Log.i("", "Today is " + date);
+
+            //convert date to timestamp
+            return new Timestamp(date);
+
+        } catch (ParseException e) {
+            System.out.println("Exception :" + e);
+            return null;
+        }
+    }
+
     public static String timeStamptoString(Timestamp timestamp) {
         // hours*minutes*seconds*milliseconds  int oneDay = 24 * 60 * 60 * 1000;
         DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
@@ -398,4 +475,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         Date date = DateFormat.getInstance().parse(dateStr);
         return date;
     }
+
+
 }

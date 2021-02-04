@@ -26,7 +26,7 @@ import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.modelfirestore.Date.DateModel;
 import com.datenight_immersia_ltd.modelfirestore.Experience.ExperienceModel;
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
-import com.datenight_immersia_ltd.network.api.User;
+
 import com.datenight_immersia_ltd.utils.DownloadImageTask;
 import com.datenight_immersia_ltd.utils.PendingAdapter;
 import com.datenight_immersia_ltd.utils.RecyclerViewAdapterPending;
@@ -134,48 +134,51 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
         userdocRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 userModel = documentSnapshot.toObject(UserModel.class);
-                Log.i(TAG, "The date ids:" + userModel.getDateId().toString());
+
+                if(userModel.getDateId() !=null) {
+                    Log.i(TAG, "The date ids:" + userModel.getDateId().toString());
 
 
-                //where the date doc id is in the user array of dateids
-                //Creates and returns a new Query with the additional filter that documents must contain the specified field and the value must equal one of the values from the provided list.
-                //.whereIn("id", Collections.singletonList(userModel.getDateId())) .orderBy("timeCreated", Query.Direction.DESCENDING)
+                    //where the date doc id is in the user array of dateids
+                    //Creates and returns a new Query with the additional filter that documents must contain the specified field and the value must equal one of the values from the provided list.
+                    //.whereIn("id", Collections.singletonList(userModel.getDateId())) .orderBy("timeCreated", Query.Direction.DESCENDING)
 
-                Query query = datesCollRef.whereIn("id", Collections.singletonList(userModel.getDateId())).orderBy("timeCreated", Query.Direction.DESCENDING);
-
-
-                //getting query into adapter
-                FirestoreRecyclerOptions<DateModel> options = new FirestoreRecyclerOptions.Builder<DateModel>()
-                        .setQuery(query, DateModel.class)
-                        .setLifecycleOwner(this)
-                        .build();
+                    Query query = datesCollRef.whereIn("id", Collections.singletonList(userModel.getDateId())).orderBy("timeCreated", Query.Direction.DESCENDING);
 
 
-                adapter = new PendingAdapter(options);
-
-                //populate recycler view
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-                adapter.startListening(); //start listening for db changes and populate the adapter
-                recyclerView.setAdapter(adapter);
+                    //getting query into adapter
+                    FirestoreRecyclerOptions<DateModel> options = new FirestoreRecyclerOptions.Builder<DateModel>()
+                            .setQuery(query, DateModel.class)
+                            .setLifecycleOwner(this)
+                            .build();
 
 
-                //adapter.notifyDataSetChanged();
+                    adapter = new PendingAdapter(options);
 
-                adapter.setOnItemClickListener(new PendingAdapter.OnItemClickListener() {
-                    @Override
-                    public void onCancelInvite(int position) {
+                    //populate recycler view
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-                    }
+                    adapter.startListening(); //start listening for db changes and populate the adapter
+                    recyclerView.setAdapter(adapter);
 
-                    @Override
-                    public void onEditInvite(int position) {
 
-                    }
-                });
+                    //adapter.notifyDataSetChanged();
 
-                //populate recycler view
+                    adapter.setOnItemClickListener(new PendingAdapter.OnItemClickListener() {
+                        @Override
+                        public void onCancelInvite(int position) {
+
+                        }
+
+                        @Override
+                        public void onEditInvite(int position) {
+
+                        }
+                    });
+
+                    //populate recycler view
+                }
 
 
             }
@@ -194,7 +197,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
     @Override
     public void onStop() {
         super.onStop();
-        adapter.stopListening();
+        //adapter.stopListening();
     }
 
     public void populateRecyclerView() {
