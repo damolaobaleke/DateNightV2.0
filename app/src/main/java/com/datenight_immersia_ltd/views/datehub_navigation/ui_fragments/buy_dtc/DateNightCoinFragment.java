@@ -25,7 +25,6 @@ import com.datenight_immersia_ltd.DatabaseConstants;
 import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.databinding.FragmentDatenightcoinBinding;
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
-import com.datenight_immersia_ltd.utils.stripe.config.DateNightEphemeralKeyProvider;
 import com.datenight_immersia_ltd.views.payment.PaymentActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -35,10 +34,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.stripe.android.CustomerSession;
 import com.stripe.android.PaymentSessionConfig;
 import com.stripe.android.model.Address;
-import com.stripe.android.model.PaymentMethod;
 import com.stripe.android.model.ShippingInformation;
 import com.stripe.android.model.ShippingMethod;
 
@@ -73,8 +70,7 @@ public class DateNightCoinFragment extends Fragment {
         dtcViewModel = new ViewModelProvider(this).get(DateNightCoinViewModel.class);
 
         /*STRIPE -- initialize customer session to retrieve ephemeral key from server side*/
-        CustomerSession.initCustomerSession(requireContext(), new DateNightEphemeralKeyProvider());
-        createPaymentSessionConfig();
+        //CustomerSession.initCustomerSession(requireContext(), new DateNightEphemeralKeyProvider());
         //
         userDocRef.get().addOnSuccessListener(documentSnapshot -> {
             UserModel user = documentSnapshot.toObject(UserModel.class);
@@ -161,36 +157,43 @@ public class DateNightCoinFragment extends Fragment {
         cancel.setOnClickListener(v -> bottomSheet.dismiss());
 
         View.OnClickListener pay = v -> {
-            int cardId = v.getId();
+            //int cardId = v.getId();
+            String p = price.toString();
 
-            switch (cardId) {
-                case R.id.dtc100:
-                    payWithCard(Double.parseDouble((String) binding.coinCost100.getText()));
-                    coinIncrement(100);
-                    break;
-                case R.id.dtc200:
-                    payWithCard(Double.parseDouble((String) binding.coinCost200.getText()));
-                    coinIncrement(200);
-                    break;
-                case R.id.dtc500:
-                    payWithCard(Double.parseDouble((String) binding.coinCost200.getText()));
-                    coinIncrement(500);
-                    break;
-                case R.id.dtc1000:
-                    payWithCard(Double.parseDouble((String) binding.coinCost200.getText()));
-                    coinIncrement(1000);
-                    break;
-                case R.id.dtc10000:
-                    payWithCard(Double.parseDouble((String) binding.coinCost200.getText()));
-                    coinIncrement(10000);
-                    break;
-                case R.id.dtc20000:
-                    payWithCard(Double.parseDouble((String) binding.coinCost200.getText()));
-                    coinIncrement(20000);
-                    break;
-                default:
-                    Log.i("DTC CARD: ", "Nothing clicked");
+            //OPTION 1 --Longer
+            String[] split = p.split("£"); //remove pounds sign for charge
+            double refinedCost = Double.parseDouble(split[1]);
+            Log.i("Payments",  split[1] + " "  + refinedCost);
+            //
+
+            if (p.equals("£0.99")) {
+                payWithCard(refinedCost);
+                //coinIncrement(100);
+            } else if (p.equals("£1.99")) {
+                payWithCard(refinedCost);
+                //coinIncrement(200);
+            } else if (price.equals("£3.99")) {
+                payWithCard(dtcViewModel.getDtc500().getValue());
+                coinIncrement(500);
+            } else if (price.equals("£5.99")) {
+                payWithCard(dtcViewModel.getDtc1000().getValue());
+                coinIncrement(1000);
+            } else if (price.equals("£7.99")) {
+                payWithCard(dtcViewModel.getDtc2000().getValue());
+                coinIncrement(2000);
+            } else if (price.equals("£9.99")) {
+                payWithCard(dtcViewModel.getDtc5000().getValue());
+                coinIncrement(5000);
+            } else if (price.equals("£14.99")) {
+                payWithCard(dtcViewModel.getDtc10000().getValue());
+                coinIncrement(10000);
+            } else if (price.equals("£19.99")) {
+                payWithCard(dtcViewModel.getDtc20000().getValue());
+                coinIncrement(20000);
+            } else {
+                Log.i("DTC CARD: ", "Nothing clicked");
             }
+
         };
 
         //PAY ACTIVITY, parse intent extra key as price. in new activity get intent extra with key price
@@ -201,7 +204,7 @@ public class DateNightCoinFragment extends Fragment {
     }
 
     public void coinIncrement(int coinNumber) {
-        //TODO: After Payment Goes through-- Would be in call back
+        //TODO: Move to After Payment Goes through-- Would be in call back
         userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -212,11 +215,13 @@ public class DateNightCoinFragment extends Fragment {
                     if (user != null) {
                         int coinAmount = coinNumber;
                         coinAmount += user.getDtc();
-                        //user.setDtc(coinAmount);
+                        //Log.i("Total", String.valueOf(coinAmount));
+
+
                         userDocRef.update("dtc", coinAmount).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Toast.makeText(requireContext(), "", Toast.LENGTH_LONG).show();
+                                Toast.makeText(requireContext(), "You bought " + coinNumber + " coins", Toast.LENGTH_LONG).show();
                                 /**intent to go back to DateHub*/
                                 //Intent intent = new Intent(requireContext(), DateHubNavigation.class);
                                 //intent.putExtra(IntentConstants.FRAGMENT_TO_LOAD, IntentConstants.DATE_HUB_FRAGMENT);
@@ -233,11 +238,11 @@ public class DateNightCoinFragment extends Fragment {
 
     private void payWithCard(double price) {
         //TODO: stripe payments sdk integration --DONE
-        Intent intent = new Intent(requireContext(), PaymentActivity.class);
+        Intent intent = new Intent(requireContext(), PaymentActivity.class); //PaymentActivity - 1st Implementation
 
         //parse intent extra key as price. in new activity get intent extra with key price
         Log.i("DateNight Coin Fragment:", String.valueOf(price));
-        intent.putExtra("dtcPrice", price);
+        intent.putExtra("dtcPrice", String.valueOf(price));
         startActivity(intent);
     }
 
@@ -273,31 +278,6 @@ public class DateNightCoinFragment extends Fragment {
         new AlertDialog.Builder(requireContext()).create().show();
     }
 
-    @NonNull
-    private PaymentSessionConfig createPaymentSessionConfig() {
-        return new PaymentSessionConfig.Builder()
-
-                //Don't collect shipping info
-                .setShippingMethodsRequired(false)
-                .setShippingInfoRequired(false)
-
-                //controls whether the user can delete a payment method by swiping on it
-                .setCanDeletePaymentMethods(true)
-
-
-                // specify the payment method types that the customer can use;
-                // defaults to PaymentMethod.Type.Card
-                .setPaymentMethodTypes(Arrays.asList(PaymentMethod.Type.Card))
-
-                // specify a layout to display under the payment collection form
-                //.setAddPaymentMethodFooter(R.layout.add_payment_method_footer)
-
-                // if `true`, will show "Google Pay" as an option on the
-                // Payment Methods selection screen
-                .setShouldShowGooglePay(true)
-
-                .build();
-    }
 
     private static class AppShippingInformationValidator implements PaymentSessionConfig.ShippingInformationValidator {
 
@@ -339,5 +319,34 @@ public class DateNightCoinFragment extends Fragment {
 
     }
 
-
+    public void redundant(){
+//        switch (v.getId()) {
+//            case R.id.dtc100:
+//                payWithCard(Double.parseDouble((String) binding.coinCost100.getText()));
+//                coinIncrement(100);
+//                break;
+//            case R.id.dtc200:
+//                payWithCard(Double.parseDouble((String) binding.coinCost200.getText()));
+//                coinIncrement(200);
+//                break;
+//            case R.id.dtc500:
+//                payWithCard(Double.parseDouble((String) binding.coinCost200.getText()));
+//                coinIncrement(500);
+//                break;
+//            case R.id.dtc1000:
+//                payWithCard(Double.parseDouble((String) binding.coinCost200.getText()));
+//                coinIncrement(1000);
+//                break;
+//            case R.id.dtc10000:
+//                payWithCard(Double.parseDouble((String) binding.coinCost200.getText()));
+//                coinIncrement(10000);
+//                break;
+//            case R.id.dtc20000:
+//                payWithCard(Double.parseDouble((String) binding.coinCost200.getText()));
+//                coinIncrement(20000);
+//                break;
+//            default:
+//                Log.i("DTC CARD: ", "Nothing clicked");
+//        }
+    }
 }

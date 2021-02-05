@@ -27,7 +27,9 @@ import com.google.gson.GsonBuilder;
 import com.stripe.android.EphemeralKeyProvider;
 import com.stripe.android.EphemeralKeyUpdateListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.OkHttpClient;
@@ -45,7 +47,6 @@ public class DateNightEphemeralKeyProvider implements EphemeralKeyProvider {
 
     private static final String BASE_URL = "http://172.20.10.7:3000"; //http://api.datenight.com
     DatenightApi api;
-
 
 
     @Override
@@ -73,10 +74,34 @@ public class DateNightEphemeralKeyProvider implements EphemeralKeyProvider {
 
                 UserObject user = response.body();
                 assert user != null;
-                Log.i(TAG, user.getMessage()+ "\n" + user.getData()+ "\n" + user.isSuccess() + "\n" + user.getData().getId());
+                Log.i(TAG, user.getMessage() + "\n" + user.getData() + "\n" + user.isSuccess() + "\n" + user.getData().getId());
 
-                final String rawKey = user.getData().getId();
-                keyUpdateListener.onKeyUpdate(rawKey);
+                Map<String, Object> EphObjMap = new HashMap<>();
+
+                EphObjMap.put("id", user.getData().getId());
+                EphObjMap.put("object", user.getData().getObject());
+                EphObjMap.put("created", user.getData().getCreated());
+                EphObjMap.put("expires", user.getData().getExpires());
+                EphObjMap.put("livemode", user.getData().isLivemode());
+                EphObjMap.put("secret", user.getData().getSecret());
+
+                List<Map<String, Object>> associated_objects = new ArrayList<>();
+
+                Map<String, Object> assMap = new HashMap<>();
+                assMap.put("type",user.getData().getAssociated_objects().get(0).getType());
+                assMap.put("id",user.getData().getAssociated_objects().get(0).getId());
+
+                associated_objects.add(assMap);
+
+                EphObjMap.put("associated_objects", associated_objects);
+
+                String jsonBody = new Gson().toJson(EphObjMap);
+                Log.i(TAG, jsonBody);
+
+                final String rawKey = user.getData().toString(); //data gotten in this case is ephemeralKey Object
+                keyUpdateListener.onKeyUpdate(jsonBody);
+
+
             }
 
             @Override

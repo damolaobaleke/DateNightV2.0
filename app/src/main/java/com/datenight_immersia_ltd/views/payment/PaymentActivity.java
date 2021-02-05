@@ -41,7 +41,7 @@ import com.stripe.android.PaymentSessionData;
 import com.stripe.android.Stripe;
 import com.stripe.android.model.ConfirmPaymentIntentParams;
 import com.stripe.android.model.PaymentIntent;
-import com.stripe.android.model.ShippingInformation;
+import com.stripe.android.model.PaymentMethod;
 import com.stripe.android.model.StripeIntent;
 
 import org.jetbrains.annotations.NotNull;
@@ -56,125 +56,146 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PaymentActivity extends AppCompatActivity {
     private PaymentSession paymentSession;
-    private Button startPaymentFlowButton;
     DatenightApi api;
     private static final String BASE_URL = "http://172.20.10.7:3000"; //http://api.datenight.com
     FirebaseAuth mAuth;
     private static final int REQUEST_CODE = 245;
     Button confirmPayment;
-    TextView addPaymentMethod;
+    TextView methodChosen, payPrice;
+    PaymentMethod selectedPaymentMethod;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
-        paymentUI();
+        //paymentUI();
         confirmPayment = findViewById(R.id.button_confirm_payment);
+        methodChosen = findViewById(R.id.button_add_payment_method);
+        payPrice = findViewById(R.id.pay_price);
+
+        intent = getIntent();
+        String cost = intent.getStringExtra("dtcPrice");
+        payPrice.setText(String.format("You're about to pay £%s", cost));
 
         mAuth = FirebaseAuth.getInstance();
 
-        //initialize customer session
+        /*STRIPE -- initialize customer session to retrieve ephemeral key from server side*/
         CustomerSession.initCustomerSession(this, new DateNightEphemeralKeyProvider());
 
-        //init payment session
-        paymentSession = new PaymentSession(this, new PaymentSessionConfig.Builder()
-                .setShippingInfoRequired(false)
-                .build());
+        //init and set up payment session
+        paymentSession = new PaymentSession(this, createPaymentSessionConfig());
+
         setupPaymentSession();
 
-        //On add payment method clicked
-        //add payment method
-
-
-        setUpNetworkRequest();
-
         //on Confirm button clicked:
-        confirmPayment.setOnClickListener(v->getClientSecret());
+        confirmPayment.setOnClickListener(v -> {
+            Toast.makeText(this, "Initializing payment", Toast.LENGTH_SHORT).show();
+            getClientSecret();
+        });
 
     }
 
-    private void paymentUI(){
+    private void paymentUI() {
         PaymentAuthConfig.Stripe3ds2ButtonCustomization selectCustomization = new PaymentAuthConfig.Stripe3ds2ButtonCustomization.Builder()
                 .setBackgroundColor("#EC4847")
-                .setTextColor("#000000")
+                .setTextColor("#B048D1")
                 .build();
 
         PaymentAuthConfig.Stripe3ds2UiCustomization uiCustomization = PaymentAuthConfig.Stripe3ds2UiCustomization.Builder.createWithAppTheme(this)
-                        .setButtonCustomization(selectCustomization, PaymentAuthConfig.Stripe3ds2UiCustomization.ButtonType.SELECT)
-                        .build();
+                .setButtonCustomization(selectCustomization, PaymentAuthConfig.Stripe3ds2UiCustomization.ButtonType.SELECT)
+                .build();
 
         PaymentAuthConfig.init(new PaymentAuthConfig.Builder().set3ds2Config(new PaymentAuthConfig.Stripe3ds2Config.Builder().setUiCustomization(uiCustomization).build())
-                        .build());
+                .build());
     }
 
-    public void setAddPaymentMethod(View view){
-        paymentSession.presentPaymentMethodSelection(null);
+    //on add card clicked
+    public void setAddPaymentMethod(View view) {
+        paymentSession.presentPaymentMethodSelection("");
     }
 
+    //payment session listener
     private void setupPaymentSession() {
         paymentSession.init(new PaymentSession.PaymentSessionListener() {
             @Override
-            public void onCommunicatingStateChanged(boolean b) {
+            public void onPaymentSessionDataChanged(@NotNull PaymentSessionData data) {
+                // use paymentMethod
+                if (data.getUseGooglePay()) {
+                    // customer intends to pay with Google Pay
+                    //set up google pay payment
+                }
 
+                Log.i("Payment Session", "Payment session changed " + data);
+                Log.i("Payment Session", "Payment session ==> " + data.isPaymentReadyToCharge() + "\n" + data.getPaymentMethod());
+
+                if (data.isPaymentReadyToCharge()) {
+                    Log.i("Payment session", "Ready to charge");
+                    confirmPayment.setEnabled(true); //only when isPaymentReadyTo charge true
+
+                    methodChosen.setText(data.getPaymentMethod().component8().brand + " ends with " + data.getPaymentMethod().component8().last4);
+                    selectedPaymentMethod = data.getPaymentMethod();
+                }
+
+
+            }
+
+            @Override
+            public void onCommunicatingStateChanged(boolean b) {
+                // update UI, such as hiding or showing a progress bar
             }
 
             @Override
             public void onError(int i, @NotNull String s) {
-
-            }
-
-            @Override
-            public void onPaymentSessionDataChanged(@NotNull PaymentSessionData paymentSessionData) {
-
+                // handle error
             }
         });
-        startPaymentFlowButton.setEnabled(true);
     }
 
-    //payment session handler:
+    //payment session handler: In order to get updates for the PaymentSessionData object and to handle state during Activity lifecycle
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode == 1) { //1 ==OK
+        //if (requestCode == REQUEST_CODE) {
+        // if (resultCode == AppCompatActivity.RESULT_OK && data != null) {
 
-                if (data != null) {
-                    paymentSession.handlePaymentData(requestCode, resultCode, data);
+        paymentSession.handlePaymentData(requestCode, resultCode, data);//get update of paymentSessionData from stripe activities
 
-                    //Adding of Payments Listener
-                    Stripe stripe = new Stripe(this, PaymentConfiguration.getInstance(this).getPublishableKey());
+        //Adding of Payments Listener
+        Stripe stripe = new Stripe(this, PaymentConfiguration.getInstance(this).getPublishableKey());
 
-                    stripe.onPaymentResult(requestCode, data, new ApiResultCallback<PaymentIntentResult>() {
-                        @Override
-                        public void onSuccess(@NotNull PaymentIntentResult paymentIntentResult) {
-                            PaymentIntent paymentIntent = paymentIntentResult.getIntent();
-                            StripeIntent.Status status = paymentIntent.getStatus();
+        stripe.onPaymentResult(requestCode, data, new ApiResultCallback<PaymentIntentResult>() {
+            //when payment completes
+            @Override
+            public void onSuccess(@NotNull PaymentIntentResult paymentIntentResult) {
+                PaymentIntent paymentIntent = paymentIntentResult.getIntent();
+                StripeIntent.Status status = paymentIntent.getStatus();
 
-                            if (status == StripeIntent.Status.Succeeded) {
-                                Toast.makeText(PaymentActivity.this, "Payment Succeeded", Toast.LENGTH_LONG).show();
-                                //Add coin increment method here
-                            } else if (status == StripeIntent.Status.RequiresPaymentMethod) {
-                                Toast.makeText(PaymentActivity.this, "Please enter a payment method", Toast.LENGTH_LONG).show();
-                            }
-                        }
+                if (status == StripeIntent.Status.Succeeded) {
+                    Toast.makeText(PaymentActivity.this, "Payment Succeeded", Toast.LENGTH_LONG).show();
+                    //Add coin increment method here
 
-                        @Override
-                        public void onError(@NotNull Exception e) {
-                            Toast.makeText(PaymentActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
+                    //end payment session
+                    paymentSession.onCompleted();
 
+                    //back to datehub
+
+                } else if (status == StripeIntent.Status.RequiresPaymentMethod) {
+                    Toast.makeText(PaymentActivity.this, "Please enter a payment method", Toast.LENGTH_LONG).show();
                 }
             }
-        }
 
-    }
+            @Override
+            public void onError(@NotNull Exception e) {
+                Toast.makeText(PaymentActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
 
-    @NonNull
-    private ShippingInformation getDefaultShippingInfo() {
-        // optionally specify default shipping address
-        return new ShippingInformation();
+
+        // }
+        //}
+
     }
 
     private void setUpNetworkRequest() {
@@ -196,30 +217,28 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void getClientSecret() {
+        setUpNetworkRequest();
         //TODO: amount passed from dtc fragment --DONE
-        Intent intent = getIntent();
         String cost = intent.getStringExtra("dtcPrice");
+        Log.i("PaymentActivity", "The " + cost);
 
-        String[] split = cost.split("£"); //remove pounds sign for charge
-        int refinedCost = Integer.parseInt(split[1]);
-        Log.i("Payments", cost + " " + split[1] + refinedCost);
 
-        Call<UserObject> userObjectCall = api.getClientSecret(mAuth.getCurrentUser().getUid(), 100);
+        Call<UserObject> userObjectCall = api.getClientSecret(mAuth.getCurrentUser().getUid(), Double.parseDouble(cost)); //Double.parseDouble(cost)
 
         userObjectCall.enqueue(new Callback<UserObject>() {
             @Override
             public void onResponse(Call<UserObject> call, Response<UserObject> response) {
                 //confirm payment with client secret
                 if (!response.isSuccessful()) {
-                    Toast.makeText(PaymentActivity.this, "response not gotten",Toast.LENGTH_LONG).show();
+                    Toast.makeText(PaymentActivity.this, "response not gotten", Toast.LENGTH_LONG).show();
 
                     return;
                 }
 
                 UserObject user = response.body();
-                Log.i("Payment Activity", user.getMessage() + user.getPaymentIntentData().getClientSecret());
+                Log.i("Payment Activity", user.isSuccess() + "\n" + user.getMessage() + "\n" + user.getPaymentIntentData().getClientSecret() + "\n" + selectedPaymentMethod.id);
 
-                pay(user.getPaymentIntentData().getStripeCustomerId(), user.getPaymentIntentData().getClientSecret());
+                confirmPay(user.getPaymentIntentData().getClientSecret(), selectedPaymentMethod.id);
             }
 
             @Override
@@ -230,9 +249,43 @@ public class PaymentActivity extends AppCompatActivity {
 
     }
 
-    private void pay(String stripeAccountId, String clientSecret) {
-        Stripe stripe = new Stripe(this, PaymentConfiguration.getInstance(this).getPublishableKey(), stripeAccountId);
-        stripe.confirmPayment(this, ConfirmPaymentIntentParams.create(clientSecret), stripeAccountId);
+    //charges the card and executes payment
+    private void confirmPay(String clientSecret, String paymentMethodId) {
+        Stripe stripe = new Stripe(this, PaymentConfiguration.getInstance(this).getPublishableKey());
+        stripe.confirmPayment(this,
+                ConfirmPaymentIntentParams.createWithPaymentMethodId(
+                        paymentMethodId,
+                        clientSecret
+                )
+        );
+
+        //Toast
+        Toast.makeText(PaymentActivity.this, "Payment Succeeded", Toast.LENGTH_LONG).show();
+    }
+
+    @NonNull
+    private PaymentSessionConfig createPaymentSessionConfig() {
+        return new PaymentSessionConfig.Builder()
+
+                //Don't collect shipping info
+
+                .setShippingMethodsRequired(false)
+                .setShippingInfoRequired(false)
+
+                //controls whether the user can delete a payment method by swiping on it
+                .setCanDeletePaymentMethods(true)
+
+                // specify the payment method types that the customer can use;
+                // defaults to PaymentMethod.Type.Card
+
+                // specify a layout to display under the payment collection form
+                //.setAddPaymentMethodFooter(R.layout.add_payment_method_footer)
+
+                // if `true`, will show "Google Pay" as an option on the
+                // Payment Methods selection screen
+                .setShouldShowGooglePay(true)
+
+                .build();
     }
 
 }

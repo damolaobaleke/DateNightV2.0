@@ -32,6 +32,24 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/item_divider"/>
+
+                <TextView
+                    android:id="@+id/pay_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="cost"
+                    android:drawablePadding="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:onClick="setAddPaymentMethod"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@android:style/TextAppearance"
+                    android:padding="16dp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -47,16 +65,12 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:onClick="setAddPaymentMethod"
+                    android:layout_marginTop="10dp"
                     android:drawableStart="@drawable/ic_material_credit_card"
                     android:drawableTint="?android:textColorPrimary"
                     android:textAppearance="@android:style/TextAppearance"
                     android:padding="16dp"
                     tools:targetApi="m" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@drawable/item_divider"/>
 
 
                 <View
@@ -75,15 +89,6 @@
                     android:textColor="@color/white"
                     android:background="@drawable/custom_login_button"
                     android:layout_marginTop="20dp"
-                    android:enabled="false" />
-
-                <Button
-                    android:id="@+id/button_confirm_setup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="32dp"
-                    android:text="Setup Payment Credentials"
                     android:enabled="false" />
 
             </LinearLayout>

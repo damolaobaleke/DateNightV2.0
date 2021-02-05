@@ -14,7 +14,6 @@
 package com.datenight_immersia_ltd.utils.stripe.config;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -25,16 +24,19 @@ import com.stripe.android.model.PaymentMethod;
 
 public class PaymentSessionListener implements PaymentSession.PaymentSessionListener {
     // Called whenever the PaymentSession's data changes,
-    // e.g. when the user selects a new `PaymentMethod` or enters shipping info.
+    // e.g. when the user selects a new `PaymentMethod`
+    public static PaymentMethod paymentMethod;
+
     @Override
     public void onPaymentSessionDataChanged(@NonNull PaymentSessionData data) {
         if (data.getUseGooglePay()) {
             // customer intends to pay with Google Pay
+            //set up google pay payment
         } else {
-            final PaymentMethod paymentMethod = data.getPaymentMethod();
+            paymentMethod = data.getPaymentMethod();
             if (paymentMethod != null) {
                 // Display information about the selected payment method
-
+                Log.i("Payment Session:", "pmthd id: " + paymentMethod.id);
             }
         }
 
@@ -47,10 +49,12 @@ public class PaymentSessionListener implements PaymentSession.PaymentSessionList
     @Override
     public void onCommunicatingStateChanged(boolean isCommunicating) {
         //show progressbar
+        // update UI, such as hiding or showing a progress bar
     }
 
     @Override
     public void onError(int errorCode, @NotNull String errorMessage) {
         Log.i("PaymentsessionListener", errorMessage);
+        // handle error
     }
 }

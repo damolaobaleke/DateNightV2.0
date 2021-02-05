@@ -1,13 +1,5 @@
 package com.datenight_immersia_ltd.views.authentication;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Size;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.browser.customtabs.CustomTabColorSchemeParams;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.core.content.ContextCompat;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -26,13 +18,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabColorSchemeParams;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
+
 import com.datenight_immersia_ltd.ActivityJ;
+import com.datenight_immersia_ltd.R;
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
 import com.datenight_immersia_ltd.modelfirestore.User.UserStatsModel;
 import com.datenight_immersia_ltd.network.api.DatenightApi;
 import com.datenight_immersia_ltd.network.api.UserObject;
 import com.datenight_immersia_ltd.views.datehub_navigation.DateHubNavigation;
-import com.datenight_immersia_ltd.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,12 +47,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.stripe.android.EphemeralKeyProvider;
-import com.stripe.android.EphemeralKeyUpdateListener;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -348,7 +344,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 UserObject user = response.body();
 
                 assert user != null;
-                Log.i(TAG, user.isSuccess() + " " + user.getMessage() + " " + user.getData().getEphemeralKey());
+                Log.i(TAG, user.isSuccess() + " " + user.getMessage() + " " + user.getUserData().getEphemeralKey());
             }
 
             @Override

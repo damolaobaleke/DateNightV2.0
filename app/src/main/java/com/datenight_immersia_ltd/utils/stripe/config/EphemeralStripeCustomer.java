@@ -13,20 +13,20 @@
 
 package com.datenight_immersia_ltd.utils.stripe.config;
 
-public class PaymentIntentObject {
-    String clientSecret;
-    String customer; //stripeCustomerId
+public class EphemeralStripeCustomer {
+   String type;
+   String id; //stripeCustomerId
 
-    public PaymentIntentObject(String clientSecret, String customer) {
-        this.clientSecret = clientSecret;
-        this.customer = customer;
+    public EphemeralStripeCustomer(String type, String id) {
+        this.type = type;
+        this.id = id;
     }
 
-    public String getClientSecret() {
-        return clientSecret;
+    public String getType() {
+        return type;
     }
 
-    public String getStripeCustomerId() {
-        return customer;
+    public String getId() {
+        return id;
     }
 }

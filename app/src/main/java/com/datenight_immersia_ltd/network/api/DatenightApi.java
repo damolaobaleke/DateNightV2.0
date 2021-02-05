@@ -35,7 +35,7 @@ public interface DatenightApi {
     Call<UserObject> createCustomerEphemeralKey(@Query("id") String userId, @FieldMap Map<String, String> apiVersion);  //auth.getId()
 
     @POST("/create-payment-intent")
-    Call<UserObject> getClientSecret(@Query("id") String userId, @Query("amount") int amount);
+    Call<UserObject> getClientSecret(@Query("id") String userId, @Query("amount") double amount);
 
     @FormUrlEncoded
     @POST("/stripe-customer/ephemeral")

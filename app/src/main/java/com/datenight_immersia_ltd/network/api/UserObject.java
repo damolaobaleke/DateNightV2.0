@@ -14,20 +14,23 @@
 package com.datenight_immersia_ltd.network.api;
 
 import com.datenight_immersia_ltd.modelfirestore.User.UserModel;
+import com.datenight_immersia_ltd.utils.stripe.config.EphemeralKeyObject;
 import com.datenight_immersia_ltd.utils.stripe.config.PaymentIntentObject;
 
 public class UserObject {
     boolean success;
     String message;
-    UserModel data;
+    UserModel userData;
+    EphemeralKeyObject data;
     UserModelStripe stripeData;
     PaymentIntentObject paymentIntentData;
 
-    public UserObject(boolean success, String message, UserModel data, UserModelStripe stripeData) {
+    public UserObject(boolean success, String message, EphemeralKeyObject data, UserModelStripe stripeData, UserModel userData) {
         this.success = success;
         this.message = message;
         this.data = data;
         this.stripeData = stripeData;
+        this.userData = userData;
     }
 
     public boolean isSuccess() {
@@ -38,7 +41,7 @@ public class UserObject {
         return message;
     }
 
-    public UserModel getData() {
+    public EphemeralKeyObject getData() {
         return data;
     }
 
@@ -48,5 +51,9 @@ public class UserObject {
 
     public PaymentIntentObject getPaymentIntentData() {
         return paymentIntentData;
+    }
+
+    public UserModel getUserData() {
+        return userData;
     }
 }

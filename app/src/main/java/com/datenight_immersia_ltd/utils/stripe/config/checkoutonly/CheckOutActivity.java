@@ -54,7 +54,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class CheckOutActivity extends AppCompatActivity {
-    private static final String BASEURL = "http://192.168.88.24:3000";
+    private static final String BASEURL = "http://172.20.10.7:3000/";
     private final OkHttpClient httpClient = new OkHttpClient();
     private String paymentIntentClientSecret;
     private Stripe stripe;
@@ -85,10 +85,10 @@ public class CheckOutActivity extends AppCompatActivity {
         String cost = intent.getStringExtra("dtcPrice");
 
         String[] split = cost.split("£"); //remove pounds sign for charge
-        int refinedCost = Integer.parseInt(split[1]);
+        double refinedCost = Double.parseDouble(split[1]);
         Log.i("Payments", cost + " " + split[1] + refinedCost);
 
-        payMap.put("amount", refinedCost);
+        payMap.put("amount", cost);
         payMap.put("item", "dtc");
         String jsonBody = new Gson().toJson(payMap);
 
@@ -97,7 +97,8 @@ public class CheckOutActivity extends AppCompatActivity {
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("http")
                 .host(BASEURL)
-                .addQueryParameter("id", mAuth.getCurrentUser().getUid()) //userDocId could be stipreCustomer id to reduce logic on server side, but would increase logic on here
+                .addQueryParameter("id", mAuth.getCurrentUser().getUid())
+                .addQueryParameter("amount", cost)
                 .build();
 
         RequestBody body = RequestBody.create(mediaType, jsonBody);
