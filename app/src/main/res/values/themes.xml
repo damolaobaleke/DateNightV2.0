@@ -107,4 +107,29 @@
         <item name="colorAccent">@color/white</item>
     </style>
 
+    <!--Stripe pre-built UI -->
+    <style name="StripeDefaultTheme" parent="StripeBaseTheme">
+        <!-- Applied to toolbar background -->
+        <item name="colorPrimary">@color/white</item>
+
+        <!-- Applied to status bar -->
+        <item name="colorPrimaryDark">@color/date_night_grey</item>
+
+        <!-- Applied to toolbar foreground/text -->
+        <item name="titleTextColor">@color/black</item>
+
+        <!--Applied to selected Payment Method; active field; links;
+            add new Payment Method call-to-action
+        -->
+        <item name="colorAccent">@color/date_night_purple</item>
+
+        <!-- Applied to: Payment Method icon; inactive form field highlight -->
+        <item name="colorControlNormal">@color/date_night_purple</item>
+
+        <!-- Applied to form field text -->
+        <item name="android:editTextColor">@color/date_night_purple</item>
+
+        <item name="editTextColor">@color/date_night_purple</item>
+    </style>
+
 </resources>

@@ -70,25 +70,34 @@
         android:autofillHints="" />
 
     <!--Change to White Color-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/item_divider"
+        app:layout_constraintTop_toBottomOf="@+id/dateOfBirth"/>
 
-
-    <EditText
+    <TextView
         android:id="@+id/Age"
         style="@style/Username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
-        android:background="@drawable/custom_edittext"
         android:paddingVertical="10dp"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:inputType="text"
-        android:hint="22-09-1978"
+        android:text="dob"
         android:fontFamily="@font/inter"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/username"
         app:layout_constraintStart_toStartOf="@+id/username"
         app:layout_constraintTop_toBottomOf="@+id/dateOfBirth" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/item_divider"
+        app:layout_constraintBottom_toBottomOf="@+id/Age"/>
 
     <Button
         android:id="@+id/save_changes"
@@ -124,7 +133,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/enter_your_date_of_birth"
+        android:text="Date of birth"
         android:textColor="@color/black"
         android:textFontWeight="900"
         app:layout_constraintStart_toStartOf="@+id/textView7"

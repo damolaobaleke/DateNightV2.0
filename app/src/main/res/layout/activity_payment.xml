@@ -47,7 +47,7 @@
                     android:focusable="true"
                     android:gravity="center"
                     android:onClick="setAddPaymentMethod"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:textAppearance="@android:style/TextAppearance"
                     android:padding="16dp" />
 
@@ -94,7 +94,7 @@
             </LinearLayout>
 
             <ProgressBar
-                android:id="@+id/progress_bar"
+                android:id="@+id/progress_bar_payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
