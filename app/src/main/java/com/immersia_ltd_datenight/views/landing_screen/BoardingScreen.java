@@ -1,20 +1,21 @@
 package com.immersia_ltd_datenight.views.landing_screen;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
-import com.immersia_ltd_datenight.R;
-import com.immersia_ltd_datenight.views.authentication.LoginActivity;
-import com.immersia_ltd_datenight.views.authentication.SignUpActivity;
-import com.immersia_ltd_datenight.views.user_profile.UserProfileActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.immersia_ltd_datenight.R;
+import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
+import com.immersia_ltd_datenight.views.authentication.LoginActivity;
+import com.immersia_ltd_datenight.views.authentication.SignUpActivity;
+import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
+import com.immersia_ltd_datenight.views.user_profile.UserProfileActivity;
 
 public class BoardingScreen extends AppCompatActivity {
     FirebaseAuth mAuth;
@@ -47,6 +48,7 @@ public class BoardingScreen extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
 
+        //instantiate firebase auth class
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
@@ -79,8 +81,15 @@ public class BoardingScreen extends AppCompatActivity {
             assert name != null;
             Log.i("Name", name);
 
-            Intent intent = new Intent(this, DateHubNavigation.class);
-            startActivity(intent);
+            DateNight appState = ((DateNight)this.getApplication());
+            if (appState.getAppData(user.getUid()) == null){
+                // Fetch required launch data and then launch DateHubNavigation class
+                appState.initializeAppData(user.getUid(), this);
+            } else {
+                Intent intent = new Intent(this, DateHubNavigation.class);
+                startActivity(intent);
+            }
+
 
             Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
         } else {

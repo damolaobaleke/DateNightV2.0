@@ -1,12 +1,5 @@
 package com.immersia_ltd_datenight.network.api;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-
-
 public interface FundstrtrApi {
 
     //Retrieve Unity Object , each uid represents the Environment
@@ -14,17 +7,17 @@ public interface FundstrtrApi {
     //Call<EnvironmentObject> getEnvironment(@Path("id") String environmentId); //annotate to tell retrofit to parse variable into block
 
     //Retrieve all pitches
-    @GET("/investopp")
-    Call<PitchLists> getPitches();
-    //Call<List<Pitch>> getPitches(); If the response was just an array of object, but its object which has an array of objects
-
-    //Retrieve each individual pitch
-    @GET("/investopp/pitches/{id}/details")
-    Call<PitchObject> getPitch(@Path("id") String pitchId); //annotate to tell retrofit to parse variable into block
-
-    //Retrieve array of comments for pitch
-    @GET("/investopp/pitch/{id}/discussion")
-    Call<List<Pitch>> getDiscussions(@Path("id") String pitchId);
+//    @GET("/investopp")
+//    Call<PitchLists> getPitches();
+//    //Call<List<Pitch>> getPitches(); If the response was just an array of object, but its object which has an array of objects
+//
+//    //Retrieve each individual pitch
+//    @GET("/investopp/pitches/{id}/details")
+//    Call<PitchObject> getPitch(@Path("id") String pitchId); //annotate to tell retrofit to parse variable into block
+//
+//    //Retrieve array of comments for pitch
+//    @GET("/investopp/pitch/{id}/discussion")
+//    Call<List<Pitch>> getDiscussions(@Path("id") String pitchId);
 
 //    @POST("/signup")
 //    Call<PostAuthUser> signUp(@Header("token") String token, @Body PostAuthUser user);

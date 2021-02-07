@@ -335,7 +335,7 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     public void coinIncrement(int coinNumber) {
-        userDocRef = db.collection(DatabaseConstants.USER_DATA_COLLECTION).document(mAuth.getCurrentUser().getUid());
+        userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
 
         userDocRef.get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

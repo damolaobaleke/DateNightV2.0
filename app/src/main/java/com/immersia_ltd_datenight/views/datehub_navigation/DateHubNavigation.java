@@ -3,33 +3,34 @@ package com.immersia_ltd_datenight.views.datehub_navigation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.immersia_ltd_datenight.DatabaseConstants;
-import com.immersia_ltd_datenight.IntentConstants;
-import com.immersia_ltd_datenight.R;
-import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
-import com.immersia_ltd_datenight.views.authentication.LoginActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.immersia_ltd_datenight.DatabaseConstants;
+import com.immersia_ltd_datenight.IntentConstants;
+import com.immersia_ltd_datenight.R;
+import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
+import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
+import com.immersia_ltd_datenight.views.authentication.LoginActivity;
 import com.stripe.android.CustomerSession;
-
-import androidx.annotation.NonNull;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 public class DateHubNavigation extends AppCompatActivity {
 
@@ -63,7 +64,7 @@ public class DateHubNavigation extends AppCompatActivity {
         emailDisplay = header.findViewById(R.id.emailDisplay);
 
         mAuth = FirebaseAuth.getInstance();
-        userdocRef = db.collection(DatabaseConstants.USER_DATA_COLLECTION).document(mAuth.getCurrentUser().getUid());
+        userdocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
         userdocRef.get().addOnSuccessListener(documentSnapshot -> {
             UserModel user = documentSnapshot.toObject(UserModel.class);
             if(user != null) {
@@ -144,7 +145,9 @@ public class DateHubNavigation extends AppCompatActivity {
     }
 
     private void signOut() {
-        mAuth =  FirebaseAuth.getInstance();
+        DateNight appState = ((DateNight)this.getApplication());
+        appState.clearAppData();
+
         mAuth.signOut();
         updateUI(null);
         Intent intent = new Intent(this, LoginActivity.class);

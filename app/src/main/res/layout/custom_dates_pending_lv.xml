@@ -52,12 +52,11 @@
         android:id="@+id/time_created"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:layout_marginStart="72dp"
-        android:text="2 hours ago"
+        android:text="Sunday"
         android:textColor="@color/date_night_grey"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/edit_invite_btn"
+        app:layout_constraintStart_toStartOf="@+id/invite_description"
+        app:layout_constraintTop_toTopOf="@+id/edit_invite_btn" />
 
     <Button
         android:id="@+id/edit_invite_btn"
@@ -84,7 +83,6 @@
         android:id="@+id/cancel_invite_btn"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
-        android:layout_marginEnd="3dp"
         android:background="@drawable/pill"
         android:lineHeight="17sp"
         android:paddingStart="8dp"

@@ -14,14 +14,22 @@ object DatabaseConstants {
     const val FULL_NAME_CHILD = "name"
     const val USER_PHOTO_CHILD = "username"
 
+    //Experiences
+    const val EXPERIENCE_NODE = "experiences"
+
     //Ratings
-    const val USER_DATA_COLLECTION = "userData"
     const val AVG_DATE_STATS_DOC = "avgDateStats"
     const val USER_RATING_FIELD = "rating"
 
     //Dates
     const val DATES_COLLECTION = "dates"
     const val STATISTICS_NODE = "statistics"
+    const val DATE_TIME_FIELD = "dateTime"
+    const val DATE_CREATED_TIME_FIELD = "timeCreated"
+    const val DATE_ACCEPTED = "ACCEPTED"
+    const val DATE_REJECTED = "REJECTED"
+    const val DATE_PENDING = "PENDING"
+    const val PARTICIPANT_STATUS_FIELD = "participantStatus"
 
     //Feedback
     const val FEEDBACK_NODE = "feedback"

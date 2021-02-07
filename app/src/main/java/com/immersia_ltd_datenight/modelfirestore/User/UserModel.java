@@ -19,6 +19,8 @@ public class UserModel {
     public String loginMethod;
     public String stripeCustomerId;
     public String ephemeralKey;
+    private String dateCreated;
+    private boolean onBoarded ;
     List<String> purchasedExperiences;
     UserPreferences userPreferences;
     List<String> dateId;
@@ -28,7 +30,7 @@ public class UserModel {
         /**Public no arg constructor needed*/
     }
 
-    public UserModel(String id, String username, String name, String email, Timestamp dob, HashMap<String, String> avatar, String status, List<String> dateId, UserStatsModel statistics, String stripeCustomerId) {
+    public UserModel(String id, String username, String name, String email, Timestamp dob, HashMap<String, String> avatar, String status, List<String> dateId, UserStatsModel statistics, String stripeCustomerId, String dateCreated, boolean onBoarded) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -39,6 +41,8 @@ public class UserModel {
         this.dateId = dateId;
         this.avgDateStats = statistics;
         this.stripeCustomerId = stripeCustomerId;
+        this.dateCreated = dateCreated;
+        this.onBoarded = onBoarded;
     }
 
     /**Constructor for invite user activity- majorly to get the avatar image*/
@@ -100,6 +104,14 @@ public class UserModel {
         return dtc;
     }
 
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public boolean isOnBoarded() {
+        return onBoarded;
+    }
+
     public void setDtc(int dtc) {
         this.dtc = dtc;
     }
@@ -107,4 +119,6 @@ public class UserModel {
     public void setAvgDateStats(UserStatsModel avgDateStats) {
         this.avgDateStats = avgDateStats;
     }
+
+
 }

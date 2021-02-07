@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import android.widget.Toast.LENGTH_LONG
+import android.widget.Toast.LENGTH_SHORT
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -140,7 +141,10 @@ class CasualFragment : Fragment() {
         }
 
         paris.setOnClickListener { v: View? -> startParis() }
-        cappaducia.setOnClickListener({ v: View? -> startCappaducia() })
+        cappaducia.setOnClickListener { v: View? ->
+            Toast.makeText(requireContext(), "Coming soon", LENGTH_SHORT).show();
+            //startCappaducia()
+        }
         return view
     }
 

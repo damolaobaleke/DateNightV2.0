@@ -27,6 +27,10 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     lateinit var userRef: DocumentReference
     lateinit var db: FirebaseFirestore
 
+    init {
+        mAuth =  FirebaseAuth.getInstance()
+    }
+
     fun logIn(email: String, password: String) {
 
     }
@@ -49,7 +53,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
                         //Add User to db
                         val userStats = UserStatsModel(0, 0, 0,0)
-                        val user = UserModel("", username, email, null,  dateStringToTimestamp(age), avatar, null, null, userStats, username.toLowerCase(Locale.ROOT))
+                        val user = UserModel("", username, email, null,  dateStringToTimestamp(age), avatar, null, null, userStats, username.toLowerCase(Locale.ROOT),mAuth.currentUser!!.metadata!!.creationTimestamp.toString(),false)
 
                         createUserInDb(user)
 

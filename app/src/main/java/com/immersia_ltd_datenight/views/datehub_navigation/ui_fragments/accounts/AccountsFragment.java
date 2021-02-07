@@ -19,10 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.immersia_ltd_datenight.R;
-import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
-import com.immersia_ltd_datenight.modelfirestore.User.UserStatsModel;
-import com.immersia_ltd_datenight.views.authentication.LoginActivity;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +27,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.immersia_ltd_datenight.R;
+import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
+import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
+import com.immersia_ltd_datenight.views.authentication.LoginActivity;
 import com.stripe.android.CustomerSession;
 
 import java.text.DateFormat;
@@ -40,6 +40,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 public class AccountsFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
@@ -137,20 +138,17 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
     }
 
     public void updateUser() {
-        HashMap<String,String> avatar = new HashMap<>();
-        avatar.put("avatar",""); //R.drawable.avatar_ellipse
+        Map<String, Object> updateUser = new HashMap<>();
+        updateUser.put("username", username.getText().toString());
+        updateUser.put("email", emailInput.getText().toString());
 
-
-        UserStatsModel userStats = new UserStatsModel(0, 0, 0,0);
-
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), username.getText().toString(), "", emailInput.getText().toString(),dateStringToTimestamp(dateOfBirth.getText().toString()), avatar, null,null ,userStats ,username.getText().toString().toLowerCase());
-        userRef.set(userModel).addOnSuccessListener(aVoid -> {
+        userRef.update(updateUser).addOnSuccessListener(aVoid -> {
             progressBarGone();
             Toast.makeText(getContext(), "Your profile has been updated", Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             progressBarGone();
             Log.i(TAG, "Didn't update user");
-        }).addOnCompleteListener(task -> progressBarGone());
+        }).addOnCompleteListener(task -> progressBarGone());;
     }
 
     public void progressBarShown() {
@@ -199,6 +197,8 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
     }
 
     private void signOut() {
+        DateNight appState = ((DateNight)this.getActivity().getApplication());
+        appState.clearAppData();
         mAuth.signOut();
         //stripe
         CustomerSession.endCustomerSession();

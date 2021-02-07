@@ -29,9 +29,9 @@ class ChatRoomActivity : AppCompatActivity() {
         // Initialize chat participants' data
         val currentUsername = intent.getStringExtra(IntentConstants.USER_NAME_EXTRA)
         val currentUserFullName = intent.getStringExtra(IntentConstants.USER_FULL_NAME_EXTRA)
-        val chatParticipantId = intent.getStringExtra(IntentConstants.CHAT_PARTICIPANT_ID_EXTRA)
-        val chatParticipantUsername = intent.getStringExtra(IntentConstants.CHAT_PARTICIPANT_USER_NAME_EXTRA) // TODO: Change to username
-        val chatParticipantFullName = intent.getStringExtra(IntentConstants.CHAT_PARTICIPANT_FULL_NAME_EXTRA)
+        val chatParticipantId = intent.getStringExtra(IntentConstants.PARTICIPANT_ID_EXTRA)
+        val chatParticipantUsername = intent.getStringExtra(IntentConstants.PARTICIPANT_USER_NAME_EXTRA) // TODO: Change to username
+        val chatParticipantFullName = intent.getStringExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA)
         val chatRoomID = intent.getStringExtra(IntentConstants.CHAT_ROOM_ID_EXTRA)
 
         if (currentUsername == null || chatParticipantId == null ||

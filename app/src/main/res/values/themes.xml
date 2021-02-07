@@ -77,8 +77,6 @@
     <style name="WhiteActionBarStyle" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:background">@color/white</item>
         <item name="titleTextStyle">@style/WhiteActionBarTitle</item>
-        <item name="android:elevation">4dp</item>
-        <item name="elevation">4dp</item>
     </style>
 
     <style name="WhiteActionBarTitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">

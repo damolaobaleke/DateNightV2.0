@@ -68,7 +68,7 @@ class StartNewChatActivity : AppCompatActivity() {
     }
 
     fun onSearchUsername(v: View){
-        val username = usernameEditText.text.toString()
+        val username = usernameEditText.text.toString().trim().toLowerCase()
         viewModel.searchForUserByUsername(username, this)
     }
 

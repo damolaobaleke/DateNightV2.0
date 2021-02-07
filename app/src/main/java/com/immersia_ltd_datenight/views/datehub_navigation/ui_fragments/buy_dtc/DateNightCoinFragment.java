@@ -21,12 +21,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.immersia_ltd_datenight.DatabaseConstants;
-import com.immersia_ltd_datenight.PriceConstants;
-import com.immersia_ltd_datenight.R;
-import com.immersia_ltd_datenight.databinding.FragmentDatenightcoinBinding;
-import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
-import com.immersia_ltd_datenight.views.payment.PaymentActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +29,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.immersia_ltd_datenight.DatabaseConstants;
+import com.immersia_ltd_datenight.PriceConstants;
+import com.immersia_ltd_datenight.R;
+import com.immersia_ltd_datenight.databinding.FragmentDatenightcoinBinding;
+import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
+import com.immersia_ltd_datenight.views.payment.PaymentActivity;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -61,7 +61,7 @@ public class DateNightCoinFragment extends Fragment {
         //Initialize db and auth
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        userDocRef = db.collection(DatabaseConstants.USER_DATA_COLLECTION).document(mAuth.getCurrentUser().getUid());
+        userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
 
         //Initialize View Model
         dtcViewModel = new ViewModelProvider(this).get(DateNightCoinViewModel.class);

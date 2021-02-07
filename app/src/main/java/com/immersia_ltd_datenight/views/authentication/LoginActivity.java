@@ -17,14 +17,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.immersia_ltd_datenight.DatabaseConstants;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
 import com.immersia_ltd_datenight.network.api.DatenightApi;
 import com.immersia_ltd_datenight.network.api.UserObject;
+import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
 import com.immersia_ltd_datenight.utils.stripe.config.DateNightEphemeralKeyProvider;
 import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
+import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
 import com.stripe.android.CustomerSession;
 
 import org.jetbrains.annotations.NotNull;
@@ -42,17 +47,20 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String BASE_URL = "http://172.20.10.7:3000";
+    private static final String BASE_URL =  "http://172.20.10.7:3000" ;
     private FirebaseAuth mAuth;
     ProgressBar load;
     public static EditText email;
     TextInputEditText password;
     Button LogIn;
     TextView SignUp;
-    DatenightApi api;
+    private DocumentReference userDocRef;
+    private FirebaseFirestore db;
 
     String Username;
     String Password;
+
+    DatenightApi api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +84,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
-//    }
 
 
     public void Auth() {
@@ -136,13 +137,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Log.i("SignIn", "Successful");
                                     Toast.makeText(LoginActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
 
+                                    //update OnBoarded to true
+                                    updateOnBoarded();
                                     //create stripe customer again, as iOS never sends a request - explicit check majorly for USECASE(iOS user logging in on android)
                                     setUpNetworkRequest();
                                     createStripeCustomer();
 
+                                    //goToDatehub();
+
                                     /*STRIPE -- initialize customer session to retrieve ephemeral key from server side*/
                                     CustomerSession.initCustomerSession(this, new DateNightEphemeralKeyProvider());
-                                    goToDatehub();
+
+                                    DateNight appState = new DateNight();
+                                    if (appState.getAppData(mAuth.getUid()) == null){
+                                        // Fetch required launch data and then launch DateHubNavigation class
+                                        appState.initializeAppData(mAuth.getUid(), LoginActivity.this);
+                                    } else {
+                                        goToDatehub();
+                                    }
 
 
                                 } else {
@@ -204,6 +216,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivity(intent);
     }
 
+    private void updateOnBoarded(){
+        db = FirebaseFirestore.getInstance();
+        userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
+
+        userDocRef.update("onBoarded", true);
+    }
+
     public void progressBarGone() {
         load = findViewById(R.id.progressBar3);
         load.setVisibility(View.INVISIBLE);
@@ -257,7 +276,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void createStripeCustomer() {
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(),"", "", email.getText().toString(), null, null, "BASIC", null, null, "");
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(),"", "", email.getText().toString(), null, null, "BASIC", null, null, "","",false);
 
         Call<UserObject> userObjectCall = api.createStripeCustomer(userModel);
 
@@ -283,4 +302,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        Intent intent = new Intent(this, BoardingScreen.class);
+        startActivity(intent);
+        return false;
+    }
 }

@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class  DateFinishedViewModel : ViewModel() {
     private val dbReference = FirebaseFirestore.getInstance()
+    private val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
     var userRating: Int? = null
     var mAuth : FirebaseAuth? = null
     lateinit var userDocRef: DocumentReference
@@ -36,18 +37,23 @@ class  DateFinishedViewModel : ViewModel() {
     }
 
     fun launchRateDateNightActivity(parentContext: DateFinishedActivity){
-        parentContext.startActivity(Intent(parentContext, RateDateNightActivity::class.java))
+        //TODO: Uncomment
+        val intent = Intent(parentContext, RateDateNightActivity::class.java)
+        //        .putExtra(IntentConstants.EXPERIENCE_ID, parentContext.dateExperienceId)
+        parentContext.startActivity(intent)
     }
 
     fun submitUserRating(dateId: String, dateParticipantId: String){
         if (userRating != null){
             // Update user's rating within the date node
-            val data = hashMapOf(DatabaseConstants.USER_RATING_FIELD to userRating);
-            dbReference.collection(DatabaseConstants.DATES_COLLECTION)
+            val data = mapOf(DatabaseConstants.USER_RATING_FIELD to userRating)
+            dbReference.collection(DatabaseConstants.USER_DATA_NODE)
+                    .document(currentUserId!!)
+                    .collection(DatabaseConstants.DATES_COLLECTION)
                     .document(dateId)
                     .collection(DatabaseConstants.STATISTICS_NODE)
                     .document(dateParticipantId)
-                    .set(data); // TODO: Update to update
+                    .update(data)
 
             // Update average date statistics rating
             // TODO: Implement
@@ -72,7 +78,7 @@ class  DateFinishedViewModel : ViewModel() {
 
 
     private fun incrementDateCount(){
-        userDocRef = dbReference.collection(DatabaseConstants.USER_DATA_COLLECTION).document(mAuth!!.currentUser!!.uid)
+        userDocRef = dbReference.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth!!.currentUser!!.uid)
         userDocRef.get().addOnSuccessListener { documentSnapshot ->
             if(documentSnapshot.exists()){
                 val user =  documentSnapshot.toObject(UserModel::class.java)
@@ -83,7 +89,7 @@ class  DateFinishedViewModel : ViewModel() {
                 Log.i("DateFinishedVM","Date count after date: $updateDateCount")
 
 
-                userDocRef.update("avgDateStats.rating",updateDateCount).addOnSuccessListener {
+                userDocRef.update("avgDateStats.dateCount",updateDateCount).addOnSuccessListener {
                     Log.i("DateFinishedVM","Dates been on updated")
                 }
 

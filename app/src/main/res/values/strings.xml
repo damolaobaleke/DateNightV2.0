@@ -95,7 +95,7 @@
     <string name="rate_date">Rate Date</string>
     <string name="to_chat">To Chats</string>
     <string name="back_to_datehub">Back to DateHub</string>
-    <string name="help_us_improve"><u>Help us Improve</u></string>
+    <string name="help_us_improve">Help us Improve</string>
     <string name="enter_your_email_username">Enter your email address</string>
     <string name="enter_your_password">Enter your password</string>
     <string name="no_user">No user found</string>
@@ -118,5 +118,8 @@
     <string name="congratulations">Congratulations</string>
     <string name="date_created_message">Your date has been created, click button <br>below to return to DateHub</br></string>
     <string name="valid_username">Username already exists</string>
+    <string name="re_schedule_date">Update Date</string>
+    <string name="join_date">Join Date</string>
+    <string name="leave_date">Leave</string>
     <string name="invite_a_special_someone">Invite a special someone</string>
 </resources>

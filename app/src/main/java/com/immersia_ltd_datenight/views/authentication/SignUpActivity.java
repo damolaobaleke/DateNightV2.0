@@ -25,7 +25,6 @@ import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
-import com.immersia_ltd_datenight.ActivityJ;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
 import com.immersia_ltd_datenight.modelfirestore.User.UserStatsModel;
@@ -279,7 +278,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         avatar.put("avatarUrl", "");
 
         UserStatsModel userStats = new UserStatsModel(0, 0, 0, 0);
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", dateIds, userStats, "");
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", dateIds, userStats, "",String.valueOf(mAuth.getCurrentUser().getMetadata().getCreationTimestamp()),false);
 
         userRef = db.collection("userData").document(userId);
         userNameRef = db.collection("usernames").document(usernameInput.getText().toString().toLowerCase());
@@ -328,9 +327,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void createStripeCustomer() {
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), null, "BASIC", null, null, "");
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), null, "BASIC", null, null, "",String.valueOf(mAuth.getCurrentUser().getMetadata().getCreationTimestamp()),false);
 
-        //UserObject user = new UserObject(false, "", userModel);
 
         Call<UserObject> userObjectCall = api.createStripeCustomer(userModel);
 
@@ -414,11 +412,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
         startActivity(intent);
 
-    }
-
-    public void startJsonActivity() {
-        Intent intent = new Intent(this, ActivityJ.class);
-        startActivity(intent);
     }
 
     @Override

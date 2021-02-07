@@ -10,21 +10,30 @@ package com.immersia_ltd_datenight;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
+import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
 import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
+import com.immersia_ltd_datenight.views.onboarding.UserOnBoarding;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "Getting Image";
-    private static final long SPLASH_TIME_OUT = 4000;
+    private static final long SPLASH_TIME_OUT = 3700;
     private ImageView dateNightLogo;
     private ImageView dateNightTextLogo;
+    private FirebaseAuth mAuth;
+    DocumentReference userDocRef;
+    FirebaseFirestore db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +54,25 @@ public class MainActivity extends AppCompatActivity {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.datenightlogo);
         dateNightLogo.setAnimation(animation);
 
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+        //DateNight appState = new DateNight();
+        //appState.initializeAppData(mAuth.getUid(),this);
 
         Runnable runnable = () -> {
-            Intent intent = new Intent(this, BoardingScreen.class);
+            /**NOTE: WORKS FINE, COMMENTED OUT BECAUSE OF APP DATA, EVEN AFTER INITILIAZING IN HERE AS ENTRY POINT IS NOW HERE ALSO, STILL FAILS TO GET OBJECT IN PEND & SCHEDULED*/
+            //if (mAuth.getCurrentUser() != null) {
+                //userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
+                //checkOnBoarded();
+
+            //} else {
+                //standard flow
+                //Intent intent = new Intent(this, UserOnBoarding.class);
+                //startActivity(intent);
+            //}
+
+            Intent intent = new Intent(this, UserOnBoarding.class);
             startActivity(intent);
 
         };
@@ -55,72 +80,32 @@ public class MainActivity extends AppCompatActivity {
         Handler handler = new Handler();
         handler.postDelayed(runnable, SPLASH_TIME_OUT);
 
+
     }
 
-    /*Dont Use async task (background thread for splash screen images. Wrote this code here,but can be used in other classes )*/
-//    public static class DownloadImageTask extends AsyncTask<String, Void, ArrayList<Bitmap>> {
-//        URL url;
-//
-//        @Override
-//        protected ArrayList<Bitmap> doInBackground(String... images) {
-//            try {
-//                for (String image : images) {
-//                    //convert all strings to valid uniform resource locator , take image strings in array
-//                    url = new URL(image);
-//                    Log.i("Images", image);
-//                }
-//                ArrayList<Bitmap> imageBitmaps = new ArrayList<>();
-//
-//                //create http connection and Attempting loading of url
-//                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-//                //connect to the http connection
-//                urlConnection.connect();
-//                //downloads whole input stream, holds data
-//                InputStream in = urlConnection.getInputStream();
-//
-//                Bitmap bitmap = BitmapFactory.decodeStream(in);
-//
-//                imageBitmaps.add((bitmap));
-//
-//                return imageBitmaps;
-//
-//            } catch (MalformedURLException e) {
-//                Log.e(TAG, "URl is malformed" + e);
-//            } catch (IOException e) {
-//                Log.e(TAG, "Couldnt get image from server\n" + e);
-//            } finally {
-//                //disconnect the http connection
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(ArrayList<Bitmap> bitmaps) {
-//            super.onPostExecute(bitmaps);
-//            //If URL strings explicitly declared in url set bitmap here
-//        }
-//    }
+    public void checkOnBoarded() {
+        userDocRef.get().addOnSuccessListener(documentSnapshot -> {
 
-//    private void getImageBitmap() {
-//        ArrayList<Bitmap> dateNightLogobm,dateNightTextLogobm;
-//
-//        try {
-//            DownloadImageTask task = new DownloadImageTask();
-//            dateNightLogobm = task.execute("https://res.cloudinary.com/dayvbcxai/image/upload/v1597180001/DateNight/DateNight-Logo-Icon-Transparetn_ms1kfn.png").get();
-//
-//            DownloadImageTask task2 = new DownloadImageTask();
-//            dateNightTextLogobm = task2.execute("https://res.cloudinary.com/dayvbcxai/image/upload/v1597179875/DateNight/datenight_text_logo_white_wokska.png").get();
-//
-//            dateNightLogo.setVisibility(View.VISIBLE);
-//            dateNightLogo.setImageBitmap(dateNightLogobm.get(0));
-//
-//            dateNightTextLogo.setVisibility(View.VISIBLE);
-//            dateNightTextLogo.setImageBitmap(dateNightTextLogobm.get(0));
-//
-//
-//        } catch (Exception e) {
-//            Log.i("Image 2", "Error \n" + e);
-//        }
-//    }
+            UserModel user = documentSnapshot.toObject(UserModel.class);
+            if (documentSnapshot.exists()) {
+                if (!user.isOnBoarded() && mAuth.getCurrentUser() == null) {
+                    Intent intent = new Intent(MainActivity.this, UserOnBoarding.class);
+                    startActivity(intent);
 
+                } else if (user.isOnBoarded() && mAuth.getCurrentUser() == null) {
+                    Intent intent = new Intent(MainActivity.this, BoardingScreen.class);
+                    startActivity(intent);
+
+                } else if (!user.isOnBoarded() && mAuth.getCurrentUser() != null) {
+                    Intent intent = new Intent(MainActivity.this, DateHubNavigation.class);
+                    startActivity(intent);
+
+                } else {
+                    Intent intent = new Intent(MainActivity.this, DateHubNavigation.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
+    }
 }

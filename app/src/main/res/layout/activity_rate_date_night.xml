@@ -104,7 +104,7 @@
             android:onClick="setRatingOnStarClick"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_closed_star" />
+            app:srcCompat="@drawable/ic_open_star" />
 
         <ImageView
             android:id="@+id/star2"

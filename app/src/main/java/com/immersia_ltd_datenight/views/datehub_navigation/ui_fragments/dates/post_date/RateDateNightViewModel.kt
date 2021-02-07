@@ -13,6 +13,7 @@
 
 package com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.dates.post_date
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.immersia_ltd_datenight.DatabaseConstants
 import com.google.firebase.auth.FirebaseAuth
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class RateDateNightViewModel: ViewModel() {
     private val dbReference = FirebaseFirestore.getInstance()
     private val currentUserId: String? = FirebaseAuth.getInstance().currentUser?.uid
+    private val TAG = "RateDateNightActivity"
 
     fun addRating(experienceId: String, numericalRating: Int, positiveFeedback: String, negativeFeedback: String) {
         if(currentUserId != null){
@@ -35,6 +37,7 @@ class RateDateNightViewModel: ViewModel() {
                     .collection(DatabaseConstants.USERS_NODE)
                     .document(currentUserId)
                     .set(data)
+                    .addOnFailureListener{ exception -> Log.e(TAG, exception.message!!) }
         }
 
     }
