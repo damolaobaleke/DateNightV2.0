@@ -171,7 +171,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                         .get()
                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
-                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) { // TODO: Need to fix this to become a search button insead
                                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                                     if (documentSnapshot.exists()) {
                                         dateinvitee = documentSnapshot.toObject(UserModel.class); //recreate document object from the model class
@@ -190,9 +190,12 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                                         //populate recycler view-- uses different constructor
                                         users = new ArrayList<>();
                                         if (s.toString().length() >= 1 || dateinvitee.getUsername() != null) {
-                                            users.add(new UserModel(null, dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, null, null, null, null, null,"",false));
+                                            users.add(new UserModel(null, dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(),
+                                                                    null, null, null, null, null, null,
+                                                                    Timestamp.now(),false));
                                         } else {
-                                            users.add(new UserModel("No user found", null, null, null, null, avatar, "BASIC", null, null, "","",false));
+                                            users.add(new UserModel("No user found", null, null, null, null, avatar,
+                                                                    "BASIC", null, null, "",Timestamp.now(),false));
                                             //remove at that position in recycler view
                                             users.remove(0);
                                             adapter.notifyItemRemoved(0);

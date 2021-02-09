@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingVertical="8dp">
+    android:layout_height="65dp">
+
 
     <!--    <de.hdodenhof.circleimageview.CircleImageView-->
     <!--        android:id="@+id/chatHeadImage"-->
@@ -19,79 +20,82 @@
         android:id="@+id/first_letter_name_chat_head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/bg_letter_circle"
         android:paddingHorizontal="10dp"
         android:paddingVertical="1dp"
         android:text="D"
         android:textAllCaps="true"
         android:textColor="@color/date_night_purple"
-        android:textSize="26sp" />
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/chatHeadLabel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="Abdulkareem Dolapo"
+        android:textAlignment="viewStart"
+        android:textColor="@color/date_night_grey_700"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/chatHeadMostRecentMessage"
+        app:layout_constraintEnd_toStartOf="@+id/chatHeadTimeStamp"
+        app:layout_constraintStart_toEndOf="@+id/first_letter_name_chat_head"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/chatHeadTimeStamp"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="13dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="2020-12-20"
+        android:textAlignment="textEnd"
+        android:textColor="@color/date_night_grey"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/chatHeadLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/chatHeadLabel" />
 
-        <TextView
-            android:id="@+id/chatHeadLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Abdulkareem Dolapo"
-            android:textAlignment="viewStart"
-            android:textColor="@color/date_night_grey_700"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/chatHeadMostRecentMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="We are coming to see you today"
+        android:textColor="@color/date_night_grey"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/chatHeadLabel"
+        app:layout_constraintStart_toStartOf="@+id/chatHeadLabel" />
 
-        <TextView
-            android:id="@+id/chatHeadMostRecentMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="We are coming to see you today"
-            android:textColor="@color/date_night_grey"
-            android:textSize="15sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginBottom="13dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/chatHeadTimeStamp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:text="2020-12-20"
-            android:textAlignment="textEnd"
-            android:textColor="@color/date_night_grey"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/chatHeadNotificationCount"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="14sp" />
-    </LinearLayout>
-
+    <TextView
+        android:id="@+id/chatHeadNotificationCount"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/chatHeadMostRecentMessage"
+        app:layout_constraintEnd_toEndOf="@+id/chatHeadTimeStamp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/chatHeadTimeStamp"
+        app:layout_constraintTop_toBottomOf="@+id/chatHeadTimeStamp" />
 
     <View
         android:id="@+id/view4"
         android:layout_width="match_parent"
         android:layout_height="0.8dp"
-        android:layout_marginStart="-380dp"
-        android:layout_marginTop="85dp"
-        android:layout_marginEnd="10dp"
         android:background="@color/date_night_grey"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

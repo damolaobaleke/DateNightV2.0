@@ -46,7 +46,7 @@ public class DateNightAppData {
                 if (userDocumentSnapshot.exists()){
                     currentUserModel = userDocumentSnapshot.toObject(UserModel.class);
 
-                    // Grab experiences as well
+                    /** NOTE: Grab experiences as well */
                     dbFirestore.collection(DatabaseConstants.EXPERIENCE_NODE).get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()){
                             for(QueryDocumentSnapshot document: task.getResult()){

@@ -89,8 +89,6 @@ public class BoardingScreen extends AppCompatActivity {
                 Intent intent = new Intent(this, DateHubNavigation.class);
                 startActivity(intent);
             }
-
-
             Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
         } else {
             mAuth.signOut();
