@@ -54,9 +54,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
                         //Add User to db
                         val userStats = UserStatsModel(0, 0, 0,0)
-                        val user = UserModel("", username, email, null,  dateStringToTimestamp(age), avatar,
-                                null, null, userStats, username.toLowerCase(Locale.ROOT),
-                                Timestamp(mAuth.currentUser!!.metadata!!.creationTimestamp/1000, 0),false)
+                        val user = UserModel("", username, email, null,  dateStringToTimestamp(age), avatar, null, null, userStats, username.toLowerCase(Locale.ROOT), Timestamp(mAuth.currentUser!!.metadata!!.creationTimestamp/1000, 0),false)
                         createUserInDb(user)
 
                     } else {

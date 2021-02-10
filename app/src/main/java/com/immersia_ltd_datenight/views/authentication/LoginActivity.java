@@ -277,9 +277,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void createStripeCustomer() {
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(),"", "", email.getText().toString(),
-                                            null, null, "BASIC", null, null, "",
-                                            Timestamp.now(),false);
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(),"", "", email.getText().toString(), null, null, "BASIC", null, null, "", Timestamp.now(),false);
 
         Call<UserObject> userObjectCall = api.createStripeCustomer(userModel);
 

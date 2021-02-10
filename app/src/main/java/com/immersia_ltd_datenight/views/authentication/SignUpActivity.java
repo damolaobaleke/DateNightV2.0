@@ -330,10 +330,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void createStripeCustomer() {
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(),
-                                            fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()),
-                                            null, "BASIC", null, null, "",
-                                            new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp()/1000, 0),false);
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), null, "BASIC", null, null, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp()/1000, 0),false);
 
 
         Call<UserObject> userObjectCall = api.createStripeCustomer(userModel);

@@ -37,7 +37,7 @@ import java.net.URL
 
 
 class CasualFragment : Fragment() {
-    var imageUrl = arrayOf("https://firebasestorage.googleapis.com/v0/b/datenight-f491f.appspot.com/o/experiencePreviewImages%2Fparispreviewimg.png?alt=media&token=57e42db7-bc7f-4e9e-9a02-0b58cce33587", "https://firebasestorage.googleapis.com/v0/b/datenight-f491f.appspot.com/o/experiencePreviewImages%2Fpicnic.png?alt=media&token=570eccb0-304c-4ff4-83d5-ba9ad0660328")
+    var imageUrl = arrayOf("")
 
 
     private val galleryViewModel: CasualViewModel? = null
@@ -118,14 +118,14 @@ class CasualFragment : Fragment() {
          * Instead of hardcoding all of this, you can loop throught the hashmap returned and populate your views!
          * Alternatively, you can look up the id of the experience you want, index into the hash map and grab the experience model you want then grab url
          */
-        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/datenight-f491f.appspot.com/o/experiencePreviewImages%2Fparispreviewimg.png?alt=media&token=57e42db7-bc7f-4e9e-9a02-0b58cce33587").networkPolicy(NetworkPolicy.OFFLINE).into(parisNightDinner, object : Callback { //cahce image for offline
+        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/datenight-f491f.appspot.com/o/experiencePreviewImages%2Fparispreviewimg.png?alt=media&token=57e42db7-bc7f-4e9e-9a02-0b58cce33587").into(parisNightDinner, object : Callback { //cache image for offline .networkPolicy()
             override fun onSuccess() {
                 progressBar.isVisible = false
             }
             override fun onError(e: Exception) {
                 progressBar.isVisible = true
                 parisNightDinner.setImageResource(R.color.white)
-                meadowPicnic.setImageResource(R.color.white)
+                //meadowPicnic.setImageResource(R.color.white)
                 Toast.makeText(context, e.message, LENGTH_LONG).show()
             }
         })
@@ -196,7 +196,7 @@ class CasualFragment : Fragment() {
             for (image in imageUrl) {
                 //convert all strings to valid uniform resource locator , take image strings in array
                 Log.i("Images", image)
-                bitmap = BitmapFactory.decodeStream(URL(image).openStream())
+                //bitmap = BitmapFactory.decodeStream(URL(image).openStream())
 
             }
             //imageBitmaps.add(bitmap)
