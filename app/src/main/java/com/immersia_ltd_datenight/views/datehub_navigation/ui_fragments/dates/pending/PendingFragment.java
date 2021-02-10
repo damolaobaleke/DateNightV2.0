@@ -102,8 +102,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 .build();
 
         theAdapter = new FirestoreRecyclerAdapter<DateModel, PendingDateViewHolder>(options) {
-            int numHiddenViews = 0;
-
             @Override
             protected void onBindViewHolder(@NonNull PendingDateViewHolder holder, int position, @NonNull DateModel data) {
                 Log.e(TAG, "Found Date " + data.getParticipantUsernames().toString());
@@ -121,7 +119,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 if(hideView){
                     holder.itemView.setVisibility(View.GONE);
                     holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
-                    numHiddenViews++;
                 } else{
                     holder.itemView.setVisibility(View.VISIBLE);
                     holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -141,10 +138,8 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
-                if(getItemCount() - numHiddenViews > 0){
+                if(getItemCount() > 0){
                     pendingHint.setVisibility(View.GONE);
-                } else {
-                    pendingHint.setVisibility(View.VISIBLE);
                 }
             }
 

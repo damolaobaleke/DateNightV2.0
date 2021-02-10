@@ -104,8 +104,6 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
                 .build();
 
         theAdapter = new FirestoreRecyclerAdapter<DateModel, ScheduledDateViewHolder>(options) {
-            int numHiddenViews = 0;
-
             @Override
             protected void onBindViewHolder(@NonNull ScheduledDateViewHolder holder, int position, @NonNull DateModel data) {
 
@@ -124,7 +122,6 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
                 if (hideView) {
                     holder.itemView.setVisibility(View.GONE);
                     holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
-                    numHiddenViews++;
                 } else {
                     holder.itemView.setVisibility(View.VISIBLE);
                     holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -144,10 +141,8 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
-                if (getItemCount() - numHiddenViews > 0) {
+                if (getItemCount() > 0) {
                     scheduledHint.setVisibility(View.GONE);
-                } else {
-                    scheduledHint.setVisibility(View.VISIBLE);
                 }
             }
 
