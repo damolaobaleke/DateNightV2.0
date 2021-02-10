@@ -33,9 +33,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.immersia_ltd_datenight.DatabaseConstants;
 import com.immersia_ltd_datenight.IntentConstants;
+import com.immersia_ltd_datenight.MainActivity;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.Date.DateModel;
 import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
+import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
 import com.immersia_ltd_datenight.views.unity.UnityEnvironmentLoad;
 
 import java.text.DateFormat;
@@ -65,17 +67,18 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
     FirestoreRecyclerAdapter<DateModel, ScheduledDateViewHolder> theAdapter;
     FirestoreRecyclerOptions<DateModel> options;
     // App Data
-    DateNight appData;
+    DateNight appState;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         userdocRef = dbFirestore.collection("userData").document(currentUserId);
-
-        Log.i(TAG,"The currentUserId :" + currentUserId);
-
-        appData = ((DateNight) getActivity().getApplication());
+        appState = ((DateNight) getActivity().getApplication());
+        if (appState.getAppData(currentUserId) == null){
+            // Illegal state, navigate to main activity
+            navigateToMainActivity();
+        }
         setUpRecyclerView();
     }
 
@@ -87,10 +90,8 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(theAdapter);
         scheduledHint = view.findViewById(R.id.scheduledHint);
-
         return view;
     }
-
 
     private void setUpRecyclerView() {
         //where the date doc id is in the user array of dateids
@@ -201,8 +202,8 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             scheduledTime.setText(new SimpleDateFormat("h:mm a", Locale.getDefault()).format(dateTime.getTime()));
 
             String expId = dateData.getLinkedExperienceId();
-            if (appData.getAppData(currentUserId) != null) {
-                dateTitle.setText(String.format("%s with %s", appData.getAppData(currentUserId).getExperienceName(expId), data.getParticipants().get(dateParticipantId))); // TODO: set experience name
+            if (appState.getAppData(currentUserId) != null) {
+                dateTitle.setText(String.format("%s with %s", appState.getAppData(currentUserId).getExperienceName(expId), data.getParticipants().get(dateParticipantId))); // TODO: set experience name
             }
 
             if (currentUserId.equals(data.getCreator())) {
@@ -220,8 +221,8 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             String expId = dateData.getLinkedExperienceId();
             TextView dateDescTitle = view.findViewById(R.id.date_descr_title);
 
-            if (appData.getAppData(currentUserId) != null) {
-                dateDescTitle.setText(String.format("%s with %s", appData.getAppData(currentUserId).getExperienceName(expId), dateData.getParticipants().get(dateParticipantId)));
+            if (appState.getAppData(currentUserId) != null) {
+                dateDescTitle.setText(String.format("%s with %s", appState.getAppData(currentUserId).getExperienceName(expId), dateData.getParticipants().get(dateParticipantId)));
             }
 
             Button startDate = view.findViewById(R.id.start_date_btn);
@@ -250,8 +251,8 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             TextView dateDescTitle = view.findViewById(R.id.date_descr_title);
             String expId = dateData.getLinkedExperienceId();
 
-            if (appData.getAppData(currentUserId) != null) {
-                dateDescTitle.setText(String.format("%s with %s", appData.getAppData(currentUserId).getExperienceName(expId), dateData.getParticipants().get(dateParticipantId)));
+            if (appState.getAppData(currentUserId) != null) {
+                dateDescTitle.setText(String.format("%s with %s", appState.getAppData(currentUserId).getExperienceName(expId), dateData.getParticipants().get(dateParticipantId)));
             }
 
             Button startDate = view.findViewById(R.id.start_date_btn);
@@ -281,7 +282,7 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
         private void startUnityScene() {
             Intent intent = new Intent(requireActivity(), UnityEnvironmentLoad.class)
                     .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
-                    .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appData.getAppData(currentUserId).getCurrentUser().getFullName())
+                    .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).getCurrentUser().getFullName())
                     .putExtra(IntentConstants.DATE_ID, dateData.getId())
                     .putExtra(IntentConstants.EXPERIENCE_ID, dateData.getLinkedExperienceId())
                     .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, dateParticipantId)
@@ -460,4 +461,8 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
         }
     }
 
+    private void navigateToMainActivity(){
+        Intent intent = new Intent(requireActivity(), MainActivity.class);
+        startActivity(intent);
+    }
 }

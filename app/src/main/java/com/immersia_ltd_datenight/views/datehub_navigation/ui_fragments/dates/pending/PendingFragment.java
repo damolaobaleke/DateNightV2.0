@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,9 +32,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.immersia_ltd_datenight.DatabaseConstants;
+import com.immersia_ltd_datenight.MainActivity;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.Date.DateModel;
 import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
+import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -61,19 +64,19 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
     private FirestoreRecyclerAdapter<DateModel, PendingDateViewHolder> theAdapter;
     private FirestoreRecyclerOptions<DateModel> options;
     //App Data
-    DateNight appData;
+    DateNight appState;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         userdocRef = dbFirestore.collection("userData").document(currentUserId);
-
-        appData = ((DateNight)getActivity().getApplication());
-
+        appState = ((DateNight)getActivity().getApplication());
+        if (appState.getAppData(currentUserId) == null){
+            // Illegal state, take user back to main activity
+            navigateToMainActivity();
+        }
+        Log.e(TAG, "The app state = " + appState.toString());
         setUpRecyclerView();
-
     }
 
     @Nullable
@@ -84,7 +87,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(theAdapter);
         pendingHint = view.findViewById(R.id.pending_hint);
-        appData = ((DateNight)getActivity().getApplication());
         return view;
     }
 
@@ -193,8 +195,10 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
             // When current user is date creator
             String expId = dateData.getLinkedExperienceId();
             if(currentUserId.equals(data.getCreator())){
-                if (appData.getAppData(currentUserId) != null) {
-                    inviteDescription.setText(String.format("Waiting for %s to accept your invite to %s", data.getParticipants().get(dateParticipantId), appData.getAppData(currentUserId).getExperienceName(expId))); // TODO: set experience name
+                if (appState.getAppData(currentUserId) != null) {
+                    inviteDescription.setText(String.format("Waiting for %s to accept your invite to %s",
+                                                            data.getParticipants().get(dateParticipantId),
+                                                            appState.getAppData(currentUserId).getExperienceName(expId)));
                 }
 
                 // Set onclick listeners
@@ -202,8 +206,10 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 cancelInviteButton.setOnClickListener(v -> cancelInvite());
             } else {
                 Log.e(TAG, "Here within not the creator");
-                if (appData.getAppData(currentUserId) != null) {
-                    inviteDescription.setText(String.format("%s is inviting you to %s", data.getParticipants().get(dateParticipantId), appData.getAppData(currentUserId).getExperienceName(expId))); // TODO: set experience
+                if (appState.getAppData(currentUserId) != null) {
+                    inviteDescription.setText(String.format("%s is inviting you to %s", data.getParticipants().get(dateParticipantId), appState.getAppData(currentUserId).getExperienceName(expId)));
+                } else {
+                    Log.e(TAG, "App Data is Null");
                 }
                 editInviteButton.setText(R.string.accept_invite);
                 cancelInviteButton.setText(R.string.reject_invite);
@@ -435,5 +441,10 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
             System.out.println("Exception :" + e);
             return null;
         }
+    }
+
+    private void navigateToMainActivity(){
+        Intent intent = new Intent(requireActivity(), MainActivity.class);
+        startActivity(intent);
     }
 }

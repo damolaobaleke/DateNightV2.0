@@ -25,6 +25,7 @@ import com.immersia_ltd_datenight.views.unity.UnityEnvironmentLoad
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.immersia_ltd_datenight.utils.stripe.config.DateNight
 import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -58,12 +59,17 @@ class CasualFragment : Fragment() {
 
     var experienceModel: ExperienceModel? = null
     var experienceModel1: ExperienceModel? = null
+    var appState: DateNight? = null
 
     companion object {
         const val TAG = "Casual Fragment"
 
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        appState = requireActivity().application as DateNight
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_casual, container, false)
@@ -105,6 +111,13 @@ class CasualFragment : Fragment() {
         //TODO: Load images from array-strings in long run
 
         //paris
+        /**Note: Bobo has helped you grab the appState within the onCreate method of this fragment
+         * Grab URL like so:
+         * appState.getAppData().getExperiencesData() -> see DateNightAPpData.java class
+         * Above returns a HashMap of expId to ExperienceModel
+         * Instead of hardcoding all of this, you can loop throught the hashmap returned and populate your views!
+         * Alternatively, you can look up the id of the experience you want, index into the hash map and grab the experience model you want then grab url
+         */
         Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/datenight-f491f.appspot.com/o/experiencePreviewImages%2Fparispreviewimg.png?alt=media&token=57e42db7-bc7f-4e9e-9a02-0b58cce33587").networkPolicy(NetworkPolicy.OFFLINE).into(parisNightDinner, object : Callback { //cahce image for offline
             override fun onSuccess() {
                 progressBar.isVisible = false

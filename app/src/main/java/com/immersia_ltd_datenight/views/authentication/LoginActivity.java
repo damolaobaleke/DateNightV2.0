@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     /*STRIPE -- initialize customer session to retrieve ephemeral key from server side*/
                                     CustomerSession.initCustomerSession(this, new DateNightEphemeralKeyProvider());
 
-                                    DateNight appState = new DateNight();
+                                    DateNight appState = ((DateNight)this.getApplication());
                                     if (appState.getAppData(mAuth.getUid()) == null){
                                         // Fetch required launch data and then launch DateHubNavigation class
                                         appState.initializeAppData(mAuth.getUid(), LoginActivity.this);

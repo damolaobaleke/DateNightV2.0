@@ -11,6 +11,7 @@ package com.immersia_ltd_datenight;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -59,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        //DateNight appState = new DateNight();
-        //appState.initializeAppData(mAuth.getUid(),this);
 
         Runnable runnable = () -> {
             /*NOTE: WORKS FINE, COMMENTED OUT BECAUSE OF APP DATA, EVEN AFTER INITILIAZING IN HERE AS ENTRY POINT IS NOW HERE ALSO, STILL FAILS TO GET OBJECT IN PEND & SCHEDULED*/
@@ -73,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, UserOnBoarding.class);
                 startActivity(intent);
             }
-            Intent intent = new Intent(this, UserOnBoarding.class);
-            startActivity(intent);
         };
 
         Handler handler = new Handler();
@@ -83,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkOnBoarded() {
         userDocRef.get().addOnSuccessListener(documentSnapshot -> {
-
             UserModel user = documentSnapshot.toObject(UserModel.class);
             if (documentSnapshot.exists()) {
                 if (!user.isOnBoarded() && mAuth.getCurrentUser() == null) {
@@ -95,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 } else if (!user.isOnBoarded() && mAuth.getCurrentUser() != null) {
-                    DateNight appState = new DateNight();
+                    DateNight appState = ((DateNight)this.getApplication());
                     if (appState.getAppData(mAuth.getUid()) == null) {
                         // Fetch required launch data and then launch DateHubNavigation class
                         appState.initializeAppData(mAuth.getUid(), MainActivity.this);
@@ -105,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    DateNight appState = new DateNight();
+                    DateNight appState = ((DateNight)this.getApplication());;
                     if (appState.getAppData(mAuth.getUid()) == null) {
                         // Fetch required launch data and then launch DateHubNavigation class
                         appState.initializeAppData(mAuth.getUid(), MainActivity.this);
