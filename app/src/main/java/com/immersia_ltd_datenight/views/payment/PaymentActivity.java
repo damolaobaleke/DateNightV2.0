@@ -66,7 +66,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PaymentActivity extends AppCompatActivity {
     private PaymentSession paymentSession;
     DatenightApi api;
-    private static final String BASE_URL = "http://172.20.10.7:3000"; //http://api.datenight.com
+    private static final String BASE_URL = "https://api.immersia.co.uk"; //https://api.immersia.co.uk khttp://172.20.10.7:3000
     FirebaseAuth mAuth;
     private static final int REQUEST_CODE = 245;
     Button confirmPayment;

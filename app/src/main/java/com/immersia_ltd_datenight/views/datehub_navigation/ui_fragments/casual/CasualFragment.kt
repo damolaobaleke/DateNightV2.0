@@ -70,7 +70,7 @@ class CasualFragment : Fragment() {
         paris = view.findViewById(R.id.paris)
         cappaducia = view.findViewById(R.id.cappaducia)
         parisNightDinner = view.findViewById(R.id.image_paris)
-        meadowPicnic = view.findViewById(R.id.image_picnic)
+        //meadowPicnic = view.findViewById(R.id.image_picnic)
         experienceName = view.findViewById(R.id.experience_name)
         experienceNameCappaduc = view.findViewById(R.id.experience_name_capp)
         progressBar = view.findViewById(R.id.progressBar4)
@@ -117,19 +117,19 @@ class CasualFragment : Fragment() {
             }
         })
 
-        //cap
-        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/datenight-f491f.appspot.com/o/experiencePreviewImages%2Fpicnic.png?alt=media&token=570eccb0-304c-4ff4-83d5-ba9ad0660328").into(meadowPicnic, object : Callback {
-            override fun onSuccess() {
-                progressBarMeadow.isVisible = false
-            }
-
-            override fun onError(e: Exception) {
-                progressBarMeadow.isVisible = true
-                parisNightDinner.setImageResource(R.color.white)
-                meadowPicnic.setImageResource(R.color.white)
-                Toast.makeText(context, e.message, LENGTH_LONG).show()
-            }
-        })
+        /**meadow picnic not available now*/
+//        Picasso.get().load("").into(meadowPicnic, object : Callback {
+//            override fun onSuccess() {
+//                progressBarMeadow.isVisible = false
+//            }
+//
+//            override fun onError(e: Exception) {
+//                progressBarMeadow.isVisible = true
+//                parisNightDinner.setImageResource(R.color.white)
+//                meadowPicnic.setImageResource(R.color.white)
+//                Toast.makeText(context, e.message, LENGTH_LONG).show()
+//            }
+//        })
 
 
         //Co-routine scope , Main dispatcher, as we have some UI

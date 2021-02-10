@@ -88,7 +88,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     Task<AuthResult> task1;
     private static final String TAG = "Sign Up";
 
-    private static final String BASE_URL = "http://172.20.10.7:3000"; //http://api.datenight.com
+    private static final String BASE_URL = "https://api.immersia.co.uk"; //https://api.immersia.co.uk http://172.20.10.7:3000
     DatenightApi api;
     //final CompositeDisposable compositeDisposable;  //to handle async response Reactive Java
 
