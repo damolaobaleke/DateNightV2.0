@@ -58,7 +58,7 @@
     <string name="average_date_rating">Your average date rating is </string>
 
     <string name="game_view_content_description">Game view</string>
-    <string name="already_a_user_login">Already a User?<b><font color="#B048D1"> Login</font></b></string>
+    <string name="already_a_user_login">Already a User\?<b><font color="#B048D1"> Login</font></b></string>
     <string name="paris_night_dinner">paris night dinner</string>
     <string name="picnic_by_the_meadow">picnic by the meadow</string>
     <string name="free">FREE</string>
