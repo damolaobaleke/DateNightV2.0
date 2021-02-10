@@ -133,6 +133,12 @@ import com.unity3d.player.UnityPlayerActivity;
 
     public void launchDateFinishedActivity(){
         mUnityPlayer.unload();
+//        Intent intent  = new Intent(this, DateFinishedActivity.class)
+//                .putExtra(IntentConstants.EXPERIENCE_ID, experienceId)
+//                .putExtra(IntentConstants.DATE_ID, dateId)
+//                .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, participantId)
+//                .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, participantFullName);
+//        startActivity(intent);
     }
 
      @Override
@@ -143,7 +149,7 @@ import com.unity3d.player.UnityPlayerActivity;
 
      @Override
      public void onUnityPlayerUnloaded() {
-         //super.onUnityPlayerUnloaded();
+         super.onUnityPlayerUnloaded();
 
          Log.e("UnityEnvironmentLoad", "**************Here attempting to launch date finished***********************");
          // Start new activity after unity player is unloaded

@@ -15,6 +15,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -148,7 +149,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     /*STRIPE -- initialize customer session to retrieve ephemeral key from server side*/
                                     CustomerSession.initCustomerSession(this, new DateNightEphemeralKeyProvider());
 
-                                    DateNight appState = new DateNight();
+                                    DateNight appState = ((DateNight)this.getApplication());
                                     if (appState.getAppData(mAuth.getUid()) == null){
                                         // Fetch required launch data and then launch DateHubNavigation class
                                         appState.initializeAppData(mAuth.getUid(), LoginActivity.this);
@@ -276,7 +277,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void createStripeCustomer() {
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(),"", "", email.getText().toString(), null, null, "BASIC", null, null, "","",false);
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(),"", "", email.getText().toString(),
+                                            null, null, "BASIC", null, null, "",
+                                            Timestamp.now(),false);
 
         Call<UserObject> userObjectCall = api.createStripeCustomer(userModel);
 

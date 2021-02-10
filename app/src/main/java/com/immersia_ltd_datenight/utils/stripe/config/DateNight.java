@@ -23,7 +23,7 @@ import com.stripe.android.PaymentConfiguration;
 This class will hold information that's intended to be persisted throughout the app lifecycle
  */
 public class DateNight extends Application {
-    public DateNightAppData appData ;
+    private DateNightAppData appData ;
 
     @Override
     public void onCreate() {

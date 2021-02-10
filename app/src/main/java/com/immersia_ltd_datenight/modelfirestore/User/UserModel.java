@@ -19,7 +19,7 @@ public class UserModel {
     public String loginMethod;
     public String stripeCustomerId;
     public String ephemeralKey;
-    private String dateCreated;
+    private Timestamp dateCreated;
     private boolean onBoarded ;
     List<String> purchasedExperiences;
     UserPreferences userPreferences;
@@ -30,7 +30,7 @@ public class UserModel {
         /**Public no arg constructor needed*/
     }
 
-    public UserModel(String id, String username, String name, String email, Timestamp dob, HashMap<String, String> avatar, String status, List<String> dateId, UserStatsModel statistics, String stripeCustomerId, String dateCreated, boolean onBoarded) {
+    public UserModel(String id, String username, String name, String email, Timestamp dob, HashMap<String, String> avatar, String status, List<String> dateId, UserStatsModel statistics, String stripeCustomerId, Timestamp dateCreated, boolean onBoarded) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -104,7 +104,7 @@ public class UserModel {
         return dtc;
     }
 
-    public String getDateCreated() {
+    public Timestamp getDateCreated() {
         return dateCreated;
     }
 

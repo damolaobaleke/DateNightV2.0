@@ -12,6 +12,7 @@ import com.immersia_ltd_datenight.modelfirestore.User.UserStatsModel
 import com.immersia_ltd_datenight.views.authentication.SignUpActivity.dateStringToTimestamp
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
@@ -53,8 +54,9 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
                         //Add User to db
                         val userStats = UserStatsModel(0, 0, 0,0)
-                        val user = UserModel("", username, email, null,  dateStringToTimestamp(age), avatar, null, null, userStats, username.toLowerCase(Locale.ROOT),mAuth.currentUser!!.metadata!!.creationTimestamp.toString(),false)
-
+                        val user = UserModel("", username, email, null,  dateStringToTimestamp(age), avatar,
+                                null, null, userStats, username.toLowerCase(Locale.ROOT),
+                                Timestamp(mAuth.currentUser!!.metadata!!.creationTimestamp/1000, 0),false)
                         createUserInDb(user)
 
                     } else {

@@ -82,7 +82,7 @@ public class UserOnBoarding extends AppCompatActivity {
     public void UpdateUI(FirebaseUser user) {
         if (user != null) {
 
-            DateNight appState = new DateNight();
+            DateNight appState = ((DateNight)this.getApplication());
             if (appState.getAppData(mAuth.getUid()) == null) {
                 // Fetch required launch data and then launch DateHubNavigation class
                 appState.initializeAppData(mAuth.getUid(), this);
