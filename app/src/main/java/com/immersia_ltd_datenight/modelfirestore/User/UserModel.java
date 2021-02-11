@@ -8,19 +8,20 @@ import java.util.HashMap;
 import java.util.List;
 
 public class UserModel {
-    public String id;
-    public String username;
+    private String id;
+    private String username;
     public String name; //fullName
     public String email;
-    public Timestamp dob; //Date equivalent in firestore
+    public Timestamp dob; //Date equivalent in fire store
     public HashMap<String, String> avatar; //avatar = string in db .glb file :: android image resource takes int value  >>String,String || String, Integer<<
     public String status; //BASIC || PREMIUM USER
     public int dtc;
-    public String loginMethod;
+    public String authMethod;
     public String stripeCustomerId;
     public String ephemeralKey;
     private Timestamp dateCreated;
     private boolean onBoarded ;
+    private String fcmToken;
     List<String> purchasedExperiences;
     UserPreferences userPreferences;
     List<String> dateId;
@@ -30,15 +31,16 @@ public class UserModel {
         /**Public no arg constructor needed*/
     }
 
-    public UserModel(String id, String username, String name, String email, Timestamp dob, HashMap<String, String> avatar, String status, List<String> dateId, UserStatsModel statistics, String stripeCustomerId, Timestamp dateCreated, boolean onBoarded) {
+    public UserModel(String id, String username, String name, String email, Timestamp dob, HashMap<String, String> avatar, String status, String authMethod,List<String> dateId, UserStatsModel statistics, List<String> purchasedExperiences,String stripeCustomerId, Timestamp dateCreated, boolean onBoarded) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.email = email;
         this.dob= dob;
         this.avatar = avatar;
-        this.status = status;
+        this.authMethod = authMethod;
         this.dateId = dateId;
+        this.purchasedExperiences = purchasedExperiences;
         this.avgDateStats = statistics;
         this.stripeCustomerId = stripeCustomerId;
         this.dateCreated = dateCreated;

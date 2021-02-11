@@ -190,12 +190,9 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                                         //populate recycler view-- uses different constructor
                                         users = new ArrayList<>();
                                         if (s.toString().length() >= 1 || dateinvitee.getUsername() != null) {
-                                            users.add(new UserModel(null, dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(),
-                                                                    null, null, null, null, null, null,
-                                                                    Timestamp.now(),false));
+                                            users.add(new UserModel(null, dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, null,null, null, null, null, null, null,Timestamp.now(),false));
                                         } else {
-                                            users.add(new UserModel("No user found", null, null, null, null, avatar,
-                                                                    "BASIC", null, null, "",Timestamp.now(),false));
+                                            users.add(new UserModel("No user found", null, null, null, null, avatar, "BASIC", null,null, null,null, "",Timestamp.now(),false));
                                             //remove at that position in recycler view
                                             users.remove(0);
                                             adapter.notifyItemRemoved(0);
@@ -298,10 +295,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void createDateInDb() {
-        // TODO: Edit this
-        datesRef = db.collection(DatabaseConstants.USER_DATA_NODE)
-                .document(currentUserId)
-                .collection(DatabaseConstants.DATES_COLLECTION);
+        datesRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(currentUserId).collection(DatabaseConstants.DATES_COLLECTION);
 
         //get creator User
         userRef.get().addOnSuccessListener(documentSnapshot -> {
@@ -364,7 +358,8 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                             datesRef.document(newDateId).set(dateModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    toast();
+                                    toast("You've created a date");
+
                                     //Associate dates with dateInvitee and dateCreator
                                     userRef.update("dateId", FieldValue.arrayUnion(datesRef.getId())); //update the fieldValue(array)
 
@@ -374,7 +369,6 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
 
                                     Log.i(TAG, "The dateTime " + dateChosen + " " + timeChosen);
                                     Log.i(TAG, String.valueOf(dateStringToTimestamp(dateChosen + " " + timeChosen)));
-                                    //go to congrats screen, can be here
                                     //Send Notification
                                 }
                             });
@@ -389,12 +383,12 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    public void toast() {
+    public void toast(String message) {
         View view = getLayoutInflater().inflate(R.layout.create_date_toast, null);
         Button b = view.findViewById(R.id.toast_btn);
 
         Toast toast = new Toast(InviteUserActivity.this);
-        b.setText("You've created a date");
+        b.setText(message);
         toast.setView(view);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.show();
