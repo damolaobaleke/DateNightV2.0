@@ -131,18 +131,20 @@ class CasualFragment : Fragment() {
         })
 
         /**meadow picnic not available now*/
-//        Picasso.get().load("").into(meadowPicnic, object : Callback {
-//            override fun onSuccess() {
-//                progressBarMeadow.isVisible = false
-//            }
-//
-//            override fun onError(e: Exception) {
-//                progressBarMeadow.isVisible = true
-//                parisNightDinner.setImageResource(R.color.white)
-//                meadowPicnic.setImageResource(R.color.white)
-//                Toast.makeText(context, e.message, LENGTH_LONG).show()
-//            }
-//        })
+        /*
+        Picasso.get().load("").into(meadowPicnic, object : Callback {
+            override fun onSuccess() {
+                progressBarMeadow.isVisible = false
+            }
+
+            override fun onError(e: Exception) {
+                progressBarMeadow.isVisible = true
+                parisNightDinner.setImageResource(R.color.white)
+                meadowPicnic.setImageResource(R.color.white)
+                Toast.makeText(context, e.message, LENGTH_LONG).show()
+            }
+        })
+         */
 
 
         //Co-routine scope , Main dispatcher, as we have some UI
