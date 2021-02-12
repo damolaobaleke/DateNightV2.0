@@ -11,9 +11,9 @@
         android:id="@+id/cardView2"
         android:layout_width="0dp"
         android:layout_height="96dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="32dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,48 +21,51 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/imageView19"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_marginStart="116dp"
-                android:layout_marginTop="14dp"
                 android:src="@drawable/dtc_coin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@+id/available_coins"
+                app:layout_constraintStart_toStartOf="@+id/textView6"
+                app:layout_constraintTop_toTopOf="@+id/available_coins" />
 
             <TextView
                 android:id="@+id/available_coins"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="150dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:fontFamily="@font/inter"
                 android:gravity="center"
-                android:text="100"
+                android:text="99.9K"
+                android:textAlignment="viewStart"
                 android:textColor="@color/black"
                 android:textFontWeight="900"
                 android:textSize="30sp"
+                app:layout_constraintBottom_toTopOf="@+id/textView6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView19"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="120dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginBottom="16dp"
                 android:fontFamily="@font/inter"
                 android:gravity="center"
                 android:text="Available coins"
                 android:textColor="@color/black"
                 android:textFontWeight="400"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -104,14 +107,11 @@
         android:id="@+id/dtc100"
         android:layout_width="149dp"
         android:layout_height="99dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="16dp"
         app:cardElevation="2dp"
-        app:layout_constraintEnd_toStartOf="@+id/dtc200"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/cardView2"
         app:layout_constraintTop_toBottomOf="@id/textView15">
 
         <LinearLayout
@@ -173,13 +173,10 @@
         android:id="@+id/dtc200"
         android:layout_width="149dp"
         android:layout_height="99dp"
-        android:layout_marginEnd="16dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="16dp"
         app:cardElevation="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/dtc100"
+        app:layout_constraintEnd_toEndOf="@+id/cardView2"
         app:layout_constraintTop_toTopOf="@id/dtc100">
 
         <LinearLayout
@@ -644,7 +641,7 @@
     <View
         android:id="@+id/extra"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dtc10000" />
 
