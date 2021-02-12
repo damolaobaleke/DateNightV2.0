@@ -48,7 +48,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String BASE_URL =  "http://172.20.10.7:3000" ;
+    private static final String BASE_URL =  "https://api.immersia.co.uk" ; //https://api.immersia.co.uk http://172.20.10.7:3000
     private FirebaseAuth mAuth;
     ProgressBar load;
     public static EditText email;
@@ -277,9 +277,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void createStripeCustomer() {
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(),"", "", email.getText().toString(),
-                                            null, null, "BASIC", null, null, "",
-                                            Timestamp.now(),false);
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(),"", "", email.getText().toString(), null, null, "BASIC", null,null, null, null,"", Timestamp.now(),false);
 
         Call<UserObject> userObjectCall = api.createStripeCustomer(userModel);
 

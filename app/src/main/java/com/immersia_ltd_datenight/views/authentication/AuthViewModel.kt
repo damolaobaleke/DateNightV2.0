@@ -17,6 +17,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.immersia_ltd_datenight.DatabaseConstants
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -29,7 +30,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     lateinit var db: FirebaseFirestore
 
     init {
-        mAuth =  FirebaseAuth.getInstance()
+        mAuth = FirebaseAuth.getInstance()
     }
 
     fun logIn(email: String, password: String) {
@@ -37,7 +38,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
-    fun signUp(email: String, password: String, username: String, age: String) {
+    fun signUp(email: String, password: String, username: String, age: String, name: String) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener { authResult: AuthResult? -> Toast.makeText(getApplication(), "Registered Successfully", Toast.LENGTH_SHORT).show() }
                 .addOnFailureListener(getApplication<Application>().applicationContext.mainExecutor, OnFailureListener { e: Exception ->
@@ -53,10 +54,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                         avatar["avatar"] = ""
 
                         //Add User to db
-                        val userStats = UserStatsModel(0, 0, 0,0)
-                        val user = UserModel("", username, email, null,  dateStringToTimestamp(age), avatar,
-                                null, null, userStats, username.toLowerCase(Locale.ROOT),
-                                Timestamp(mAuth.currentUser!!.metadata!!.creationTimestamp/1000, 0),false)
+                        val userStats = UserStatsModel(0, 0, 0, 0)
+                        val user = UserModel("", username, name, email, dateStringToTimestamp(age), avatar, "", DatabaseConstants.LOCAL_AUTH, null, userStats, null, "", Timestamp(mAuth.currentUser!!.metadata!!.creationTimestamp / 1000, 0), false)
                         createUserInDb(user)
 
                     } else {

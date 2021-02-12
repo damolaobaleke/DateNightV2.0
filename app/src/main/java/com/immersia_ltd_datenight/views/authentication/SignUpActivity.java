@@ -25,15 +25,8 @@ import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
-import com.immersia_ltd_datenight.R;
-import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
-import com.immersia_ltd_datenight.modelfirestore.User.UserStatsModel;
-import com.immersia_ltd_datenight.network.api.DatenightApi;
-import com.immersia_ltd_datenight.network.api.UserObject;
-import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
@@ -46,6 +39,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.immersia_ltd_datenight.DatabaseConstants;
+import com.immersia_ltd_datenight.R;
+import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
+import com.immersia_ltd_datenight.modelfirestore.User.UserStatsModel;
+import com.immersia_ltd_datenight.network.api.DatenightApi;
+import com.immersia_ltd_datenight.network.api.UserObject;
+import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -88,7 +88,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     Task<AuthResult> task1;
     private static final String TAG = "Sign Up";
 
-    private static final String BASE_URL = "http://172.20.10.7:3000"; //http://api.datenight.com
+    private static final String BASE_URL = "https://api.immersia.co.uk"; //https://api.immersia.co.uk http://172.20.10.7:3000
     DatenightApi api;
     //final CompositeDisposable compositeDisposable;  //to handle async response Reactive Java
 
@@ -131,12 +131,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         signUp.setOnClickListener(v -> {
             progressBarShown();
             validateForm();
-            //checkUserAlreadyExists();
+            //if(checkUserAlreadyExists()){toast username already exists}else {sign up};
             signUp();
         });
     }
 
-    private void checkUserAlreadyExists() {
+    private boolean[] checkUserAlreadyExists() {
         final boolean[] userDoesntExists = {true};
 
         usernames.whereEqualTo("username", usernameInput.getText().toString().toLowerCase().trim()).get().addOnSuccessListener(queryDocumentSnapshots -> {
@@ -163,9 +163,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
                     signUp.setVisibility(View.VISIBLE);
                     signUp.setEnabled(true);
+                    userDoesntExists[0] = true;
                 }
             }
         });
+        return userDoesntExists;
 
     }
 
@@ -273,28 +275,23 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         userId = mAuth.getCurrentUser().getUid();
 
         List<String> dateIds = new ArrayList<>();
+        List<String> purchasedExperiences = new ArrayList<>();
 
         HashMap<String, String> avatar = new HashMap<>();
         avatar.put("avatarUrl", "");
 
         UserStatsModel userStats = new UserStatsModel(0, 0, 0, 0);
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(),
-                                            fullNameInput.getText().toString(), emailInput.getText().toString(),
-                                            dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", dateIds, userStats,
-                                            "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp()/1000, 0),false);
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", DatabaseConstants.LOCAL_AUTH,dateIds, userStats, purchasedExperiences,"", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp()/1000, 0),false);
 
         userRef = db.collection("userData").document(userId);
         userNameRef = db.collection("usernames").document(usernameInput.getText().toString().toLowerCase());
 
-        userRef.set(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(SignUpActivity.this, "created successfully", Toast.LENGTH_SHORT).show();
-                /*create stripe customer --POST REQUEST TO ENDPOINT*/
-                setUpNetworkRequest();
-                createStripeCustomer();
-                /*create stripe customer --POST REQUEST TO ENDPOINT*/
-            }
+        userRef.set(userModel).addOnSuccessListener(aVoid -> {
+            Toast.makeText(SignUpActivity.this, "created successfully", Toast.LENGTH_SHORT).show();
+            /*create stripe customer --POST REQUEST TO ENDPOINT*/
+            setUpNetworkRequest();
+            createStripeCustomer();
+            /*create stripe customer --POST REQUEST TO ENDPOINT*/
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -330,10 +327,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void createStripeCustomer() {
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(),
-                                            fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()),
-                                            null, "BASIC", null, null, "",
-                                            new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp()/1000, 0),false);
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), null, "BASIC", DatabaseConstants.LOCAL_AUTH,null, null,null ,"", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp()/1000, 0),false);
 
 
         Call<UserObject> userObjectCall = api.createStripeCustomer(userModel);
@@ -474,12 +468,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 }
             } else {
                 signUp.setEnabled(false);
-                Toast.makeText(this, "You have to be 18", Toast.LENGTH_SHORT).show();
+                toast("You have to be 18");
             }
         } else {
             signUp.setFocusable(false);
             signUp.setEnabled(false);
-            Toast.makeText(this, "You have to be 18", Toast.LENGTH_SHORT).show();
+            toast("You have to be 18");
         }
     }
 
@@ -511,5 +505,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         return date;
     }
 
+    public void toast(String message) {
+        View view = getLayoutInflater().inflate(R.layout.create_date_toast, null);
+        Button b = view.findViewById(R.id.toast_btn);
+
+        Toast toast = new Toast(this);
+        b.setText(message);
+        toast.setView(view);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.show();
+    }
 
 }

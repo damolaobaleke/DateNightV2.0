@@ -64,7 +64,7 @@ public class UserOnBoarding extends AppCompatActivity {
                     UserModel user = document.toObject(UserModel.class);
 
                     if (user.isOnBoarded() && mAuth.getCurrentUser() != null) {
-                        //UpdateUI(mAuth.getCurrentUser());
+                        UpdateUI(mAuth.getCurrentUser());
                     }else if(user.isOnBoarded() && mAuth.getCurrentUser() == null){
                         //boarding screen
                     }
