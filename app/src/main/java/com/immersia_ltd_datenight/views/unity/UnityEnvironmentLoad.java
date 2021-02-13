@@ -40,7 +40,7 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
     private String experienceId;
     private String participantId;
     private String participantFullName;
-    private String participantavatarUrl;
+    private String dateCreatoravatarUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
         for(String avatarUrl: currentUserAvatarUrl.values()){
             Log.i("avatarUrl", avatarUrl);
 
-            participantavatarUrl = avatarUrl;
+            dateCreatoravatarUrl = avatarUrl;
         }
 
 
@@ -118,9 +118,9 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
         //unity expected json keys don't match defined Intent constants
         unityParams.put("experienceID", experienceId);
         unityParams.put("dateID", dateId);
-        unityParams.put("userId", participantId);
-        unityParams.put("userName", participantFullName);
-        unityParams.put("avatarUrl",  participantavatarUrl);
+        unityParams.put("userId", currentUserId);
+        unityParams.put("userName", currentUserFullName);
+        unityParams.put("avatarUrl",  dateCreatoravatarUrl);
 
         //constructs map as a GSON object and then converts to JSON.  serialize java object to JSON
         String jsonBodyForUnity = new Gson().toJson(unityParams);
@@ -158,7 +158,7 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
                     .setNegativeButton("No", dialogClickListener)
                     .show();
         });
-        layout.addView(leaveDateButton, 180, 80);
+        layout.addView(leaveDateButton, 180, 70);
     }
 
     @Override
