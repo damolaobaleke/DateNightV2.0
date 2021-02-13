@@ -10,15 +10,21 @@ import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.immersia_ltd_datenight.IntentConstants;
+import com.google.gson.Gson;
 import com.immersia_ltd_datenight.R;
+import com.immersia_ltd_datenight.utils.constants.IntentConstants;
 import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
 import com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.dates.post_date.DateFinishedActivity;
+import com.unity3d.player.UnityPlayer;
 import com.unity3d.player.UnityPlayerActivity;
 
- public class UnityEnvironmentLoad extends UnityPlayerActivity {
+import java.util.HashMap;
+import java.util.Map;
+
+public class UnityEnvironmentLoad extends UnityPlayerActivity {
 
     //UnityPlayer mUnityPlayer;
     ConstraintLayout constraintLayoutForUnity;
@@ -29,11 +35,12 @@ import com.unity3d.player.UnityPlayerActivity;
     private String currentUserId = FirebaseAuth.getInstance().getUid();
 
     private String currentUserFullName;
-    private String currentUserAvatarUrl;
+    private HashMap<String, String> currentUserAvatarUrl;
     private String dateId;
     private String experienceId;
     private String participantId;
     private String participantFullName;
+    private String participantavatarUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +49,26 @@ import com.unity3d.player.UnityPlayerActivity;
         setContentView(R.layout.activity_unity_environment_load);
 
         // Grab data needed for unity
-        appState = ((DateNight)this.getApplication());
+        appState = ((DateNight) this.getApplication());
         Intent intent = getIntent();
         currentUserFullName = appState.getAppData(currentUserId).getCurrentUser().getFullName();
 
-        //currentUserAvatarUrl = appState.getAppData(currentUserId).getCurrentUser().getAvatar();
+        //passed from scheduled fragment
+        currentUserAvatarUrl = appState.getAppData(currentUserId).getCurrentUser().getAvatar();
         dateId = intent.getStringExtra(IntentConstants.DATE_ID);
         experienceId = intent.getStringExtra(IntentConstants.EXPERIENCE_ID);
         participantId = intent.getStringExtra(IntentConstants.PARTICIPANT_ID_EXTRA);
         participantFullName = intent.getStringExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA);
 
-        //mUnityPlayer = new UnityPlayer(this);
+        for(String avatarUrl: currentUserAvatarUrl.values()){
+            Log.i("avatarUrl", avatarUrl);
+
+            participantavatarUrl = avatarUrl;
+        }
+
+
+        //Initialize unity player
+        // mUnityPlayer = new UnityPlayer(this);
         constraintLayoutForUnity = findViewById(R.id.constraintLayoutForUnity);
 
         //Unity activity take whole view
@@ -61,7 +77,10 @@ import com.unity3d.player.UnityPlayerActivity;
         //mUnityPlayer.requestFocus();
         mUnityPlayer.windowFocusChanged(true);
 
+
+        UnitySendInfo("NetworkManager","JsonInfo", sendToUnity());
     }
+
     /* These are not needed as already implemented within UnityPlayerActivity
     @Override
     public void onDestroy() {
@@ -88,16 +107,40 @@ import com.unity3d.player.UnityPlayerActivity;
     }
     */
 
-    private void addControlsToUnityFrame(){
+    public void UnitySendInfo(String gameObject, String functionName, String jsonParam)
+    {
+        UnityPlayer.UnitySendMessage(gameObject, functionName, jsonParam);
+    }
+
+    private String sendToUnity() {
+        Map<String, Object> unityParams = new HashMap<>();
+
+        //unity expected json keys don't match defined Intent constants
+        unityParams.put("experienceID", experienceId);
+        unityParams.put("dateID", dateId);
+        unityParams.put("userId", participantId);
+        unityParams.put("userName", participantFullName);
+        unityParams.put("avatarUrl",  participantavatarUrl);
+
+        //constructs map as a GSON object and then converts to JSON.  serialize java object to JSON
+        String jsonBodyForUnity = new Gson().toJson(unityParams);
+        Log.i("UnityJson", jsonBodyForUnity);
+
+        return jsonBodyForUnity;
+    }
+
+    private void addControlsToUnityFrame() {
         FrameLayout layout = mUnityPlayer;
         Button leaveDateButton = new Button(this);
         leaveDateButton.setText(R.string.leave_date);
-        leaveDateButton.setX(50);
-        leaveDateButton.setY(150);
+        leaveDateButton.setTextColor(getColor(R.color.white));
+        leaveDateButton.setX(500);
+        leaveDateButton.setY(100);
+        leaveDateButton.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.custom_login_button, null));
 
         leaveDateButton.setOnClickListener(v -> {
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-                switch (which){
+                switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked - leave date
                         launchDateFinishedActivity();
@@ -115,7 +158,7 @@ import com.unity3d.player.UnityPlayerActivity;
                     .setNegativeButton("No", dialogClickListener)
                     .show();
         });
-        layout.addView(leaveDateButton, 300, 200);
+        layout.addView(leaveDateButton, 180, 80);
     }
 
     @Override
@@ -131,34 +174,28 @@ import com.unity3d.player.UnityPlayerActivity;
         mUnityPlayer.configurationChanged(newConfig);
     }
 
-    public void launchDateFinishedActivity(){
+    public void launchDateFinishedActivity() {
         mUnityPlayer.unload();
-//        Intent intent  = new Intent(this, DateFinishedActivity.class)
-//                .putExtra(IntentConstants.EXPERIENCE_ID, experienceId)
-//                .putExtra(IntentConstants.DATE_ID, dateId)
-//                .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, participantId)
-//                .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, participantFullName);
-//        startActivity(intent);
+
     }
 
-     @Override
-     public void onUnityPlayerQuitted() {
+    @Override
+    public void onUnityPlayerQuitted() {
         Log.e("UnityEnvironmentLoaded", "**************************QUITTING APP***************************");
         super.onUnityPlayerQuitted();
-     }
+    }
 
-     @Override
-     public void onUnityPlayerUnloaded() {
-         super.onUnityPlayerUnloaded();
+    @Override
+    public void onUnityPlayerUnloaded() {
+        super.onUnityPlayerUnloaded();
 
-         Log.e("UnityEnvironmentLoad", "**************Here attempting to launch date finished***********************");
-         // Start new activity after unity player is unloaded
-         Intent intent  = new Intent(this, DateFinishedActivity.class)
-                 .putExtra(IntentConstants.EXPERIENCE_ID, experienceId)
-                 .putExtra(IntentConstants.DATE_ID, dateId)
-                 .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, participantId)
-                 .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, participantFullName);
-         startActivity(intent);
-
-     }
- }
+        Log.e("UnityEnvironmentLoad", "**************Here attempting to launch date finished***********************");
+        // Start new activity after unity player is unloaded
+        Intent intent = new Intent(this, DateFinishedActivity.class)
+                .putExtra(IntentConstants.EXPERIENCE_ID, experienceId)
+                .putExtra(IntentConstants.DATE_ID, dateId)
+                .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, participantId)
+                .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, participantFullName);
+        startActivity(intent);
+    }
+}

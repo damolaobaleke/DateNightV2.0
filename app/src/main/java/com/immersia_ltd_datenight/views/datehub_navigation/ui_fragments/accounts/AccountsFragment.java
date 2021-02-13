@@ -54,7 +54,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
 
     EditText emailInput;
     EditText passwordInput;
-    EditText username;
+    TextView username;
     TextView dateOfBirth;
     Button saveChanges;
     ProgressBar load;
@@ -139,7 +139,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
 
     public void updateUser() {
         Map<String, Object> updateUser = new HashMap<>();
-        updateUser.put("username", username.getText().toString());
+        //updateUser.put("username", username.getText().toString());
         updateUser.put("email", emailInput.getText().toString());
 
         userRef.update(updateUser).addOnSuccessListener(aVoid -> {

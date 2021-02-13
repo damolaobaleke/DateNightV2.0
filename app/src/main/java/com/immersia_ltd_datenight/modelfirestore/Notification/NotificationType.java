@@ -11,18 +11,8 @@
  * limitations under the License.
  */
 
-package com.immersia_ltd_datenight.utils.stripe.config;
+package com.immersia_ltd_datenight.modelfirestore.Notification;
 
-import android.app.Application;
+public class NotificationType {
 
-import com.stripe.android.PaymentConfiguration;
-
-public class StripeConfiguration extends Application {
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        PaymentConfiguration.init(
-                getApplicationContext(), "pk_test_51IEOyvKzXEZpc2WIIhHL4e7Z9885t8iFLNgPgBnQSyz70BNKoYEhHcfhUYtwShJgl1tmqJRV3BEHQ0luhRUbPQ4c00iW4180mZ");
-        //Immersia TEST PK
-    }
 }

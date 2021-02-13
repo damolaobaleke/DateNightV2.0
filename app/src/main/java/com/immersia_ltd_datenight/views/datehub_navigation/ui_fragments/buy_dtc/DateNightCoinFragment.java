@@ -12,28 +12,22 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.immersia_ltd_datenight.DatabaseConstants;
-import com.immersia_ltd_datenight.PriceConstants;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.databinding.FragmentDatenightcoinBinding;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
+import com.immersia_ltd_datenight.utils.constants.PriceConstants;
 import com.immersia_ltd_datenight.views.payment.PaymentActivity;
 
 import java.math.BigDecimal;
@@ -144,7 +138,7 @@ public class DateNightCoinFragment extends Fragment {
     public void payBottomSheet(CharSequence price) {
         View view = getLayoutInflater().inflate(R.layout.pay_dialogue, null);
         payWithCard = view.findViewById(R.id.pay_with_card);
-        payWithCard.setText("Pay " + price + " with card");
+        payWithCard.setText(String.format("Pay %s with card", price));
 
         cancel = view.findViewById(R.id.cancel_pay);
 
@@ -193,38 +187,6 @@ public class DateNightCoinFragment extends Fragment {
         bottomSheet.show();
     }
 
-    public void coinIncrement(int coinNumber) {
-        //TODO: Move to After Payment Goes through-- Would be in call back
-        userDocRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                assert value != null;
-                if (value.exists()) {
-                    UserModel user = value.toObject(UserModel.class);
-
-                    if (user != null) {
-                        int coinAmount = coinNumber;
-                        coinAmount += user.getDtc();
-                        //Log.i("Total", String.valueOf(coinAmount));
-
-
-                        userDocRef.update("dtc", coinAmount).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(requireContext(), "You bought " + coinNumber + " coins", Toast.LENGTH_LONG).show();
-                                /**intent to go back to DateHub*/
-                                //Intent intent = new Intent(requireContext(), DateHubNavigation.class);
-                                //intent.putExtra(IntentConstants.FRAGMENT_TO_LOAD, IntentConstants.DATE_HUB_FRAGMENT);
-                                //startActivity(intent);
-                            }
-                        });
-
-                    }
-                }
-            }
-        });
-
-    }
 
     private void payWithCard(double price) {
         Intent intent = new Intent(requireContext(), PaymentActivity.class); //PaymentActivity - 1st Implementation

@@ -24,7 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.immersia_ltd_datenight.IntentConstants;
+import com.immersia_ltd_datenight.utils.constants.IntentConstants;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
 import com.google.common.reflect.TypeToken;

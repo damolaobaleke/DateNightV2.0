@@ -19,16 +19,16 @@
 
             <ImageView
                 android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="80dp"
-                android:scaleType="center"
+                android:scaleType="centerCrop"
                 android:scaleX="2"
                 android:scaleY="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/datehub_logo" />
+                app:srcCompat="@drawable/datenight_logo" />
 
             <TextView
                 android:id="@+id/edit_avatar_btn"
@@ -156,7 +156,7 @@
                         android:id="@+id/textView10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="-32dp"
+                        android:layout_marginStart="-16dp"
                         android:layout_marginTop="54dp"
                         android:fontFamily="@font/inter"
                         android:text="Dates you've been on"

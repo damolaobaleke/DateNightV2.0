@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.immersia_ltd_datenight.IntentConstants
+import com.immersia_ltd_datenight.utils.constants.IntentConstants
 import com.immersia_ltd_datenight.R
 
 class ChatRoomActivity : AppCompatActivity() {

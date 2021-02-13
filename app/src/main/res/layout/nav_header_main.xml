@@ -23,10 +23,10 @@
         android:id="@+id/imageView"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:scaleY="1.4"
+        android:scaleX="1.4"
         android:contentDescription="@string/nav_header_desc"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:paddingLeft="0dp"
-        app:srcCompat="@drawable/avatar_ellipse" />
+        app:srcCompat="@drawable/datenight_logo" />
 
     <TextView
         android:id="@+id/emailDisplay"

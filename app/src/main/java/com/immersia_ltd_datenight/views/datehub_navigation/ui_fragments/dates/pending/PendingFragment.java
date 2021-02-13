@@ -31,12 +31,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.immersia_ltd_datenight.DatabaseConstants;
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.MainActivity;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.Date.DateModel;
 import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
-import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
 
 import java.text.DateFormat;
 import java.text.ParseException;

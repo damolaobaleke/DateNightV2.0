@@ -29,7 +29,7 @@ public class DateNight extends Application {
     public void onCreate() {
         super.onCreate();
         //Configure stripe
-        PaymentConfiguration.init(getApplicationContext(), "pk_test_51IEOyvKzXEZpc2WIIhHL4e7Z9885t8iFLNgPgBnQSyz70BNKoYEhHcfhUYtwShJgl1tmqJRV3BEHQ0luhRUbPQ4c00iW4180mZ");
+        PaymentConfiguration.init(getApplicationContext(), "pk_live_51IEOyvKzXEZpc2WIJ0yUpc6PIdoqK3vLyr0ePNiGNG3NGDZBJu6XXA0OXMCGjHdlKudRXxWoK5ZwPWIWD70uXdyt00jliMQrn9");
         //Immersia PK
     }
 

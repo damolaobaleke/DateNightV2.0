@@ -24,7 +24,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.immersia_ltd_datenight.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
-import com.immersia_ltd_datenight.IntentConstants
+import com.immersia_ltd_datenight.utils.constants.IntentConstants
 import com.immersia_ltd_datenight.utils.stripe.config.DateNight
 import com.immersia_ltd_datenight.views.unity.UnityEnvironmentLoad
 import de.hdodenhof.circleimageview.CircleImageView
@@ -62,6 +62,8 @@ class DateFinishedActivity : AppCompatActivity() {
         dateParticipantName = intent.getStringExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA)!!
         dateExperienceId = intent.getStringExtra(IntentConstants.EXPERIENCE_ID)!!
         dateId = intent.getStringExtra(IntentConstants.DATE_ID)!!
+
+
     }
 
     override fun onStop() {
@@ -80,6 +82,7 @@ class DateFinishedActivity : AppCompatActivity() {
 
     fun backToDateHubFragment(v: View){
         viewModel.backToDateHubFragment(this)
+        viewModel.incrementDateCount()
     }
 
     fun repeatDate(v: View){

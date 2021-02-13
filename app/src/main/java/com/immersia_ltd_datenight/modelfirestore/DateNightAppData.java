@@ -17,7 +17,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.immersia_ltd_datenight.DatabaseConstants;
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.modelfirestore.Experience.ExperienceModel;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
 import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;

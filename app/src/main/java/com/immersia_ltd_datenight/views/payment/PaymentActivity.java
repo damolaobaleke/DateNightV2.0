@@ -26,8 +26,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.immersia_ltd_datenight.DatabaseConstants;
-import com.immersia_ltd_datenight.IntentConstants;
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
+import com.immersia_ltd_datenight.utils.constants.IntentConstants;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
 import com.immersia_ltd_datenight.network.api.DatenightApi;

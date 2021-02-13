@@ -7,8 +7,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import com.immersia_ltd_datenight.R
-import com.immersia_ltd_datenight.IntentConstants
-import com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.chats.StartNewChatViewModel
 import kotlinx.android.synthetic.main.activity_rate_date_night.*
 
 

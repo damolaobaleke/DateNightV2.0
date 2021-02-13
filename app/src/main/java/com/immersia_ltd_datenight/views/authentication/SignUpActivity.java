@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -37,9 +38,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.immersia_ltd_datenight.DatabaseConstants;
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
 import com.immersia_ltd_datenight.modelfirestore.User.UserStatsModel;
@@ -95,6 +97,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     CollectionReference usernames;
     Editable mUserNameText;
     CharSequence mUserName;
+    boolean userDoesntExists = true;
+    static String fcmToken;
 
 
     @Override
@@ -131,44 +135,53 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         signUp.setOnClickListener(v -> {
             progressBarShown();
             validateForm();
-            //if(checkUserAlreadyExists()){toast username already exists}else {sign up};
-            signUp();
+            if (checkUserAlreadyExists()) {
+                //user exists do nothing
+                progressBarGone();
+            } else {
+                signUp();
+            }
+
         });
     }
 
-    private boolean[] checkUserAlreadyExists() {
-        final boolean[] userDoesntExists = {true};
-
+    private boolean checkUserAlreadyExists() {
         usernames.whereEqualTo("username", usernameInput.getText().toString().toLowerCase().trim()).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                 if (queryDocumentSnapshot.exists()) {
-
-                    //toast
-                    Toast.makeText(SignUpActivity.this, R.string.valid_username, Toast.LENGTH_SHORT).show();
+                    //toast and log
+                    toast("username already exists");
+                    //Toast.makeText(SignUpActivity.this, R.string.valid_username, Toast.LENGTH_SHORT).show();
 
                     //show error
                     usernameLabel = findViewById(R.id.username_label);
                     usernameLabel.setText(R.string.valid_username);
                     usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.holo_red_light));
 
+                    Runnable runnable = () -> {
+                        usernameLabel.setText("Give yourself a username");
+                        usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
+                    };
+                    Handler handler = new Handler();
+                    handler.postDelayed(runnable,1000);
+
                     //disable button
                     signUp.setEnabled(false);
-                    //signUp.setVisibility(View.INVISIBLE);
+                    progressBarGone();
                     //signUp.setOnClickListener(v -> finish());
 
-                    userDoesntExists[0] = false;
+                    userDoesntExists = false;
                 } else {
 
                     usernameLabel.setText("Give yourself a username");
                     usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
                     signUp.setVisibility(View.VISIBLE);
                     signUp.setEnabled(true);
-                    userDoesntExists[0] = true;
+                    userDoesntExists = true;
                 }
             }
         });
         return userDoesntExists;
-
     }
 
     private void checkAge() {
@@ -219,7 +232,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
 
     public void signUp() {
-        boolean formValidated = validateForm();
+        boolean formValidated = validateForm(); //if true run signUp
         if (formValidated) {
             Log.i("User Details", emailInput.getText().toString() + passwordInput.getText().toString());
 
@@ -276,12 +289,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         List<String> dateIds = new ArrayList<>();
         List<String> purchasedExperiences = new ArrayList<>();
+        purchasedExperiences.add("");
 
         HashMap<String, String> avatar = new HashMap<>();
         avatar.put("avatarUrl", "");
 
         UserStatsModel userStats = new UserStatsModel(0, 0, 0, 0);
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", DatabaseConstants.LOCAL_AUTH,dateIds, userStats, purchasedExperiences,"", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp()/1000, 0),false);
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", DatabaseConstants.LOCAL_AUTH, dateIds, userStats, purchasedExperiences, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false, generateFcmToken());
 
         userRef = db.collection("userData").document(userId);
         userNameRef = db.collection("usernames").document(usernameInput.getText().toString().toLowerCase());
@@ -327,7 +341,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void createStripeCustomer() {
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), null, "BASIC", DatabaseConstants.LOCAL_AUTH,null, null,null ,"", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp()/1000, 0),false);
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), null, "BASIC", DatabaseConstants.LOCAL_AUTH, null, null, null, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false,"");
 
 
         Call<UserObject> userObjectCall = api.createStripeCustomer(userModel);
@@ -516,4 +530,19 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         toast.show();
     }
 
+    private static String generateFcmToken(){
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                return;
+            }
+            // Get new FCM registration token
+            fcmToken = task.getResult();
+
+            // Log
+            Log.d(TAG, "The fcm: " + fcmToken);
+
+        });
+        return fcmToken;
+    }
 }

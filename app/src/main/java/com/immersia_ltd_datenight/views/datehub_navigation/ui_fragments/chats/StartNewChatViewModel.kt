@@ -6,8 +6,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModel
-import com.immersia_ltd_datenight.DatabaseConstants
-import com.immersia_ltd_datenight.IntentConstants
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants
+import com.immersia_ltd_datenight.utils.constants.IntentConstants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_start_new_chat.*

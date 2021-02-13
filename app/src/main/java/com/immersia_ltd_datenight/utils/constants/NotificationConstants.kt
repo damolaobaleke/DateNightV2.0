@@ -11,18 +11,14 @@
  * limitations under the License.
  */
 
-package com.immersia_ltd_datenight.utils.stripe.config;
+package com.immersia_ltd_datenight.utils.constants
 
-import android.app.Application;
+class NotificationConstants {
 
-import com.stripe.android.PaymentConfiguration;
+    companion object{
+        const val FCM_BASE_URL = "https://fcm.googleapis.com"
+        const val SERVER_KEY = "" //shouldn't do on client side can cause security breach
+        const val CONTENT_TYPE = "application/json"
 
-public class StripeConfiguration extends Application {
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        PaymentConfiguration.init(
-                getApplicationContext(), "pk_test_51IEOyvKzXEZpc2WIIhHL4e7Z9885t8iFLNgPgBnQSyz70BNKoYEhHcfhUYtwShJgl1tmqJRV3BEHQ0luhRUbPQ4c00iW4180mZ");
-        //Immersia TEST PK
     }
 }

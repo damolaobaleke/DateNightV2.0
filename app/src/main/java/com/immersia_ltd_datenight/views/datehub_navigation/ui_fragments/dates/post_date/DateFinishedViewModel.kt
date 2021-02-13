@@ -16,8 +16,8 @@ package com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.dates.p
 import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.immersia_ltd_datenight.DatabaseConstants
-import com.immersia_ltd_datenight.IntentConstants
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants
+import com.immersia_ltd_datenight.utils.constants.IntentConstants
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel
 import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation
 import com.google.firebase.auth.FirebaseAuth
@@ -77,7 +77,7 @@ class  DateFinishedViewModel : ViewModel() {
     }
 
 
-    private fun incrementDateCount(){
+    fun incrementDateCount(){
         userDocRef = dbReference.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth!!.currentUser!!.uid)
         userDocRef.get().addOnSuccessListener { documentSnapshot ->
             if(documentSnapshot.exists()){
@@ -85,7 +85,7 @@ class  DateFinishedViewModel : ViewModel() {
                 Log.i("DateFinishedVM","Date count before date: ${user!!.getAvgDateStats().dateCount}")
 
                 var currentDateCount: Int = user.getAvgDateStats().dateCount
-                val updateDateCount = currentDateCount++
+                val updateDateCount = currentDateCount+1
                 Log.i("DateFinishedVM","Date count after date: $updateDateCount")
 
 

@@ -1,4 +1,4 @@
-package com.immersia_ltd_datenight
+package com.immersia_ltd_datenight.utils.constants
 
 object DatabaseConstants {
     // Messages

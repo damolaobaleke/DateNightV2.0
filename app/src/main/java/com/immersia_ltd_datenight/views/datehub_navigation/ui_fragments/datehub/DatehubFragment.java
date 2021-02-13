@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.immersia_ltd_datenight.IntentConstants;
+import com.immersia_ltd_datenight.utils.constants.IntentConstants;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
 import com.immersia_ltd_datenight.views.readyplayerweb.CreatAvatarActivity;

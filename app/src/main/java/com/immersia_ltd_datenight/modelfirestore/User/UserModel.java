@@ -16,7 +16,7 @@ public class UserModel {
     public HashMap<String, String> avatar; //avatar = string in db .glb file :: android image resource takes int value  >>String,String || String, Integer<<
     public String status; //BASIC || PREMIUM USER
     public int dtc;
-    public String authMethod;
+    public String loginMethod;
     public String stripeCustomerId;
     public String ephemeralKey;
     private Timestamp dateCreated;
@@ -31,20 +31,21 @@ public class UserModel {
         /**Public no arg constructor needed*/
     }
 
-    public UserModel(String id, String username, String name, String email, Timestamp dob, HashMap<String, String> avatar, String status, String authMethod,List<String> dateId, UserStatsModel statistics, List<String> purchasedExperiences,String stripeCustomerId, Timestamp dateCreated, boolean onBoarded) {
+    public UserModel(String id, String username, String name, String email, Timestamp dob, HashMap<String, String> avatar, String status, String loginMethod, List<String> dateId, UserStatsModel statistics, List<String> purchasedExperiences, String stripeCustomerId, Timestamp dateCreated, boolean onBoarded, String fcmToken) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.email = email;
         this.dob= dob;
         this.avatar = avatar;
-        this.authMethod = authMethod;
+        this.loginMethod = loginMethod;
         this.dateId = dateId;
         this.purchasedExperiences = purchasedExperiences;
         this.avgDateStats = statistics;
         this.stripeCustomerId = stripeCustomerId;
         this.dateCreated = dateCreated;
         this.onBoarded = onBoarded;
+        this.fcmToken = fcmToken;
     }
 
     /**Constructor for invite user activity- majorly to get the avatar image*/
@@ -112,6 +113,10 @@ public class UserModel {
 
     public boolean isOnBoarded() {
         return onBoarded;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
     }
 
     public void setDtc(int dtc) {

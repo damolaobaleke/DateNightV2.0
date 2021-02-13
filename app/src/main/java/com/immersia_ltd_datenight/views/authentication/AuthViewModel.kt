@@ -7,17 +7,19 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
-import com.immersia_ltd_datenight.modelfirestore.User.UserModel
-import com.immersia_ltd_datenight.modelfirestore.User.UserStatsModel
-import com.immersia_ltd_datenight.views.authentication.SignUpActivity.dateStringToTimestamp
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.immersia_ltd_datenight.DatabaseConstants
+import com.google.firebase.messaging.FirebaseMessaging
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants
+import com.immersia_ltd_datenight.modelfirestore.User.UserModel
+import com.immersia_ltd_datenight.modelfirestore.User.UserStatsModel
+import com.immersia_ltd_datenight.views.authentication.SignUpActivity.dateStringToTimestamp
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -28,6 +30,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     lateinit var userId: String
     lateinit var userRef: DocumentReference
     lateinit var db: FirebaseFirestore
+    lateinit var fcmToken: String
 
     init {
         mAuth = FirebaseAuth.getInstance()
@@ -55,7 +58,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
                         //Add User to db
                         val userStats = UserStatsModel(0, 0, 0, 0)
-                        val user = UserModel("", username, name, email, dateStringToTimestamp(age), avatar, "", DatabaseConstants.LOCAL_AUTH, null, userStats, null, "", Timestamp(mAuth.currentUser!!.metadata!!.creationTimestamp / 1000, 0), false)
+                        val user = UserModel("", username, name, email, dateStringToTimestamp(age), avatar, "", DatabaseConstants.LOCAL_AUTH, null, userStats, null, "", Timestamp(mAuth.currentUser!!.metadata!!.creationTimestamp / 1000, 0), false, generateFcmToken())
                         createUserInDb(user)
 
                     } else {
@@ -86,6 +89,21 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     fun progressInvisible() {
         progressInvisible = View.INVISIBLE
+    }
+
+    private fun generateFcmToken(): String? {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String?> ->
+            if (!task.isSuccessful) {
+                Log.w("AuthVM", "Fetching FCM registration token failed", task.exception)
+                return@addOnCompleteListener
+            }
+            // Get new FCM registration token
+            fcmToken = task.result.toString()
+
+            // Log
+            Log.d("AuthVM", fcmToken)
+        }
+        return fcmToken
     }
 
 

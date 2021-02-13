@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.immersia_ltd_datenight.DatabaseConstants
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*

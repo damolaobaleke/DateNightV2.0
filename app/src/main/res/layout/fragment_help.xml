@@ -68,6 +68,7 @@
         android:layout_marginTop="48dp"
         app:cardBackgroundColor="@color/date_night_purple"
         app:cardCornerRadius="100dp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toEndOf="@+id/suggest_improvement"

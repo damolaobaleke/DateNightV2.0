@@ -47,7 +47,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.immersia_ltd_datenight.DatabaseConstants;
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.Date.DateModel;
 import com.immersia_ltd_datenight.modelfirestore.Experience.ExperienceModel;
@@ -190,9 +190,9 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                                         //populate recycler view-- uses different constructor
                                         users = new ArrayList<>();
                                         if (s.toString().length() >= 1 || dateinvitee.getUsername() != null) {
-                                            users.add(new UserModel(null, dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, null,null, null, null, null, null, null,Timestamp.now(),false));
+                                            users.add(new UserModel(null, dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, null,null, null, null, null, null, null,Timestamp.now(),false,""));
                                         } else {
-                                            users.add(new UserModel("No user found", null, null, null, null, avatar, "BASIC", null,null, null,null, "",Timestamp.now(),false));
+                                            users.add(new UserModel("No user found", null, null, null, null, avatar, "BASIC", null,null, null,null, "",Timestamp.now(),false,""));
                                             //remove at that position in recycler view
                                             users.remove(0);
                                             adapter.notifyItemRemoved(0);
@@ -351,6 +351,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                         if (documentSnapshot.exists()) {
                             experienceModel = documentSnapshot.toObject(ExperienceModel.class); //recreate doc object from model class
                             assert experienceModel != null;
+
                             Log.i(TAG, "The experience id: " + experienceModel.getName());
                             //create date in db
                             String newDateId = datesRef.document().getId();
@@ -370,6 +371,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                                     Log.i(TAG, "The dateTime " + dateChosen + " " + timeChosen);
                                     Log.i(TAG, String.valueOf(dateStringToTimestamp(dateChosen + " " + timeChosen)));
                                     //Send Notification
+
                                 }
                             });
                             //create date in db with experience
@@ -460,7 +462,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
         adapter.notifyDataSetChanged();
     }
 
-    public void notifyUsers() {
+    public static void notifyUsers(String inviteeId) {
 
     }
 

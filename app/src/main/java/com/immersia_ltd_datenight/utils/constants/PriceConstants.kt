@@ -11,9 +11,10 @@
  * limitations under the License.
  */
 
-package com.immersia_ltd_datenight
+package com.immersia_ltd_datenight.utils.constants
 
 object PriceConstants {
+    const val BASE_URL = "https://api.immersia.co.uk"
 
     const val PRICE_ZERO_99 = "£0.99"
     const val PRICE_ONE_99 = "£1.99"

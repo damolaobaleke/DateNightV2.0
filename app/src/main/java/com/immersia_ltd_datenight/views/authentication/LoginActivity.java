@@ -22,7 +22,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.immersia_ltd_datenight.DatabaseConstants;
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
 import com.immersia_ltd_datenight.network.api.DatenightApi;
@@ -277,7 +277,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void createStripeCustomer() {
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(),"", "", email.getText().toString(), null, null, "BASIC", null,null, null, null,"", Timestamp.now(),false);
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(),"", "", email.getText().toString(), null, null, "BASIC", null,null, null, null,"", Timestamp.now(),false,"");
 
         Call<UserObject> userObjectCall = api.createStripeCustomer(userModel);
 

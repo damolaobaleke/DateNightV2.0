@@ -14,8 +14,8 @@ android {
         applicationId "com.immersia_ltd_datenight"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
         ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -23,7 +23,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -115,6 +116,7 @@ dependencies {
     implementation "com.google.firebase:firebase-database:$firebase_database_version"
     implementation platform('com.google.firebase:firebase-bom:26.0.0')
     implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-messaging'
 
     //Firebase UI
     implementation 'com.firebaseui:firebase-ui-database:6.3.0'

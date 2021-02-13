@@ -18,6 +18,8 @@
 
         <!--item name="drawerArrowStyle">@style/BlackDrawerArrowStyle</item-->
 
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+
     </style>
 
 
@@ -103,6 +105,14 @@
 
     <style name="InviteUserTheme">
         <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/curvedBottomSheet</item>
+    </style>
+
+    <style name="curvedBottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_bottom_sheet_edges</item>
     </style>
 
     <!--Stripe pre-built UI -->

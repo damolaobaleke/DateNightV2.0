@@ -10,8 +10,8 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.immersia_ltd_datenight.DatabaseConstants
-import com.immersia_ltd_datenight.IntentConstants
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants
+import com.immersia_ltd_datenight.utils.constants.IntentConstants
 import com.immersia_ltd_datenight.R
 import com.immersia_ltd_datenight.modelfirestore.Chat.ChatHead
 import com.firebase.ui.database.FirebaseRecyclerAdapter
