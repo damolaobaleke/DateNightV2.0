@@ -52,9 +52,9 @@
     <string name="buy_dtc">Buy Dtc</string>
     <string name="help">Help</string>
     <string name="log_out">Log Out</string>
-    <string name="chats">chats</string>
-    <string name="date_hub">hub</string>
-    <string name="my_dates">my dates</string>
+    <string name="chats">Chats</string>
+    <string name="date_hub">Hub</string>
+    <string name="my_dates">My dates</string>
     <string name="average_date_rating">Your average date rating is </string>
 
     <string name="game_view_content_description">Game view</string>
