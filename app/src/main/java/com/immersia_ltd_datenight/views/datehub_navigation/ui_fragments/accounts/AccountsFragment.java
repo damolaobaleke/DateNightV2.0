@@ -41,7 +41,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 public class AccountsFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
     private final static String TAG = "AccountFragment";
@@ -54,7 +53,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
 
     EditText emailInput;
     EditText passwordInput;
-    TextView username;
+    TextView username,fullName,topUsername;
     TextView dateOfBirth;
     Button saveChanges;
     ProgressBar load;
@@ -77,7 +76,9 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
         //bind
         emailInput = view.findViewById(R.id.emailInput);
         username = view.findViewById(R.id.username);
+        fullName =view.findViewById(R.id.name);
         dateOfBirth = view.findViewById(R.id.Age);
+        topUsername =  view.findViewById(R.id.top_username);
         saveChanges = view.findViewById(R.id.save_changes);
         Button logOut = view.findViewById(R.id.log_out);
 
@@ -93,7 +94,6 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
         });
 
         user = mAuth.getCurrentUser();
-        Log.i(TAG, user.toString());
         if (user != null) {
             userId = mAuth.getCurrentUser().getUid();
             Log.i(TAG, userId);
@@ -113,10 +113,6 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
             userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(DocumentSnapshot value, FirebaseFirestoreException error) {
-                    if (error != null) {
-                        Log.e(TAG, Objects.requireNonNull(error.getMessage()));
-                        return;
-                    }
 
                     assert value != null;
                     if (value.exists()) {
@@ -126,7 +122,9 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
 
                         dateOfBirth.setText(userModel.getDateOfBirth() != null ? timeStamptoString(userModel.getDateOfBirth()) : "");
                         username.setText(userModel.getUsername());
+                        topUsername.setText(userModel.getUsername());
                         emailInput.setText(userModel.getEmail());
+                        fullName.setText(userModel.getFullName());
 
                         Log.i(TAG, "The id of the user:" + userModel.getId());
                     }
