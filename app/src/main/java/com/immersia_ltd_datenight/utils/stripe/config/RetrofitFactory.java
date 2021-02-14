@@ -27,17 +27,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitFactory {
 
-    private static final String BASE_URL = "http://172.20.10.7:3000/";
+    private static final String BASE_URL = "https://api.immersia.co.uk";  //https://api.immersia.co.uk
     private static Retrofit mInstance = null;
 
     public static Retrofit getInstance() {
         if (mInstance == null) {
 
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            // Set your desired log level. Use Level.BODY for debugging errors.
+            // Set your desired log level.
             logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
+            //default time out 10 seconds
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+//            httpClient.connectTimeout(5, TimeUnit.MINUTES) // connect timeout
+//                    .writeTimeout(5, TimeUnit.MINUTES) // write timeout
+//                    .readTimeout(5, TimeUnit.MINUTES); // read timeout
             httpClient.addInterceptor(logging);
 
             Gson gson = new GsonBuilder()

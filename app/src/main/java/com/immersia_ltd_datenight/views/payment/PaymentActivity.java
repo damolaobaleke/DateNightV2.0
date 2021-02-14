@@ -191,7 +191,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                 if (status == StripeIntent.Status.Succeeded) {
                     Toast.makeText(PaymentActivity.this, "Payment Succeeded", Toast.LENGTH_LONG).show();
-                    Log.i("Payments", "Payment of " + cost + "went through");
+                    Log.i("Payments", "Payment of " + cost + " went through");
                     //Add coin
                     addCoin();
                     progressBarPay.setVisibility(View.INVISIBLE);

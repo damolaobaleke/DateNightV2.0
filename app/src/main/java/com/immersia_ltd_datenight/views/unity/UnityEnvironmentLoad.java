@@ -60,7 +60,7 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
         participantId = intent.getStringExtra(IntentConstants.PARTICIPANT_ID_EXTRA);
         participantFullName = intent.getStringExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA);
 
-        for(String avatarUrl: currentUserAvatarUrl.values()){
+        for (String avatarUrl : currentUserAvatarUrl.values()) {
             Log.i("avatarUrl", avatarUrl);
 
             dateCreatoravatarUrl = avatarUrl;
@@ -68,7 +68,7 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
 
 
         //Initialize unity player
-        // mUnityPlayer = new UnityPlayer(this);
+        //mUnityPlayer = new UnityPlayer(this);
         constraintLayoutForUnity = findViewById(R.id.constraintLayoutForUnity);
 
         //Unity activity take whole view
@@ -78,7 +78,7 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
         mUnityPlayer.windowFocusChanged(true);
 
 
-        UnitySendInfo("NetworkManager","JsonInfo", sendToUnity());
+        UnitySendInfo("NetworkManager", "JsonInfo", sendToUnity());
     }
 
     /* These are not needed as already implemented within UnityPlayerActivity
@@ -107,8 +107,7 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
     }
     */
 
-    public void UnitySendInfo(String gameObject, String functionName, String jsonParam)
-    {
+    public void UnitySendInfo(String gameObject, String functionName, String jsonParam) {
         UnityPlayer.UnitySendMessage(gameObject, functionName, jsonParam);
     }
 
@@ -120,7 +119,7 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
         unityParams.put("dateID", dateId);
         unityParams.put("userId", currentUserId);
         unityParams.put("userName", currentUserFullName);
-        unityParams.put("avatarUrl",  dateCreatoravatarUrl);
+        unityParams.put("avatarUrl", dateCreatoravatarUrl);
 
         //constructs map as a GSON object and then converts to JSON.  serialize java object to JSON
         String jsonBodyForUnity = new Gson().toJson(unityParams);
@@ -133,6 +132,7 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
         FrameLayout layout = mUnityPlayer;
         Button leaveDateButton = new Button(this);
         leaveDateButton.setText(R.string.leave_date);
+        leaveDateButton.setAllCaps(false);
         leaveDateButton.setTextColor(getColor(R.color.white));
         leaveDateButton.setX(500);
         leaveDateButton.setY(100);
@@ -176,7 +176,13 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
 
     public void launchDateFinishedActivity() {
         mUnityPlayer.unload();
-
+        //Start new activity after unity player is unloaded
+        Intent intent = new Intent(this, DateFinishedActivity.class)
+                .putExtra(IntentConstants.EXPERIENCE_ID, experienceId)
+                .putExtra(IntentConstants.DATE_ID, dateId)
+                .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, participantId)
+                .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, participantFullName);
+        startActivity(intent);
     }
 
     @Override
@@ -187,15 +193,15 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
 
     @Override
     public void onUnityPlayerUnloaded() {
-        super.onUnityPlayerUnloaded();
+        //super.onUnityPlayerUnloaded();
 
-        Log.e("UnityEnvironmentLoad", "**************Here attempting to launch date finished***********************");
+        //Log.e("UnityEnvironmentLoad", "**************Here attempting to launch date finished***********************");
         // Start new activity after unity player is unloaded
-        Intent intent = new Intent(this, DateFinishedActivity.class)
-                .putExtra(IntentConstants.EXPERIENCE_ID, experienceId)
-                .putExtra(IntentConstants.DATE_ID, dateId)
-                .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, participantId)
-                .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, participantFullName);
-        startActivity(intent);
+        // Intent intent = new Intent(this, DateFinishedActivity.class)
+        //              .putExtra(IntentConstants.EXPERIENCE_ID, experienceId)
+//                .putExtra(IntentConstants.DATE_ID, dateId)
+//                .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, participantId)
+//                .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, participantFullName);
+//        startActivity(intent);
     }
 }
