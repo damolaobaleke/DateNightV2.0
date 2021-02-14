@@ -203,6 +203,10 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
         //stripe
         CustomerSession.endCustomerSession();
         //stripe
+
+        //update fcm token to empty string, if someone else logs in you don't want the person to be receiving another users notifications
+        userRef.update("fcmToken","");
+
         updateUI(null);
         Intent intent = new Intent(requireContext(), LoginActivity.class);
         startActivity(intent);

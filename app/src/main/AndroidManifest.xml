@@ -91,13 +91,15 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/date_night_theme" />
 
+        <!--FCM Notification Service -->
         <service
-            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:name=".utils.notification.FirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
     </application>
 
 </manifest>

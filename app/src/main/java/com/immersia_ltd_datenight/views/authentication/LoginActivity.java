@@ -146,6 +146,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                     //goToDatehub();
 
+                                    /**Re-GENERATE FCM HERE ???*/
+
                                     /*STRIPE -- initialize customer session to retrieve ephemeral key from server side*/
                                     CustomerSession.initCustomerSession(this, new DateNightEphemeralKeyProvider());
 

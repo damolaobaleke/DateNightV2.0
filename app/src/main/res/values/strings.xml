@@ -11,7 +11,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="login">Login</string>
     <string name="sign_up"><b>Sign Up</b></string>
-    <string name="email">Enter your email address</string>
+    <string name="email">Enter your email address<font color="#F61515">*</font></string>
     <string name="title_activity_create_date">CreateDate</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -31,8 +31,8 @@
     <string name="logOut">Log Out</string>
     <string name="open_navigation">open</string>
     <string name="close_navigation">close</string>
-    <string name="welcome_to_datenight">Welcome to Datenight</string>
-    <string name="i_accept_the_terms_amp_conditions">I accept the <font color='#B048D1'>Terms &amp; Conditions</font></string>
+    <string name="welcome_to_datenight">Welcome to DateNight</string>
+    <string name="i_accept_the_terms_amp_conditions">I accept the <u><font color='#B048D1'>Terms &amp; Conditions</font></u></string>
     <string name="datehub">Datehub</string>
     <string name="datestats">Datestats</string>
     <string name="profile">Profile</string>
@@ -65,8 +65,8 @@
     <string name="love_in_the_clouds">love in the clouds</string>
     <string name="save_changes">Save changes</string>
     <string name="hint_email">daniel@gmail.com</string>
-    <string name="enter_your_username">Enter your username</string>
-    <string name="enter_your_date_of_birth">Enter your Date of birth</string>
+    <string name="enter_your_username">Enter your username<font color="#F61515">*</font></string>
+    <string name="enter_your_date_of_birth">Enter your Date of birth<font color="#F61515">*</font></string>
     <string name="hint_two">damola</string>
     <string name="create_an_account">Create an account</string>
     <string name="text_pending_invitation">Your pending invitations are\nshown here</string>
@@ -122,4 +122,8 @@
     <string name="join_date">Join Date</string>
     <string name="leave_date">Leave</string>
     <string name="invite_a_special_someone">Invite a special someone</string>
+    <string name="give_yourself_a_username">Give yourself a username<font color="#F61515">*</font></string>
+    <string name="enter_your_full_name">Enter your full name<font color="#F61515">*</font></string>
+    <string name="enter_your_password_signup">Enter your password<font color="#F61515">*</font></string>
+    <string name="enter_your_date_of_birth_signup">Enter your Date of birth<font color="#F61515">*</font></string>
 </resources>

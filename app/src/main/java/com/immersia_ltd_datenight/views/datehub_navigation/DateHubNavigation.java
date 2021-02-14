@@ -24,13 +24,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
-import com.immersia_ltd_datenight.utils.constants.IntentConstants;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
+import com.immersia_ltd_datenight.utils.constants.IntentConstants;
 import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
 import com.immersia_ltd_datenight.views.authentication.LoginActivity;
-import com.stripe.android.CustomerSession;
 
 public class DateHubNavigation extends AppCompatActivity {
 
@@ -130,12 +129,13 @@ public class DateHubNavigation extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.logOut:
-                signOut();
-                //clear the current CustomerSession single instance
-                CustomerSession.endCustomerSession();
-                Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
-                break;
+            //Took Out the log out option from here
+//            case R.id.logOut:
+//                signOut();
+//                //clear the current CustomerSession single instance
+//                CustomerSession.endCustomerSession();
+//                Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
+//                break;
             case R.id.action_settings:
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
                 break;

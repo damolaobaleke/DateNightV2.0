@@ -27,7 +27,6 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
@@ -41,12 +40,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
 import com.immersia_ltd_datenight.modelfirestore.User.UserStatsModel;
 import com.immersia_ltd_datenight.network.api.DatenightApi;
 import com.immersia_ltd_datenight.network.api.UserObject;
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
 
 import org.jetbrains.annotations.NotNull;
@@ -158,25 +157,31 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     usernameLabel.setText(R.string.valid_username);
                     usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.holo_red_light));
 
+                    //disable button
+                    signUp.setEnabled(false);
+                    signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_btn));
+
                     Runnable runnable = () -> {
                         usernameLabel.setText("Give yourself a username");
                         usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
+
+                        signUp.setEnabled(true);
+                        signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.custom_login_button));
                     };
                     Handler handler = new Handler();
-                    handler.postDelayed(runnable,1000);
+                    handler.postDelayed(runnable, 1000);
 
-                    //disable button
-                    signUp.setEnabled(false);
                     progressBarGone();
-                    //signUp.setOnClickListener(v -> finish());
+
 
                     userDoesntExists = false;
                 } else {
+                    signUp.setEnabled(true);
+                    signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.custom_login_button));
 
                     usernameLabel.setText("Give yourself a username");
                     usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
                     signUp.setVisibility(View.VISIBLE);
-                    signUp.setEnabled(true);
                     userDoesntExists = true;
                 }
             }
@@ -294,6 +299,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         HashMap<String, String> avatar = new HashMap<>();
         avatar.put("avatarUrl", "");
 
+
+        Log.d(TAG, "The fcm: " + generateFcmToken());
+
+
         UserStatsModel userStats = new UserStatsModel(0, 0, 0, 0);
         UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", DatabaseConstants.LOCAL_AUTH, dateIds, userStats, purchasedExperiences, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false, generateFcmToken());
 
@@ -306,12 +315,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             setUpNetworkRequest();
             createStripeCustomer();
             /*create stripe customer --POST REQUEST TO ENDPOINT*/
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, Objects.requireNonNull(e.getLocalizedMessage()));
-            }
+
+        }).addOnFailureListener(e -> {
+            Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e(TAG, Objects.requireNonNull(e.getLocalizedMessage()));
         });
 
         Map<String, String> username = new HashMap<>();
@@ -341,7 +348,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void createStripeCustomer() {
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), null, "BASIC", DatabaseConstants.LOCAL_AUTH, null, null, null, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false,"");
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), null, "BASIC", DatabaseConstants.LOCAL_AUTH, null, null, null, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false, "");
 
 
         Call<UserObject> userObjectCall = api.createStripeCustomer(userModel);
@@ -385,6 +392,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             valid = false;
         } else {
             passwordInput.setError(null);
+            progressBarShown();
+        }
+
+        if (TextUtils.isEmpty(ageInput.getText().toString())) {
+            ageInput.setError("Required." + "You must be 18");
+            progressBarGone();
+            valid = false;
+        } else {
+            ageInput.setError(null);
             progressBarShown();
         }
 
@@ -530,7 +546,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         toast.show();
     }
 
-    private static String generateFcmToken(){
+    private static String generateFcmToken() {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 Log.w(TAG, "Fetching FCM registration token failed", task.getException());
@@ -538,11 +554,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
             // Get new FCM registration token
             fcmToken = task.getResult();
-
             // Log
             Log.d(TAG, "The fcm: " + fcmToken);
-
         });
         return fcmToken;
     }
+
 }

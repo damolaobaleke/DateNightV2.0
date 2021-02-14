@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="true" android:state_focused="true">
         <shape android:shape="rectangle">
-            <corners android:radius="10dp"/>
+            <corners android:radius="5dp"/>
             <solid android:color="@android:color/transparent"/>
             <stroke android:color="@color/date_night_theme" android:width="1sp"/>
         </shape>
@@ -11,7 +11,7 @@
     <!--Enabled and Pressed-->
     <item android:state_enabled="true" android:state_pressed="true">
         <shape android:shape="rectangle">
-            <corners android:radius="10dp"/>
+            <corners android:radius="5dp"/>
             <solid android:color="@android:color/transparent"/>
             <stroke android:color="@color/date_night_purple" android:width="1sp"/>
         </shape>
@@ -20,7 +20,7 @@
     <!--Has to come last-->
     <item android:state_enabled="true">
         <shape android:shape="rectangle">
-            <corners android:radius="10dp"/>
+            <corners android:radius="5dp"/>
             <solid android:color="@android:color/transparent"/>
             <stroke android:color="@color/date_night_logo_text" android:width="1sp"/>
         </shape>
