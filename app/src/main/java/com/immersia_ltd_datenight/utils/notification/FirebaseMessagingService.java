@@ -96,6 +96,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_ONE_SHOT);
 
+        //We're arent really using channels right now
         String channelId = "channel_id";
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 

@@ -300,11 +300,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         avatar.put("avatarUrl", "");
 
 
-        Log.d(TAG, "The fcm: " + generateFcmToken());
+        Log.d(TAG, "The fcm generated: " + generateFcmToken());
 
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.i(TAG, "Fetching FCM registration token failed", task.getException());
+                return;
+            }
+            // Get new FCM registration token
+            fcmToken = task.getResult();
+        });
 
         UserStatsModel userStats = new UserStatsModel(0, 0, 0, 0);
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", DatabaseConstants.LOCAL_AUTH, dateIds, userStats, purchasedExperiences, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false, generateFcmToken());
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", DatabaseConstants.LOCAL_AUTH, dateIds, userStats, purchasedExperiences, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false,fcmToken);
+
 
         userRef = db.collection("userData").document(userId);
         userNameRef = db.collection("usernames").document(usernameInput.getText().toString().toLowerCase());
@@ -396,7 +405,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         if (TextUtils.isEmpty(ageInput.getText().toString())) {
-            ageInput.setError("Required." + "You must be 18");
+            ageInput.setError("Required." + "You must be 17");
             progressBarGone();
             valid = false;
         } else {
@@ -477,10 +486,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         int yearOfToday = calendarToday.get(Calendar.YEAR);
         int yearOfBirthday = calendarBirthday.get(Calendar.YEAR);
 
-        if (yearOfToday - yearOfBirthday > 18) {
+        if (yearOfToday - yearOfBirthday > 17) {
             signUp.setEnabled(true);
 
-        } else if (yearOfToday - yearOfBirthday == 18) {
+        } else if (yearOfToday - yearOfBirthday == 17) {
 
             int monthOfToday = calendarToday.get(Calendar.MONTH);
             int monthOfBirthday = calendarBirthday.get(Calendar.MONTH);
@@ -494,16 +503,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                 } else {
                     signUp.setEnabled(false);
-                    Toast.makeText(this, "You have to be 18", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "You have to be 17", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 signUp.setEnabled(false);
-                toast("You have to be 18");
+                toast("You have to be 17");
             }
         } else {
             signUp.setFocusable(false);
             signUp.setEnabled(false);
-            toast("You have to be 18");
+            toast("You have to be 17");
         }
     }
 

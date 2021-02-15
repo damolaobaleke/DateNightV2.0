@@ -38,6 +38,7 @@ public class UserModel {
         this.email = email;
         this.dob= dob;
         this.avatar = avatar;
+        this.status = status;
         this.loginMethod = loginMethod;
         this.dateId = dateId;
         this.purchasedExperiences = purchasedExperiences;
@@ -121,6 +122,10 @@ public class UserModel {
 
     public void setDtc(int dtc) {
         this.dtc = dtc;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 
     public void setAvgDateStats(UserStatsModel avgDateStats) {

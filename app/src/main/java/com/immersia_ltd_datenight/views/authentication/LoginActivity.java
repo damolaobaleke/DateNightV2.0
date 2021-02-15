@@ -20,13 +20,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
 import com.immersia_ltd_datenight.network.api.DatenightApi;
 import com.immersia_ltd_datenight.network.api.UserObject;
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
 import com.immersia_ltd_datenight.utils.stripe.config.DateNightEphemeralKeyProvider;
 import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
@@ -48,7 +49,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String BASE_URL =  "https://api.immersia.co.uk" ; //https://api.immersia.co.uk http://172.20.10.7:3000
+    private static final String BASE_URL = "https://api.immersia.co.uk"; //http://172.20.10.7:3000
+    private static final String TAG = "LoginActivity";
     private FirebaseAuth mAuth;
     ProgressBar load;
     public static EditText email;
@@ -57,6 +59,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     TextView SignUp;
     private DocumentReference userDocRef;
     private FirebaseFirestore db;
+    private String fcmToken;
 
     String Username;
     String Password;
@@ -80,11 +83,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         SignUp.setOnClickListener(this);
 
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+
         Auth();
         SignUp();
 
     }
-
 
 
     public void Auth() {
@@ -115,18 +121,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         System.out.println(formattedDate);
     }
 
-    public double encrypt() {
-        if (password.getText().toString() != null) {
-            return Math.random();
-        } else {
-            return 1.0;
-        }
-    }
 
     public void logIn() {
         boolean formValidated = validateForm();
         try {
-            mAuth = FirebaseAuth.getInstance();
             if (formValidated) {
 
                 mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
@@ -146,13 +144,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                     //goToDatehub();
 
-                                    /**Re-GENERATE FCM HERE ???*/
-
+                                    //set FCM
+                                    setFcm();
                                     /*STRIPE -- initialize customer session to retrieve ephemeral key from server side*/
                                     CustomerSession.initCustomerSession(this, new DateNightEphemeralKeyProvider());
 
-                                    DateNight appState = ((DateNight)this.getApplication());
-                                    if (appState.getAppData(mAuth.getUid()) == null){
+                                    DateNight appState = ((DateNight) this.getApplication());
+                                    if (appState.getAppData(mAuth.getUid()) == null) {
                                         // Fetch required launch data and then launch DateHubNavigation class
                                         appState.initializeAppData(mAuth.getUid(), LoginActivity.this);
                                     } else {
@@ -219,7 +217,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivity(intent);
     }
 
-    private void updateOnBoarded(){
+    private void updateOnBoarded() {
+        mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
 
@@ -279,7 +278,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void createStripeCustomer() {
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(),"", "", email.getText().toString(), null, null, "BASIC", null,null, null, null,"", Timestamp.now(),false,"");
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), "", "", email.getText().toString(), null, null, "BASIC", null, null, null, null, "", Timestamp.now(), false, "");
 
         Call<UserObject> userObjectCall = api.createStripeCustomer(userModel);
 
@@ -310,5 +309,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent(this, BoardingScreen.class);
         startActivity(intent);
         return false;
+    }
+
+    private String generateFcmToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.i(TAG, "Fetching FCM registration token failed", task.getException());
+                return;
+            }
+            // Get new FCM registration token
+            fcmToken = task.getResult();
+            // Log
+            Log.d(TAG, "The fcm: " + fcmToken);
+        });
+        return fcmToken;
+    }
+
+    public void setFcm() {
+        /**Re-GENERATE and update FCM HERE*/
+        userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.i(TAG, "Fetching FCM registration token failed", task.getException());
+                return;
+            }
+            // Get new FCM registration token
+            fcmToken = task.getResult();
+            Log.d(TAG, "The fcm: " + fcmToken);
+            userDocRef.update("fcmToken", fcmToken);
+        });
     }
 }

@@ -24,7 +24,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.immersia_ltd_datenight.R;
@@ -110,24 +109,20 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
         super.onStart();
         if (user != null) {
             //requireActivity() = detaches listener when not in foreground in activity- not needed in fragments
-            userRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                @Override
-                public void onEvent(DocumentSnapshot value, FirebaseFirestoreException error) {
+            userRef.addSnapshotListener((DocumentSnapshot value, FirebaseFirestoreException error) -> {
 
-                    assert value != null;
-                    if (value.exists()) {
-                        UserModel userModel = value.toObject(UserModel.class); //recreate doc object from class
-                        assert userModel != null;
-                        userModel.setId(userId);
+                if (value.exists()) {
+                    UserModel userModel = value.toObject(UserModel.class); //recreate doc object from class
+                    assert userModel != null;
+                    userModel.setId(userId);
 
-                        dateOfBirth.setText(userModel.getDateOfBirth() != null ? timeStamptoString(userModel.getDateOfBirth()) : "");
-                        username.setText(userModel.getUsername());
-                        topUsername.setText(userModel.getUsername());
-                        emailInput.setText(userModel.getEmail());
-                        fullName.setText(userModel.getFullName());
+                    dateOfBirth.setText(userModel.getDateOfBirth() != null ? timeStamptoString(userModel.getDateOfBirth()) : "");
+                    username.setText(userModel.getUsername());
+                    topUsername.setText(userModel.getUsername());
+                    emailInput.setText(userModel.getEmail());
+                    fullName.setText(userModel.getFullName());
 
-                        Log.i(TAG, "The id of the user:" + userModel.getId());
-                    }
+                    Log.i(TAG, "The id of the user:" + userModel.getId());
                 }
             });
         } else {
@@ -195,15 +190,15 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
     }
 
     private void signOut() {
-        DateNight appState = ((DateNight)this.getActivity().getApplication());
+        DateNight appState = ((DateNight)this.requireContext().getApplicationContext());
         appState.clearAppData();
+
+        //update fcm token to empty string, if someone else logs in you don't want the person to be receiving another users notifications
+        userRef.update("fcmToken","");
         mAuth.signOut();
         //stripe
         CustomerSession.endCustomerSession();
         //stripe
-
-        //update fcm token to empty string, if someone else logs in you don't want the person to be receiving another users notifications
-        userRef.update("fcmToken","");
 
         updateUI(null);
         Intent intent = new Intent(requireContext(), LoginActivity.class);

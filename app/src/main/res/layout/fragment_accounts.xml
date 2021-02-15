@@ -124,6 +124,7 @@
         android:textColor="@color/black"
         android:textFontWeight="900"
         android:textSize="18sp"
+        android:gravity="end"
         app:layout_constraintBottom_toBottomOf="@+id/textView7"
         app:layout_constraintEnd_toEndOf="@+id/name"
         app:layout_constraintTop_toTopOf="@+id/textView7" />
@@ -220,9 +221,9 @@
         android:text="username"
         android:layout_marginTop="20dp"
         android:textSize="20sp"
-        android:fontFamily="@font/inter"
         android:textFontWeight="900"
         android:textColor="@color/black"
+        android:fontFamily="@font/inter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

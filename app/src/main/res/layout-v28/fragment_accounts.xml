@@ -124,6 +124,7 @@
         android:textColor="@color/black"
         android:textFontWeight="900"
         android:textSize="18sp"
+        android:gravity="end"
         app:layout_constraintBottom_toBottomOf="@+id/textView7"
         app:layout_constraintEnd_toEndOf="@+id/name"
         app:layout_constraintTop_toTopOf="@+id/textView7" />

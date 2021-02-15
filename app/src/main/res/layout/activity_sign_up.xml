@@ -180,7 +180,7 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:textColor="@color/black"
-        android:hint="22-09-1978"
+        android:hint="dd-MM-yyyy"
         app:layout_constraintEnd_toEndOf="@+id/passwordInput"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/passwordInput"

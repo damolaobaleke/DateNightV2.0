@@ -93,7 +93,6 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
             @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(Integer dtcValue) {
-                //TODO: format string
                 int num = Integer.parseInt(dtcValue.toString());
                 String formattedDtcBalance = NumberFormat.getInstance(Locale.US).format(num);
 
@@ -116,11 +115,6 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
 
         //Top up
         topUpDtc.setOnClickListener(v -> {
-//            Fragment buyDtc = new DateNightCoinFragment();
-//            getActivity().getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.nav_host_fragment, buyDtc, "finddtc")
-//                    .addToBackStack(null)
-//                    .commit();
             Intent intent = new Intent(requireContext(), DateHubNavigation.class);
             intent.putExtra(IntentConstants.FRAGMENT_TO_LOAD, IntentConstants.BUY_DTC_FRAGMENT);
             startActivity(intent);
@@ -128,7 +122,6 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
 
         //EditAvatar
         editAvatarBtn.setOnClickListener(this);
-
 
         return view;
 
@@ -141,7 +134,7 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        editAvatarBtn.setOnClickListener(j -> startReadyPlayerMeLink());
+        startReadyPlayerMeLink();
     }
 
     public void usingRatingBar() {
