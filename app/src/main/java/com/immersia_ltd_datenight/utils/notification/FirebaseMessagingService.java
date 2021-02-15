@@ -57,13 +57,11 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         if (message.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + message.getData());
-
-            //
-            sendNotification(message);
         }
 
         if (message.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + message.getNotification().getBody());
+            sendNotification(message);
         }
 
     }
