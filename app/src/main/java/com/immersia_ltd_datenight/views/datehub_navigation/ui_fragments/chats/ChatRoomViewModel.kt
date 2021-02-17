@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -43,6 +44,7 @@ class ChatRoomViewModel(username: String,
     private lateinit var dbReferenceMessages: DatabaseReference
     private lateinit var messageDataParser: SnapshotParser<ChatRoomMessage?>
     private lateinit var firebaseRecyclerViewOptions: FirebaseRecyclerOptions<ChatRoomMessage>
+    private lateinit var parentRecyclerView : RecyclerView
     var messagesFirebaseRecyclerAdapter:
             FirebaseRecyclerAdapter<ChatRoomMessage, ChatRoomMessageViewHolder>
 
@@ -63,8 +65,11 @@ class ChatRoomViewModel(username: String,
                 .build()
         messagesFirebaseRecyclerAdapter =
                 object : FirebaseRecyclerAdapter<ChatRoomMessage, ChatRoomMessageViewHolder>(firebaseRecyclerViewOptions){
-                    private lateinit var parentRecyclerView : RecyclerView
 
+
+                    override fun getItemViewType(position: Int): Int {
+                        return super.getItemViewType(position)
+                    }
                     override fun onCreateViewHolder(parent: ViewGroup, type: Int): ChatRoomMessageViewHolder {
                         val newMessage = LayoutInflater.from(parent.context)
                                 .inflate(R.layout.item_chat_room_message, parent, false)
@@ -72,6 +77,8 @@ class ChatRoomViewModel(username: String,
                     }
 
                     override fun onBindViewHolder(holder: ChatRoomMessageViewHolder, position: Int, data: ChatRoomMessage){
+                        // Align chat messages based on message sender
+
                         holder.bind(data, mapUsernames)
                         parentRecyclerView.smoothScrollToPosition(position)
                     }
@@ -112,8 +119,8 @@ class ChatRoomViewModel(username: String,
         }
     }
 
-    class ChatRoomMessageViewHolder(private val chatRoomMessageViewHolder: View):
-            RecyclerView.ViewHolder(chatRoomMessageViewHolder){
+    inner class ChatRoomMessageViewHolder(private val chatRoomMessageView: View):
+            RecyclerView.ViewHolder(chatRoomMessageView){
         // Layouts
         private var mChatMessageText: TextView? = null
         private var mChatMessageSender: TextView? = null
@@ -132,6 +139,21 @@ class ChatRoomViewModel(username: String,
         }
 
         fun bind(data: ChatRoomMessage, mapUsernames: Map<String?, String?>){
+            // Adjust message margins and backgrounds based on if current user or not
+            val layoutParams = mChatMessageText!!.layoutParams as ConstraintLayout.LayoutParams
+            if(data.senderId == currentUserId){
+                layoutParams.marginStart = 48
+                layoutParams.marginEnd = 8
+                mChatMessageText!!.layoutParams = layoutParams
+            } else {
+                layoutParams.marginStart = 8
+                layoutParams.marginEnd = 48
+                mChatMessageText!!.layoutParams = layoutParams
+                mChatMessageText!!.setBackgroundResource(R.drawable.chat_room_msg_participant_bg)
+                mChatMessageText!!.setTextColor(parentRecyclerView.context.getColor(R.color.date_night_grey_600))
+                mChatMessageSender!!.setTextColor(parentRecyclerView.context.getColor(R.color.date_night_grey_600))
+                mTime!!.setTextColor(parentRecyclerView.context.getColor(R.color.date_night_grey_600))
+            }
             mChatMessageText?.text = data.text
             mChatMessageSender?.text = mapUsernames[data.senderId]
             mTime?.text = constructMessageTime(data.timeStamp)

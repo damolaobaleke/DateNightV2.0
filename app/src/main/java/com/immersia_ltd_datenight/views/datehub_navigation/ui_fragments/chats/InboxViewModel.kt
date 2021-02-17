@@ -138,7 +138,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
         private var mChatParticipantFullName: String? = null
 
         init {
-            mChatHeadImage = itemView.findViewById(R.id.chatHeadImage)
+            // mChatHeadImage = itemView.findViewById(R.id.chatHeadImage)
             mChatHeadName = itemView.findViewById(R.id.chatHeadLabel)
             mMostRecentMessage = itemView.findViewById(R.id.chatHeadMostRecentMessage)
             mChatHeadTimeStamp = itemView.findViewById(R.id.chatHeadTimeStamp)

@@ -30,6 +30,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.RemoteMessage;
 import com.immersia_ltd_datenight.R;
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.views.authentication.SignUpActivity;
 
 import org.jetbrains.annotations.NotNull;
@@ -80,7 +81,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void onNewToken(@NotNull String token) {
         Log.d(TAG, "Refreshed token: " + token);
 
-        userDocRef = db.collection("").document(mAuth.getCurrentUser().getUid());
+        userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
         userDocRef.update("fcmToken", token);
 
     }
