@@ -24,6 +24,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/avatar_ellipse" />
@@ -32,18 +33,15 @@
         android:id="@+id/user_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="8dp"
         android:fontFamily="@font/inter"
         android:text="username"
         android:textColor="@color/black"
         android:textFontWeight="700"
         android:textSize="17sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/invite_btn"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/user_image"
-        app:layout_constraintTop_toTopOf="@+id/user_image" />
+        app:layout_constraintStart_toEndOf="@+id/first_letter_name"
+        app:layout_constraintTop_toTopOf="@+id/first_letter_name" />
 
     <Button
         android:id="@+id/invite_btn"
@@ -79,19 +77,16 @@
         android:id="@+id/first_letter_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_letter_circle"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="0dp"
         android:text="D"
         android:textAllCaps="true"
-        android:paddingStart="6dp"
-        android:paddingEnd="6dp"
-        android:paddingTop="0dp"
-        android:background="@drawable/bg_letter_circle"
         android:textColor="@color/date_night_purple"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/user_username"
-        app:layout_constraintTop_toBottomOf="@+id/view4"
-        app:layout_constraintTop_toTopOf="@+id/user_username" />
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/full_name_search"

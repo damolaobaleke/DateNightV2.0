@@ -113,7 +113,7 @@ public class RecyclerViewAdapterScheduled extends RecyclerView.Adapter<RecyclerV
     @NonNull
     @Override
     public ScheduledDatesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_scheduled_date, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_dates_sch_list_view, parent, false);
 
         return new ScheduledDatesViewHolder(view, mListener);
     }
