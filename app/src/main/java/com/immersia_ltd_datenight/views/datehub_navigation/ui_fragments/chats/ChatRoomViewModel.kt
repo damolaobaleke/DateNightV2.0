@@ -47,6 +47,10 @@ class ChatRoomViewModel(username: String,
     private lateinit var parentRecyclerView : RecyclerView
     var messagesFirebaseRecyclerAdapter:
             FirebaseRecyclerAdapter<ChatRoomMessage, ChatRoomMessageViewHolder>
+    // Constanta
+    val HORIZONTAL_BIAS_HOST = 1F
+    val HORIZONTAL_BIAS_PARTICIPANT = 0F
+    val WIDTH_DIVISOR = 0.45
 
     init{
         mapUsernames = mapOf(currentUserId to currentUsername, chatParticipantId to chatParticipantUsername)
@@ -77,8 +81,6 @@ class ChatRoomViewModel(username: String,
                     }
 
                     override fun onBindViewHolder(holder: ChatRoomMessageViewHolder, position: Int, data: ChatRoomMessage){
-                        // Align chat messages based on message sender
-
                         holder.bind(data, mapUsernames)
                         parentRecyclerView.smoothScrollToPosition(position)
                     }
@@ -139,24 +141,27 @@ class ChatRoomViewModel(username: String,
         }
 
         fun bind(data: ChatRoomMessage, mapUsernames: Map<String?, String?>){
+            val username =  mapUsernames[data.senderId]
+            val messageTime = constructMessageTime(data.timeStamp)
+
             // Adjust message margins and backgrounds based on if current user or not
             val layoutParams = mChatMessageText!!.layoutParams as ConstraintLayout.LayoutParams
             if(data.senderId == currentUserId){
-                layoutParams.marginStart = 48
-                layoutParams.marginEnd = 8
-                mChatMessageText!!.layoutParams = layoutParams
+                layoutParams.horizontalBias = HORIZONTAL_BIAS_HOST
             } else {
-                layoutParams.marginStart = 8
-                layoutParams.marginEnd = 48
-                mChatMessageText!!.layoutParams = layoutParams
+                layoutParams.horizontalBias = HORIZONTAL_BIAS_PARTICIPANT
                 mChatMessageText!!.setBackgroundResource(R.drawable.chat_room_msg_participant_bg)
                 mChatMessageText!!.setTextColor(parentRecyclerView.context.getColor(R.color.date_night_grey_600))
                 mChatMessageSender!!.setTextColor(parentRecyclerView.context.getColor(R.color.date_night_grey_600))
                 mTime!!.setTextColor(parentRecyclerView.context.getColor(R.color.date_night_grey_600))
             }
+            mChatMessageText!!.minEms = ((messageTime.length + username!!.length) * WIDTH_DIVISOR).toInt()
+            mChatMessageText!!.layoutParams = layoutParams
+
+            // Populate views
             mChatMessageText?.text = data.text
-            mChatMessageSender?.text = mapUsernames[data.senderId]
-            mTime?.text = constructMessageTime(data.timeStamp)
+            mChatMessageSender?.text = username
+            mTime?.text = messageTime
             mTimestamp = data.timeStamp
             imageUrl = data.imageUrl
         }
