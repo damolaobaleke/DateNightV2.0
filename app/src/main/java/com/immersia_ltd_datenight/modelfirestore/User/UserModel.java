@@ -76,13 +76,14 @@ public class UserModel {
         return email;
     }
 
-    public Timestamp getDateOfBirth() {
+    public Timestamp getDob() {
         return dob;
     }
 
     public HashMap<String, String> getAvatar() {
         return avatar;
     }
+
 
     public String getStatus() {
         return status;

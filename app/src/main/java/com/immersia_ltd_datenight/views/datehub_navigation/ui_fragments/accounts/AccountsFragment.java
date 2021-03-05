@@ -116,7 +116,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
                     assert userModel != null;
                     userModel.setId(userId);
 
-                    dateOfBirth.setText(userModel.getDateOfBirth() != null ? timeStamptoString(userModel.getDateOfBirth()) : "");
+                    dateOfBirth.setText(userModel.getDob() != null ? timeStamptoString(userModel.getDob()) : "");
                     username.setText(userModel.getUsername());
                     topUsername.setText(userModel.getUsername());
                     emailInput.setText(userModel.getEmail());

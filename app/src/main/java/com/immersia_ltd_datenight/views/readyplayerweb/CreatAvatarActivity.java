@@ -16,6 +16,7 @@ package com.immersia_ltd_datenight.views.readyplayerweb;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.room.Database;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -38,6 +39,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 
 import java.util.HashMap;
 
@@ -68,10 +70,7 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         customTabLoadAvatar();
 
         binding.submitAvatarBtn.setOnClickListener(v -> storeAvatarLink());
-
         binding.forgotLinkText.setOnClickListener(this);
-
-
     }
 
     public void storeAvatarLink() {
@@ -79,12 +78,12 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         Toast.makeText(this, binding.avatarLinkInput.getText().toString(), Toast.LENGTH_LONG).show();
 
         HashMap<String, Object> avatar = new HashMap<>();
-        avatar.put("avatar", binding.avatarLinkInput.getText().toString());
+        avatar.put(DatabaseConstants.AVATAR_URL_FIELD, binding.avatarLinkInput.getText().toString());
 
-        userDocRef.update("avatar",avatar).addOnSuccessListener(new OnSuccessListener<Void>() {
+        userDocRef.update(DatabaseConstants.AVATAR_NODE, avatar).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(CreatAvatarActivity.this, "Avatar stored", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreatAvatarActivity.this, "Avatar created", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -19,6 +19,7 @@ object IntentConstants {
     // EXTRAS -- Unity/date data
     const val EXPERIENCE_ID = "experienceId"
     const val DATE_ID = "dateId"
+    const val DATE_CREATOR_ID = "dateCreatorId"
 
     // EXTRAS -- Date Hub Nav Fragments to launch
     const val FRAGMENT_TO_LOAD = "fragmentToLoad"

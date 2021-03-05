@@ -30,6 +30,7 @@ object DatabaseConstants {
     const val DATE_REJECTED = "REJECTED"
     const val DATE_PENDING = "PENDING"
     const val PARTICIPANT_STATUS_FIELD = "participantStatus"
+    const val SERVER_TO_CONNECT_STRING = "serverToConnect"
 
     //Feedback
     const val FEEDBACK_NODE = "feedback"
@@ -38,6 +39,10 @@ object DatabaseConstants {
     const val DISLIKED_TEXT_FIELD = "dislikedText"
     const val RATING_FIELD = "rating"
 
+    // Avatar
+    const val AVATAR_NODE = "avatar"
+    const val AVATAR_HEADSHOT_URL_FIELD = "avatarHeadShotUrl"
+    const val AVATAR_URL_FIELD = "avatarUrl"
 
     //Delimiters
     const val PARTICIPANTS_DELIMITER = ","

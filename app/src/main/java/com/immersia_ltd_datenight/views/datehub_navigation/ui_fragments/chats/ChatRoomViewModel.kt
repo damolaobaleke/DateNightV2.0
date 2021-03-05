@@ -114,10 +114,6 @@ class ChatRoomViewModel(username: String,
                     .child(currentUserId)
                     .child(chatRoomId)
                     .setValue(chatHead)
-            dbReference.child(DatabaseConstants.CHAT_ROOMS_NODE)
-                    .child(chatParticipantId)
-                    .child(chatRoomId)
-                    .setValue(chatHead)
         }
     }
 

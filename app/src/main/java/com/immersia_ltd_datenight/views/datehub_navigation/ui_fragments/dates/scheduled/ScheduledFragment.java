@@ -280,8 +280,10 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
                     .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
                     .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).getCurrentUser().getFullName())
                     .putExtra(IntentConstants.DATE_ID, dateData.getId())
+                    .putExtra(IntentConstants.DATE_CREATOR_ID, dateData.getCreator())
                     .putExtra(IntentConstants.EXPERIENCE_ID, dateData.getLinkedExperienceId())
                     .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, dateParticipantId)
+                    .putExtra(IntentConstants.PARTICIPANT_USER_NAME_EXTRA, dateData.getParticipantUsernames().get(dateParticipantId))
                     .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, dateData.getParticipants().get(dateParticipantId));
             requireActivity().startActivity(intent);
         }
