@@ -20,6 +20,7 @@ object IntentConstants {
     const val EXPERIENCE_ID = "experienceId"
     const val DATE_ID = "dateId"
     const val DATE_CREATOR_ID = "dateCreatorId"
+    const val DATE_KISS_COUNT = "kissCount"
 
     // EXTRAS -- Date Hub Nav Fragments to launch
     const val FRAGMENT_TO_LOAD = "fragmentToLoad"

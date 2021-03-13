@@ -13,7 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.room.Database;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -21,25 +25,28 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.SetOptions;
 import com.google.gson.Gson;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.Chat.ChatHead;
 import com.immersia_ltd_datenight.modelfirestore.Chat.ChatRoomMessage;
-import com.immersia_ltd_datenight.utils.UnityPlayerWrapperActivity;
+import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
+import com.immersia_ltd_datenight.modelfirestore.User.UserStatsModel;
+import com.immersia_ltd_datenight.unity_plugin.UnityPlayerWrapperActivity;
 import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.utils.constants.IntentConstants;
 import com.immersia_ltd_datenight.utils.constants.UnityConstants;
 import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
 import com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.dates.post_date.DateFinishedActivity;
 import com.unity3d.player.UnityPlayer;
-import com.unity3d.player.UnityPlayerActivity;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class UnityEnvironmentLoad extends UnityPlayerActivity {
+public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
     // Views
     ConstraintLayout constraintLayoutForUnity;
     // App Data
@@ -89,12 +96,12 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
         participantFullName = intent.getStringExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA);
         participantUserName = intent.getStringExtra(IntentConstants.PARTICIPANT_USER_NAME_EXTRA);
         mapUsernames.put(currentUserId, currentUserName); mapUsernames.put(participantId, participantUserName);
-        mapFullNames.put(currentUserId, currentUserFullName); mapUsernames.put(participantId, participantFullName);
+        mapFullNames.put(currentUserId, currentUserFullName); mapFullNames.put(participantId, participantFullName);
 
         // Build chat room
         if (currentUserId.compareTo(participantId) < 0){
             chatRoomId = currentUserId + "," + participantId;
-        } else if (currentUserId.compareTo(participantId) < 0) {
+        } else if (currentUserId.compareTo(participantId) > 0) {
             chatRoomId = participantId + "," + currentUserId;
         }
         dateDocument =  FirebaseFirestore.getInstance()
@@ -267,7 +274,6 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
     }
 
     public void launchDateFinishedActivity() {
-        mUnityPlayer.unload();
         chatRoomRef.removeEventListener(chatRoomEventListener);
         //Start new activity after unity player is unloaded
         Intent intent = new Intent(this, DateFinishedActivity.class)
@@ -294,12 +300,55 @@ public class UnityEnvironmentLoad extends UnityPlayerActivity {
 
     @Override
     public void onUnityPlayerQuitted() {
-        Log.e("UnityEnvironmentLoaded", "**************************QUITTING APP***************************");
         super.onUnityPlayerQuitted();
     }
 
     @Override
     public void onUnityPlayerUnloaded() {
-        //super.onUnityPlayerUnloaded();
+        super.onUnityPlayerUnloaded();
+        completeDate();
+        launchDateFinishedActivity();
+    }
+
+    private void completeDate(){
+        // Write date finished time
+        if (currentUserId.equals(dateCreatorId)){
+            // Write to date object
+            Map<String, Object> data = new HashMap<>();
+            data.put(DatabaseConstants.DATE_COMPLETED_TIME_FIELD, Timestamp.now());
+            dateDocument.update(data);
+        }
+
+        // Write date statistics
+        DocumentReference userRefDoc = FirebaseFirestore.getInstance()
+                .collection(DatabaseConstants.USER_DATA_NODE)
+                .document(participantId);
+        userRefDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    UserModel user = task.getResult().toObject(UserModel.class);
+                    if(user.getAvgDateStats() != null) {
+                        int dateCount = user.getAvgDateStats().getDateCount() + 1;
+                        int kissCount = user.getAvgDateStats().getKissCount() + participantKissCount;
+                        HashMap<String, Object> data = new HashMap<>();
+                        data.put(DatabaseConstants.AVG_DATE_STATS_DOC,
+                                 new HashMap<String, Integer>() {{
+                                     put(DatabaseConstants.DATE_COUNT, dateCount);
+                                     put(DatabaseConstants.KISS_COUNT, kissCount);
+                                 }});
+                        userRefDoc.set(data, SetOptions.merge());
+                    } else {
+                        HashMap<String, Object> data = new HashMap<>();
+                        data.put(DatabaseConstants.AVG_DATE_STATS_DOC,
+                                 new HashMap<String, Integer>() {{
+                                     put(DatabaseConstants.DATE_COUNT, 1);
+                                     put(DatabaseConstants.KISS_COUNT, participantKissCount);
+                                 }});
+                        userRefDoc.set(data, SetOptions.merge());
+                    }
+                }
+            }
+        });
     }
 }

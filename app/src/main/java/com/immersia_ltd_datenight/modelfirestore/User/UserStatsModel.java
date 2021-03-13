@@ -4,6 +4,7 @@ public class UserStatsModel {
     int rating;
     int dateCount;
     int kissCount;
+    int numRatedDates;
     int dtc;
 
     public UserStatsModel(){
@@ -32,4 +33,13 @@ public class UserStatsModel {
     public int getDtc() {
         return dtc;
     }
+
+    public int getNumRatedDates() {
+        return numRatedDates;
+    }
+
+    public void setNumRatedDates(int numRatedDates) {
+        this.numRatedDates = numRatedDates;
+    }
+
 }

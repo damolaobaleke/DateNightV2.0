@@ -16,6 +16,8 @@ package com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.dates.p
 import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.room.Database
+import com.google.firebase.Timestamp
 import com.immersia_ltd_datenight.utils.constants.DatabaseConstants
 import com.immersia_ltd_datenight.utils.constants.IntentConstants
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel
@@ -23,6 +25,10 @@ import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.SetOptions
+import java.util.*
+import kotlin.math.round
 
 class  DateFinishedViewModel : ViewModel() {
     private val dbReference = FirebaseFirestore.getInstance()
@@ -43,23 +49,58 @@ class  DateFinishedViewModel : ViewModel() {
         parentContext.startActivity(intent)
     }
 
-    fun submitUserRating(dateId: String, dateParticipantId: String){
+    fun submitUserRating(dateId: String, dateParticipantId: String, parentContext: DateFinishedActivity){
+        // Update other user date statistics
+        val data: Map<String, Any?> = mapOf(DatabaseConstants.DATE_COMPLETED_TIME_FIELD to Timestamp.now(),
+                                            DatabaseConstants.LINKED_EXPERIENCE_ID to parentContext.dateExperienceId,
+                                            DatabaseConstants.RATING_FIELD to userRating,
+                                            DatabaseConstants.KISS_COUNT to parentContext.kissCount
+        )
+
         if (userRating != null){
-            // Update user's rating within the date node
-            val data = mapOf(DatabaseConstants.USER_RATING_FIELD to userRating)
-            dbReference.collection(DatabaseConstants.USER_DATA_NODE)
-                    .document(currentUserId!!)
-                    .collection(DatabaseConstants.DATES_COLLECTION)
-                    .document(dateId)
-                    .collection(DatabaseConstants.STATISTICS_NODE)
-                    .document(dateParticipantId)
-                    .update(data)
-
-            // Update average date statistics rating
-            // TODO: Implement
-
+            data.plus(DatabaseConstants.USER_RATING_FIELD to userRating)
         }
-        userRating = null
+
+        dbReference.collection(DatabaseConstants.USER_DATA_NODE)
+                .document(dateParticipantId)
+                .collection(DatabaseConstants.DATES_COLLECTION)
+                .document(dateId)
+                .collection(DatabaseConstants.STATISTICS_NODE)
+                .document(dateParticipantId)
+                .set(data, SetOptions.merge())
+
+        // Update other user average stats
+        val userRefDoc = dbReference.collection(DatabaseConstants.USER_DATA_NODE)
+                .document(dateParticipantId)
+        if (userRating != null){
+            userRefDoc.get().addOnSuccessListener { documentSnapshot ->
+                var numRatedDates = 1
+                if (documentSnapshot.get(DatabaseConstants.AVG_DATE_STATS_DOC) != null && documentSnapshot.get("dateCount") as Int > 0){
+                    val user = documentSnapshot.toObject(UserModel::class.java)
+                    numRatedDates = user!!.avgDateStats.numRatedDates + 1
+                    var rating = user.avgDateStats.rating.toDouble()
+                    rating -= rating/ numRatedDates
+                    rating += userRating!! / numRatedDates
+                    rating = round(rating)
+                    // TODO: Double-check this works as expected
+                    val dataAvgStats = mapOf(DatabaseConstants.AVG_DATE_STATS_DOC to
+                            mapOf(DatabaseConstants.NUM_RATED_DATES to numRatedDates,
+                            DatabaseConstants.RATING_FIELD to rating)
+                    )
+                    userRefDoc.set(dataAvgStats, SetOptions.merge())
+                } else {
+                    val dataAvgStats = mapOf(DatabaseConstants.AVG_DATE_STATS_DOC to
+                            mapOf(DatabaseConstants.NUM_RATED_DATES to numRatedDates,
+                            DatabaseConstants.RATING_FIELD to userRating)
+                    )
+                    userRefDoc.set(dataAvgStats, SetOptions.merge())
+                }
+                userRating = null
+            }
+
+        } else {
+            userRating = null
+        }
     }
 
     fun backToDateHubFragment(parentContext: DateFinishedActivity){

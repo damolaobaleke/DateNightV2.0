@@ -91,8 +91,8 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
 
 
     private void setUpRecyclerView() {
-        //where the date doc id is in the user array of dateids
-        Query query = userdocRef.collection(DatabaseConstants.DATES_COLLECTION).orderBy("timeCreated");
+        Query query = userdocRef.collection(DatabaseConstants.DATES_COLLECTION)
+                .orderBy(DatabaseConstants.DATE_CREATED_TIME_FIELD, Query.Direction.DESCENDING);
 
         //Set up recycler view options
         options = new FirestoreRecyclerOptions.Builder<DateModel>()
@@ -105,12 +105,15 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
             protected void onBindViewHolder(@NonNull PendingDateViewHolder holder, int position, @NonNull DateModel data) {
                 Log.e(TAG, "Found Date " + data.getParticipantUsernames().toString());
 
+                //Hide view if date has been completed or have been accepted by both participants (not a pending date)
                 boolean hideView = true;
-                HashMap<String, String> participantStatus = data.getParticipantStatus();
-                for(String key : participantStatus.keySet()){
-                    if (participantStatus.get(key).equals(DatabaseConstants.DATE_PENDING)){
-                        hideView = false;
-                        break;
+                if(data.getTimeCompleted() == null){
+                    HashMap<String, String> participantStatus = data.getParticipantStatus();
+                    for(String key : participantStatus.keySet()){
+                        if (participantStatus.get(key).equals(DatabaseConstants.DATE_PENDING)){
+                            hideView = false;
+                            break;
+                        }
                     }
                 }
 

@@ -43,7 +43,8 @@ class DateFinishedActivity : AppCompatActivity() {
     private val currentUserId = FirebaseAuth.getInstance().uid
     private lateinit var dateParticipantId: String
     private lateinit var dateParticipantName: String
-    private lateinit var dateExperienceId: String
+    lateinit var dateExperienceId: String
+    var kissCount: Int? = null
     private lateinit var dateId: String
     // Data
     private var emojiRating: Int? = null
@@ -62,6 +63,7 @@ class DateFinishedActivity : AppCompatActivity() {
         dateParticipantName = intent.getStringExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA)!!
         dateExperienceId = intent.getStringExtra(IntentConstants.EXPERIENCE_ID)!!
         dateId = intent.getStringExtra(IntentConstants.DATE_ID)!!
+        kissCount = intent.getIntExtra(IntentConstants.DATE_KISS_COUNT, 0)!!
 
 
     }
@@ -77,15 +79,18 @@ class DateFinishedActivity : AppCompatActivity() {
     }
 
     fun backToInboxFragment(v: View){
+        //TODO: Update ratings and stuff
         viewModel.backToInboxFragment(this)
     }
 
     fun backToDateHubFragment(v: View){
+        //TODO: Update ratings and stuff
         viewModel.backToDateHubFragment(this)
         viewModel.incrementDateCount()
     }
 
     fun repeatDate(v: View){
+        //TODO: Update ratings and stuff
         val intent: Intent = Intent(this, UnityEnvironmentLoad::class.java)
                 .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
                 .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).currentUser.fullName)
@@ -167,9 +172,11 @@ class DateFinishedActivity : AppCompatActivity() {
         bottomSheetDialog.dismiss()
     }
 
-     fun onCancel(v: View){
+
+    fun onCancel(v: View){
         bottomSheetDialog.dismiss()
         viewModel.userRating = null
     }
+
 
 }

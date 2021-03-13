@@ -20,6 +20,7 @@ object DatabaseConstants {
     //Ratings
     const val AVG_DATE_STATS_DOC = "avgDateStats"
     const val USER_RATING_FIELD = "rating"
+    const val NUM_RATED_DATES = "ratedDates"
 
     //Dates
     const val DATES_COLLECTION = "dates"
@@ -31,6 +32,10 @@ object DatabaseConstants {
     const val DATE_PENDING = "PENDING"
     const val PARTICIPANT_STATUS_FIELD = "participantStatus"
     const val SERVER_TO_CONNECT_STRING = "serverToConnect"
+    const val DATE_COMPLETED_TIME_FIELD = "timeCompleted"
+    const val LINKED_EXPERIENCE_ID = "linkedExperienceId"
+    const val KISS_COUNT = "kissCount"
+    const val DATE_COUNT = "dateCount"
 
     //Feedback
     const val FEEDBACK_NODE = "feedback"
@@ -44,8 +49,6 @@ object DatabaseConstants {
     const val AVATAR_HEADSHOT_URL_FIELD = "avatarHeadShotUrl"
     const val AVATAR_URL_FIELD = "avatarUrl"
 
-    //Delimiters
-    const val PARTICIPANTS_DELIMITER = ","
 
     //Auth Method
     const val LOCAL_AUTH = "EMAIL_PASSWORD"

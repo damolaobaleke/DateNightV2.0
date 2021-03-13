@@ -93,8 +93,8 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
     }
 
     private void setUpRecyclerView() {
-        //where the date doc id is in the user array of dateids
-        Query query = userdocRef.collection(DatabaseConstants.DATES_COLLECTION).orderBy("timeCreated");
+        Query query = userdocRef.collection(DatabaseConstants.DATES_COLLECTION)
+                .orderBy(DatabaseConstants.DATE_CREATED_TIME_FIELD, Query.Direction.DESCENDING);
 
         //Set up recycler view options
         options = new FirestoreRecyclerOptions.Builder<DateModel>()
@@ -108,12 +108,17 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
 
                 Log.e(TAG, "Found Date " + data.getParticipantUsernames().toString());
 
+                // Hide date if completed or if date has been not been accepted by both participants
                 boolean hideView = false;
-                HashMap<String, String> participantStatus = data.getParticipantStatus();
-                for (String key : participantStatus.keySet()) {
-                    if (!participantStatus.get(key).equals(DatabaseConstants.DATE_ACCEPTED)) {
-                        hideView = true;
-                        break;
+                if(data.getTimeCompleted() != null){ //Date has been completed
+                    hideView = true;
+                } else {
+                    HashMap<String, String> participantStatus = data.getParticipantStatus();
+                    for (String key : participantStatus.keySet()) {
+                        if (!participantStatus.get(key).equals(DatabaseConstants.DATE_ACCEPTED)) {
+                            hideView = true;
+                            break;
+                        }
                     }
                 }
 

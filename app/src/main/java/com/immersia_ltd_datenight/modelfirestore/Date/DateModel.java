@@ -29,6 +29,7 @@ public class DateModel {
         this.linkedExperienceId = linkedExperienceId;
         this.participantStatus = participantStatus;
         this.participantUsernames = participantUsernames;
+        this.timeCompleted = null;
         // this.statistics = dateStats;
     }
 
