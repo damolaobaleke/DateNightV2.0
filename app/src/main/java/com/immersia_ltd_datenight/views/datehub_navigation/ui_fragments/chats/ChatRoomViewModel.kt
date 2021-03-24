@@ -144,6 +144,10 @@ class ChatRoomViewModel(username: String,
             val layoutParams = mChatMessageText!!.layoutParams as ConstraintLayout.LayoutParams
             if(data.senderId == currentUserId){
                 layoutParams.horizontalBias = HORIZONTAL_BIAS_HOST
+                mChatMessageText!!.setBackgroundResource(R.drawable.chat_room_msg_host_bg)
+                mChatMessageText!!.setTextColor(parentRecyclerView.context.getColor(R.color.white))
+                mChatMessageSender!!.setTextColor(parentRecyclerView.context.getColor(R.color.white))
+                mTime!!.setTextColor(parentRecyclerView.context.getColor(R.color.white))
             } else {
                 layoutParams.horizontalBias = HORIZONTAL_BIAS_PARTICIPANT
                 mChatMessageText!!.setBackgroundResource(R.drawable.chat_room_msg_participant_bg)

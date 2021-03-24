@@ -163,6 +163,7 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
         public TextView dateTitle;
         TextView scheduledDate;
         TextView scheduledTime;
+        TextView firstLetterName;
 
         // Data
         DateModel dateData;
@@ -174,6 +175,7 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             dateTitle = itemView.findViewById(R.id.dateTitle);
             scheduledDate = itemView.findViewById(R.id.dateDate);
             scheduledTime = itemView.findViewById(R.id.dateTime);
+            firstLetterName = itemView.findViewById(R.id.first_letter_name_sch);
         }
 
         public void bind(DateModel data, View recyclerViewItemView) {
@@ -191,7 +193,6 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
                     break;
                 }
             }
-            Log.e(TAG, "after loop");
 
             //pre-set the text to the current chosen time and date
             Calendar dateTime = Calendar.getInstance();
@@ -199,10 +200,12 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
 
             scheduledDate.setText(new SimpleDateFormat("MMM d", Locale.getDefault()).format(dateTime.getTime()));
             scheduledTime.setText(new SimpleDateFormat("h:mm a", Locale.getDefault()).format(dateTime.getTime()));
+            String firstLetter = data.getParticipants().get(dateParticipantId).split("")[0];
+            firstLetterName.setText(firstLetter);
 
             String expId = dateData.getLinkedExperienceId();
             if (appState.getAppData(currentUserId) != null) {
-                dateTitle.setText(String.format("%s with %s", appState.getAppData(currentUserId).getExperienceName(expId), data.getParticipants().get(dateParticipantId))); // TODO: set experience name
+                dateTitle.setText(String.format("%s with %s", appState.getAppData(currentUserId).getExperienceName(expId), data.getParticipants().get(dateParticipantId)));
             }
 
             if (currentUserId.equals(data.getCreator())) {
@@ -211,7 +214,6 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             } else {
                 recyclerViewItemView.setOnClickListener(v -> alertDialogueDateParticipant(recyclerViewItemView));
             }
-            Log.e(TAG, "All done");
         }
 
         public void alertDialogueDateParticipant(View recyclerViewItemView) {

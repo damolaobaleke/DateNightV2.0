@@ -248,12 +248,12 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
         }
     }
 
-    //@Override
+    @Override
     protected void sendKissFromUnity() {
         ++participantKissCount;
     }
 
-    //@Override
+    @Override
     protected void sendServerFromUnity(String server) {
         // Write to date object
         Map<String, Object> data = new HashMap<>();

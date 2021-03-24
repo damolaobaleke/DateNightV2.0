@@ -26,9 +26,10 @@
         android:id="@+id/dateImage"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginTop="12dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/circle"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateTitle"
         app:srcCompat="@drawable/ic_invitation_heart" />
@@ -104,11 +105,26 @@
     <View
         android:id="@+id/view"
         style="@style/horizontalLine"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_marginTop="16dp"
         android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/dateTime"
+        app:layout_constraintStart_toStartOf="@+id/dateImage"
+        app:layout_constraintTop_toBottomOf="@id/dateTime" />
+
+    <TextView
+        android:id="@+id/first_letter_name_sch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_letter_circle"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="1dp"
+        android:text="D"
+        android:textAllCaps="true"
+        android:textColor="@color/date_night_purple"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dateTime"
-        tools:layout_editor_absoluteY="107dp" />
+        app:layout_constraintTop_toBottomOf="@+id/dateTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

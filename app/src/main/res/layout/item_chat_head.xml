@@ -94,9 +94,8 @@
 
     <View
         android:id="@+id/view4"
+        style="@style/horizontalLine"
         android:layout_width="0dp"
-        android:layout_height="0.8dp"
-        android:background="@color/date_night_grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/chatHeadTimeStamp"
         app:layout_constraintStart_toStartOf="@+id/first_letter_name_chat_head" />

@@ -26,6 +26,8 @@ import com.immersia_ltd_datenight.views.readyplayerweb.CreatAvatarActivity;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import static java.lang.Math.round;
+
 public class DatehubFragment extends Fragment implements View.OnClickListener {
     ProgressBar ratings;
     TextView averageDateRatingText;
@@ -73,18 +75,18 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
                 Log.i("Datehub Frag", "AverageDateR: "+ avgDateRating.toString());
                 ratings.setProgress(0);
                 averageDateRatingText.setText(avgDateRating.toString());
-
-                if (avgDateRating == 1.0 || avgDateRating == 1.5) {
-                    ratings.setProgress(progressLevel1);
-                } else if (avgDateRating == 2.0 || avgDateRating == 2.5) {
-                    ratings.setProgress(progressLevel2);
-                } else if (avgDateRating == 3.0 || avgDateRating == 3.5) {
-                    ratings.setProgress(progressLevel3);
-                } else if (avgDateRating == 4.0 || avgDateRating == 4.5) {
-                    ratings.setProgress(progressLevel4);
-                } else if (avgDateRating == 5.0) {
-                    ratings.setProgress(progressLevel5);
-                }
+                ratings.setProgress((avgDateRating * 100)/5);
+//                if (avgDateRating == 1.0 || avgDateRating == 1.5) {
+//                    ratings.setProgress(progressLevel1);
+//                } else if (avgDateRating == 2.0 || avgDateRating == 2.5) {
+//                    ratings.setProgress(progressLevel2);
+//                } else if (avgDateRating == 3.0 || avgDateRating == 3.5) {
+//                    ratings.setProgress(progressLevel3);
+//                } else if (avgDateRating == 4.0 || avgDateRating == 4.5) {
+//                    ratings.setProgress(progressLevel4);
+//                } else if (avgDateRating == 5.0) {
+//                    ratings.setProgress(progressLevel5);
+//                }
             }
         });
 
