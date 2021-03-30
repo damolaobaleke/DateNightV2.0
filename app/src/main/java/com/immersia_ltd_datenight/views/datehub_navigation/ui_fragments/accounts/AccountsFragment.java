@@ -26,10 +26,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
 import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
 import com.immersia_ltd_datenight.views.authentication.LoginActivity;
+import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
 import com.stripe.android.CustomerSession;
 
 import java.text.DateFormat;
@@ -59,7 +61,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
     static Date date;
 
     View view;
-
+    private ListenerRegistration listenerRegister;
     @Nullable
     @Override
 
@@ -109,9 +111,9 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
         super.onStart();
         if (user != null) {
             //requireActivity() = detaches listener when not in foreground in activity- not needed in fragments
-            userRef.addSnapshotListener((DocumentSnapshot value, FirebaseFirestoreException error) -> {
-
+            listenerRegister = userRef.addSnapshotListener((DocumentSnapshot value, FirebaseFirestoreException error) -> {
                 if (value.exists()) {
+                    listenerRegister.remove();
                     UserModel userModel = value.toObject(UserModel.class); //recreate doc object from class
                     assert userModel != null;
                     userModel.setId(userId);
@@ -196,12 +198,12 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
         //update fcm token to empty string, if someone else logs in you don't want the person to be receiving another users notifications
         userRef.update("fcmToken","");
         mAuth.signOut();
+        user = null;
         //stripe
         CustomerSession.endCustomerSession();
         //stripe
-
         updateUI(null);
-        Intent intent = new Intent(requireContext(), LoginActivity.class);
+        Intent intent = new Intent(requireContext(), BoardingScreen.class);
         startActivity(intent);
     }
 
@@ -210,7 +212,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
             String name = user.getDisplayName();
             Log.i("Name", name);
         } else {
-            Log.i(TAG, "iser logeed out");
+            Log.i(TAG, "user logeed out");
         }
     }
 }

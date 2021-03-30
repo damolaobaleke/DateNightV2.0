@@ -30,6 +30,7 @@ import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.utils.constants.IntentConstants;
 import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
 import com.immersia_ltd_datenight.views.authentication.LoginActivity;
+import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
 
 public class DateHubNavigation extends AppCompatActivity {
 
@@ -109,16 +110,6 @@ public class DateHubNavigation extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-
-//    @Override
-//    public void onBackPressed() {
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();   //closes activity as usual
-//        }
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -129,29 +120,22 @@ public class DateHubNavigation extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            //Took Out the log out option from here
-//            case R.id.logOut:
-//                signOut();
-//                //clear the current CustomerSession single instance
-//                CustomerSession.endCustomerSession();
-//                Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
-//                break;
             case R.id.action_settings:
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
                 break;
-
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void signOut() {
+    public void signOut(MenuItem item) {
         DateNight appState = ((DateNight)this.getApplication());
         appState.clearAppData();
 
         mAuth.signOut();
         updateUI(null);
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, BoardingScreen.class);
         startActivity(intent);
+        finish();
     }
 
     public void updateUI(FirebaseUser user) {
@@ -163,9 +147,6 @@ public class DateHubNavigation extends AppCompatActivity {
             startActivity(intent);
 
             Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
-
         }
     }
 

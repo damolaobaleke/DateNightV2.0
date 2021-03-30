@@ -105,9 +105,6 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
         theAdapter = new FirestoreRecyclerAdapter<DateModel, ScheduledDateViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull ScheduledDateViewHolder holder, int position, @NonNull DateModel data) {
-
-                Log.e(TAG, "Found Date " + data.getParticipantUsernames().toString());
-
                 // Hide date if completed or if date has been not been accepted by both participants
                 boolean hideView = false;
                 if(data.getTimeCompleted() != null){ //Date has been completed
@@ -137,7 +134,6 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             @NonNull
             @Override
             public ScheduledDateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                Log.e(TAG, "Attempting to create view holder for scheduled dates");
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_dates_sch_list_view, parent, false);
                 return new ScheduledDateViewHolder(view);
             }
@@ -179,10 +175,6 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
         }
 
         public void bind(DateModel data, View recyclerViewItemView) {
-
-            Log.e(TAG, "Here attempting to bind");
-
-            // TODO: bind data to actual views
             dateData = data;
 
             // Find who the date participant is

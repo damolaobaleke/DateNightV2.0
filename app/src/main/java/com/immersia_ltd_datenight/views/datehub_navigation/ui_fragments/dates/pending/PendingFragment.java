@@ -74,7 +74,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
             // Illegal state, take user back to main activity
             navigateToMainActivity();
         }
-        Log.e(TAG, "The app state = " + appState.toString());
         setUpRecyclerView();
     }
 
@@ -103,8 +102,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
         theAdapter = new FirestoreRecyclerAdapter<DateModel, PendingDateViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull PendingDateViewHolder holder, int position, @NonNull DateModel data) {
-                Log.e(TAG, "Found Date " + data.getParticipantUsernames().toString());
-
                 //Hide view if date has been completed or have been accepted by both participants (not a pending date)
                 boolean hideView = true;
                 if(data.getTimeCompleted() == null){
@@ -131,7 +128,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
             @NonNull
             @Override
             public PendingDateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                Log.e(TAG, "Attempting to create view holder for pending dates");
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_dates_pending_lv, parent, false);
                 return new PendingDateViewHolder(view);
             }
@@ -174,9 +170,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
 
         public void bind(DateModel data, View recyclerViewItemView){
             String dateParticipantId = "";
-            Log.e(TAG, "Here attempting to bind");
-
-            // TODO: bind data to actual views
             dateData = data;
 
             // Find who the date participant is
@@ -187,7 +180,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                     break;
                 }
             }
-            Log.e(TAG, "after loop");
 
             // When current user is date creator
             String expId = dateData.getLinkedExperienceId();
@@ -202,7 +194,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 editInviteButton.setOnClickListener(v -> reScheduleDateTime());
                 cancelInviteButton.setOnClickListener(v -> cancelInvite());
             } else {
-                Log.e(TAG, "Here within not the creator");
                 if (appState.getAppData(currentUserId) != null) {
                     inviteDescription.setText(String.format("%s is inviting you to %s", data.getParticipants().get(dateParticipantId), appState.getAppData(currentUserId).getExperienceName(expId)));
                 } else {
@@ -216,7 +207,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 cancelInviteButton.setOnClickListener(v -> rejectInvite(recyclerViewItemView));
             }
             timeCreated.setText(constructRelativeDateTime(dateData.getTimeCreated()));
-            Log.e(TAG, "All done");
         }
 
         private void reScheduleDateTime() {

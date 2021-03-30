@@ -37,13 +37,6 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
     Button topUpDtc;
     TextView editAvatarBtn;
 
-
-    int progressLevel1 = 20;
-    int progressLevel2 = 40;
-    int progressLevel3 = 60;
-    int progressLevel4 = 80;
-    int progressLevel5 = 100;
-
     DateHubFragmentViewModel dateHubFragmentViewModel;
 
     @Nullable
@@ -76,17 +69,6 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
                 ratings.setProgress(0);
                 averageDateRatingText.setText(avgDateRating.toString());
                 ratings.setProgress((avgDateRating * 100)/5);
-//                if (avgDateRating == 1.0 || avgDateRating == 1.5) {
-//                    ratings.setProgress(progressLevel1);
-//                } else if (avgDateRating == 2.0 || avgDateRating == 2.5) {
-//                    ratings.setProgress(progressLevel2);
-//                } else if (avgDateRating == 3.0 || avgDateRating == 3.5) {
-//                    ratings.setProgress(progressLevel3);
-//                } else if (avgDateRating == 4.0 || avgDateRating == 4.5) {
-//                    ratings.setProgress(progressLevel4);
-//                } else if (avgDateRating == 5.0) {
-//                    ratings.setProgress(progressLevel5);
-//                }
             }
         });
 
