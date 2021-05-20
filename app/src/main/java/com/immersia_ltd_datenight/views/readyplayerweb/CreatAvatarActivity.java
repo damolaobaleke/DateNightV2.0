@@ -41,6 +41,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
+import com.immersia_ltd_datenight.utils.constants.IntentConstants;
+import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
 import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
 
 import java.util.HashMap;
@@ -77,7 +79,6 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
 
     public void storeAvatarLink() {
         Log.i("Avatar Link", binding.avatarLinkInput.getText().toString());
-        Toast.makeText(this, binding.avatarLinkInput.getText().toString(), Toast.LENGTH_LONG).show();
 
         HashMap<String, Object> avatar = new HashMap<>();
         avatar.put(DatabaseConstants.AVATAR_URL_FIELD, binding.avatarLinkInput.getText().toString());
@@ -86,7 +87,11 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(CreatAvatarActivity.this, "Avatar created", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CreatAvatarActivity.this, DateHubNavigation.class);
+                intent.putExtra(IntentConstants.FRAGMENT_TO_LOAD, IntentConstants.DATE_HUB_FRAGMENT);
+                startActivity(intent);
             }
+
         });
     }
 
