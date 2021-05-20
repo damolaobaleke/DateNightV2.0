@@ -52,11 +52,11 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
     FirebaseAuth mAuth;
     FirebaseUser user;
 
-    EditText emailInput;
+    TextView email;
     EditText passwordInput;
     TextView username,fullName,topUsername;
     TextView dateOfBirth;
-    Button saveChanges;
+    TextView changePassword;
     ProgressBar load;
     static Date date;
 
@@ -75,23 +75,22 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
         db = FirebaseFirestore.getInstance();
 
         //bind
-        emailInput = view.findViewById(R.id.emailInput);
+        email = view.findViewById(R.id.emailTextView);
         username = view.findViewById(R.id.username);
         fullName =view.findViewById(R.id.name);
         dateOfBirth = view.findViewById(R.id.Age);
         topUsername =  view.findViewById(R.id.top_username);
-        saveChanges = view.findViewById(R.id.save_changes);
+        changePassword = view.findViewById(R.id.changePasswordTextView);
         Button logOut = view.findViewById(R.id.log_out);
-
-        saveChanges.setOnClickListener(v -> {
-            progressBarShown();
-            updateUser();
-        });
 
         logOut.setOnClickListener(v -> {
             progressBarShown();
             signOut();
             progressBarGone();
+        });
+
+        changePassword.setOnClickListener(v -> {
+            launchChangePasswordActivity();
         });
 
         user = mAuth.getCurrentUser();
@@ -121,7 +120,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
                     dateOfBirth.setText(userModel.getDob() != null ? timeStamptoString(userModel.getDob()) : "");
                     username.setText(userModel.getUsername());
                     topUsername.setText(userModel.getUsername());
-                    emailInput.setText(userModel.getEmail());
+                    email.setText(userModel.getEmail());
                     fullName.setText(userModel.getFullName());
 
                     Log.i(TAG, "The id of the user:" + userModel.getId());
@@ -135,7 +134,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
     public void updateUser() {
         Map<String, Object> updateUser = new HashMap<>();
         //updateUser.put("username", username.getText().toString());
-        updateUser.put("email", emailInput.getText().toString());
+        updateUser.put("email", email.getText().toString());
 
         userRef.update(updateUser).addOnSuccessListener(aVoid -> {
             progressBarGone();
@@ -207,12 +206,17 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
         startActivity(intent);
     }
 
+    public void launchChangePasswordActivity(){
+        Intent intent = new Intent(requireContext(), ChangePasswordActivity.class);
+        startActivity(intent);
+    }
+
     public void updateUI(FirebaseUser user) {
         if (user != null) {
             String name = user.getDisplayName();
             Log.i("Name", name);
         } else {
-            Log.i(TAG, "user logeed out");
+            Log.i(TAG, "user logged out");
         }
     }
 }

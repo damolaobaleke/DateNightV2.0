@@ -121,13 +121,9 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
         userRef = db.collection("userData").document(mAuth.getCurrentUser().getUid());
         experienceRef = db.collection("experiences").document("aNightInParis"); //change type to coll ref in future
 
-
         searchBoxClicked();
-        searchUser();
         cancelButton();
         share();
-
-
     }
 
     private void share(){
@@ -152,80 +148,60 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    public void searchUser() {
-        userSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //suggestions ?
-                //searches based on lowercase username==== userSearch.getQuery().toString().toLowerCase()
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                usercollRef.whereEqualTo("username", s.toString().toLowerCase()) //searches based on lowercase username==== userSearch.getQuery().toString().toLowerCase()
-                        .get()
-                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) { // TODO: Need to fix this to become a search button insead
-                                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                                    if (documentSnapshot.exists()) {
-                                        dateinvitee = documentSnapshot.toObject(UserModel.class); //recreate document object from the model class
-                                        dateinvitee.setId(documentSnapshot.getId());
-
-                                        System.out.println(dateinvitee.getUsername() + " " + dateinvitee.getId());
-                                        Log.i(TAG, dateinvitee.getUsername() + " " + dateinvitee.getId());
-
-                                        HashMap<String, Integer> avtr = new HashMap<>();
-                                        avtr.put("avatar", R.drawable.avatar_ellipse); //R.drawable.avatar_ellipse
-
-                                        HashMap<String, String> avatar = new HashMap<>();
-                                        avatar.put("avatar", ""); //R.drawable.avatar_ellipse
-
-
-                                        //populate recycler view-- uses different constructor
-                                        users = new ArrayList<>();
-                                        if (s.toString().length() >= 1 || dateinvitee.getUsername() != null) {
-                                            users.add(new UserModel(null, dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, null,null, null, null, null, null, null,Timestamp.now(),false,""));
-                                        } else {
-                                            users.add(new UserModel("No user found", null, null, null, null, avatar, "BASIC", null,null, null,null, "",Timestamp.now(),false,""));
-                                            //remove at that position in recycler view
-                                            users.remove(0);
-                                            adapter.notifyItemRemoved(0);
-                                        }
-
-                                        recyclerView.setHasFixedSize(true);
-                                        layoutManager = new LinearLayoutManager(InviteUserActivity.this);
-                                        adapter = new RecylerViewAdapter(users);
-
-                                        recyclerView.setLayoutManager(layoutManager);
-                                        recyclerView.setAdapter(adapter);
-                                        adapter.notifyDataSetChanged();
-
-                                        inviteAndCreateDate();
-                                        //populate recycler view
-
-                                    } else {
-                                        Toast.makeText(InviteUserActivity.this, "user not found", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
+    public void searchUsername(View v){
+        usercollRef.whereEqualTo("username", userSearch.toString().toLowerCase()) //searches based on lowercase username==== userSearch.getQuery().toString().toLowerCase()
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(InviteUserActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) { // TODO: Need to fix this to become a search button insead
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            if (documentSnapshot.exists()) {
+                                dateinvitee = documentSnapshot.toObject(UserModel.class); //recreate document object from the model class
+                                dateinvitee.setId(documentSnapshot.getId());
+
+                                System.out.println(dateinvitee.getUsername() + " " + dateinvitee.getId());
+                                Log.i(TAG, dateinvitee.getUsername() + " " + dateinvitee.getId());
+
+                                HashMap<String, Integer> avtr = new HashMap<>();
+                                avtr.put("avatar", R.drawable.avatar_ellipse); //R.drawable.avatar_ellipse
+
+                                HashMap<String, String> avatar = new HashMap<>();
+                                avatar.put("avatar", ""); //R.drawable.avatar_ellipse
+
+
+                                //populate recycler view-- uses different constructor
+                                users = new ArrayList<>();
+                                if (userSearch.toString().length() >= 1 || dateinvitee.getUsername() != null) {
+                                    users.add(new UserModel(null, dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, null,null, null, null, null, null, null,Timestamp.now(),false,""));
+                                } else {
+                                    users.add(new UserModel("No user found", null, null, null, null, avatar, "BASIC", null,null, null,null, "",Timestamp.now(),false,""));
+                                    //remove at that position in recycler view
+                                    users.remove(0);
+                                    adapter.notifyItemRemoved(0);
+                                }
+
+                                recyclerView.setHasFixedSize(true);
+                                layoutManager = new LinearLayoutManager(InviteUserActivity.this);
+                                adapter = new RecylerViewAdapter(users);
+
+                                recyclerView.setLayoutManager(layoutManager);
+                                recyclerView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+
+                                inviteAndCreateDate();
+                                //populate recycler view
+
+                            } else {
+                                Toast.makeText(InviteUserActivity.this, "user not found", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(InviteUserActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    private void filter(String textInSearchBox) {
-        //suggestions
     }
 
     public void changeView() {

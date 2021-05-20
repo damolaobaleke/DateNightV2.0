@@ -103,551 +103,571 @@
 
     <!--row1-->
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/dtc100"
-        android:layout_width="149dp"
-        android:layout_height="99dp"
-        android:layout_marginTop="24dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="2dp"
-        app:layout_constraintStart_toStartOf="@+id/cardView2"
-        app:layout_constraintTop_toBottomOf="@id/textView15">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/dtc_coin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/coin_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="20dp"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:text="100"
-                android:textColor="@color/black"
-                android:textFontWeight="900"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/coin_cost_100"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="-50dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/custom_price_bg"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="5dp"
-                android:text="$0.99"
-                android:textColor="@color/date_night_purple"
-                android:textFontWeight="500"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/dtc200"
-        android:layout_width="149dp"
-        android:layout_height="99dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="2dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView2"
-        app:layout_constraintTop_toTopOf="@id/dtc100">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/dtc_coin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="20dp"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:text="200"
-                android:textColor="@color/black"
-                android:textFontWeight="900"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/coin_cost_200"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="-50dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/custom_price_bg"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="5dp"
-                android:text="$0.99"
-                android:textColor="@color/date_night_purple"
-                android:textFontWeight="500"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    <!--row1-->
-
-    <!--row2-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/dtc500"
-        android:layout_width="149dp"
-        android:layout_height="99dp"
-        android:layout_marginTop="24dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="2dp"
-        app:layout_constraintEnd_toEndOf="@+id/dtc100"
-        app:layout_constraintStart_toStartOf="@id/dtc100"
-        app:layout_constraintTop_toBottomOf="@id/dtc100">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/dtc_coin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="20dp"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:text="500"
-                android:textColor="@color/black"
-                android:textFontWeight="900"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/coin_cost_500"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="-45dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/custom_price_bg"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="5dp"
-                android:text="$0.99"
-                android:textColor="@color/date_night_purple"
-                android:textFontWeight="500"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/dtc1000"
-        android:layout_width="149dp"
-        android:layout_height="99dp"
-        android:layout_marginTop="24dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="2dp"
-        app:layout_constraintEnd_toEndOf="@id/dtc200"
-        app:layout_constraintStart_toStartOf="@+id/dtc200"
-        app:layout_constraintTop_toBottomOf="@id/dtc200">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/dtc_coin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="20dp"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:text="1000"
-                android:textColor="@color/black"
-                android:textFontWeight="900"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/coin_cost_1000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="-50dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/custom_price_bg"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="5dp"
-                android:text="$0.99"
-                android:textColor="@color/date_night_purple"
-                android:textFontWeight="500"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    <!--row2-->
-
-    <!--row3-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/dtc2000"
-        android:layout_width="149dp"
-        android:layout_height="99dp"
-        android:layout_marginTop="24dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="2dp"
-        app:layout_constraintEnd_toEndOf="@+id/dtc500"
-        app:layout_constraintStart_toStartOf="@+id/dtc500"
-        app:layout_constraintTop_toBottomOf="@+id/dtc500">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/dtc_coin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="20dp"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:text="2000"
-                android:textColor="@color/black"
-                android:textFontWeight="900"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/coin_cost_2000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="-50dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/custom_price_bg"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="5dp"
-                android:text="$0.99"
-                android:textColor="@color/date_night_purple"
-                android:textFontWeight="500"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/dtc5000"
-        android:layout_width="149dp"
-        android:layout_height="99dp"
-        android:layout_marginTop="24dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="2dp"
-        app:layout_constraintEnd_toEndOf="@+id/dtc1000"
-        app:layout_constraintStart_toStartOf="@+id/dtc1000"
-        app:layout_constraintTop_toBottomOf="@+id/dtc1000">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/dtc_coin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="20dp"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:text="5000"
-                android:textColor="@color/black"
-                android:textFontWeight="900"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/coin_cost_5000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="-55dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/custom_price_bg"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="5dp"
-                android:text="$0.99"
-                android:textColor="@color/date_night_purple"
-                android:textFontWeight="500"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-    <!--row3-->
-
-    <!--row4-->
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/dtc10000"
-        android:layout_width="149dp"
-        android:layout_height="99dp"
-        android:layout_marginTop="24dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/dtc2000"
-        app:layout_constraintStart_toStartOf="@+id/dtc2000"
-        app:layout_constraintTop_toBottomOf="@+id/dtc2000">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/dtc_coin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="20dp"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:text="@string/_10_000"
-                android:textColor="@color/black"
-                android:textFontWeight="900"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/coin_cost_10000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="-65dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/custom_price_bg"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="5dp"
-                android:text="$0.99"
-                android:textColor="@color/date_night_purple"
-                android:textFontWeight="500"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!--row4-->
-
-    <!--extra Scrollabe-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/dtc20000"
-        android:layout_width="149dp"
-        android:layout_height="99dp"
-        android:layout_marginTop="24dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/dtc5000"
-        app:layout_constraintStart_toStartOf="@+id/dtc5000"
-        app:layout_constraintTop_toBottomOf="@+id/dtc5000">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/dtc_coin"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/coin_amount_20k"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="20dp"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:text="@string/_20_000"
-                android:textColor="@color/black"
-                android:textFontWeight="900"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/coin_cost_20000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="-65dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/custom_price_bg"
-                android:elevation="20dp"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="5dp"
-                android:text="$0.99"
-                android:textColor="@color/date_night_purple"
-                android:textFontWeight="500"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <View
-        android:id="@+id/extra"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dtc10000" />
+        app:layout_constraintTop_toBottomOf="@+id/textView15"
+        app:layout_constraintVertical_bias="0.0">
 
-    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <!--    </ScrollView>-->
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/dtc100"
+                android:layout_width="149dp"
+                android:layout_height="99dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="15dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="24dp"
+                        android:src="@drawable/dtc_coin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/coin_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="20dp"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="100"
+                        android:textColor="@color/black"
+                        android:textFontWeight="900"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/coin_cost_100"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-50dp"
+                        android:layout_marginTop="50dp"
+                        android:background="@drawable/custom_price_bg"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="5dp"
+                        android:text="$0.99"
+                        android:textColor="@color/date_night_purple"
+                        android:textFontWeight="500"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/dtc200"
+                android:layout_width="149dp"
+                android:layout_height="99dp"
+                android:layout_marginEnd="32dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/dtc100">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="24dp"
+                        android:src="@drawable/dtc_coin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="20dp"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="200"
+                        android:textColor="@color/black"
+                        android:textFontWeight="900"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/coin_cost_200"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-50dp"
+                        android:layout_marginTop="50dp"
+                        android:background="@drawable/custom_price_bg"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="5dp"
+                        android:text="$0.99"
+                        android:textColor="@color/date_night_purple"
+                        android:textFontWeight="500"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <!--row1-->
+
+            <!--row2-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/dtc500"
+                android:layout_width="149dp"
+                android:layout_height="99dp"
+                android:layout_marginTop="24dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:layout_constraintEnd_toEndOf="@+id/dtc100"
+                app:layout_constraintStart_toStartOf="@id/dtc100"
+                app:layout_constraintTop_toBottomOf="@id/dtc100">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="24dp"
+                        android:src="@drawable/dtc_coin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="20dp"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="500"
+                        android:textColor="@color/black"
+                        android:textFontWeight="900"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/coin_cost_500"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-45dp"
+                        android:layout_marginTop="50dp"
+                        android:background="@drawable/custom_price_bg"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="5dp"
+                        android:text="$0.99"
+                        android:textColor="@color/date_night_purple"
+                        android:textFontWeight="500"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/dtc1000"
+                android:layout_width="149dp"
+                android:layout_height="99dp"
+                android:layout_marginTop="24dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:layout_constraintEnd_toEndOf="@id/dtc200"
+                app:layout_constraintStart_toStartOf="@+id/dtc200"
+                app:layout_constraintTop_toBottomOf="@id/dtc200">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="24dp"
+                        android:src="@drawable/dtc_coin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="20dp"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="1000"
+                        android:textColor="@color/black"
+                        android:textFontWeight="900"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/coin_cost_1000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-50dp"
+                        android:layout_marginTop="50dp"
+                        android:background="@drawable/custom_price_bg"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="5dp"
+                        android:text="$0.99"
+                        android:textColor="@color/date_night_purple"
+                        android:textFontWeight="500"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <!--row2-->
+
+            <!--row3-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/dtc2000"
+                android:layout_width="149dp"
+                android:layout_height="99dp"
+                android:layout_marginTop="24dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:layout_constraintEnd_toEndOf="@+id/dtc500"
+                app:layout_constraintStart_toStartOf="@+id/dtc500"
+                app:layout_constraintTop_toBottomOf="@+id/dtc500">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="24dp"
+                        android:src="@drawable/dtc_coin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="20dp"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="2000"
+                        android:textColor="@color/black"
+                        android:textFontWeight="900"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/coin_cost_2000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-50dp"
+                        android:layout_marginTop="50dp"
+                        android:background="@drawable/custom_price_bg"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="5dp"
+                        android:text="$0.99"
+                        android:textColor="@color/date_night_purple"
+                        android:textFontWeight="500"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/dtc5000"
+                android:layout_width="149dp"
+                android:layout_height="99dp"
+                android:layout_marginTop="24dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:layout_constraintEnd_toEndOf="@+id/dtc1000"
+                app:layout_constraintStart_toStartOf="@+id/dtc1000"
+                app:layout_constraintTop_toBottomOf="@+id/dtc1000">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="24dp"
+                        android:src="@drawable/dtc_coin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="20dp"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="5000"
+                        android:textColor="@color/black"
+                        android:textFontWeight="900"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/coin_cost_5000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-55dp"
+                        android:layout_marginTop="50dp"
+                        android:background="@drawable/custom_price_bg"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="5dp"
+                        android:text="$0.99"
+                        android:textColor="@color/date_night_purple"
+                        android:textFontWeight="500"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+            <!--row3-->
+
+            <!--row4-->
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/dtc10000"
+                android:layout_width="149dp"
+                android:layout_height="99dp"
+                android:layout_marginTop="24dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/dtc2000"
+                app:layout_constraintStart_toStartOf="@+id/dtc2000"
+                app:layout_constraintTop_toBottomOf="@+id/dtc2000">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="24dp"
+                        android:src="@drawable/dtc_coin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="20dp"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/_10_000"
+                        android:textColor="@color/black"
+                        android:textFontWeight="900"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/coin_cost_10000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-65dp"
+                        android:layout_marginTop="50dp"
+                        android:background="@drawable/custom_price_bg"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="5dp"
+                        android:text="$0.99"
+                        android:textColor="@color/date_night_purple"
+                        android:textFontWeight="500"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!--row4-->
+
+            <!--extra Scrollabe-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/dtc20000"
+                android:layout_width="149dp"
+                android:layout_height="99dp"
+                android:layout_marginTop="24dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/dtc5000"
+                app:layout_constraintStart_toStartOf="@+id/dtc5000"
+                app:layout_constraintTop_toBottomOf="@+id/dtc5000">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="24dp"
+                        android:src="@drawable/dtc_coin"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/coin_amount_20k"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="20dp"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/_20_000"
+                        android:textColor="@color/black"
+                        android:textFontWeight="900"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/coin_cost_20000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-65dp"
+                        android:layout_marginTop="50dp"
+                        android:background="@drawable/custom_price_bg"
+                        android:elevation="20dp"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="5dp"
+                        android:text="$0.99"
+                        android:textColor="@color/date_night_purple"
+                        android:textFontWeight="500"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:id="@+id/extra"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dtc10000" />
+
+            <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+            <!--    </ScrollView>-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@
 
 package com.immersia_ltd_datenight.views.readyplayerweb;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -40,6 +41,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
+import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
 
 import java.util.HashMap;
 
@@ -55,6 +57,11 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         binding = ActivityCreatAvatarBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setTitle("Edit Avatar");
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -62,11 +69,6 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
 
         userDocRef = db.collection("userData").document(mAuth.getCurrentUser().getUid());
 
-        //webViewImplmentTwo();
-        //webView();
-        //webViewBottomSheet();
-        //webViewDialogue();
-        //openReadyPlayerWebPage();
         customTabLoadAvatar();
 
         binding.submitAvatarBtn.setOnClickListener(v -> storeAvatarLink());
@@ -203,5 +205,11 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         //webViewDialogue(); openReadyPlayerWebPage()
         binding.forgotLinkText.setOnClickListener(j -> customTabLoadAvatar());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 }

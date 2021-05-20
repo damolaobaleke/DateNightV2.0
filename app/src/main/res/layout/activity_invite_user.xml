@@ -40,10 +40,10 @@
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/custom_textbox_search"
         android:fontFamily="@font/inter"
-        android:hint="Search for a user"
+        android:hint="Search username..."
         android:paddingVertical="7dp"
         android:paddingStart="30dp"
         android:paddingEnd="8dp"
@@ -51,9 +51,24 @@
         android:textCursorDrawable="@null"
         android:textFontWeight="400"
         android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/inviteUserSearchButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/inviteUserSearchButton"
+        android:layout_width="66dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
+        android:onClick="searchUsername"
+        android:text="@string/search"
+        android:textAllCaps="false"
+        android:textColor="@color/date_night_purple"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/search_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/search_user" />
 
     <Button
         android:id="@+id/cancel_search_btn"
@@ -107,7 +122,7 @@
         android:orientation="vertical"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/search_user"
+        app:layout_constraintEnd_toEndOf="@+id/inviteUserSearchButton"
         app:layout_constraintStart_toStartOf="@+id/search_user"
         app:layout_constraintTop_toBottomOf="@+id/search_user" />
 

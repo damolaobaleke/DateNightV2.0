@@ -80,7 +80,7 @@ class DateHubFragmentViewModel : ViewModel() {
         return dateRating;
     }
 
-    fun getKissesReceived(): LiveData<Int> {
+    fun getKissesReceived(): LiveData<Int> { // TODO: Update to actual kisses received and user ratings
         kissesRcvd.value = 0
         return kissesRcvd
     }

@@ -22,6 +22,7 @@ import com.immersia_ltd_datenight.utils.constants.IntentConstants;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
 import com.immersia_ltd_datenight.views.readyplayerweb.CreatAvatarActivity;
+import com.immersia_ltd_datenight.views.readyplayerweb.CreateAvatarInstructionsActivity;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -112,7 +113,7 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
     }
 
     public void startReadyPlayerMeLink() {
-        Intent intent = new Intent(requireContext(), CreatAvatarActivity.class);
+        Intent intent = new Intent(requireContext(), CreateAvatarInstructionsActivity.class);
         startActivity(intent);
     }
 
