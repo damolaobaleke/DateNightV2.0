@@ -24,8 +24,6 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onChanged(UserObject userObject) { //only called when activity is in foreground
                 //Update recycler view or any view
-
-                Toast.makeText(UserProfileActivity.this, "On changed", Toast.LENGTH_SHORT).show();
                 //Log.i("First Name", userObject.getFirstName());
             }
         });

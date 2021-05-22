@@ -69,11 +69,8 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
     DocumentReference userRef, experienceRef;
     CollectionReference usercollRef, datesRef;
     EditText userSearch;
-    Button cancelSearchButton,shareButton;
-    TextView cancelSearchTextView;
-    String textInSearch;
-    String userId;
-    String experienceId;
+    TextView noUserFound;
+    Button cancelSearchButton, shareButton, searchButton;
     String dateChosen;
     String timeChosen;
     FirebaseAuth mAuth;
@@ -93,7 +90,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
     private RecyclerView recyclerView;
     private RecylerViewAdapter adapter; //bridge
     private RecyclerView.LayoutManager layoutManager;
-    ArrayList<UserModel> users;
+    ArrayList<UserModel> users = new ArrayList<UserModel>();
 
     ExperienceModel experienceModel;
 
@@ -114,14 +111,16 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
 
         userSearch = findViewById(R.id.search_user);
         cancelSearchButton = findViewById(R.id.cancel_search_btn);
+        noUserFound = findViewById(R.id.noUserFoundMessage2);
         shareButton = findViewById(R.id.share);
+        searchButton = findViewById(R.id.inviteUserSearchButton);
         recyclerView = findViewById(R.id.user_search_recyler_view);
 
-        usercollRef = db.collection("userData");
+        usercollRef = db.collection(DatabaseConstants.USER_DATA_NODE);
         userRef = db.collection("userData").document(mAuth.getCurrentUser().getUid());
         experienceRef = db.collection("experiences").document("aNightInParis"); //change type to coll ref in future
 
-        searchBoxClicked();
+        searchUserSetup();
         cancelButton();
         share();
     }
@@ -133,31 +132,39 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
 
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "Are you tired of the endless talking stages ? I have an invite for you to join. Join Date night now\nHere is the link "+ link).putExtra(Intent.EXTRA_SUBJECT,"Date Night");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Are you tired of the endless talking stages? Join Date night for a new dating experience.\nHere is the link "+ link).putExtra(Intent.EXTRA_SUBJECT,"Date Night");
             shareIntent.setType("text/plain");
             startActivity(shareIntent);
         });
     }
 
-    public void searchBoxClicked() {
-        userSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                changeView();
-            }
-        });
+    public void searchUserSetup() {
+        searchButton.setOnClickListener( l -> searchUsername());
+        userSearch.setOnFocusChangeListener((v, hasFocus) -> changeView());
     }
 
-    public void searchUsername(View v){
-        usercollRef.whereEqualTo("username", userSearch.toString().toLowerCase()) //searches based on lowercase username==== userSearch.getQuery().toString().toLowerCase()
+    public void searchUsername(){
+        Log.e("InviteUserActivity", "Search button clicked");
+        String queryString =  userSearch.getText().toString().trim().toLowerCase();
+        if (queryString.isEmpty()){
+            return;
+        }
+        usercollRef.whereEqualTo("username",queryString) //searches based on lowercase username==== userSearch.getQuery().toString().toLowerCase()
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) { // TODO: Need to fix this to become a search button insead
+                        if (queryDocumentSnapshots.size() < 1){
+                            noUserFound.setVisibility(View.VISIBLE);
+                        } else {
+                            noUserFound.setVisibility(View.GONE);
+                        }
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             if (documentSnapshot.exists()) {
                                 dateinvitee = documentSnapshot.toObject(UserModel.class); //recreate document object from the model class
                                 dateinvitee.setId(documentSnapshot.getId());
+                                Log.e("InviteUserActivity", "Found user: " + documentSnapshot.get("id").toString());
+                                Log.e("InviteUserActivity", "Found user (dateinvitee): " +dateinvitee.getId());
 
                                 System.out.println(dateinvitee.getUsername() + " " + dateinvitee.getId());
                                 Log.i(TAG, dateinvitee.getUsername() + " " + dateinvitee.getId());
@@ -168,19 +175,8 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                                 HashMap<String, String> avatar = new HashMap<>();
                                 avatar.put("avatar", ""); //R.drawable.avatar_ellipse
 
-
-                                //populate recycler view-- uses different constructor
-                                users = new ArrayList<>();
-                                if (userSearch.toString().length() >= 1 || dateinvitee.getUsername() != null) {
-                                    users.add(new UserModel(null, dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, null,null, null, null, null, null, null,Timestamp.now(),false,""));
-                                } else {
-                                    users.add(new UserModel("No user found", null, null, null, null, avatar, "BASIC", null,null, null,null, "",Timestamp.now(),false,""));
-                                    //remove at that position in recycler view
-                                    users.remove(0);
-                                    adapter.notifyItemRemoved(0);
-                                }
-
-                                recyclerView.setHasFixedSize(true);
+                                users.add(new UserModel(dateinvitee.getId(), dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, null,null, null, null, null, null, null,Timestamp.now(),false,""));
+                                //recyclerView.setHasFixedSize(true);
                                 layoutManager = new LinearLayoutManager(InviteUserActivity.this);
                                 adapter = new RecylerViewAdapter(users);
 
@@ -189,19 +185,16 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                                 adapter.notifyDataSetChanged();
 
                                 inviteAndCreateDate();
-                                //populate recycler view
-
-                            } else {
-                                Toast.makeText(InviteUserActivity.this, "user not found", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(InviteUserActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(InviteUserActivity.this, "Error while searching for user", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, e.getMessage());
+                    }
+                });
     }
 
     public void changeView() {
@@ -227,9 +220,11 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
             if (userSearch.getText().length() >= 1) {
                 userSearch.setText("");
 
-                users.remove(0);
-                adapter.notifyItemRemoved(0);
-                return;
+                if (users.size() > 0){
+                    users.clear();
+                    adapter.notifyItemRemoved(0);
+                    return;
+                }
             }
         });
     }
@@ -335,8 +330,6 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                             datesRef.document(newDateId).set(dateModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    toast("You've created a date");
-
                                     //Associate dates with dateInvitee and dateCreator
                                     userRef.update("dateId", FieldValue.arrayUnion(datesRef.getId())); //update the fieldValue(array)
 

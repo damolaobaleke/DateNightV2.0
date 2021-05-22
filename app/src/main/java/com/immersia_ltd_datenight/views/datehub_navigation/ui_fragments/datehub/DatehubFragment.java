@@ -55,48 +55,47 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
         topUpDtc = view.findViewById(R.id.top_up_btn);
         editAvatarBtn = view.findViewById(R.id.edit_avatar_btn);
 
-        //Average Date Rating
-        //Store in DB
-        //GET from DB Snapshot
+        dateHubFragmentViewModel
+                .initializeViews(dtcBalance, datesBeenOn, averageDateRatingText, ratings, kissesReceived);
 
-        if(ratings.getProgress() == 0){
-            ratings.setForeground(ContextCompat.getDrawable(requireContext(), R.color.date_night_grey));
-        }
-
-        dateHubFragmentViewModel.getAvgDateRating().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer avgDateRating) {
-                Log.i("Datehub Frag", "AverageDateR: "+ avgDateRating.toString());
-                ratings.setProgress(0);
-                averageDateRatingText.setText(avgDateRating.toString());
-                ratings.setProgress((avgDateRating * 100)/5);
-            }
-        });
-
-        //dtc balance
-        dateHubFragmentViewModel.getDtcBalance().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onChanged(Integer dtcValue) {
-                int num = Integer.parseInt(dtcValue.toString());
-                String formattedDtcBalance = NumberFormat.getInstance(Locale.US).format(num);
-
-                Log.i("DateHub Frag", dtcValue.toString());
-                dtcBalance.setText(formattedDtcBalance);
-            }
-        });
-
-        //kisses received
-        dateHubFragmentViewModel.getKissesReceived().observe(getViewLifecycleOwner(), kissesReceivedVal -> kissesReceived.setText(kissesReceivedVal.toString()));
-
-        //dates been on
-        dateHubFragmentViewModel.getDatesBeenOn().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onChanged(Integer datesBeenOnVal) {
-                datesBeenOn.setText(datesBeenOnVal.toString());
-            }
-        });
+//        if(ratings.getProgress() == 0){
+//            ratings.setForeground(ContextCompat.getDrawable(requireContext(), R.color.date_night_grey));
+//        }
+//
+//        dateHubFragmentViewModel.getAvgDateRating().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+//            @Override
+//            public void onChanged(Integer avgDateRating) {
+//                Log.i("Datehub Frag", "AverageDateR: "+ avgDateRating.toString());
+//                ratings.setProgress(0);
+//                averageDateRatingText.setText(avgDateRating.toString());
+//                ratings.setProgress((avgDateRating * 100)/5);
+//            }
+//        });
+//
+//        //dtc balance
+//        dateHubFragmentViewModel.getDtcBalance().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+//            @SuppressLint("SetTextI18n")
+//            @Override
+//            public void onChanged(Integer dtcValue) {
+//                int num = Integer.parseInt(dtcValue.toString());
+//                String formattedDtcBalance = NumberFormat.getInstance(Locale.US).format(num);
+//
+//                Log.i("DateHub Frag", dtcValue.toString());
+//                dtcBalance.setText(formattedDtcBalance);
+//            }
+//        });
+//
+//        //kisses received
+//        dateHubFragmentViewModel.getKissesReceived().observe(getViewLifecycleOwner(), kissesReceivedVal -> kissesReceived.setText(kissesReceivedVal.toString()));
+//
+//        //dates been on
+//        dateHubFragmentViewModel.getDatesBeenOn().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+//            @SuppressLint("SetTextI18n")
+//            @Override
+//            public void onChanged(Integer datesBeenOnVal) {
+//                datesBeenOn.setText(datesBeenOnVal.toString());
+//            }
+//        });
 
         //Top up
         topUpDtc.setOnClickListener(v -> {
@@ -113,6 +112,7 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
     }
 
     public void startReadyPlayerMeLink() {
+        // Launch activity that shows instructions for creating avatar
         Intent intent = new Intent(requireContext(), CreateAvatarInstructionsActivity.class);
         startActivity(intent);
     }
@@ -122,13 +122,4 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
         startReadyPlayerMeLink();
     }
 
-    public void usingRatingBar() {
-        //RatingBar stars;
-        //stars = view.findViewById(R.id.dateRatingBar);
-//        stars.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
-//            averageDateRatingText.setText(getString(R.string.average_date_rating) + " " + stars.getRating() + "/" + stars.getNumStars());
-//
-//            float x = ratingBar.getRating(); //gets the current rating(number of stars filled)
-//        });
-    }
 }

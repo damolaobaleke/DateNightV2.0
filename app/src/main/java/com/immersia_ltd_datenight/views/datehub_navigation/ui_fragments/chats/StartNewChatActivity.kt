@@ -18,6 +18,7 @@ class StartNewChatActivity : AppCompatActivity() {
     private lateinit var usernameSearchButton: Button
     private lateinit var clearSearchEditText: ImageView
     private lateinit var foundUserLayout: ConstraintLayout
+    private lateinit var shareButton: Button;
     lateinit var foundUserNameTextView: TextView
     lateinit var foundUserPhoto: CircleImageView
     lateinit var noSuchUserTextView: TextView
@@ -40,6 +41,7 @@ class StartNewChatActivity : AppCompatActivity() {
         usernameEditText = findViewById(R.id.usernameSearchEditText)
         clearSearchEditText = findViewById(R.id.clearSearchEditText)
         foundUserLayout = findViewById(R.id.foundUserLayout)
+        shareButton = findViewById(R.id.shareButtonStartNewChat)
         foundUserNameTextView = findViewById(R.id.foundUserNameTextView)
         //foundUserPhoto = findViewById(R.id.foundUserPhoto)
         firstLetterUser = findViewById(R.id.first_letter_name_chat)
@@ -59,6 +61,10 @@ class StartNewChatActivity : AppCompatActivity() {
                 clearSearchEditText.isVisible = charSequnce.toString().trim().isNotEmpty()
             }
         })
+
+        shareButton.setOnClickListener {
+            viewModel.inviteUser(this, shareButton);
+        }
     }
 
     @Override

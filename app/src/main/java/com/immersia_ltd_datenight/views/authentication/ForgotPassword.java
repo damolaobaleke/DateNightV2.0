@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class ForgotPassword extends AppCompatActivity {
     FirebaseAuth mAuth;
     EditText forgotPasswordEmail;
     Button resetPassword;
+    String TAG = "ForgotPassword";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,7 @@ public class ForgotPassword extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(ForgotPassword.this, "Check your email for the link to\n reset your password", Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(ForgotPassword.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, task.getException().getLocalizedMessage());
                         }
                     });
 

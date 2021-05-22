@@ -156,37 +156,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     } else {
                                         goToDatehub();
                                     }
-
-
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Please verify your email address", Toast.LENGTH_SHORT).show();
                                     progressBarGone();
                                 }
-
                             } else {
                                 progressBarGone();
                                 //Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .addOnFailureListener(this, e -> {
-                            Toast.makeText(LoginActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                            Log.i("Failed Auth", e.getLocalizedMessage());
+                            Log.e("Failed Auth", e.getLocalizedMessage());
                         });
             }
 
         } catch (IllegalStateException e) {
-            Toast.makeText(LoginActivity.this, "Incorrect Email or Password" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            Log.e(TAG, e.getLocalizedMessage());
+            Toast.makeText(LoginActivity.this, "Incorrect Email or Password", Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {
             e.printStackTrace();
             Log.i("Error", e.getLocalizedMessage());
             Toast.makeText(LoginActivity.this, "Enter Your Email & Password", Toast.LENGTH_SHORT).show();
-
         } catch (IllegalArgumentException e) {
             Log.i("Error", e.getLocalizedMessage());
             progressBarGone();
             Toast.makeText(LoginActivity.this, "Enter Your Email & Password", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private boolean validateForm() {
@@ -283,7 +278,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResponse(@NotNull Call<UserObject> call, @NotNull Response<UserObject> response) {
                 if (!response.isSuccessful()) {
-                    Log.i("Error", "The error code while getting the response " + response.code() + "\n" + response.message());
+                    Log.e("Error", "The error code while getting the response " + response.code() + "\n" + response.message());
                     return; //Leave method, data would be null if response not successful
                 }
 
@@ -295,7 +290,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onFailure(Call<UserObject> call, Throwable e) {
-                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("Error", e.getMessage());
             }
         });
     }

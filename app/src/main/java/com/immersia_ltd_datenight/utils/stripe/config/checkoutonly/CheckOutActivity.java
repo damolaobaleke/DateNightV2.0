@@ -59,6 +59,7 @@ public class CheckOutActivity extends AppCompatActivity {
     private String paymentIntentClientSecret;
     private Stripe stripe;
     private FirebaseAuth mAuth;
+    private String TAG = "CheckoutActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -178,7 +179,7 @@ public class CheckOutActivity extends AppCompatActivity {
         @Override
         public void onResponse(Response response) throws IOException {
             if (!response.isSuccessful()) {
-                activity.runOnUiThread(() -> Toast.makeText(activity, "Error: " + response.toString(), Toast.LENGTH_LONG).show());
+                activity.runOnUiThread(() -> Log.e("CheckoutActivity", "Error" + response.toString()));
             } else {
                 activity.onPaymentSuccess(response);
             }
@@ -206,13 +207,13 @@ public class CheckOutActivity extends AppCompatActivity {
 
             } else if (status == PaymentIntent.Status.RequiresPaymentMethod) {
                 // Payment failed – allow retrying using a different payment method
-                Toast.makeText(CheckOutActivity.this, "Payment failed" +Objects.requireNonNull(paymentIntent.getLastPaymentError()).getMessage() , Toast.LENGTH_LONG).show();
+                Log.e(TAG, "Payment failed" +Objects.requireNonNull(paymentIntent.getLastPaymentError()).getMessage());
             }
         }
         @Override
         public void onError(@NonNull Exception e) {
             // Payment request failed – allow retrying using the same payment method
-            Toast.makeText(CheckOutActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e(TAG, e.getMessage());
         }
     }
 }

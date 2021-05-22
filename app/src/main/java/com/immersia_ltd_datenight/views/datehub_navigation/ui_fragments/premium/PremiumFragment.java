@@ -90,7 +90,7 @@ public class PremiumFragment extends Fragment {
             @Override
             public void onError(Exception e) {
                 progressBarLove.setVisibility(View.VISIBLE);
-                Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, e.getMessage());
             }
         });
 

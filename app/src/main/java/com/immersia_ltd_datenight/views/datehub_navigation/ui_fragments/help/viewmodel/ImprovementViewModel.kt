@@ -1,6 +1,7 @@
 package com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.help.viewmodel
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import com.immersia_ltd_datenight.modelfirestore.Help.Help
@@ -10,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class ImprovementViewModel(application: Application) : AndroidViewModel(application) {
     lateinit var db: FirebaseFirestore
     lateinit var improvementRef: DocumentReference
+    val TAG = "ImprovementViewModel"
 
     fun suggestImprovement(suggestForm: String) {
 
@@ -26,7 +28,7 @@ class ImprovementViewModel(application: Application) : AndroidViewModel(applicat
         improvementRef.set(help).addOnSuccessListener {
             Toast.makeText(getApplication(), "Thanks for the feedback", Toast.LENGTH_SHORT).show()
         }.addOnFailureListener { e ->
-            Toast.makeText(getApplication(), e.localizedMessage, Toast.LENGTH_SHORT).show()
+            Log.e(TAG, e.localizedMessage)
         }
     }
 

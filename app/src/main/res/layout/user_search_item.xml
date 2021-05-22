@@ -48,7 +48,6 @@
         android:layout_width="0dp"
         android:layout_height="32dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
         android:background="@drawable/custom_accept_invite_button"
         android:fontFamily="@font/inter"
         android:lineHeight="16dp"
@@ -64,14 +63,6 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/view4"
-        android:layout_width="match_parent"
-        android:layout_height="0.8dp"
-        android:layout_marginTop="30dp"
-        android:background="@color/date_night_grey"
-        app:layout_constraintTop_toBottomOf="@+id/user_username" />
 
     <TextView
         android:id="@+id/first_letter_name"
