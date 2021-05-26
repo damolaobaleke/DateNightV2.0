@@ -19,9 +19,9 @@ class DateHubFragmentViewModel : ViewModel() {
 
     private lateinit var docReference: DocumentReference
     private lateinit var collectionReference: CollectionReference
-    var db: FirebaseFirestore
-    lateinit var mAuth: FirebaseAuth
-    lateinit var currentUser: String
+    var db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    var currentUser: String = mAuth.currentUser!!.uid
     private lateinit var userModel : UserModel
 
     fun DateNightCoinViewModel() {
@@ -31,9 +31,6 @@ class DateHubFragmentViewModel : ViewModel() {
     }
 
     init {
-        db = FirebaseFirestore.getInstance()
-        mAuth = FirebaseAuth.getInstance()
-        currentUser = mAuth.currentUser!!.uid
         docReference = db.collection(DatabaseConstants.USER_DATA_NODE).document(currentUser)
 
     }
@@ -50,51 +47,6 @@ class DateHubFragmentViewModel : ViewModel() {
             }
         }
         return dtcBalance
-    }
-
-
-    fun getDatesBeenOn(): LiveData<Int> {
-        dateCount.value = 0
-
-        docReference.get().addOnSuccessListener { documentSnapshot ->
-            if (documentSnapshot.exists()) {
-                val user = documentSnapshot.toObject(UserModel::class.java)
-                dateCount.value = user!!.getAvgDateStats().dateCount
-            } else {
-                dateCount.value = 0
-                Log.i(TAG, "value is 0 ")
-            }
-        }
-        return dateCount
-    }
-
-    fun getAvgDateRating(): LiveData<Int> {
-
-        docReference.get().addOnSuccessListener { documentSnapshot ->
-            if (documentSnapshot.exists()) {
-                val user = documentSnapshot.toObject(UserModel::class.java)
-                dateRating.value = user!!.getAvgDateStats().rating
-                Log.i("Datehub VM", "rating: ${user!!.getAvgDateStats().rating}, dateCount:${user!!.getAvgDateStats().dateCount}")
-            } else {
-                dateRating.value = 0
-                Log.i(TAG, "value is 0 ")
-            }
-        }
-        return dateRating;
-    }
-
-    fun getKissesReceived(): LiveData<Int> { // TODO: Update to actual kisses received and user ratings
-        docReference.get().addOnSuccessListener { documentSnapshot ->
-            if (documentSnapshot.exists()) {
-                val user = documentSnapshot.toObject(UserModel::class.java)
-                kissesRcvd.value = user!!.getAvgDateStats().kissCount
-                Log.i("Datehub VM", "kissCount: ${user!!.getAvgDateStats().kissCount}, dateCount:${user!!.getAvgDateStats().dateCount}")
-            } else {
-                kissesRcvd.value = 0
-                Log.i(TAG, "value is 0 ")
-            }
-        }
-        return kissesRcvd
     }
 
     companion object {
@@ -118,8 +70,10 @@ class DateHubFragmentViewModel : ViewModel() {
     }
 
     fun buyDtc(parentFrag: DatehubFragment) {
-//        val intent = Intent(requireContext(), DateHubNavigation::class.java)
-//        intent.putExtra(IntentConstants.FRAGMENT_TO_LOAD, IntentConstants.BUY_DTC_FRAGMENT)
-//        parentFrag.startActivity(intent)
+        /*
+        val intent = Intent(requireContext(), DateHubNavigation::class.java)
+        intent.putExtra(IntentConstants.FRAGMENT_TO_LOAD, IntentConstants.BUY_DTC_FRAGMENT)
+        parentFrag.startActivity(intent)
+         */
     }
 }

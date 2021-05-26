@@ -39,7 +39,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".views.readyplayerweb.CreatAvatarActivity" />
         <activity android:name=".views.date_schedule.InviteUserActivity" />
-        <activity android:name=".views.date_schedule.DateCreated" />
+        <activity android:name=".views.date_schedule.DateCreated" android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.date_schedule.DateScheduleActivity"
             android:theme="@style/AppTheme.NoActionBar" />

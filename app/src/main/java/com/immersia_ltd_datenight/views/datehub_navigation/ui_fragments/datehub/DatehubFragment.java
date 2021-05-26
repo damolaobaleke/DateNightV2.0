@@ -58,20 +58,6 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
         dateHubFragmentViewModel
                 .initializeViews(dtcBalance, datesBeenOn, averageDateRatingText, ratings, kissesReceived);
 
-//        if(ratings.getProgress() == 0){
-//            ratings.setForeground(ContextCompat.getDrawable(requireContext(), R.color.date_night_grey));
-//        }
-//
-//        dateHubFragmentViewModel.getAvgDateRating().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-//            @Override
-//            public void onChanged(Integer avgDateRating) {
-//                Log.i("Datehub Frag", "AverageDateR: "+ avgDateRating.toString());
-//                ratings.setProgress(0);
-//                averageDateRatingText.setText(avgDateRating.toString());
-//                ratings.setProgress((avgDateRating * 100)/5);
-//            }
-//        });
-//
 //        //dtc balance
 //        dateHubFragmentViewModel.getDtcBalance().observe(getViewLifecycleOwner(), new Observer<Integer>() {
 //            @SuppressLint("SetTextI18n")
@@ -82,18 +68,6 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
 //
 //                Log.i("DateHub Frag", dtcValue.toString());
 //                dtcBalance.setText(formattedDtcBalance);
-//            }
-//        });
-//
-//        //kisses received
-//        dateHubFragmentViewModel.getKissesReceived().observe(getViewLifecycleOwner(), kissesReceivedVal -> kissesReceived.setText(kissesReceivedVal.toString()));
-//
-//        //dates been on
-//        dateHubFragmentViewModel.getDatesBeenOn().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-//            @SuppressLint("SetTextI18n")
-//            @Override
-//            public void onChanged(Integer datesBeenOnVal) {
-//                datesBeenOn.setText(datesBeenOnVal.toString());
 //            }
 //        });
 
@@ -122,4 +96,10 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
         startReadyPlayerMeLink();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        dateHubFragmentViewModel
+                .initializeViews(dtcBalance, datesBeenOn, averageDateRatingText, ratings, kissesReceived);
+    }
 }

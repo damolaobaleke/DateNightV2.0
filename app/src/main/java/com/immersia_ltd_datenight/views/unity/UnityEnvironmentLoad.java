@@ -147,36 +147,7 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
     }
 
     private void addControlsToUnityFrame() {
-        FrameLayout layout = mUnityPlayer;
-        Button leaveDateButton = new Button(this);
-        leaveDateButton.setText(R.string.leave_date);
-        leaveDateButton.setAllCaps(false);
-        leaveDateButton.setTextColor(getColor(R.color.white));
-        leaveDateButton.setX(500);
-        leaveDateButton.setY(100);
-        leaveDateButton.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.custom_login_button, null));
 
-        leaveDateButton.setOnClickListener(v -> {
-            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        //Yes button clicked - leave date
-                        launchDateFinishedActivity();
-                        break;
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        //No button clicked -> do nothing
-                        dialog.dismiss();
-                        break;
-                }
-            };
-            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-            builder.setTitle("Confirmation")
-                    .setMessage("Are you sure you want to leave date?")
-                    .setPositiveButton("Yes", dialogClickListener)
-                    .setNegativeButton("No", dialogClickListener)
-                    .show();
-        });
-        layout.addView(leaveDateButton, 180, 70);
     }
 
     public void initializeUnity(){
