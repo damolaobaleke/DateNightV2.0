@@ -155,8 +155,6 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
         cancelCreation.setOnClickListener(v -> bottomSheetDialog.dismiss());
 
         createDateSchedule.setOnClickListener(v -> {
-            Toast.makeText(this, "DONE", Toast.LENGTH_LONG).show();
-            //go search a user to invite
             Intent intent = new Intent(this, InviteUserActivity.class);
             intent.putExtra("dateChosen", dateChosen.getText());
             intent.putExtra("timeChosen", timeChosen.getText());

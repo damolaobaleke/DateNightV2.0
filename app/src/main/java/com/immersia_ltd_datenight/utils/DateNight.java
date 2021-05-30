@@ -11,7 +11,7 @@
  * limitations under the License.
  */
 
-package com.immersia_ltd_datenight.utils.stripe.config;
+package com.immersia_ltd_datenight.utils;
 
 import android.app.Application;
 import android.content.Context;

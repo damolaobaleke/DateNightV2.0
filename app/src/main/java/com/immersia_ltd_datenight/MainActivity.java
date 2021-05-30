@@ -22,7 +22,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
 import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
-import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
+import com.immersia_ltd_datenight.utils.DateNight;
 import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
 import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
 import com.immersia_ltd_datenight.views.onboarding.UserOnBoarding;

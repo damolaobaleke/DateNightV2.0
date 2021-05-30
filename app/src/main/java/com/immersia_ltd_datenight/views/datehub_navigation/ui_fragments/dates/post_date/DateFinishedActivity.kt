@@ -25,7 +25,7 @@ import com.immersia_ltd_datenight.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.immersia_ltd_datenight.utils.constants.IntentConstants
-import com.immersia_ltd_datenight.utils.stripe.config.DateNight
+import com.immersia_ltd_datenight.utils.DateNight
 import com.immersia_ltd_datenight.views.unity.UnityEnvironmentLoad
 import de.hdodenhof.circleimageview.CircleImageView
 

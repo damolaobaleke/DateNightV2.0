@@ -36,7 +36,7 @@ import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.MainActivity;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.Date.DateModel;
-import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
+import com.immersia_ltd_datenight.utils.DateNight;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -143,15 +143,16 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 return new PendingDateViewHolder(view);
             }
 
-
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
+                if (getItemCount() < numHiddenItems){
+                    numHiddenItems = getItemCount(); // accounts for when invite has been rejected
+                }
                 if(getItemCount() - numHiddenItems < 1){
                     pendingHint.setVisibility(View.VISIBLE);
-                    if (getItemCount() < numHiddenItems){
-                        numHiddenItems = getItemCount(); // accounts for when invite has been rejected
-                    }
+                }else {
+                    pendingHint.setVisibility(View.INVISIBLE);
                 }
                 Log.e(TAG, "NumHiddenItems: " + numHiddenItems + " GetItemcount: " + getItemCount());
             }

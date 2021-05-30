@@ -1,19 +1,17 @@
 package com.immersia_ltd_datenight.views.unity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.room.Database;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,12 +32,12 @@ import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.Chat.ChatHead;
 import com.immersia_ltd_datenight.modelfirestore.Chat.ChatRoomMessage;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
-import com.immersia_ltd_datenight.modelfirestore.User.UserStatsModel;
 import com.immersia_ltd_datenight.unity_plugin.UnityPlayerWrapperActivity;
 import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.utils.constants.IntentConstants;
 import com.immersia_ltd_datenight.utils.constants.UnityConstants;
-import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
+import com.immersia_ltd_datenight.utils.DateNight;
+import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
 import com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.dates.post_date.DateFinishedActivity;
 import com.unity3d.player.UnityPlayer;
 
@@ -49,13 +47,16 @@ import java.util.Map;
 public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
     // Views
     ConstraintLayout constraintLayoutForUnity;
+    Button waitingRoomLeaveButton;
+    FrameLayout unityViewLayout = mUnityPlayer;
     // App Data
     DateNight appState;
     // Firebase
     private DocumentReference dateDocument;
     private DatabaseReference chatRoomRef;
     private DatabaseReference chatHeadRef;
-    private ListenerRegistration dateListenerRegister;
+    private ListenerRegistration dateListenerRegisterCreator;
+    private ListenerRegistration dateListenerRegisterInvitee;
     private ChildEventListener chatRoomEventListener;
     //Needed for unity scene and date finished activity
     private String currentUserId = FirebaseAuth.getInstance().getUid();
@@ -74,10 +75,13 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
     Map<String, String> mapFullNames = new HashMap<>();;
     //Stats
     private int participantKissCount = 0;
+    //Other
+    private String TAG = "UnityPlayerActivity";
+    private boolean quittedFromWaitingRoom = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addControlsToUnityFrame();
         setContentView(R.layout.activity_unity_environment_load);
 
         // Grab data needed for unity
@@ -116,16 +120,17 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
                 .child(currentUserId)
                 .child(chatRoomId);
         constraintLayoutForUnity = findViewById(R.id.constraintLayoutForUnity);
+        waitingRoomLeaveButton = findViewById(R.id.waitngRoomLeaveBtn);
+        waitingRoomLeaveButton.setOnClickListener(v -> leaveDateFromWaitingRoom());
 
-        //Unity activity take whole view
+        //Add unity to view
         constraintLayoutForUnity.addView(mUnityPlayer.getView(), ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        mUnityPlayer.getView().setVisibility(View.INVISIBLE);
+
         // Initialize Unity
         initializeUnity();
 
-        //mUnityPlayer.requestFocus();
         mUnityPlayer.windowFocusChanged(true);
-
-
     }
 
     private String generateInitializationParams(String serverToConnect) {
@@ -146,10 +151,6 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
         return jsonBodyForUnity;
     }
 
-    private void addControlsToUnityFrame() {
-
-    }
-
     public void initializeUnity(){
         // On-start unity must be initialized initialization params
         if (currentUserId.equals(dateCreatorId)){
@@ -159,16 +160,18 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
                              generateInitializationParams(""));
             initializeChatMessageListener();
         } else {
-            dateListenerRegister = dateDocument.addSnapshotListener((dateSnapshot, error) -> {
+            // Date invitee will listen until serverToConnect is populated
+            dateListenerRegisterInvitee = dateDocument.addSnapshotListener((dateSnapshot, error) -> {
                 if(dateSnapshot != null &&
-                        dateSnapshot.getString("serverToConnect") != null &&
-                        !dateSnapshot.getString("serverToConnect").isEmpty()){
-                    dateListenerRegister.remove();
+                        dateSnapshot.getString(DatabaseConstants.SERVER_TO_CONNECT_STRING) != null &&
+                        !dateSnapshot.getString(DatabaseConstants.SERVER_TO_CONNECT_STRING).isEmpty()){
+                    dateListenerRegisterInvitee.remove();
                     clearServerToConnectFromDate();
                     UnitySendMessage(UnityConstants.NETWORK_MANAGER_GAME_OBJECT,
                                      UnityConstants.STARTUP_FUNCTION_ARG,
                                      generateInitializationParams(dateSnapshot.getString(DatabaseConstants.SERVER_TO_CONNECT_STRING)));
                     initializeChatMessageListener();
+                    bringUnityActivityToFront();
                 }
             });
         }
@@ -226,10 +229,19 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
 
     @Override
     protected void sendServerFromUnity(String server) {
-        // Write to date object
+        // Unity will call back to this function to populate server field if user is date creator
+        Log.e(TAG, "Unity requesting to send server");
         Map<String, Object> data = new HashMap<>();
         data.put(DatabaseConstants.SERVER_TO_CONNECT_STRING, server);
-        dateDocument.update(data);
+        dateDocument.update(data).addOnSuccessListener(v -> {
+            // Experience is ready when serverToConnect field has been cleared
+            dateListenerRegisterCreator = dateDocument.addSnapshotListener((dateSnapshot, error) -> {
+                if(dateSnapshot != null && dateSnapshot.getString(DatabaseConstants.SERVER_TO_CONNECT_STRING).isEmpty()){
+                    dateListenerRegisterCreator.remove();
+                    bringUnityActivityToFront();
+                }
+            });
+        });
     }
 
     private void sendReceivedParticipantChatToUnity(String message){
@@ -239,6 +251,7 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
     }
 
     private void clearServerToConnectFromDate(){
+        Log.e(TAG, "Attempting to clear server to connect");
         HashMap<String, Object> data = new HashMap<>();
         data.put(DatabaseConstants.SERVER_TO_CONNECT_STRING, "");
         dateDocument.update(data);
@@ -268,17 +281,14 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
         mUnityPlayer.configurationChanged(newConfig);
     }
 
-
-    @Override
-    public void onUnityPlayerQuitted() {
-        super.onUnityPlayerQuitted();
-    }
-
     @Override
     public void onUnityPlayerUnloaded() {
         super.onUnityPlayerUnloaded();
-        completeDate();
-        launchDateFinishedActivity();
+        if (!quittedFromWaitingRoom){
+            completeDate();
+            launchDateFinishedActivity();
+        }
+        Log.i(TAG, "Unloaded unity");
     }
 
     private void completeDate(){
@@ -321,5 +331,16 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
                 }
             }
         });
+    }
+
+    private void bringUnityActivityToFront(){
+        waitingRoomLeaveButton.setVisibility(View.GONE);
+        mUnityPlayer.getView().setVisibility(View.VISIBLE);
+    }
+    private void leaveDateFromWaitingRoom(){
+        quittedFromWaitingRoom = true;
+        mUnityPlayer.unload();
+        Intent intent = new Intent (this, DateHubNavigation.class);
+        startActivity(intent);
     }
 }

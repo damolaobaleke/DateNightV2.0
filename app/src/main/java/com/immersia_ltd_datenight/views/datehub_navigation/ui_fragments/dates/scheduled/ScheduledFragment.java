@@ -36,7 +36,7 @@ import com.immersia_ltd_datenight.utils.constants.IntentConstants;
 import com.immersia_ltd_datenight.MainActivity;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.Date.DateModel;
-import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
+import com.immersia_ltd_datenight.utils.DateNight;
 import com.immersia_ltd_datenight.views.unity.UnityEnvironmentLoad;
 
 import java.text.DateFormat;
@@ -150,11 +150,13 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
+                if (getItemCount() < numHiddenItems){
+                    numHiddenItems = getItemCount(); // accounts for when invite has been rejected
+                }
                 if(getItemCount() - numHiddenItems < 1){
                     scheduledHint.setVisibility(View.VISIBLE);
-                    if (getItemCount() < numHiddenItems){
-                        numHiddenItems = getItemCount(); // accounts for when invite has been rejected
-                    }
+                } else {
+                    scheduledHint.setVisibility(View.INVISIBLE);
                 }
             }
 

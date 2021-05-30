@@ -29,8 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
-import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
-import com.immersia_ltd_datenight.views.authentication.LoginActivity;
+import com.immersia_ltd_datenight.utils.DateNight;
 import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
 import com.stripe.android.CustomerSession;
 

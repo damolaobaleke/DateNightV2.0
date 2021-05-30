@@ -35,6 +35,7 @@ public class DateNightAppData {
     private HashMap<String, ExperienceModel> experiencesData = new HashMap<String, ExperienceModel>();
     // Util data
     private final static String TAG = "RetrieveUserAndExperienceData";
+    private boolean hasUnityBeenLaunched = false;
 
     public DateNightAppData (String currentUserId, Context launchContext){
         this.currentUserId = currentUserId;
@@ -105,5 +106,13 @@ public class DateNightAppData {
             theString += "/n" + experiencesData.get(expId).getName();
         }
         return theString;
+    }
+
+    public void setHasUnityBeenLaunched(boolean hasUnityBeenLaunched) {
+        this.hasUnityBeenLaunched = hasUnityBeenLaunched;
+    }
+
+    public boolean getHasUnityBeenLaunched(){
+        return hasUnityBeenLaunched;
     }
 }
