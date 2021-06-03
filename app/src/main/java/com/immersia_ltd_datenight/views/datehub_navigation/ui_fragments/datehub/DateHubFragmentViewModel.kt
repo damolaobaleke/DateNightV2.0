@@ -14,17 +14,21 @@ class DateHubFragmentViewModel : ViewModel() {
     private var kissesRcvd = MutableLiveData<Int>()
     private var dateCount = MutableLiveData<Int>()
     private var dateRating = MutableLiveData<Int>()
+    private var userAvatar =  MutableLiveData<String>()
 
     private lateinit var docReference: DocumentReference
     private lateinit var collectionReference: CollectionReference
     var db: FirebaseFirestore
     lateinit var mAuth: FirebaseAuth
     lateinit var currentUser: String
+    lateinit var avatarHeadShotUrl: String
+
 
     fun DateNightCoinViewModel() {
         dateRating = MutableLiveData()
         dateCount = MutableLiveData()
         dtcBalance = MutableLiveData()
+        userAvatar = MutableLiveData()
     }
 
     init {
@@ -85,6 +89,16 @@ class DateHubFragmentViewModel : ViewModel() {
         return kissesRcvd
     }
 
+    fun get2dAvatar(): LiveData<String> {
+        docReference.get().addOnSuccessListener { documentSnapshot ->
+            if(documentSnapshot.exists()){
+                val user = documentSnapshot.toObject(UserModel::class.java)
+                userAvatar.value = user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD]
+            }
+        }
+        return userAvatar;
+    }
+
     companion object {
         var TAG = "Datehubviewmodel"
     }
@@ -96,6 +110,5 @@ class DateHubFragmentViewModel : ViewModel() {
 
 
     }
-
 
 }

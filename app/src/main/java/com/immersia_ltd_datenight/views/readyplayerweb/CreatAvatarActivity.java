@@ -16,7 +16,6 @@ package com.immersia_ltd_datenight.views.readyplayerweb;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.room.Database;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -32,22 +31,38 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.immersia_ltd_datenight.R;
-import com.immersia_ltd_datenight.databinding.ActivityCreatAvatarBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.immersia_ltd_datenight.databinding.ActivityCreatAvatarBinding;
+import com.immersia_ltd_datenight.modelfirestore.avatar.RenderObject;
+import com.immersia_ltd_datenight.network.api.DatenightApi;
 import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 import java.util.HashMap;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CreatAvatarActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityCreatAvatarBinding binding;
     DocumentReference userDocRef;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
+    DatenightApi api;
+    String twodUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +71,11 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         View view = binding.getRoot();
         setContentView(view);
 
-
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
         userDocRef = db.collection("userData").document(mAuth.getCurrentUser().getUid());
 
-        //webViewImplmentTwo();
-        //webView();
-        //webViewBottomSheet();
-        //webViewDialogue();
-        //openReadyPlayerWebPage();
         customTabLoadAvatar();
 
         binding.submitAvatarBtn.setOnClickListener(v -> storeAvatarLink());
@@ -78,6 +87,7 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         Toast.makeText(this, binding.avatarLinkInput.getText().toString(), Toast.LENGTH_LONG).show();
 
         HashMap<String, Object> avatar = new HashMap<>();
+        avatar.put(DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD, getAvatarUrl());
         avatar.put(DatabaseConstants.AVATAR_URL_FIELD, binding.avatarLinkInput.getText().toString());
 
         userDocRef.update(DatabaseConstants.AVATAR_NODE, avatar).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -188,8 +198,63 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         colorBuilder.build();
 
         //builder.setDefaultColorSchemeParams()
+    }
+
+    public String getAvatarUrl(){
+        setUpNetworkRequest();
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("scene","fullbody-portrait-v1");
+        params.put("armature", "ArmatureTargetMale");
+        params.put("model", binding.avatarLinkInput.getText().toString());
+
+        String jsonParamStringified = new Gson().toJson(params);
+        Log.i("json avatar object stringified", jsonParamStringified);
+
+        Call<RenderObject> render =  api.getAvatarUrl(params);
+        render.enqueue(new Callback<RenderObject>() {
+            @Override
+            public void onResponse(@NotNull Call<RenderObject> call, @NotNull Response<RenderObject> response) {
+
+                if(!response.isSuccessful()){
+                    Toast.makeText(CreatAvatarActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                RenderObject objRender = response.body();
+                Log.i("2D Link", objRender.getRender()[0] + "");
+
+                twodUrl = objRender.getRender()[0];
+
+            }
+
+            @Override
+            public void onFailure(Call<RenderObject> call, Throwable t) {
+                Log.i("Error", t.getMessage());
+            }
+        });
 
 
+        return twodUrl;
+
+    }
+
+    private void setUpNetworkRequest() {
+        //Logging (Http)REQUEST and RESPONSE
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+        //Logging Request and Response
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://render.readyplayer.me")
+                .addConverterFactory(GsonConverterFactory.create()) //GSON convert java object to JSON
+                .client(okHttpClient)
+                .build();
+        api = retrofit.create(DatenightApi.class);
     }
 
     public void openReadyPlayerWebPage() {

@@ -18,16 +18,18 @@
             app:layout_constraintStart_toStartOf="@id/scroll">
 
             <ImageView
-                android:id="@+id/imageView5"
+                android:id="@+id/user_avatar_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="80dp"
                 android:scaleType="centerCrop"
-                android:scaleX="2"
-                android:scaleY="2"
+                android:scaleX="1.8"
+                android:scaleY="1.8"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:background="@drawable/avatar_2d_circle"
                 app:srcCompat="@drawable/datenight_logo" />
 
             <TextView
@@ -45,10 +47,10 @@
                 android:text="Create avatar"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@+id/imageView5"
+                app:layout_constraintEnd_toEndOf="@+id/user_avatar_image"
                 app:layout_constraintHorizontal_bias="0.545"
-                app:layout_constraintStart_toStartOf="@+id/imageView5"
-                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+                app:layout_constraintStart_toStartOf="@+id/user_avatar_image"
+                app:layout_constraintTop_toBottomOf="@+id/user_avatar_image" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardOne"
