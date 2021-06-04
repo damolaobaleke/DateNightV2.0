@@ -32,24 +32,52 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.Toast;
 
+<<<<<<< HEAD:app/src/main/java/com/ltd_immersia_datenight/views/readyplayerweb/CreatAvatarActivity.java
 import com.ltd_immersia_datenight.R;
 import com.ltd_immersia_datenight.databinding.ActivityCreatAvatarBinding;
+=======
+import com.google.gson.Gson;
+import com.immersia_ltd_datenight.R;
+>>>>>>> 512b3599fbcf6dbb8b7b96a907be0936af687c72:app/src/main/java/com/immersia_ltd_datenight/views/readyplayerweb/CreatAvatarActivity.java
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+<<<<<<< HEAD:app/src/main/java/com/ltd_immersia_datenight/views/readyplayerweb/CreatAvatarActivity.java
 import com.ltd_immersia_datenight.utils.constants.DatabaseConstants;
 import com.ltd_immersia_datenight.utils.constants.IntentConstants;
 import com.ltd_immersia_datenight.views.datehub_navigation.DateHubNavigation;
+=======
+import com.immersia_ltd_datenight.databinding.ActivityCreatAvatarBinding;
+import com.immersia_ltd_datenight.modelfirestore.avatar.RenderObject;
+import com.immersia_ltd_datenight.network.api.DatenightApi;
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
+import com.immersia_ltd_datenight.utils.constants.IntentConstants;
+import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
+import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
+>>>>>>> 512b3599fbcf6dbb8b7b96a907be0936af687c72:app/src/main/java/com/immersia_ltd_datenight/views/readyplayerweb/CreatAvatarActivity.java
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 import java.util.HashMap;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CreatAvatarActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityCreatAvatarBinding binding;
     DocumentReference userDocRef;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
+    DatenightApi api;
+    String twodUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +90,6 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setTitle("Edit Avatar");
-
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -79,6 +106,7 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         Log.i("Avatar Link", binding.avatarLinkInput.getText().toString());
 
         HashMap<String, Object> avatar = new HashMap<>();
+        avatar.put(DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD, getAvatarUrl());
         avatar.put(DatabaseConstants.AVATAR_URL_FIELD, binding.avatarLinkInput.getText().toString());
 
         userDocRef.update(DatabaseConstants.AVATAR_NODE, avatar).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -193,8 +221,63 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         colorBuilder.build();
 
         //builder.setDefaultColorSchemeParams()
+    }
+
+    public String getAvatarUrl(){
+        setUpNetworkRequest();
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("scene","fullbody-portrait-v1");
+        params.put("armature", "ArmatureTargetMale");
+        params.put("model", binding.avatarLinkInput.getText().toString());
+
+        String jsonParamStringified = new Gson().toJson(params);
+        Log.i("json avatar object stringified", jsonParamStringified);
+
+        Call<RenderObject> render =  api.getAvatarUrl(params);
+        render.enqueue(new Callback<RenderObject>() {
+            @Override
+            public void onResponse(@NotNull Call<RenderObject> call, @NotNull Response<RenderObject> response) {
+
+                if(!response.isSuccessful()){
+                    Toast.makeText(CreatAvatarActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                RenderObject objRender = response.body();
+                Log.i("2D Link", objRender.getRender()[0] + "");
+
+                twodUrl = objRender.getRender()[0];
+
+            }
+
+            @Override
+            public void onFailure(Call<RenderObject> call, Throwable t) {
+                Log.i("Error", t.getMessage());
+            }
+        });
 
 
+        return twodUrl;
+
+    }
+
+    private void setUpNetworkRequest() {
+        //Logging (Http)REQUEST and RESPONSE
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+        //Logging Request and Response
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://render.readyplayer.me")
+                .addConverterFactory(GsonConverterFactory.create()) //GSON convert java object to JSON
+                .client(okHttpClient)
+                .build();
+        api = retrofit.create(DatenightApi.class);
     }
 
     public void openReadyPlayerWebPage() {

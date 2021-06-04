@@ -1,24 +1,32 @@
 package com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.datehub;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.ltd_immersia_datenight.utils.constants.IntentConstants;
 import com.ltd_immersia_datenight.R;
 import com.ltd_immersia_datenight.views.datehub_navigation.DateHubNavigation;
 import com.ltd_immersia_datenight.views.readyplayerweb.CreateAvatarInstructionsActivity;
-
+import com.ltd_immersia_datenight.views.readyplayerweb.CreatAvatarActivity;
+import com.squareup.picasso.Picasso;
+import java.text.NumberFormat;
+import java.util.Locale;
 import static java.lang.Math.round;
 
 public class DatehubFragment extends Fragment implements View.OnClickListener {
@@ -29,6 +37,7 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
     TextView kissesReceived;
     Button topUpDtc;
     TextView editAvatarBtn;
+    ImageView avatarImage;
 
     DateHubFragmentViewModel dateHubFragmentViewModel;
 
@@ -46,6 +55,7 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
         kissesReceived = view.findViewById(R.id.kissesReceived);
         topUpDtc = view.findViewById(R.id.top_up_btn);
         editAvatarBtn = view.findViewById(R.id.edit_avatar_btn);
+        avatarImage = view.findViewById(R.id.user_avatar_image);
 
         dateHubFragmentViewModel
                 .initializeViews(dtcBalance, datesBeenOn, averageDateRatingText, ratings, kissesReceived);
@@ -72,6 +82,19 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
 
         //EditAvatar
         editAvatarBtn.setOnClickListener(this);
+
+        //set2DAvatar
+        dateHubFragmentViewModel.get2dAvatar().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String twodAvatarUrl) {
+                if(!twodAvatarUrl.equals("")){
+                    Picasso.get().load(twodAvatarUrl).into(avatarImage);
+                }else{
+                   avatarImage.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.datenight_logo));
+                }
+
+            }
+        });
 
         return view;
 
