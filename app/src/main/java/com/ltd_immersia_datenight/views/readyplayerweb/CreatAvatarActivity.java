@@ -32,31 +32,22 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.Toast;
 
-<<<<<<< HEAD:app/src/main/java/com/ltd_immersia_datenight/views/readyplayerweb/CreatAvatarActivity.java
+
 import com.ltd_immersia_datenight.R;
 import com.ltd_immersia_datenight.databinding.ActivityCreatAvatarBinding;
-=======
 import com.google.gson.Gson;
-import com.immersia_ltd_datenight.R;
->>>>>>> 512b3599fbcf6dbb8b7b96a907be0936af687c72:app/src/main/java/com/immersia_ltd_datenight/views/readyplayerweb/CreatAvatarActivity.java
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-<<<<<<< HEAD:app/src/main/java/com/ltd_immersia_datenight/views/readyplayerweb/CreatAvatarActivity.java
 import com.ltd_immersia_datenight.utils.constants.DatabaseConstants;
 import com.ltd_immersia_datenight.utils.constants.IntentConstants;
 import com.ltd_immersia_datenight.views.datehub_navigation.DateHubNavigation;
-=======
-import com.immersia_ltd_datenight.databinding.ActivityCreatAvatarBinding;
-import com.immersia_ltd_datenight.modelfirestore.avatar.RenderObject;
-import com.immersia_ltd_datenight.network.api.DatenightApi;
-import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
-import com.immersia_ltd_datenight.utils.constants.IntentConstants;
-import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
-import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
->>>>>>> 512b3599fbcf6dbb8b7b96a907be0936af687c72:app/src/main/java/com/immersia_ltd_datenight/views/readyplayerweb/CreatAvatarActivity.java
+import com.ltd_immersia_datenight.databinding.ActivityCreatAvatarBinding;
+import com.ltd_immersia_datenight.modelfirestore.avatar.RenderObject;
+import com.ltd_immersia_datenight.network.api.DatenightApi;
+import com.ltd_immersia_datenight.views.landing_screen.BoardingScreen;
 
 import org.jetbrains.annotations.NotNull;
 
