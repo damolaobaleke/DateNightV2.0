@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import com.immersia_ltd_datenight.utils.constants.IntentConstants;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
 import com.immersia_ltd_datenight.views.readyplayerweb.CreatAvatarActivity;
+import com.squareup.picasso.Picasso;
 import com.immersia_ltd_datenight.views.readyplayerweb.CreateAvatarInstructionsActivity;
 
 import java.text.NumberFormat;
@@ -37,6 +39,7 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
     TextView kissesReceived;
     Button topUpDtc;
     TextView editAvatarBtn;
+    ImageView avatarImage;
 
     DateHubFragmentViewModel dateHubFragmentViewModel;
 
@@ -54,6 +57,7 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
         kissesReceived = view.findViewById(R.id.kissesReceived);
         topUpDtc = view.findViewById(R.id.top_up_btn);
         editAvatarBtn = view.findViewById(R.id.edit_avatar_btn);
+        avatarImage = view.findViewById(R.id.user_avatar_image);
 
         dateHubFragmentViewModel
                 .initializeViews(dtcBalance, datesBeenOn, averageDateRatingText, ratings, kissesReceived);
@@ -80,6 +84,19 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
 
         //EditAvatar
         editAvatarBtn.setOnClickListener(this);
+
+        //set2DAvatar
+        dateHubFragmentViewModel.get2dAvatar().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String twodAvatarUrl) {
+                if(!twodAvatarUrl.equals("")){
+                    Picasso.get().load(twodAvatarUrl).into(avatarImage);
+                }else{
+                   avatarImage.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.datenight_logo));
+                }
+
+            }
+        });
 
         return view;
 
