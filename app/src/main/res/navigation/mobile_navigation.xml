@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/nav_accounts"
-        android:name="com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.accounts.AccountsFragment"
+        android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.accounts.AccountsFragment"
         android:label="Account"
         tools:layout="@layout/fragment_accounts" />
 
     <fragment
         android:id="@+id/nav_buy_dtc"
-        android:name="com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.buy_dtc.DateNightCoinFragment"
+        android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.buy_dtc.DateNightCoinFragment"
         android:label="DTC"
         tools:layout="@layout/fragment_datenightcoin" />
 
     <fragment
         android:id="@+id/nav_help"
-        android:name="com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.help.HelpFragment"
+        android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.help.HelpFragment"
         android:label="Help"
         tools:layout="@layout/fragment_help" />
 
     <fragment
         android:id="@+id/nav_my_dates"
-        android:name="com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.dates.DateFragment"
+        android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.dates.DateFragment"
         android:label="My Dates"
         tools:layout="@layout/fragment_dates">
         <action
@@ -41,7 +41,7 @@
 
     <fragment
         android:id="@+id/nav_date_hub"
-        android:name="com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.datehub.DatehubFragment"
+        android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.datehub.DatehubFragment"
         android:label="Date Hub"
         tools:layout="@layout/fragment_date_hub">
         <action
@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/nav_inbox"
-        android:name="com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.chats.InboxFragment"
+        android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.chats.InboxFragment"
         android:label="Chats"
         tools:layout="@layout/fragment_inbox" />
 
