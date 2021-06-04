@@ -68,7 +68,7 @@ class DateHubFragmentViewModel : ViewModel() {
             }
         }
     }
-    
+
     fun get2dAvatar(): LiveData<String> {
         docReference.get().addOnSuccessListener { documentSnapshot ->
             if(documentSnapshot.exists()){
