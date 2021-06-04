@@ -3,7 +3,6 @@ package com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.casual
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -25,15 +24,13 @@ import com.immersia_ltd_datenight.views.unity.UnityEnvironmentLoad
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.immersia_ltd_datenight.utils.stripe.config.DateNight
+import com.immersia_ltd_datenight.utils.DateNight
 import com.squareup.picasso.Callback
-import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.net.URL
 
 
 class CasualFragment : Fragment() {

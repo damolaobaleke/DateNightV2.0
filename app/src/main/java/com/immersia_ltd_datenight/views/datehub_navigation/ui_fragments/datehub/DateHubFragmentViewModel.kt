@@ -1,13 +1,15 @@
 package com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.datehub
 
 import android.util.Log
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.immersia_ltd_datenight.utils.constants.DatabaseConstants
-import com.immersia_ltd_datenight.modelfirestore.User.UserModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import com.immersia_ltd_datenight.modelfirestore.User.UserModel
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants
 
 class DateHubFragmentViewModel : ViewModel() {
     private var dtcBalance = MutableLiveData<Int>()
@@ -18,11 +20,11 @@ class DateHubFragmentViewModel : ViewModel() {
 
     private lateinit var docReference: DocumentReference
     private lateinit var collectionReference: CollectionReference
-    var db: FirebaseFirestore
-    lateinit var mAuth: FirebaseAuth
-    lateinit var currentUser: String
+    var db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    var currentUser: String = mAuth.currentUser!!.uid
+    private lateinit var userModel : UserModel
     lateinit var avatarHeadShotUrl: String
-
 
     fun DateNightCoinViewModel() {
         dateRating = MutableLiveData()
@@ -32,12 +34,9 @@ class DateHubFragmentViewModel : ViewModel() {
     }
 
     init {
-        db = FirebaseFirestore.getInstance()
-        mAuth = FirebaseAuth.getInstance()
-        currentUser = mAuth.currentUser!!.uid
         docReference = db.collection(DatabaseConstants.USER_DATA_NODE).document(currentUser)
-    }
 
+    }
 
     fun getDtcBalance(): LiveData<Int> {
         dtcBalance.value = 0
@@ -54,41 +53,22 @@ class DateHubFragmentViewModel : ViewModel() {
     }
 
 
-    fun getDatesBeenOn(): LiveData<Int> {
-        dateCount.value = 0
-
+    fun initializeViews(dtcBalance: TextView, datesCount: TextView, avgRating: TextView, ratingProgBar: ProgressBar, kissCount: TextView){
         docReference.get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
-                val user = documentSnapshot.toObject(UserModel::class.java)
-                dateCount.value = user!!.getAvgDateStats().dateCount
+                userModel = documentSnapshot.toObject(UserModel::class.java)!!
+                datesCount.setText(userModel.getAvgDateStats().dateCount.toString())
+                avgRating.setText(userModel.getAvgDateStats().rating.toString())
+                ratingProgBar.progress = userModel.getAvgDateStats().rating * 100 / 5
+                dtcBalance.setText(userModel.getDtc().toString())
+                kissCount.setText(userModel.getAvgDateStats().kissCount.toString())
+
             } else {
-                dateCount.value = 0
-                Log.i(TAG, "value is 0 ")
+                Log.i(TAG, "Unable to get user model")
             }
         }
-        return dateCount
     }
-
-    fun getAvgDateRating(): LiveData<Int> {
-
-        docReference.get().addOnSuccessListener { documentSnapshot ->
-            if (documentSnapshot.exists()) {
-                val user = documentSnapshot.toObject(UserModel::class.java)
-                dateRating.value = user!!.getAvgDateStats().rating
-                Log.i("Datehub VM", "rating: ${user!!.getAvgDateStats().rating}, dateCount:${user!!.getAvgDateStats().dateCount}")
-            } else {
-                dateRating.value = 0
-                Log.i(TAG, "value is 0 ")
-            }
-        }
-        return dateRating;
-    }
-
-    fun getKissesReceived(): LiveData<Int> {
-        kissesRcvd.value = 0
-        return kissesRcvd
-    }
-
+    
     fun get2dAvatar(): LiveData<String> {
         docReference.get().addOnSuccessListener { documentSnapshot ->
             if(documentSnapshot.exists()){
@@ -104,11 +84,10 @@ class DateHubFragmentViewModel : ViewModel() {
     }
 
     fun buyDtc(parentFrag: DatehubFragment) {
-//        val intent = Intent(requireContext(), DateHubNavigation::class.java)
-//        intent.putExtra(IntentConstants.FRAGMENT_TO_LOAD, IntentConstants.BUY_DTC_FRAGMENT)
-//        parentFrag.startActivity(intent)
-
-
+        /*
+        val intent = Intent(requireContext(), DateHubNavigation::class.java)
+        intent.putExtra(IntentConstants.FRAGMENT_TO_LOAD, IntentConstants.BUY_DTC_FRAGMENT)
+        parentFrag.startActivity(intent)
+         */
     }
-
 }

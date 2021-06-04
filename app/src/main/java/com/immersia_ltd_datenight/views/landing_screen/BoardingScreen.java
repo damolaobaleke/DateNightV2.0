@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.immersia_ltd_datenight.R;
-import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
+import com.immersia_ltd_datenight.utils.DateNight;
 import com.immersia_ltd_datenight.views.authentication.LoginActivity;
 import com.immersia_ltd_datenight.views.authentication.SignUpActivity;
 import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;

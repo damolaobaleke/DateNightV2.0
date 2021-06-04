@@ -9,16 +9,16 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.immersia_ltd_datenight.utils.constants.DatabaseConstants
-import com.immersia_ltd_datenight.R
-import com.immersia_ltd_datenight.modelfirestore.Chat.ChatHead
-import com.immersia_ltd_datenight.modelfirestore.Chat.ChatRoomMessage
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.firebase.ui.database.SnapshotParser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.immersia_ltd_datenight.R
+import com.immersia_ltd_datenight.modelfirestore.Chat.ChatHead
+import com.immersia_ltd_datenight.modelfirestore.Chat.ChatRoomMessage
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -82,7 +82,7 @@ class ChatRoomViewModel(username: String,
 
                     override fun onBindViewHolder(holder: ChatRoomMessageViewHolder, position: Int, data: ChatRoomMessage){
                         holder.bind(data, mapUsernames)
-                        parentRecyclerView.smoothScrollToPosition(position)
+                        //parentRecyclerView.smoothScrollToPosition(itemCount)
                     }
 
                     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -92,8 +92,10 @@ class ChatRoomViewModel(username: String,
                     override fun onDataChanged() {
                         // There's nothing extra that needs doing
                         super.onDataChanged()
+                        parentRecyclerView.smoothScrollToPosition(itemCount - 1)
                     }
                 }
+
     }
 
     fun sendMessage(messageText: String){

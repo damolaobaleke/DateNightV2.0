@@ -36,7 +36,7 @@ import com.immersia_ltd_datenight.utils.constants.IntentConstants;
 import com.immersia_ltd_datenight.MainActivity;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.Date.DateModel;
-import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
+import com.immersia_ltd_datenight.utils.DateNight;
 import com.immersia_ltd_datenight.views.unity.UnityEnvironmentLoad;
 
 import java.text.DateFormat;
@@ -65,6 +65,7 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
     private RecyclerView recyclerView;
     FirestoreRecyclerAdapter<DateModel, ScheduledDateViewHolder> theAdapter;
     FirestoreRecyclerOptions<DateModel> options;
+    private int numHiddenItems = 0; // required to track whether to hint or not
     // App Data
     DateNight appState;
 
@@ -123,10 +124,18 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
                 if (hideView) {
                     holder.itemView.setVisibility(View.GONE);
                     holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+                    ++numHiddenItems;
                 } else {
                     holder.itemView.setVisibility(View.VISIBLE);
                     holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     holder.bind(data, holder.itemView);
+                }
+
+                // Determine whether to display hint or not
+                if(getItemCount() - numHiddenItems > 0){
+                    scheduledHint.setVisibility(View.GONE);
+                } else {
+                    scheduledHint.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -141,8 +150,13 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
-                if (getItemCount() > 0) {
-                    scheduledHint.setVisibility(View.GONE);
+                if (getItemCount() < numHiddenItems){
+                    numHiddenItems = getItemCount(); // accounts for when invite has been rejected
+                }
+                if(getItemCount() - numHiddenItems < 1){
+                    scheduledHint.setVisibility(View.VISIBLE);
+                } else {
+                    scheduledHint.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -378,10 +392,6 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
                                 .document(dateData.getId())
                                 .update(updateData);
 
-                        v.setVisibility(View.GONE);
-                        ViewGroup.LayoutParams params = v.getLayoutParams();
-                        params.height = 0;
-                        v.setLayoutParams(params); //hack to hide view
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         //No button clicked
@@ -461,5 +471,11 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
     private void navigateToMainActivity(){
         Intent intent = new Intent(requireActivity(), MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        numHiddenItems = 0;
     }
 }

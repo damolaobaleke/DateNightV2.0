@@ -1,15 +1,20 @@
 package com.immersia_ltd_datenight.views.datehub_navigation.ui_fragments.chats
 
 import android.content.Intent
+import android.net.Uri
+import android.text.Html
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModel
-import com.immersia_ltd_datenight.utils.constants.DatabaseConstants
-import com.immersia_ltd_datenight.utils.constants.IntentConstants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.immersia_ltd_datenight.utils.constants.DatabaseConstants
+import com.immersia_ltd_datenight.utils.constants.IntentConstants
 import kotlinx.android.synthetic.main.activity_start_new_chat.*
 
 class StartNewChatViewModel: ViewModel() {
@@ -31,7 +36,7 @@ class StartNewChatViewModel: ViewModel() {
         parentContext.foundUserLayout.isVisible = false
         parentContext.foundUserLayout.isVisible = false
         val query = dbReferenceUser.whereEqualTo("username", queryUserName).get()
-                .addOnSuccessListener {querySnapShot ->
+                .addOnSuccessListener { querySnapShot ->
                     if (querySnapShot != null){
                         val documents = querySnapShot.documents
                         if (documents.size == 1){
@@ -116,6 +121,18 @@ class StartNewChatViewModel: ViewModel() {
         return split[1]
     }
 
+    fun inviteUser(parentContext: StartNewChatActivity, shareButton: Button) {
+        shareButton.setOnClickListener(View.OnClickListener { v: View? ->
+            val link = Uri.parse("https://play.google.com/console/u/0/developers/8421302216223559919/app/4972918314666606268/tracks/4699075429511113233/releases/7/details")
+            val smiley = Html.fromHtml("&#U+263A", Html.FROM_HTML_MODE_LEGACY)
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Are you tired of the endless talking stages? Join Date night now for a new dating experience. \nHere is the link $link")
+                    .putExtra(Intent.EXTRA_SUBJECT, "Date Night")
+            shareIntent.type = "text/plain"
+            startActivity(parentContext, shareIntent, null)
+        })
+    }
     companion object{
         const val TAG = "StarNewChatActivity"
     }

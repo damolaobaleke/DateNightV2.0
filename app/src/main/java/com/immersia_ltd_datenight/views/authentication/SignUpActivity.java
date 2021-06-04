@@ -245,8 +245,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     .addOnSuccessListener(authResult -> Toast.makeText(this, "Registered Successfully, please verify your email address", Toast.LENGTH_SHORT).show())
 
                     .addOnFailureListener(this, e -> {
-                        Log.i("Failed", e.getLocalizedMessage());
-                        Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, e.getLocalizedMessage());
                         e.printStackTrace();
                     })
 
@@ -273,8 +272,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                         //go to LogIn, then to datehub
                                         goToLogin();
                                     } else {
-                                        Toast.makeText(SignUpActivity.this, task2.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
+                                        Log.e(TAG, task2.getException().getMessage());
                                     }
                                 });
 
@@ -326,7 +324,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             /*create stripe customer --POST REQUEST TO ENDPOINT*/
 
         }).addOnFailureListener(e -> {
-            Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             Log.e(TAG, Objects.requireNonNull(e.getLocalizedMessage()));
         });
 
@@ -378,7 +375,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onFailure(Call<UserObject> call, Throwable e) {
-                Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e(TAG, e.getMessage());
             }
         });
     }

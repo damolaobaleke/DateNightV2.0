@@ -34,16 +34,31 @@
     <!--            android:layout_height="match_parent">-->
 
 
+    <TextView
+        android:id="@+id/noUserFoundMessage2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter"
+        android:text="No results found"
+        android:textAlignment="center"
+        android:textColor="@color/date_night_grey"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/share" />
+
     <EditText
         android:id="@+id/search_user"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/custom_textbox_search"
         android:fontFamily="@font/inter"
-        android:hint="Search for a user"
+        android:hint="Search username..."
         android:paddingVertical="7dp"
         android:paddingStart="30dp"
         android:paddingEnd="8dp"
@@ -51,9 +66,23 @@
         android:textCursorDrawable="@null"
         android:textFontWeight="400"
         android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/inviteUserSearchButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/inviteUserSearchButton"
+        android:layout_width="66dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/transparent"
+        android:text="@string/search"
+        android:textAllCaps="false"
+        android:textColor="@color/date_night_purple"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/search_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/search_user" />
 
     <Button
         android:id="@+id/cancel_search_btn"
@@ -87,7 +116,7 @@
         android:id="@+id/share"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="16dp"
         android:background="?android:selectableItemBackground"
         android:fontFamily="@font/inter"
         android:paddingStart="50dp"
@@ -95,19 +124,19 @@
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textColor="@color/date_night_grey_two"
-        app:layout_constraintEnd_toEndOf="@+id/search_user"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="@+id/inviteUserSearchButton"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/search_user"
-        app:layout_constraintTop_toBottomOf="@+id/search_user" />
+        app:layout_constraintTop_toBottomOf="@+id/user_search_recyler_view" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/user_search_recyler_view"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/search_user"
+        app:layout_constraintEnd_toEndOf="@+id/inviteUserSearchButton"
         app:layout_constraintStart_toStartOf="@+id/search_user"
         app:layout_constraintTop_toBottomOf="@+id/search_user" />
 
@@ -116,26 +145,22 @@
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/share"
         app:layout_constraintStart_toStartOf="@+id/share"
         app:layout_constraintTop_toTopOf="@+id/share"
-        app:srcCompat="@drawable/ic_baseline_share_24"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="291dp" />
+        app:srcCompat="@drawable/ic_baseline_share_24" />
 
     <ImageView
         android:id="@+id/share_arrow"
         android:layout_width="18dp"
         android:layout_height="18dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="5dp"
+        android:contentDescription="TODO"
         app:layout_constraintBottom_toBottomOf="@+id/share"
         app:layout_constraintEnd_toEndOf="@+id/share"
         app:layout_constraintTop_toTopOf="@+id/share"
         app:layout_constraintVertical_bias="0.4"
-        app:srcCompat="@drawable/ic_datenigh_grey_arrow"
-        android:contentDescription="TODO" />
+        app:srcCompat="@drawable/ic_datenigh_grey_arrow" />
 
 
 

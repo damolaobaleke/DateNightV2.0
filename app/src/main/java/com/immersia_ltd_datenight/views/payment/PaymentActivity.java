@@ -77,6 +77,7 @@ public class PaymentActivity extends AppCompatActivity {
     FirebaseFirestore db;
     DocumentReference userDocRef;
     ProgressBar progressBarPay;
+    String TAG = "PaymentActivity";
     int reqCode;
 
     @Override
@@ -205,7 +206,7 @@ public class PaymentActivity extends AppCompatActivity {
 
             @Override
             public void onError(@NotNull Exception e) {
-                Toast.makeText(PaymentActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e(TAG, e.getMessage());
             }
         });
 
@@ -243,7 +244,7 @@ public class PaymentActivity extends AppCompatActivity {
             public void onResponse(Call<UserObject> call, Response<UserObject> response) {
                 //confirm payment with client secret
                 if (!response.isSuccessful()) {
-                    Toast.makeText(PaymentActivity.this, "response not gotten", Toast.LENGTH_LONG).show();
+                    Toast.makeText(PaymentActivity.this, "No response received", Toast.LENGTH_LONG).show();
 
                     return;
                 }

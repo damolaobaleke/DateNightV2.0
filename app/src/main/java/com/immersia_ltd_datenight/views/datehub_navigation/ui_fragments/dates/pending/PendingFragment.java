@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +36,7 @@ import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.MainActivity;
 import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.Date.DateModel;
-import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
+import com.immersia_ltd_datenight.utils.DateNight;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -62,6 +63,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
     private RecyclerView recyclerView;
     private FirestoreRecyclerAdapter<DateModel, PendingDateViewHolder> theAdapter;
     private FirestoreRecyclerOptions<DateModel> options;
+    private int numHiddenItems = 0; // required to track whether to hint or not
     //App Data
     DateNight appState;
 
@@ -118,11 +120,20 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 if(hideView){
                     holder.itemView.setVisibility(View.GONE);
                     holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+                    ++numHiddenItems;
                 } else{
                     holder.itemView.setVisibility(View.VISIBLE);
                     holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     holder.bind(data, holder.itemView);
                 }
+
+                // Determine whether to display hint or not
+                if(getItemCount() - numHiddenItems > 0){
+                    pendingHint.setVisibility(View.GONE);
+                } else {
+                    pendingHint.setVisibility(View.VISIBLE);
+                }
+                Log.e(TAG, "NumHiddenItems: " + numHiddenItems + " GetItemcount: " + getItemCount());
             }
 
             @NonNull
@@ -132,13 +143,18 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 return new PendingDateViewHolder(view);
             }
 
-
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
-                if(getItemCount() > 0){
-                    pendingHint.setVisibility(View.GONE);
+                if (getItemCount() < numHiddenItems){
+                    numHiddenItems = getItemCount(); // accounts for when invite has been rejected
                 }
+                if(getItemCount() - numHiddenItems < 1){
+                    pendingHint.setVisibility(View.VISIBLE);
+                }else {
+                    pendingHint.setVisibility(View.INVISIBLE);
+                }
+                Log.e(TAG, "NumHiddenItems: " + numHiddenItems + " GetItemcount: " + getItemCount());
             }
 
             @Override
@@ -264,6 +280,12 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                         userdocRef.collection(DatabaseConstants.DATES_COLLECTION)
                                 .document(dateData.getId())
                                 .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        // TODO: Implement or delete
+                                    }
+                                })
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
@@ -295,11 +317,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
             userdocRef.collection(DatabaseConstants.DATES_COLLECTION)
                     .document(dateData.getId())
                     .update(updateData);
-
-            v.setVisibility(View.GONE);
-            ViewGroup.LayoutParams params = v.getLayoutParams();
-            params.height = 0;
-            v.setLayoutParams(params); //hack to hide view
         }
 
         public void rejectInvite(View v){
@@ -316,11 +333,6 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                         userdocRef.collection(DatabaseConstants.DATES_COLLECTION)
                                 .document(dateData.getId())
                                 .update(updateData);
-
-                        v.setVisibility(View.GONE);
-                        ViewGroup.LayoutParams params = v.getLayoutParams();
-                        params.height = 0;
-                        v.setLayoutParams(params); //hack to hide view
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         //No button clicked
@@ -433,5 +445,11 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
     private void navigateToMainActivity(){
         Intent intent = new Intent(requireActivity(), MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        numHiddenItems = 0;
     }
 }

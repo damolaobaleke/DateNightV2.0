@@ -45,8 +45,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener { authResult: AuthResult? -> Toast.makeText(getApplication(), "Registered Successfully", Toast.LENGTH_SHORT).show() }
                 .addOnFailureListener(getApplication<Application>().applicationContext.mainExecutor, OnFailureListener { e: Exception ->
-                    Log.i("Failed", e.localizedMessage)
-                    Toast.makeText(getApplication(), e.localizedMessage, Toast.LENGTH_SHORT).show()
+                    Log.e("AuthViewModel", e.localizedMessage)
                     e.printStackTrace()
                 })
                 .addOnCompleteListener(getApplication<Application>().applicationContext.mainExecutor, OnCompleteListener<AuthResult?> { task ->

@@ -28,8 +28,7 @@ import com.immersia_ltd_datenight.R;
 import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
 import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
 import com.immersia_ltd_datenight.utils.constants.IntentConstants;
-import com.immersia_ltd_datenight.utils.stripe.config.DateNight;
-import com.immersia_ltd_datenight.views.authentication.LoginActivity;
+import com.immersia_ltd_datenight.utils.DateNight;
 import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
 
 public class DateHubNavigation extends AppCompatActivity {

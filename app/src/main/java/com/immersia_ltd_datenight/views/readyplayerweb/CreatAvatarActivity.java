@@ -13,6 +13,7 @@
 
 package com.immersia_ltd_datenight.views.readyplayerweb;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -42,6 +43,9 @@ import com.immersia_ltd_datenight.databinding.ActivityCreatAvatarBinding;
 import com.immersia_ltd_datenight.modelfirestore.avatar.RenderObject;
 import com.immersia_ltd_datenight.network.api.DatenightApi;
 import com.immersia_ltd_datenight.utils.constants.DatabaseConstants;
+import com.immersia_ltd_datenight.utils.constants.IntentConstants;
+import com.immersia_ltd_datenight.views.datehub_navigation.DateHubNavigation;
+import com.immersia_ltd_datenight.views.landing_screen.BoardingScreen;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -70,6 +74,11 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         binding = ActivityCreatAvatarBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setTitle("Edit Avatar");
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -84,7 +93,6 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
 
     public void storeAvatarLink() {
         Log.i("Avatar Link", binding.avatarLinkInput.getText().toString());
-        Toast.makeText(this, binding.avatarLinkInput.getText().toString(), Toast.LENGTH_LONG).show();
 
         HashMap<String, Object> avatar = new HashMap<>();
         avatar.put(DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD, getAvatarUrl());
@@ -94,7 +102,11 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(CreatAvatarActivity.this, "Avatar created", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CreatAvatarActivity.this, DateHubNavigation.class);
+                intent.putExtra(IntentConstants.FRAGMENT_TO_LOAD, IntentConstants.DATE_HUB_FRAGMENT);
+                startActivity(intent);
             }
+
         });
     }
 
@@ -268,5 +280,11 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         //webViewDialogue(); openReadyPlayerWebPage()
         binding.forgotLinkText.setOnClickListener(j -> customTabLoadAvatar());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 }

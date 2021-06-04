@@ -177,5 +177,41 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <Button
+        android:id="@+id/shareButtonStartNewChat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="?android:selectableItemBackground"
+        android:fontFamily="@font/inter"
+        android:paddingStart="50dp"
+        android:text="@string/invite_a_special_someone"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/date_night_grey_two"
+        app:layout_constraintEnd_toEndOf="@+id/usernameSearchButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/usernameSearchEditText"
+        app:layout_constraintTop_toBottomOf="@+id/foundUserLayout" />
+
+    <ImageView
+        android:id="@+id/share_start_new_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/shareButtonStartNewChat"
+        app:layout_constraintStart_toStartOf="@+id/shareButtonStartNewChat"
+        app:layout_constraintTop_toTopOf="@+id/shareButtonStartNewChat"
+        app:srcCompat="@drawable/ic_baseline_share_24" />
+
+    <ImageView
+        android:id="@+id/share_arrow_start_new_chat"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:contentDescription="TODO"
+        app:layout_constraintBottom_toBottomOf="@+id/shareButtonStartNewChat"
+        app:layout_constraintEnd_toEndOf="@+id/shareButtonStartNewChat"
+        app:layout_constraintTop_toTopOf="@+id/shareButtonStartNewChat"
+        app:srcCompat="@drawable/ic_datenigh_grey_arrow" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
