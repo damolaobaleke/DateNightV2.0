@@ -11,22 +11,17 @@
  * limitations under the License.
  */
 
-package com.immersia_ltd_datenight.modelfirestore.Help;
+package com.immersia_ltd_datenight.modelfirestore.avatar;
 
-public class Help {
-    String type;
-    String message;
+public class RenderObject {
+    String[] renders ;
 
-    public Help(String type, String message) {
-        this.type = type;
-        this.message = message;
+    public RenderObject(String[] renders){
+        this.renders = renders;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public String getMessage() {
-        return message;
+    public String[] getRender() {
+        return renders;
     }
 }
+
