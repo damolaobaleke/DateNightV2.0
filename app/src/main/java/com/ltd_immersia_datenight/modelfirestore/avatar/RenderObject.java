@@ -11,8 +11,17 @@
  * limitations under the License.
  */
 
-package com.ltd_immersia_datenight.modelfirestore.Notification;
+package com.ltd_immersia_datenight.modelfirestore.avatar;
 
-public class NotificationType {
+public class RenderObject {
+    String[] renders ;
 
+    public RenderObject(String[] renders){
+        this.renders = renders;
+    }
+
+    public String[] getRender() {
+        return renders;
+    }
 }
+
