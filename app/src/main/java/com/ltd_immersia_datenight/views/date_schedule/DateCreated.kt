@@ -21,7 +21,7 @@ import com.ltd_immersia_datenight.R
 import com.ltd_immersia_datenight.utils.RecyclerViewAdapterPending
 import com.ltd_immersia_datenight.views.datehub_navigation.DateHubNavigation
 import com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.dates.pending.PendingFragment
-import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad
+//import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class DateCreated : AppCompatActivity() {
@@ -73,10 +73,10 @@ class DateCreated : AppCompatActivity() {
         fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, pendingFragment).commit()
     }
 
-    private fun startScene() {
-        val intent = Intent(this, UnityEnvironmentLoad::class.java)
-        startActivity(intent)
-    }
+//    private fun startScene() {
+//        val intent = Intent(this, UnityEnvironmentLoad::class.java)
+//        startScenertActivity(intent)
+//    }
 
 //    companion object {
 //        lateinit var userId: String

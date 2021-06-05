@@ -11,10 +11,12 @@
  * limitations under the License.
  */
 
-package com.immersia_ltd_datenight.network.api;
+package com.ltd_immersia_datenight.network.api;
 
-import com.immersia_ltd_datenight.modelfirestore.User.UserModel;
-import com.immersia_ltd_datenight.modelfirestore.avatar.RenderObject;
+import com.ltd_immersia_datenight.*;
+import com.ltd_immersia_datenight.modelfirestore.User.UserModel;
+import com.ltd_immersia_datenight.modelfirestore.avatar.RenderObject;
+
 
 import java.util.Map;
 

@@ -57,8 +57,7 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
         editAvatarBtn = view.findViewById(R.id.edit_avatar_btn);
         avatarImage = view.findViewById(R.id.user_avatar_image);
 
-        dateHubFragmentViewModel
-                .initializeViews(dtcBalance, datesBeenOn, averageDateRatingText, ratings, kissesReceived);
+        dateHubFragmentViewModel.initializeViews(dtcBalance, datesBeenOn, averageDateRatingText, ratings, kissesReceived);
 
 //        //dtc balance
 //        dateHubFragmentViewModel.getDtcBalance().observe(getViewLifecycleOwner(), new Observer<Integer>() {
@@ -114,7 +113,6 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        dateHubFragmentViewModel
-                .initializeViews(dtcBalance, datesBeenOn, averageDateRatingText, ratings, kissesReceived);
+        dateHubFragmentViewModel.initializeViews(dtcBalance, datesBeenOn, averageDateRatingText, ratings, kissesReceived);
     }
 }

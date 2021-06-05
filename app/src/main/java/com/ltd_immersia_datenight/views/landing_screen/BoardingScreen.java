@@ -15,7 +15,7 @@ import com.ltd_immersia_datenight.utils.DateNight;
 import com.ltd_immersia_datenight.views.authentication.LoginActivity;
 import com.ltd_immersia_datenight.views.authentication.SignUpActivity;
 import com.ltd_immersia_datenight.views.datehub_navigation.DateHubNavigation;
-import com.ltd_immersia_datenight.views.user_profile.UserProfileActivity;
+
 
 public class BoardingScreen extends AppCompatActivity {
     FirebaseAuth mAuth;
@@ -102,10 +102,6 @@ public class BoardingScreen extends AppCompatActivity {
         }
     }
 
-    //TEST
-    public void Userprofile(){
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        startActivity(intent);
-    }
+    //
 
 }
