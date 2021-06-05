@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.immersia_ltd_datenight">
+    package="com.ltd_immersia_datenight">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,70 +9,70 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
-        android:name=".utils.DateNight"
+        android:name="com.ltd_immersia_datenight.utils.DateNight"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
-        <activity android:name=".views.readyplayerweb.CreateAvatarInstructionsActivity"></activity>
-        <activity android:name=".views.datehub_navigation.ui_fragments.accounts.ChangePasswordActivity" />
+        <activity android:name="com.ltd_immersia_datenight.views.readyplayerweb.CreateAvatarInstructionsActivity"></activity>
+        <activity android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.accounts.ChangePasswordActivity" />
         <activity
-            android:name=".views.onboarding.UserOnBoarding"
+            android:name="com.ltd_immersia_datenight.views.onboarding.UserOnBoarding"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".utils.stripe.config.checkoutonly.CheckOutActivity" />
-        <activity android:name=".views.authentication.ForgotPassword" />
+        <activity android:name="com.ltd_immersia_datenight.utils.stripe.config.checkoutonly.CheckOutActivity" />
+        <activity android:name="com.ltd_immersia_datenight.views.authentication.ForgotPassword" />
         <activity
-            android:name=".views.datehub_navigation.ui_fragments.dates.post_date.RateDateNightActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".views.datehub_navigation.ui_fragments.dates.post_date.DateFinishedActivity"
+            android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.dates.post_date.RateDateNightActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".views.datehub_navigation.ui_fragments.chats.StartNewChatActivity"
+            android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.dates.post_date.DateFinishedActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.chats.StartNewChatActivity"
             android:label="@string/title_activity_start_new_chat"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".views.datehub_navigation.ui_fragments.chats.ChatRoomActivity"
+            android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.chats.ChatRoomActivity"
             android:label="@string/title_activity_chat_room"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".views.readyplayerweb.CreatAvatarActivity" />
-        <activity android:name=".views.date_schedule.InviteUserActivity" />
-        <activity android:name=".views.date_schedule.DateCreated" android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.ltd_immersia_datenight.views.readyplayerweb.CreatAvatarActivity" />
+        <activity android:name="com.ltd_immersia_datenight.views.date_schedule.InviteUserActivity" />
+        <activity android:name="com.ltd_immersia_datenight.views.date_schedule.DateCreated" android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".views.date_schedule.DateScheduleActivity"
+            android:name="com.ltd_immersia_datenight.views.date_schedule.DateScheduleActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".views.payment.PaymentActivity" />
-        <activity android:name=".views.datehub_navigation.ui_fragments.help.SuggestImprovement" />
-        <activity android:name=".views.datehub_navigation.ui_fragments.help.ReportIssue" />
-        <activity android:name=".views.user_profile.UserProfileActivity" />
+        <activity android:name="com.ltd_immersia_datenight.views.payment.PaymentActivity" />
+        <activity android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.help.SuggestImprovement" />
+        <activity android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.help.ReportIssue" />
+        <activity android:name="com.ltd_immersia_datenight.views.user_profile.UserProfileActivity" />
         <activity
-            android:name=".views.unity.UnityEnvironmentLoad"
+            android:name="com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="com.unity3d.player.UnityPlayerActivity"
                 android:value="true" />
         </activity>
         <activity
-            android:name=".views.datehub_navigation.ExperienceType"
+            android:name="com.ltd_immersia_datenight.views.datehub_navigation.ExperienceType"
             android:label="@string/title_activity_experience_type"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".views.datehub_navigation.JoinDate" />
+        <activity android:name="com.ltd_immersia_datenight.views.datehub_navigation.JoinDate" />
         <activity
-            android:name=".views.datehub_navigation.DateHubNavigation"
+            android:name="com.ltd_immersia_datenight.views.datehub_navigation.DateHubNavigation"
             android:label="@string/title_activity_create_date"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".views.landing_screen.BoardingDateScreen"
+            android:name="com.ltd_immersia_datenight.views.landing_screen.BoardingDateScreen"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".views.authentication.SignUpActivity" />
-        <activity android:name=".views.authentication.LoginActivity" />
+        <activity android:name="com.ltd_immersia_datenight.views.authentication.SignUpActivity" />
+        <activity android:name="com.ltd_immersia_datenight.views.authentication.LoginActivity" />
         <activity
-            android:name=".views.landing_screen.BoardingScreen"
+            android:name="com.ltd_immersia_datenight.views.landing_screen.BoardingScreen"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.ltd_immersia_datenight.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -92,7 +92,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/date_night_theme" /> <!-- FCM Notification Service -->
         <service
-            android:name=".utils.notification.FirebaseMessagingService"
+            android:name="com.ltd_immersia_datenight.utils.notification.FirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
