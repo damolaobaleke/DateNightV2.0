@@ -13,7 +13,10 @@
 
 package com.ltd_immersia_datenight.network.api;
 
+import com.ltd_immersia_datenight.*;
 import com.ltd_immersia_datenight.modelfirestore.User.UserModel;
+import com.ltd_immersia_datenight.modelfirestore.avatar.RenderObject;
+
 
 import java.util.Map;
 
@@ -40,4 +43,8 @@ public interface DatenightApi {
     @FormUrlEncoded
     @POST("/stripe-customer/ephemeral")
     Call<UserObject> createCustomerEphemeral(@Field("id") String userId);
+
+    //Create 2D avatar URL
+    @POST("/render")
+    Call<RenderObject> getAvatarUrl(@Body Map<String, String> avatarParams);
 }
