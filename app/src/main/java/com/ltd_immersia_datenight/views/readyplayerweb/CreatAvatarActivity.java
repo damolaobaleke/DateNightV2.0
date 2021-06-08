@@ -222,8 +222,10 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
         params.put("armature", "ArmatureTargetMale");
         params.put("model", binding.avatarLinkInput.getText().toString());
 
+        //REALLY NOT NEEDED,used to follow standard but they don't need it stringified
         String jsonParamStringified = new Gson().toJson(params);
         Log.i("json avatar object stringified", jsonParamStringified);
+        //REALLY NOT NEEDED
 
         Call<RenderObject> render =  api.getAvatarUrl(params);
         render.enqueue(new Callback<RenderObject>() {

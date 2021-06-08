@@ -9,7 +9,17 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.ltd_immersia_datenight.modelfirestore.User.UserModel
+import com.ltd_immersia_datenight.modelfirestore.avatar.RenderObject
+import com.ltd_immersia_datenight.network.api.DatenightApi
 import com.ltd_immersia_datenight.utils.constants.DatabaseConstants
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 
 class DateHubFragmentViewModel : ViewModel() {
     private var dtcBalance = MutableLiveData<Int>()
@@ -17,6 +27,8 @@ class DateHubFragmentViewModel : ViewModel() {
     private var dateCount = MutableLiveData<Int>()
     private var dateRating = MutableLiveData<Int>()
     private var userAvatar = MutableLiveData<String>()
+    private var isAvatarUrl = MutableLiveData<Boolean>()
+    private lateinit var api: DatenightApi
 
     private lateinit var docReference: DocumentReference
     private lateinit var collectionReference: CollectionReference
@@ -24,13 +36,14 @@ class DateHubFragmentViewModel : ViewModel() {
     var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     var currentUser: String = mAuth.currentUser!!.uid
     private lateinit var userModel: UserModel
-    lateinit var avatarHeadShotUrl: String
+
 
     fun DateNightCoinViewModel() {
         dateRating = MutableLiveData()
         dateCount = MutableLiveData()
         dtcBalance = MutableLiveData()
         userAvatar = MutableLiveData()
+        isAvatarUrl = MutableLiveData()
     }
 
     init {
@@ -49,7 +62,7 @@ class DateHubFragmentViewModel : ViewModel() {
                 dtcBalance.value = 0
             }
         }
-        return dtcBalance
+        return dtcBalance;
     }
 
 
@@ -73,10 +86,92 @@ class DateHubFragmentViewModel : ViewModel() {
         docReference.get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
                 val user = documentSnapshot.toObject(UserModel::class.java)
-                userAvatar.value = user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD]
+                if (user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] != null) {
+                    userAvatar.value = user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD];
+                } else {
+                    userAvatar.value = "";
+                }
             }
         }
         return userAvatar;
+    }
+
+    fun checkUserAvatarExists(): LiveData<Boolean> {
+        docReference.get().addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                val user = documentSnapshot.toObject(UserModel::class.java)
+                if(user!!.getAvatar()[DatabaseConstants.AVATAR_URL_FIELD] != null){
+                    isAvatarUrl.value = true
+                    if(user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] == null) {
+                        setAvatarHeadShot()
+                    }
+                }else{
+                    isAvatarUrl.value = false
+                }
+            }
+        }
+        return isAvatarUrl;
+    }
+
+
+    private fun setUpNetworkRequest() {
+        //Logging (Http)REQUEST and RESPONSE
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        val okHttpClient = OkHttpClient().newBuilder()
+                .addInterceptor(loggingInterceptor)
+                .build()
+        //Logging Request and Response
+
+        val retrofit = Retrofit.Builder()
+                .baseUrl("https://render.readyplayer.me")
+                .addConverterFactory(GsonConverterFactory.create()) //GSON convert java object to JSON
+                .client(okHttpClient)
+                .build()
+        api = retrofit.create(DatenightApi::class.java)
+    }
+
+
+    private fun setAvatarHeadShot() {
+        setUpNetworkRequest()
+
+        docReference.get().addOnSuccessListener { documentSnapshot ->
+            if(documentSnapshot.exists()){
+                val user = documentSnapshot.toObject(UserModel::class.java)
+                val params = HashMap<String, String?>()
+
+                params["scene"] = "fullbody-portrait-v1"
+                params["armature"] = "ArmatureTargetMale"
+                params["model"] = user!!.getAvatar()[DatabaseConstants.AVATAR_URL_FIELD]
+
+
+                val render = api.getAvatarUrl(params)
+
+                render.enqueue(object : Callback<RenderObject?> {
+                    override fun onResponse(call: Call<RenderObject?>, response: Response<RenderObject?>) {
+                        if (!response.isSuccessful) {
+                            Log.i(TAG, response.message())
+                            return
+                        }
+
+                        val objRender = response.body()
+                        Log.i("2D Link", objRender!!.render[0].toString() + "")
+
+                        val avatar = HashMap<String, Any>()
+                        avatar[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] = objRender.render[0]
+
+                        //update avatar map with new K,V
+                        docReference.update(mapOf("avatar.avatarHeadShotUrl" to objRender.render[0]))
+                    }
+
+                    override fun onFailure(call: Call<RenderObject?>, t: Throwable) {
+                        Log.i("Error", t.message)
+                    }
+                })
+            }
+
+        }
+
     }
 
     companion object {

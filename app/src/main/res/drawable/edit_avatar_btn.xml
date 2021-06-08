@@ -3,7 +3,7 @@
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <corners android:radius="5dp" />
-            <solid android:color="@color/date_night_purple" />
+            <solid android:color="@color/date_night_theme" />
         </shape>
     </item>
 
@@ -17,7 +17,7 @@
     <item android:state_enabled="true">
         <shape android:shape="rectangle">
             <corners android:radius="5dp" />
-            <solid android:color="@color/date_night_theme" />
+            <solid android:color="@color/date_night_purple" />
         </shape>
     </item>
 </selector>
