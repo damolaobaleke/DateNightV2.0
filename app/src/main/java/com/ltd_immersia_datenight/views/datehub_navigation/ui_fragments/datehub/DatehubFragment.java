@@ -91,10 +91,10 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
             public void onChanged(Boolean isAvatar) {
                 if(isAvatar){
                     editAvatarBtn.setText(R.string.edit_avatar_text);
-                    editAvatarBtn.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.date_night_purple));
+                    editAvatarBtn.setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.edit_avatar_btn));
                 }else{
                     editAvatarBtn.setText(R.string.create_avatar_text);
-                    editAvatarBtn.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.date_night_theme));
+                    editAvatarBtn.setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.create_avatar_btn));
                 }
             }
         });
