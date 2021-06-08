@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true">
-        <shape android:shape="rectangle">
-            <corners android:radius="5dp" />
-            <solid android:color="@color/date_night_theme" />
-        </shape>
-    </item>
-
     <item android:state_hovered="true">
         <shape android:shape="rectangle">
             <corners android:radius="5dp" />
-            <solid android:color="@color/date_night_purple" />
+            <gradient
+                android:startColor="@color/date_night_pear_500"
+                android:endColor="@color/date_night_purple"
+                android:angle="270" />
         </shape>
     </item>
 
     <item android:state_enabled="true">
         <shape android:shape="rectangle">
             <corners android:radius="5dp" />
-            <solid android:color="@color/date_night_purple" />
+            <gradient
+                android:startColor="@color/date_night_pear_500"
+                android:endColor="@color/date_night_purple"
+                android:angle="270" />
         </shape>
     </item>
 </selector>
