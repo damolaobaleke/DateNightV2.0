@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.ltd_immersia_datenight.modelfirestore.User.UserModel
 import com.ltd_immersia_datenight.utils.constants.DatabaseConstants
+import kotlin.properties.Delegates
 
 class DateHubFragmentViewModel : ViewModel() {
     private var dtcBalance = MutableLiveData<Int>()
@@ -17,6 +18,7 @@ class DateHubFragmentViewModel : ViewModel() {
     private var dateCount = MutableLiveData<Int>()
     private var dateRating = MutableLiveData<Int>()
     private var userAvatar = MutableLiveData<String>()
+    private var isAvatarUrl = MutableLiveData<Boolean>()
 
     private lateinit var docReference: DocumentReference
     private lateinit var collectionReference: CollectionReference
@@ -24,13 +26,14 @@ class DateHubFragmentViewModel : ViewModel() {
     var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     var currentUser: String = mAuth.currentUser!!.uid
     private lateinit var userModel: UserModel
-    lateinit var avatarHeadShotUrl: String
+
 
     fun DateNightCoinViewModel() {
         dateRating = MutableLiveData()
         dateCount = MutableLiveData()
         dtcBalance = MutableLiveData()
         userAvatar = MutableLiveData()
+        isAvatarUrl = MutableLiveData()
     }
 
     init {
@@ -49,7 +52,7 @@ class DateHubFragmentViewModel : ViewModel() {
                 dtcBalance.value = 0
             }
         }
-        return dtcBalance
+        return dtcBalance;
     }
 
 
@@ -73,10 +76,24 @@ class DateHubFragmentViewModel : ViewModel() {
         docReference.get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
                 val user = documentSnapshot.toObject(UserModel::class.java)
-                userAvatar.value = user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD]
+                if (user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] != null) {
+                    userAvatar.value = user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD];
+                } else {
+                    userAvatar.value = "";
+                }
             }
         }
         return userAvatar;
+    }
+
+    fun checkUserAvatarExists(): LiveData<Boolean> {
+        docReference.get().addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                val user = documentSnapshot.toObject(UserModel::class.java)
+                isAvatarUrl.value = user!!.getAvatar()[DatabaseConstants.AVATAR_URL_FIELD] != null
+            }
+        }
+        return isAvatarUrl;
     }
 
     companion object {

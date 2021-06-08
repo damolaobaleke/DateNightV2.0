@@ -17,7 +17,8 @@
             app:layout_constraintEnd_toEndOf="@id/scroll"
             app:layout_constraintStart_toStartOf="@id/scroll">
 
-            <ImageView
+
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/user_avatar_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -30,7 +31,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="@drawable/avatar_2d_circle"
-                app:srcCompat="@drawable/datenight_logo" />
+                app:srcCompat="@drawable/datenight_logo"/>
 
             <TextView
                 android:id="@+id/edit_avatar_btn"

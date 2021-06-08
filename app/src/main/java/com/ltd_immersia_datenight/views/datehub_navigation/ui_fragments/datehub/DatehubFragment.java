@@ -27,6 +27,9 @@ import com.ltd_immersia_datenight.views.readyplayerweb.CreatAvatarActivity;
 import com.squareup.picasso.Picasso;
 import java.text.NumberFormat;
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static java.lang.Math.round;
 
 public class DatehubFragment extends Fragment implements View.OnClickListener {
@@ -37,7 +40,8 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
     TextView kissesReceived;
     Button topUpDtc;
     TextView editAvatarBtn;
-    ImageView avatarImage;
+    //ImageView avatarImage;
+    CircleImageView avatarImage;
 
     DateHubFragmentViewModel dateHubFragmentViewModel;
 
@@ -82,6 +86,20 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
         //EditAvatar
         editAvatarBtn.setOnClickListener(this);
 
+        dateHubFragmentViewModel.checkUserAvatarExists().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isAvatar) {
+                if(isAvatar){
+                    editAvatarBtn.setText(R.string.edit_avatar_text);
+                    editAvatarBtn.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.date_night_purple));
+                }else{
+                    editAvatarBtn.setText(R.string.create_avatar_text);
+                    editAvatarBtn.setBackgroundColor(ContextCompat.getColor(requireContext(),R.color.date_night_theme));
+                }
+            }
+        });
+
+
         //set2DAvatar
         dateHubFragmentViewModel.get2dAvatar().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -115,4 +133,6 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
         super.onResume();
         dateHubFragmentViewModel.initializeViews(dtcBalance, datesBeenOn, averageDateRatingText, ratings, kissesReceived);
     }
+
+
 }

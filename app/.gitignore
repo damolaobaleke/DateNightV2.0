@@ -1,2 +1,6 @@
 /build
 /release
+/build.gradle
+/settings.gradle
+/unity
+/datehub_navigation/dates/scheduled

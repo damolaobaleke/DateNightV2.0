@@ -127,4 +127,6 @@
     <string name="enter_your_password_signup">Enter your password<font color="#F61515">*</font></string>
     <string name="enter_your_date_of_birth_signup">Enter your Date of birth<font color="#F61515">*</font></string>
     <string name="avatar_creation_info">After creating your avatar, don\'t forget to copy the generated link</string>
+    <string name="edit_avatar_text">Edit Avatar</string>
+    <string name="create_avatar_text">Create Avatar</string>
 </resources>
