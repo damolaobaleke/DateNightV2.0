@@ -26,12 +26,10 @@ public class UserProfileActivity extends AppCompatActivity {
                 //Log.i("First Name", userObject.getFirstName());
             }
         });
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 }

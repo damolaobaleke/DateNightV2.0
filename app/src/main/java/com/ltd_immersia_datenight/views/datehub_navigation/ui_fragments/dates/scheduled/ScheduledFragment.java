@@ -37,7 +37,7 @@ import com.ltd_immersia_datenight.MainActivity;
 import com.ltd_immersia_datenight.R;
 import com.ltd_immersia_datenight.modelfirestore.Date.DateModel;
 import com.ltd_immersia_datenight.utils.DateNight;
-//import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad;
+import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -240,7 +240,7 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
 
             startDate.setOnClickListener(v -> {
                 //start unity environment
-                //startUnityScene();
+                startUnityScene();
                 alertDialog.dismiss();
 
             }); //Start environment load
@@ -272,7 +272,7 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
 
             // Set onClick listeners for buttons
             startDate.setOnClickListener(v -> {
-                //startUnityScene();
+                startUnityScene();
                 alertDialog.dismiss();
             }); //Start environment load
             editDate.setOnClickListener(v -> {
@@ -288,18 +288,18 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             alertDialog.show();
         }
 
-//        private void startUnityScene() {
-//            Intent intent = new Intent(requireActivity(), UnityEnvironmentLoad.class)
-//                    .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
-//                    .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).getCurrentUser().getFullName())
-//                    .putExtra(IntentConstants.DATE_ID, dateData.getId())
-//                    .putExtra(IntentConstants.DATE_CREATOR_ID, dateData.getCreator())
-//                    .putExtra(IntentConstants.EXPERIENCE_ID, dateData.getLinkedExperienceId())
-//                    .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, dateParticipantId)
-//                    .putExtra(IntentConstants.PARTICIPANT_USER_NAME_EXTRA, dateData.getParticipantUsernames().get(dateParticipantId))
-//                    .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, dateData.getParticipants().get(dateParticipantId));
-//            requireActivity().startActivity(intent);
-//        }
+        private void startUnityScene() {
+            Intent intent = new Intent(requireActivity(), UnityEnvironmentLoad.class)
+                    .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
+                    .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).getCurrentUser().getFullName())
+                    .putExtra(IntentConstants.DATE_ID, dateData.getId())
+                    .putExtra(IntentConstants.DATE_CREATOR_ID, dateData.getCreator())
+                    .putExtra(IntentConstants.EXPERIENCE_ID, dateData.getLinkedExperienceId())
+                    .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, dateParticipantId)
+                    .putExtra(IntentConstants.PARTICIPANT_USER_NAME_EXTRA, dateData.getParticipantUsernames().get(dateParticipantId))
+                    .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, dateData.getParticipants().get(dateParticipantId));
+            requireActivity().startActivity(intent);
+        }
 
 
         private void reScheduleDateTime() {
