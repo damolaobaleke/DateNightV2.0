@@ -186,7 +186,7 @@
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:layout_marginTop="32dp"
-                        android:layoutDirection="ltr"
+                        android:layoutDirection="rtl"
                         android:progress="100"
                         android:progressDrawable="@drawable/progress_circle"
                         android:scaleX="1"

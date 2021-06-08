@@ -290,6 +290,31 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
         Log.i(TAG, "Unloaded unity");
     }
 
+    @Override
+    protected int buyDTC(int amount) {
+        return 0;
+    }
+
+    @Override
+    protected boolean makePayment(int cost) {
+        return false;
+    }
+
+    @Override
+    protected void updateAssetDownloadPercentage(double percentage) {
+
+    }
+
+    @Override
+    protected void assetDownloadCompleted(int error) {
+
+    }
+
+    @Override
+    protected void photonConnectionCompleted() {
+
+    }
+
     private void completeDate(){
         // Write date finished time
         if (currentUserId.equals(dateCreatorId)){
