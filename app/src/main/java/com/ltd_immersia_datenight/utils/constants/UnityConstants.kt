@@ -17,6 +17,7 @@ object UnityConstants {
     // Startup Info
     const val NETWORK_MANAGER_GAME_OBJECT = "NetworkManager"
     const val STARTUP_FUNCTION_ARG = "JsonInfo"
+    const val CONNECT_TO_PHOTON = "ConnectToPhoton"
 
     // Startup arguments
     const val EXPERIENCE_ID = "experienceID"

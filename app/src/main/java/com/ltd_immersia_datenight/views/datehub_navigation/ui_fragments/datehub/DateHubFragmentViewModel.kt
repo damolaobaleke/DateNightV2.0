@@ -169,9 +169,7 @@ class DateHubFragmentViewModel : ViewModel() {
                     }
                 })
             }
-
         }
-
     }
 
     companion object {

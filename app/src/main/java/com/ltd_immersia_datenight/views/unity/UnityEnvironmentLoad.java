@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +33,7 @@ import com.ltd_immersia_datenight.R;
 import com.ltd_immersia_datenight.modelfirestore.Chat.ChatHead;
 import com.ltd_immersia_datenight.modelfirestore.Chat.ChatRoomMessage;
 import com.ltd_immersia_datenight.modelfirestore.User.UserModel;
-import com.ltd_immersia_datenight.unity_plugin.UnityPlayerWrapperActivity;
+import com.immersia_ltd_datenight.unity_plugin.UnityPlayerWrapperActivity;
 import com.ltd_immersia_datenight.utils.constants.DatabaseConstants;
 import com.ltd_immersia_datenight.utils.constants.IntentConstants;
 import com.ltd_immersia_datenight.utils.constants.UnityConstants;
@@ -46,15 +48,19 @@ import java.util.Map;
 public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
     // Views
     ConstraintLayout constraintLayoutForUnity;
+    ConstraintLayout loadingScreenConstraintLayout;
     Button waitingRoomLeaveButton;
     FrameLayout unityViewLayout = mUnityPlayer;
+    TextView datePartnerComing1;
+    TextView datePartnerComing2;
+    TextView loadingExpTextView;
+    ProgressBar loadingExpProgBar;
     // App Data
     DateNight appState;
     // Firebase
     private DocumentReference dateDocument;
     private DatabaseReference chatRoomRef;
     private DatabaseReference chatHeadRef;
-    private ListenerRegistration dateListenerRegisterCreator;
     private ListenerRegistration dateListenerRegisterInvitee;
     private ChildEventListener chatRoomEventListener;
     //Needed for unity scene and date finished activity
@@ -75,7 +81,7 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
     //Stats
     private int participantKissCount = 0;
     //Other
-    private String TAG = "UnityPlayerActivity";
+    private String TAG = "UnityEnvironmentLoad";
     private boolean quittedFromWaitingRoom = false;
 
     @Override
@@ -118,7 +124,13 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
                 .child(DatabaseConstants.CHAT_ROOMS_NODE)
                 .child(currentUserId)
                 .child(chatRoomId);
+        // initialize Views
         constraintLayoutForUnity = findViewById(R.id.constraintLayoutForUnity);
+        loadingScreenConstraintLayout = findViewById(R.id.loadingScreenLayout);
+        datePartnerComing1 = findViewById(R.id.datePartnerComingTextView);
+        datePartnerComing2 = findViewById(R.id.datePartnerComingTextView2);
+        loadingExpTextView = findViewById(R.id.loadingExperienceTextView);
+        loadingExpProgBar = findViewById(R.id.loadingExperienceProgBar);
         waitingRoomLeaveButton = findViewById(R.id.waitngRoomLeaveBtn);
         waitingRoomLeaveButton.setOnClickListener(v -> leaveDateFromWaitingRoom());
 
@@ -126,13 +138,31 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
         constraintLayoutForUnity.addView(mUnityPlayer.getView(), ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
         mUnityPlayer.getView().setVisibility(View.INVISIBLE);
 
-        // Initialize Unity
-        initializeUnity();
+        // Send message to unity to download assets
+        notifyUnityToDownloadAssets();
 
         mUnityPlayer.windowFocusChanged(true);
     }
 
-    private String generateInitializationParams(String serverToConnect) {
+    public void notifyUnityToDownloadAssets(){
+        // On-start unity must download assets
+        if (currentUserId.equals(dateCreatorId)){
+            // serverToConnect should be empty string if current user is date creator
+            UnitySendMessage(UnityConstants.NETWORK_MANAGER_GAME_OBJECT,
+                             UnityConstants.STARTUP_FUNCTION_ARG,
+                             generateInitializationParams(true));
+        } else {
+            UnitySendMessage(UnityConstants.NETWORK_MANAGER_GAME_OBJECT,
+                             UnityConstants.STARTUP_FUNCTION_ARG,
+                             generateInitializationParams(false));
+        }
+    }
+
+    public void UnitySendMessage(String gameObject, String functionName, String jsonParam) {
+        UnityPlayer.UnitySendMessage(gameObject, functionName, jsonParam);
+    }
+
+    private String generateInitializationParams(boolean isHost) {
         Map<String, Object> unityParams = new HashMap<>();
 
         //unity expected json keys don't match defined Intent constants
@@ -141,7 +171,7 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
         unityParams.put("userId", currentUserId);
         unityParams.put("userName", currentUserFullName);
         unityParams.put("avatarUrl", avatarUrl);
-        unityParams.put("serverToConnect", serverToConnect);
+        unityParams.put("isHost", isHost);
 
         //constructs map as a GSON object and then converts to JSON.  serialize java object to JSON
         String jsonBodyForUnity = new Gson().toJson(unityParams);
@@ -150,30 +180,55 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
         return jsonBodyForUnity;
     }
 
-    public void initializeUnity(){
-        // On-start unity must be initialized initialization params
-        if (currentUserId.equals(dateCreatorId)){
-            // serverToConnect should be empty string if current user is date creator
-            UnitySendMessage(UnityConstants.NETWORK_MANAGER_GAME_OBJECT,
-                             UnityConstants.STARTUP_FUNCTION_ARG,
-                             generateInitializationParams(""));
-            initializeChatMessageListener();
-        } else {
+    @Override
+    protected void updateAssetDownloadPercentage(double percentage) {
+        Log.i(TAG, "Unity Asset download percentage: " + percentage + "%");
+        loadingExpProgBar.setProgress((int)percentage);
+    }
+
+    @Override
+    protected void assetDownloadCompleted(int error) {
+        runOnUiThread(() -> {
+            Log.i(TAG, "Unity Asset download complete");
+            // Initialize listener for date participant
+            initializeListeners();
+
+            // Hide Loading Views
+            loadingExpTextView.setVisibility(View.INVISIBLE);
+            loadingExpProgBar.setVisibility(View.INVISIBLE);
+
+            // Show date partner views
+            datePartnerComing1.setVisibility(View.VISIBLE);
+            datePartnerComing2.setVisibility(View.VISIBLE);
+        });
+    }
+
+    protected void initializeListeners(){
+        if (!currentUserId.equals(dateCreatorId)){
+            Log.i(TAG, "User is not date creator: Waiting to receive server information");
             // Date invitee will listen until serverToConnect is populated
             dateListenerRegisterInvitee = dateDocument.addSnapshotListener((dateSnapshot, error) -> {
                 if(dateSnapshot != null &&
                         dateSnapshot.getString(DatabaseConstants.SERVER_TO_CONNECT_STRING) != null &&
                         !dateSnapshot.getString(DatabaseConstants.SERVER_TO_CONNECT_STRING).isEmpty()){
                     dateListenerRegisterInvitee.remove();
+                    // clear server to connect in anticipation of next date
                     clearServerToConnectFromDate();
+                    // Send server to unity
                     UnitySendMessage(UnityConstants.NETWORK_MANAGER_GAME_OBJECT,
-                                     UnityConstants.STARTUP_FUNCTION_ARG,
-                                     generateInitializationParams(dateSnapshot.getString(DatabaseConstants.SERVER_TO_CONNECT_STRING)));
-                    initializeChatMessageListener();
-                    bringUnityActivityToFront();
+                                     UnityConstants.CONNECT_TO_PHOTON,
+                                     dateSnapshot.getString(DatabaseConstants.SERVER_TO_CONNECT_STRING));
                 }
             });
         }
+    }
+
+    protected void photonConnectionCompleted() {
+        runOnUiThread(() -> {
+            Log.i(TAG, "Photon connection complete. Attempting to bring unity to front");
+            initializeChatMessageListener();
+            bringUnityActivityToFront();
+        });
     }
 
     public void initializeChatMessageListener(){
@@ -204,11 +259,33 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
         chatRoomRef.addChildEventListener(chatRoomEventListener);
     }
 
-    public void UnitySendMessage(String gameObject, String functionName, String jsonParam) {
-        UnityPlayer.UnitySendMessage(gameObject, functionName, jsonParam);
+    private void bringUnityActivityToFront(){
+        loadingScreenConstraintLayout.setVisibility(View.GONE);
+        mUnityPlayer.getView().setVisibility(View.VISIBLE);
     }
 
-    //@Override
+    @Override
+    protected void sendServerFromUnity(String server) {
+        // Unity will call back to this function to populate server field if user is date creator
+        Log.i(TAG, "Unity requesting to send server");
+        Map<String, Object> data = new HashMap<>();
+        data.put(DatabaseConstants.SERVER_TO_CONNECT_STRING, server);
+        dateDocument.update(data);
+    }
+
+    private void sendReceivedParticipantChatToUnity(String message){
+        UnitySendMessage(UnityConstants.MESSAGE_CONTROLLER_GAME_OBJECT,
+                         UnityConstants.SEND_MESSAGE_FUNCTION,
+                         message);
+    }
+
+    private void clearServerToConnectFromDate(){
+        Log.e(TAG, "Attempting to clear server to connect");
+        HashMap<String, Object> data = new HashMap<>();
+        data.put(DatabaseConstants.SERVER_TO_CONNECT_STRING, "");
+        dateDocument.update(data);
+    }
+
     protected void sendChatFromUnity(String messageText) {
         if (!messageText.isEmpty()){
             // Send message
@@ -226,58 +303,11 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
         ++participantKissCount;
     }
 
-    @Override
-    protected void sendServerFromUnity(String server) {
-        // Unity will call back to this function to populate server field if user is date creator
-        Log.e(TAG, "Unity requesting to send server");
-        Map<String, Object> data = new HashMap<>();
-        data.put(DatabaseConstants.SERVER_TO_CONNECT_STRING, server);
-        dateDocument.update(data).addOnSuccessListener(v -> {
-            // Experience is ready when serverToConnect field has been cleared
-            dateListenerRegisterCreator = dateDocument.addSnapshotListener((dateSnapshot, error) -> {
-                if(dateSnapshot != null && dateSnapshot.getString(DatabaseConstants.SERVER_TO_CONNECT_STRING).isEmpty()){
-                    dateListenerRegisterCreator.remove();
-                    bringUnityActivityToFront();
-                }
-            });
-        });
-    }
-
-    private void sendReceivedParticipantChatToUnity(String message){
-        UnitySendMessage(UnityConstants.MESSAGE_CONTROLLER_GAME_OBJECT,
-                         UnityConstants.SEND_MESSAGE_FUNCTION,
-                         message);
-    }
-
-    private void clearServerToConnectFromDate(){
-        Log.e(TAG, "Attempting to clear server to connect");
-        HashMap<String, Object> data = new HashMap<>();
-        data.put(DatabaseConstants.SERVER_TO_CONNECT_STRING, "");
-        dateDocument.update(data);
-    }
-
-    public void launchDateFinishedActivity() {
-        chatRoomRef.removeEventListener(chatRoomEventListener);
-        //Start new activity after unity player is unloaded
-        Intent intent = new Intent(this, DateFinishedActivity.class)
-                .putExtra(IntentConstants.EXPERIENCE_ID, experienceId)
-                .putExtra(IntentConstants.DATE_ID, dateId)
-                .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, participantId)
-                .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, participantFullName);
+    private void leaveDateFromWaitingRoom(){
+        quittedFromWaitingRoom = true;
+        mUnityPlayer.unload();
+        Intent intent = new Intent (this, DateHubNavigation.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        mUnityPlayer.windowFocusChanged(hasFocus);
-    }
-
-    //make the activity aware of what’s going on with the device. --Land,potr
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mUnityPlayer.configurationChanged(newConfig);
     }
 
     @Override
@@ -288,31 +318,6 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
             launchDateFinishedActivity();
         }
         Log.i(TAG, "Unloaded unity");
-    }
-
-    @Override
-    protected int buyDTC(int amount) {
-        return 0;
-    }
-
-    @Override
-    protected boolean makePayment(int cost) {
-        return false;
-    }
-
-    @Override
-    protected void updateAssetDownloadPercentage(double percentage) {
-
-    }
-
-    @Override
-    protected void assetDownloadCompleted(int error) {
-
-    }
-
-    @Override
-    protected void photonConnectionCompleted() {
-
     }
 
     private void completeDate(){
@@ -357,14 +362,37 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
         });
     }
 
-    private void bringUnityActivityToFront(){
-        waitingRoomLeaveButton.setVisibility(View.GONE);
-        mUnityPlayer.getView().setVisibility(View.VISIBLE);
-    }
-    private void leaveDateFromWaitingRoom(){
-        quittedFromWaitingRoom = true;
-        mUnityPlayer.unload();
-        Intent intent = new Intent (this, DateHubNavigation.class);
+    public void launchDateFinishedActivity() {
+        chatRoomRef.removeEventListener(chatRoomEventListener);
+        //Start new activity after unity player is unloaded
+        Intent intent = new Intent(this, DateFinishedActivity.class)
+                .putExtra(IntentConstants.EXPERIENCE_ID, experienceId)
+                .putExtra(IntentConstants.DATE_ID, dateId)
+                .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, participantId)
+                .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, participantFullName);
         startActivity(intent);
+    }
+
+    @Override
+    protected int buyDTC(int amount) {
+        return 0;
+    }
+
+    @Override
+    protected boolean makePayment(int cost) {
+        return false;
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        mUnityPlayer.windowFocusChanged(hasFocus);
+    }
+
+    //make the activity aware of what’s going on with the device. --Land,potr
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mUnityPlayer.configurationChanged(newConfig);
     }
 }
