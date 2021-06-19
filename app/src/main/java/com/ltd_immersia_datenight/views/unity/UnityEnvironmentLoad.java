@@ -33,7 +33,7 @@ import com.ltd_immersia_datenight.R;
 import com.ltd_immersia_datenight.modelfirestore.Chat.ChatHead;
 import com.ltd_immersia_datenight.modelfirestore.Chat.ChatRoomMessage;
 import com.ltd_immersia_datenight.modelfirestore.User.UserModel;
-import com.immersia_ltd_datenight.unity_plugin.UnityPlayerWrapperActivity;
+import com.ltd_immersia_datenight.unity_plugin.UnityPlayerWrapperActivity;
 import com.ltd_immersia_datenight.utils.constants.DatabaseConstants;
 import com.ltd_immersia_datenight.utils.constants.IntentConstants;
 import com.ltd_immersia_datenight.utils.constants.UnityConstants;
