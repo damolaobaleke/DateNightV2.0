@@ -13,7 +13,9 @@
 
 package com.ltd_immersia_datenight.modelfirestore.avatar;
 
-public class RenderObject {
+import java.io.Serializable;
+
+public class RenderObject implements Serializable {
     String[] renders ;
 
     public RenderObject(String[] renders){
@@ -22,6 +24,14 @@ public class RenderObject {
 
     public String[] getRender() {
         return renders;
+    }
+
+    public String[] getRenders() {
+        return renders;
+    }
+
+    public void setRenders(String[] renders) {
+        this.renders = renders;
     }
 }
 

@@ -39,14 +39,13 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     final private static String TAG = "FirebaseMessagingService";
     DocumentReference userDocRef;
-    FirebaseAuth mAuth;
-    FirebaseFirestore db;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public FirebaseMessagingService() {
         //Initialize
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-
     }
 
 
@@ -80,10 +79,12 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     @Override
     public void onNewToken(@NotNull String token) {
         Log.d(TAG, "Refreshed token: " + token);
-
-        userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
-        userDocRef.update("fcmToken", token);
-
+        if(mAuth.getCurrentUser() != null) // TODO - Fix, user should already be logged in at this point
+        {
+            userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(
+                    mAuth.getCurrentUser().getUid());
+            userDocRef.update("fcmToken", token);
+        }
     }
 
 
@@ -109,7 +110,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

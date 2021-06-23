@@ -2,9 +2,10 @@ package com.ltd_immersia_datenight.modelfirestore.Date;
 
 import com.google.firebase.Timestamp;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class DateModel {
+public class DateModel implements Serializable {
     String id;
     String password; //library for encryption crypto random 8 bit value
     String creator;

@@ -1,6 +1,8 @@
 package com.ltd_immersia_datenight.modelfirestore.User;
 
-public class UserStatsModel {
+import java.io.Serializable;
+
+public class UserStatsModel implements Serializable {
     int rating;
     int dateCount;
     int kissCount;
@@ -42,4 +44,19 @@ public class UserStatsModel {
         this.numRatedDates = numRatedDates;
     }
 
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public void setDateCount(int dateCount) {
+        this.dateCount = dateCount;
+    }
+
+    public void setKissCount(int kissCount) {
+        this.kissCount = kissCount;
+    }
+
+    public void setDtc(int dtc) {
+        this.dtc = dtc;
+    }
 }

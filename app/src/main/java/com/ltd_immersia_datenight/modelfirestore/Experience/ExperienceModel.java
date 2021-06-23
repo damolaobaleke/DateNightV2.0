@@ -13,7 +13,9 @@
 
 package com.ltd_immersia_datenight.modelfirestore.Experience;
 
-public class ExperienceModel {
+import java.io.Serializable;
+
+public class ExperienceModel implements Serializable {
     String description;
     String environmentPreviewUrl; //3D
     String environmentUrl;
@@ -67,5 +69,37 @@ public class ExperienceModel {
 
     public String getId() {
         return id;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setEnvironmentPreviewUrl(String environmentPreviewUrl) {
+        this.environmentPreviewUrl = environmentPreviewUrl;
+    }
+
+    public void setEnvironmentUrl(String environmentUrl) {
+        this.environmentUrl = environmentUrl;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public void setPreviewImageUrl(String previewImageUrl) {
+        this.previewImageUrl = previewImageUrl;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

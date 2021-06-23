@@ -4,10 +4,11 @@ package com.ltd_immersia_datenight.modelfirestore.User;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Exclude;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-public class UserModel {
+public class UserModel implements Serializable {
     private String id;
     private String username;
     public String name; //fullName
@@ -134,4 +135,76 @@ public class UserModel {
     }
 
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setDob(Timestamp dob) {
+        this.dob = dob;
+    }
+
+    public void setAvatar(HashMap<String, String> avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getLoginMethod() {
+        return loginMethod;
+    }
+
+    public void setLoginMethod(String loginMethod) {
+        this.loginMethod = loginMethod;
+    }
+
+    public void setStripeCustomerId(String stripeCustomerId) {
+        this.stripeCustomerId = stripeCustomerId;
+    }
+
+    public void setEphemeralKey(String ephemeralKey) {
+        this.ephemeralKey = ephemeralKey;
+    }
+
+    public void setDateCreated(Timestamp dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public void setOnBoarded(boolean onBoarded) {
+        this.onBoarded = onBoarded;
+    }
+
+    public List<String> getPurchasedExperiences() {
+        return purchasedExperiences;
+    }
+
+    public void setPurchasedExperiences(List<String> purchasedExperiences) {
+        this.purchasedExperiences = purchasedExperiences;
+    }
+
+    public UserPreferences getUserPreferences() {
+        return userPreferences;
+    }
+
+    public void setUserPreferences(
+            UserPreferences userPreferences) {
+        this.userPreferences = userPreferences;
+    }
+
+    public void setDateId(List<String> dateId) {
+        this.dateId = dateId;
+    }
 }
