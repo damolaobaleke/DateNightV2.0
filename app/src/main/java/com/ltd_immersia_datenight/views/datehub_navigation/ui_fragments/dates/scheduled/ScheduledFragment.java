@@ -79,7 +79,13 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             // Illegal state, navigate to main activity
             navigateToMainActivity();
         }
-        setUpRecyclerView();
+        try{
+            setUpRecyclerView();
+        }catch(Exception e){
+            Log.e(TAG, "Error while attempting to set up recycler view");
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Nullable

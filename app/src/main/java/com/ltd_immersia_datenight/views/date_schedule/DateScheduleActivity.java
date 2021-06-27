@@ -72,15 +72,15 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
         bindId();
 
         intent = getIntent();
-        Log.i("DateSchedule", intent.getStringExtra("experienceName") + intent.getStringExtra("experienceDesc") + intent.getStringExtra("experienceCost"));
+        int cost = intent.getIntExtra("experienceCost", -1);
+        Log.i("DateSchedule", intent.getStringExtra("experienceName") + intent.getStringExtra("experienceDesc") + cost);
 
 
-        if (intent.getStringExtra("experienceCost") != null) {
-            experienceCost.setText(intent.getStringExtra("experienceCost"));
+        if (cost > 1) {
+            experienceCost.setText(String.valueOf(cost));
         } else {
             experienceCost.setText(R.string.exp_val_free);
         }
-
     }
 
     public void bindId() {

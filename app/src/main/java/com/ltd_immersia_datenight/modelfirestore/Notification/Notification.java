@@ -20,4 +20,36 @@ public class Notification {
     private String message;
     private Timestamp arrivalTime;
     private NotificationType type;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Timestamp getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(Timestamp arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public NotificationType getType() {
+        return type;
+    }
+
+    public void setType(NotificationType type) {
+        this.type = type;
+    }
 }

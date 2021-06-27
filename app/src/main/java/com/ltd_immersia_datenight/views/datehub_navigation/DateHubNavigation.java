@@ -39,6 +39,7 @@ public class DateHubNavigation extends AppCompatActivity {
     TextView emailDisplay;
     DocumentReference userdocRef;
     FirebaseFirestore db;
+    String TAG = "DatehubNavigation";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +64,20 @@ public class DateHubNavigation extends AppCompatActivity {
         emailDisplay = header.findViewById(R.id.emailDisplay);
 
         mAuth = FirebaseAuth.getInstance();
-        userdocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
-        userdocRef.get().addOnSuccessListener(documentSnapshot -> {
-            UserModel user = documentSnapshot.toObject(UserModel.class);
-            if(user != null) {
-                emailDisplay.setText(user.getUsername());
-            }
-        });
+        try{
+            userdocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
+            userdocRef.get().addOnSuccessListener(documentSnapshot -> {
+                UserModel user = documentSnapshot.toObject(UserModel.class);
+                if(user != null) {
+                    emailDisplay.setText(user.getUsername());
+                }
+            });
+        } catch(Exception e){
+            Log.e(TAG, "Error while trying to retrieve user object and casting to UserModel");
+            Log.e(TAG, e.getMessage() );
+            e.printStackTrace();
+        }
+
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -148,5 +156,4 @@ public class DateHubNavigation extends AppCompatActivity {
             Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
         }
     }
-
 }

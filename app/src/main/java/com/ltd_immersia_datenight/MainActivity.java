@@ -11,6 +11,7 @@ package com.ltd_immersia_datenight;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.ltd_immersia_datenight.modelfirestore.User.UserModel;
 import com.ltd_immersia_datenight.utils.constants.DatabaseConstants;
@@ -28,7 +30,7 @@ import com.ltd_immersia_datenight.views.landing_screen.BoardingScreen;
 import com.ltd_immersia_datenight.views.onboarding.UserOnBoarding;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "Getting Image";
+    private static final String TAG = "MainActivity";
     private static final long SPLASH_TIME_OUT = 3700;
     private ImageView dateNightLogo;
     private ImageView dateNightTextLogo;
@@ -61,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         Runnable runnable = () -> {
-            /*NOTE: WORKS FINE, COMMENTED OUT BECAUSE OF APP DATA, EVEN AFTER INITILIAZING IN HERE AS ENTRY POINT IS NOW HERE ALSO, STILL FAILS TO GET OBJECT IN PEND & SCHEDULED*/
             if (mAuth.getCurrentUser() != null) {
                 userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
                 checkOnBoarded();
@@ -79,35 +80,44 @@ public class MainActivity extends AppCompatActivity {
 
     public void checkOnBoarded() {
         userDocRef.get().addOnSuccessListener(documentSnapshot -> {
-            UserModel user = documentSnapshot.toObject(UserModel.class);
             if (documentSnapshot.exists()) {
-                if (!user.isOnBoarded() && mAuth.getCurrentUser() == null) {
-                    Intent intent = new Intent(MainActivity.this, UserOnBoarding.class);
-                    startActivity(intent);
+                UserModel user = null;
+                try {
+                    user = documentSnapshot.toObject(UserModel.class,
+                                                     DocumentSnapshot.ServerTimestampBehavior.PREVIOUS);
 
-                } else if (user.isOnBoarded() && mAuth.getCurrentUser() == null) {
-                    Intent intent = new Intent(MainActivity.this, BoardingScreen.class);
-                    startActivity(intent);
-
-                } else if (!user.isOnBoarded() && mAuth.getCurrentUser() != null) {
-                    DateNight appState = ((DateNight)this.getApplication());
-                    if (appState.getAppData(mAuth.getUid()) == null) {
-                        // Fetch required launch data and then launch DateHubNavigation class
-                        appState.initializeAppData(mAuth.getUid(), MainActivity.this);
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, DateHubNavigation.class);
+                    if (!user.isOnBoarded() && mAuth.getCurrentUser() == null) {
+                        Intent intent = new Intent(MainActivity.this, UserOnBoarding.class);
                         startActivity(intent);
-                    }
 
-                } else {
-                    DateNight appState = ((DateNight)this.getApplication());;
-                    if (appState.getAppData(mAuth.getUid()) == null) {
-                        // Fetch required launch data and then launch DateHubNavigation class
-                        appState.initializeAppData(mAuth.getUid(), MainActivity.this);
-                    } else {
-                        Intent intent = new Intent(MainActivity.this, DateHubNavigation.class);
+                    } else if (user.isOnBoarded() && mAuth.getCurrentUser() == null) {
+                        Intent intent = new Intent(MainActivity.this, BoardingScreen.class);
                         startActivity(intent);
+
+                    } else if (!user.isOnBoarded() && mAuth.getCurrentUser() != null) {
+                        DateNight appState = ((DateNight)this.getApplication());
+                        if (appState.getAppData(mAuth.getUid()) == null) {
+                            // Fetch required launch data and then launch DateHubNavigation class
+                            appState.initializeAppData(mAuth.getUid(), MainActivity.this);
+                        } else {
+                            Intent intent = new Intent(MainActivity.this, DateHubNavigation.class);
+                            startActivity(intent);
+                        }
+
+                    } else {
+                        DateNight appState = ((DateNight)this.getApplication());;
+                        if (appState.getAppData(mAuth.getUid()) == null) {
+                            // Fetch required launch data and then launch DateHubNavigation class
+                            appState.initializeAppData(mAuth.getUid(), MainActivity.this);
+                        } else {
+                            Intent intent = new Intent(MainActivity.this, DateHubNavigation.class);
+                            startActivity(intent);
+                        }
                     }
+                } catch (Exception e){
+                    Log.e(TAG, "Error in checkOnBoarded");
+                    Log.e(TAG, e.getMessage());
+                    e.printStackTrace();
                 }
             }
         });

@@ -1,38 +1,37 @@
 package com.ltd_immersia_datenight.modelfirestore.User;
 
-
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.Exclude;
-
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class UserModel implements Serializable {
+public class UserModel {
     private String id;
     private String username;
-    public String name; //fullName
-    public String email;
-    public Timestamp dob; //Date equivalent in fire store
-    public HashMap<String, String> avatar; //avatar = string in db .glb file :: android image resource takes int value  >>String,String || String, Integer<<
-    public String status; //BASIC || PREMIUM USER
-    public int dtc;
-    public String loginMethod;
-    public String stripeCustomerId;
-    public String ephemeralKey;
+    private String name; //fullName
+    private String email;
+    private Timestamp dob; //Date equivalent in fire store
+    private HashMap<String, String> avatar; //avatar = string in db .glb file :: android image resource takes int value  >>String,String || String, Integer<<
+    private String status; //BASIC || PREMIUM USER
+    private int dtc;
+    private String loginMethod;
+    private String stripeCustomerId;
+    private String ephemeralKey;
     private Timestamp dateCreated;
     private boolean onBoarded ;
     private String fcmToken;
-    List<String> purchasedExperiences;
-    UserPreferences userPreferences;
+    HashMap<String, Timestamp> purchasedExperiences;
+    HashMap<String, Object> userPreferences;
     List<String> dateId;
-    public UserStatsModel avgDateStats;
+    private UserStatsModel avgDateStats;
+    private boolean betaUser;
+    List<String> blockedUsers;
 
     public UserModel() {
         /**Public no arg constructor needed*/
     }
 
-    public UserModel(String id, String username, String name, String email, Timestamp dob, HashMap<String, String> avatar, String status, String loginMethod, List<String> dateId, UserStatsModel statistics, List<String> purchasedExperiences, String stripeCustomerId, Timestamp dateCreated, boolean onBoarded, String fcmToken) {
+    public UserModel(String id, String username, String name, String email, Timestamp dob, HashMap<String, String> avatar, String status, String loginMethod, List<String> dateId, UserStatsModel statistics, HashMap<String, Timestamp> purchasedExperiences, String stripeCustomerId, Timestamp dateCreated, boolean onBoarded, String fcmToken) {
         this.id = id;
         this.username = username;
         this.name = name;
@@ -60,7 +59,6 @@ public class UserModel implements Serializable {
         this.id = id;
     }
 
-    @Exclude
     public String getId() {
         return id;
     }
@@ -84,7 +82,6 @@ public class UserModel implements Serializable {
     public HashMap<String, String> getAvatar() {
         return avatar;
     }
-
 
     public String getStatus() {
         return status;
@@ -133,7 +130,6 @@ public class UserModel implements Serializable {
     public void setAvgDateStats(UserStatsModel avgDateStats) {
         this.avgDateStats = avgDateStats;
     }
-
 
     public void setUsername(String username) {
         this.username = username;
@@ -187,24 +183,39 @@ public class UserModel implements Serializable {
         this.onBoarded = onBoarded;
     }
 
-    public List<String> getPurchasedExperiences() {
+    public HashMap<String, Timestamp> getPurchasedExperiences() {
         return purchasedExperiences;
     }
 
-    public void setPurchasedExperiences(List<String> purchasedExperiences) {
+    public void setPurchasedExperiences(HashMap<String, Timestamp> purchasedExperiences) {
         this.purchasedExperiences = purchasedExperiences;
     }
 
-    public UserPreferences getUserPreferences() {
+    public HashMap<String, Object> getUserPreferences() {
         return userPreferences;
     }
 
-    public void setUserPreferences(
-            UserPreferences userPreferences) {
+    public void setUserPreferences(HashMap<String, Object> userPreferences) {
         this.userPreferences = userPreferences;
     }
 
     public void setDateId(List<String> dateId) {
         this.dateId = dateId;
+    }
+
+    public boolean isBetaUser() {
+        return betaUser;
+    }
+
+    public void setBetaUser(boolean betaUser) {
+        this.betaUser = betaUser;
+    }
+
+    public List<String> getBlockedUsers() {
+        return blockedUsers;
+    }
+
+    public void setBlockedUsers(List<String> blockedUsers) {
+        this.blockedUsers = blockedUsers;
     }
 }

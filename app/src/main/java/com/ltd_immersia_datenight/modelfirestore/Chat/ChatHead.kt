@@ -1,8 +1,9 @@
 package com.ltd_immersia_datenight.modelfirestore.Chat
 
+import androidx.annotation.Keep
 import java.io.Serializable
 
-class ChatHead(val participants: Map<String?, String?>, val usernames: Map<String?, String?>, val mostRecentMessage: ChatRoomMessage): Serializable{
+class ChatHead(val participants: Map<String?, String?>, val usernames: Map<String?, String?>, val mostRecentMessage: ChatRoomMessage){
     var key: String? = null
     var participantId: String? = null
     var participantUsername: String? = null

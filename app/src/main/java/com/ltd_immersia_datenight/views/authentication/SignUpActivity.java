@@ -291,8 +291,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         userId = mAuth.getCurrentUser().getUid();
 
         List<String> dateIds = new ArrayList<>();
-        List<String> purchasedExperiences = new ArrayList<>();
-        purchasedExperiences.add("");
 
         HashMap<String, String> avatar = new HashMap<>();
         avatar.put("avatarUrl", "");
@@ -310,7 +308,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         });
 
         UserStatsModel userStats = new UserStatsModel(0, 0, 0, 0);
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", DatabaseConstants.LOCAL_AUTH, dateIds, userStats, purchasedExperiences, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false,fcmToken);
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", DatabaseConstants.LOCAL_AUTH, dateIds, userStats, null, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false,fcmToken);
 
 
         userRef = db.collection("userData").document(userId);

@@ -13,9 +13,7 @@
 
 package com.ltd_immersia_datenight.modelfirestore.Experience;
 
-import java.io.Serializable;
-
-public class ExperienceModel implements Serializable {
+public class ExperienceModel {
     String description;
     String environmentPreviewUrl; //3D
     String environmentUrl;

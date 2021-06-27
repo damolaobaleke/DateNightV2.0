@@ -13,9 +13,8 @@
 
 package com.ltd_immersia_datenight.modelfirestore.Help;
 
-import java.io.Serializable;
 
-public class Help implements Serializable {
+public class Help {
     String type;
     String message;
 

@@ -76,7 +76,14 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
             // Illegal state, take user back to main activity
             navigateToMainActivity();
         }
-        setUpRecyclerView();
+        try{
+            setUpRecyclerView();
+        }catch(Exception e){
+            Log.e(TAG, "Error while attempting to set up recycler view");
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 
     @Nullable

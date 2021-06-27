@@ -48,7 +48,6 @@ class DateHubFragmentViewModel : ViewModel() {
 
     init {
         docReference = db.collection(DatabaseConstants.USER_DATA_NODE).document(currentUser)
-
     }
 
     fun getDtcBalance(): LiveData<Int> {
@@ -69,14 +68,21 @@ class DateHubFragmentViewModel : ViewModel() {
     fun initializeViews(dtcBalance: TextView, datesCount: TextView, avgRating: TextView, ratingProgBar: ProgressBar, kissCount: TextView) {
         docReference.get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
-                userModel = documentSnapshot.toObject(UserModel::class.java)!!
-                datesCount.text = userModel.getAvgDateStats().dateCount.toString()
-                avgRating.text = userModel.getAvgDateStats().rating.toString()
-                ratingProgBar.progress = userModel.getAvgDateStats().rating * 100 / 5
-                dtcBalance.text = userModel.getDtc().toString()
-                kissCount.text = userModel.getAvgDateStats().kissCount.toString()
-
+                try{
+                    userModel = documentSnapshot.toObject(UserModel::class.java)!!
+                    datesCount.text = userModel.getAvgDateStats().dateCount.toString()
+                    avgRating.text = userModel.getAvgDateStats().rating.toString()
+                    ratingProgBar.progress = userModel.getAvgDateStats().rating * 100 / 5
+                    dtcBalance.text = userModel.getDtc().toString()
+                    kissCount.text = userModel.getAvgDateStats().kissCount.toString()
+                    userAvatar.value = userModel.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD];
+                } catch(e: Exception){
+                    Log.e(TAG, "Error while trying to cast response to UserModel")
+                    Log.e(TAG, e.message)
+                    e.printStackTrace()
+                }
             } else {
+                userAvatar.value = "";
                 Log.i(TAG, "Unable to get user model")
             }
         }
@@ -85,11 +91,15 @@ class DateHubFragmentViewModel : ViewModel() {
     fun get2dAvatar(): LiveData<String> {
         docReference.get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
-                val user = documentSnapshot.toObject(UserModel::class.java)
-                if (user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] != null) {
-                    userAvatar.value = user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD];
-                } else {
-                    userAvatar.value = "";
+                try{
+                    val user = documentSnapshot.toObject(UserModel::class.java)
+                    if (user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] != null) {
+                        userAvatar.value = user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD];
+                    } else {
+                        userAvatar.value = "";
+                    }
+                } catch (e: Exception){
+
                 }
             }
         }
@@ -99,14 +109,20 @@ class DateHubFragmentViewModel : ViewModel() {
     fun checkUserAvatarExists(): LiveData<Boolean> {
         docReference.get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
-                val user = documentSnapshot.toObject(UserModel::class.java)
-                if(user!!.getAvatar()[DatabaseConstants.AVATAR_URL_FIELD] != null){
-                    isAvatarUrl.value = true
-                    if(user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] == null) {
-                        setAvatarHeadShot()
+                try{
+                    val user = documentSnapshot.toObject(UserModel::class.java)
+                    if(user!!.getAvatar()[DatabaseConstants.AVATAR_URL_FIELD] != null){
+                        isAvatarUrl.value = true
+                        if(user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] == null) {
+                            setAvatarHeadShot()
+                        }
+                    } else {
+                        isAvatarUrl.value = false
                     }
-                }else{
-                    isAvatarUrl.value = false
+                } catch (e:Exception){
+                    Log.e(TAG, "Error while trying to cast object UserModel")
+                    Log.e(TAG, e.message)
+                    e.printStackTrace()
                 }
             }
         }
@@ -173,7 +189,7 @@ class DateHubFragmentViewModel : ViewModel() {
     }
 
     companion object {
-        var TAG = "Datehubviewmodel"
+        var TAG = "DateHubFragmentViewModel"
     }
 
     fun buyDtc(parentFrag: DatehubFragment) {

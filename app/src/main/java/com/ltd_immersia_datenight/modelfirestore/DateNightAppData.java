@@ -28,48 +28,53 @@ import java.util.HashMap;
 
 public class DateNightAppData {
     // Firebase vars
-    private FirebaseFirestore dbFirestore;
+    private FirebaseFirestore dbFirestore = FirebaseFirestore.getInstance();
     private String currentUserId; // Holds the id of the user who owns the data in instance of class
     // Data to be persisted
     private UserModel currentUserModel;
     private HashMap<String, ExperienceModel> experiencesData = new HashMap<String, ExperienceModel>();
     // Util data
-    private final static String TAG = "RetrieveUserAndExperienceData";
+    private final static String TAG = "DateNightAppData";
     private boolean hasUnityBeenLaunched = false;
 
     public DateNightAppData (String currentUserId, Context launchContext){
         this.currentUserId = currentUserId;
         if (currentUserId != null){
-            dbFirestore = FirebaseFirestore.getInstance();
-            dbFirestore.collection(DatabaseConstants.USER_DATA_NODE).document(currentUserId).get().addOnSuccessListener(userDocumentSnapshot -> {
+            try{
+                dbFirestore.collection(DatabaseConstants.USER_DATA_NODE).document(currentUserId).get().addOnSuccessListener(userDocumentSnapshot -> {
 
-                // Grab user data, upon success, grab experiences
-                if (userDocumentSnapshot.exists()){
-                    currentUserModel = userDocumentSnapshot.toObject(UserModel.class);
+                    // Grab user data, upon success, grab experiences
+                    if (userDocumentSnapshot.exists()){
+                        currentUserModel = userDocumentSnapshot.toObject(UserModel.class);
 
-                    /** NOTE: Grab experiences as well */
-                    dbFirestore.collection(DatabaseConstants.EXPERIENCE_NODE).get().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()){
-                            for(QueryDocumentSnapshot document: task.getResult()){
-                                ExperienceModel exp = document.toObject(ExperienceModel.class);
-                                experiencesData.put(exp.getId(), exp);
+                        /** NOTE: Grab experiences as well */
+                        dbFirestore.collection(DatabaseConstants.EXPERIENCE_NODE).get().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()){
+                                for(QueryDocumentSnapshot document: task.getResult()){
+                                    ExperienceModel exp = document.toObject(ExperienceModel.class);
+                                    experiencesData.put(exp.getId(), exp);
+                                }
+                                Log.e(TAG, this.toString());
+
+                                //Launch DateHub navigation activity
+                                Intent intent = new Intent(launchContext, DateHubNavigation.class);
+                                launchContext.startActivity(intent);
+                            } else {
+                                //TODO: Error out
+                                Log.e(TAG, "Unable to get experiences data from Firestore");
                             }
-                            Log.e(TAG, this.toString());
-
-                            //Launch DateHub navigation activity
-                            Intent intent = new Intent(launchContext, DateHubNavigation.class);
-                            launchContext.startActivity(intent);
-                        } else {
-                            //TODO: Error out
-                            Log.e(TAG, "Unable to get experiences data from Firestore");
-                        }
-                    });
-                }
-                else {
-                    //TODO: error out
-                    Log.e(TAG, "Unable to get user data from Firestore");
-                }
-            });
+                        });
+                    }
+                    else {
+                        //TODO: error out
+                        Log.e(TAG, "Unable to get user data from Firestore");
+                    }
+                });
+            } catch(Exception e){
+                Log.e(TAG, "Error while trying to retrieve user data and date meta from firestore");
+                Log.e(TAG, e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 

@@ -109,12 +109,9 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
                 }else{
                    avatarImage.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.datenight_logo));
                 }
-
             }
         });
-
         return view;
-
     }
 
     public void startReadyPlayerMeLink() {
@@ -128,6 +125,10 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
         startReadyPlayerMeLink();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
     @Override
     public void onResume() {
         super.onResume();

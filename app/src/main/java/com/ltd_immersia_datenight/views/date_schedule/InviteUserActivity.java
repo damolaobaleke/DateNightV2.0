@@ -149,41 +149,38 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
         }
         usercollRef.whereEqualTo("username",queryString) //searches based on lowercase username==== userSearch.getQuery().toString().toLowerCase()
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) { // TODO: Need to fix this to become a search button insead
-                        if (queryDocumentSnapshots.size() < 1){
-                            noUserFound.setVisibility(View.VISIBLE);
-                        } else {
-                            noUserFound.setVisibility(View.GONE);
-                        }
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            if (documentSnapshot.exists()) {
-                                dateinvitee = documentSnapshot.toObject(UserModel.class); //recreate document object from the model class
-                                dateinvitee.setId(documentSnapshot.getId());
-                                Log.e("InviteUserActivity", "Found user: " + documentSnapshot.get("id").toString());
-                                Log.e("InviteUserActivity", "Found user (dateinvitee): " +dateinvitee.getId());
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots.size() < 1){
+                        noUserFound.setVisibility(View.VISIBLE);
+                    } else {
+                        noUserFound.setVisibility(View.GONE);
+                    }
+                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                        if (documentSnapshot.exists()) {
+                            dateinvitee = documentSnapshot.toObject(UserModel.class, DocumentSnapshot.ServerTimestampBehavior.PREVIOUS); //recreate document object from the model class
+                            dateinvitee.setId(documentSnapshot.getId());
+                            Log.e("InviteUserActivity", "Found user: " + documentSnapshot.get("id").toString());
+                            Log.e("InviteUserActivity", "Found user (dateinvitee): " +dateinvitee.getId());
 
-                                System.out.println(dateinvitee.getUsername() + " " + dateinvitee.getId());
-                                Log.i(TAG, dateinvitee.getUsername() + " " + dateinvitee.getId());
+                            System.out.println(dateinvitee.getUsername() + " " + dateinvitee.getId());
+                            Log.i(TAG, dateinvitee.getUsername() + " " + dateinvitee.getId());
 
-                                HashMap<String, Integer> avtr = new HashMap<>();
-                                avtr.put("avatar", R.drawable.avatar_ellipse); //R.drawable.avatar_ellipse
+                            HashMap<String, Integer> avtr = new HashMap<>();
+                            avtr.put("avatar", R.drawable.avatar_ellipse); //R.drawable.avatar_ellipse
 
-                                HashMap<String, String> avatar = new HashMap<>();
-                                avatar.put("avatar", ""); //R.drawable.avatar_ellipse
+                            HashMap<String, String> avatar = new HashMap<>();
+                            avatar.put("avatar", ""); //R.drawable.avatar_ellipse
 
-                                users.add(new UserModel(dateinvitee.getId(), dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, null,null, null, null, null, null, null,Timestamp.now(),false,""));
-                                //recyclerView.setHasFixedSize(true);
-                                layoutManager = new LinearLayoutManager(InviteUserActivity.this);
-                                adapter = new RecylerViewAdapter(users);
+                            users.add(new UserModel(dateinvitee.getId(), dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, null,null, null, null, null, null, null,Timestamp.now(),false,""));
+                            //recyclerView.setHasFixedSize(true);
+                            layoutManager = new LinearLayoutManager(InviteUserActivity.this);
+                            adapter = new RecylerViewAdapter(users);
 
-                                recyclerView.setLayoutManager(layoutManager);
-                                recyclerView.setAdapter(adapter);
-                                adapter.notifyDataSetChanged();
+                            recyclerView.setLayoutManager(layoutManager);
+                            recyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
 
-                                inviteAndCreateDate();
-                            }
+                            inviteAndCreateDate();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {

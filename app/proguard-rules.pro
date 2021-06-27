@@ -14,8 +14,25 @@
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-keepattributes SourceFile,LineNumberTable
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Keep custom model classes
+-keepclassmembers class com.ltd_immersia_datenight.modelfirestore.** { *; }
+
+# Keep animation classes
+-keepclassmembers class **.R$* {
+       public static <fields>;
+}
+
+# Basic ProGuard rules for Firebase Android SDK 2.0.0+
+-keep class com.firebase.** { *; }
+#-keep class org.apache.** { *; }
+#-keepnames class com.fasterxml.jackson.** { *; }
+#-keepnames class javax.servlet.** { *; }
+#-keepnames class org.ietf.jgss.** { *; }
+#-dontwarn org.apache.**
+#W-dontwarn org.w3c.dom.**

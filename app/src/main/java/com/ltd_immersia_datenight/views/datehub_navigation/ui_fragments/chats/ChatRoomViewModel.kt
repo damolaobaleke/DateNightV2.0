@@ -92,7 +92,9 @@ class ChatRoomViewModel(username: String,
                     override fun onDataChanged() {
                         // There's nothing extra that needs doing
                         super.onDataChanged()
-                        parentRecyclerView.smoothScrollToPosition(itemCount - 1)
+                        if (itemCount > 1){
+                            parentRecyclerView.smoothScrollToPosition(itemCount - 1)
+                        }
                     }
                 }
 
