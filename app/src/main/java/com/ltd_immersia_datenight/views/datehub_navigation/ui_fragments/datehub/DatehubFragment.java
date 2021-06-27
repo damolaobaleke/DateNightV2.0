@@ -69,7 +69,7 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
 //            @Override
 //            public void onChanged(Integer dtcValue) {
 //                int num = Integer.parseInt(dtcValue.toString());
-//                String formattedDtcBalance = NumberFormat.getInstance(Locale.US).format(num);
+//                String formattedDtcBalance = NumberFormat.getInstance(Locale.getDefault()).format(num);
 //
 //                Log.i("DateHub Frag", dtcValue.toString());
 //                dtcBalance.setText(formattedDtcBalance);

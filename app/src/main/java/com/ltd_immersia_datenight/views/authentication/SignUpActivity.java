@@ -145,6 +145,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private boolean checkUserAlreadyExists() {
+        // TODO: Validate username is valid (no special characters, no space inbetweeen etc etc.)
         usernames.whereEqualTo("username", usernameInput.getText().toString().toLowerCase().trim()).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
                 if (queryDocumentSnapshot.exists()) {
@@ -308,7 +309,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         });
 
         UserStatsModel userStats = new UserStatsModel(0, 0, 0, 0);
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", DatabaseConstants.LOCAL_AUTH, dateIds, userStats, null, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false,fcmToken);
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().trim().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", DatabaseConstants.LOCAL_AUTH, dateIds, userStats, null, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false,fcmToken);
 
 
         userRef = db.collection("userData").document(userId);
@@ -456,12 +457,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        ageInput.setText(String.format(Locale.US, "%d-%d-%d", dayOfMonth, month + 1, year)); //due to january in index pos is 0
+        ageInput.setText(String.format(Locale.getDefault(), "%d-%d-%d", dayOfMonth, month + 1, year)); //due to january in index pos is 0
     }
 
     public static Timestamp dateStringToTimestamp(String dateStr) {
         try {
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             Date date = formatter.parse(dateStr);
             assert date != null;
             //convert date to timestamp
@@ -476,7 +477,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         Calendar calendarBirthday = Calendar.getInstance();
         Calendar calendarToday = Calendar.getInstance();
 
-        calendarBirthday.setTime(new SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(ageInput));
+        calendarBirthday.setTime(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).parse(ageInput));
 
         int yearOfToday = calendarToday.get(Calendar.YEAR);
         int yearOfBirthday = calendarBirthday.get(Calendar.YEAR);
@@ -513,7 +514,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     public static Timestamp dateCreated() {
         try {
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             Date date = formatter.parse(String.valueOf(Calendar.getInstance().getTime()));
             Log.i("", "Today is " + date);
 
@@ -528,7 +529,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     public static String timeStamptoString(Timestamp timestamp) {
         // hours*minutes*seconds*milliseconds  int oneDay = 24 * 60 * 60 * 1000;
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         Date date = timestamp.toDate();
         String dateofbirth = formatter.format(date);
         return dateofbirth;

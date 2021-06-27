@@ -135,7 +135,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 }
 
                 // Determine whether to display hint or not
-                if(getItemCount() - numHiddenItems > 0){
+                if(getItemCount()  > 0){
                     pendingHint.setVisibility(View.GONE);
                 } else {
                     pendingHint.setVisibility(View.VISIBLE);
@@ -156,7 +156,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 if (getItemCount() < numHiddenItems){
                     numHiddenItems = getItemCount(); // accounts for when invite has been rejected
                 }
-                if(getItemCount() - numHiddenItems < 1){
+                if(getItemCount() < 1){
                     pendingHint.setVisibility(View.VISIBLE);
                 }else {
                     pendingHint.setVisibility(View.INVISIBLE);
@@ -438,7 +438,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
 
     public static Timestamp dateStringToTimestamp(String dateStr) {
         try {
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             Date date = formatter.parse(dateStr);
             assert date != null;
             //convert date to timestamp

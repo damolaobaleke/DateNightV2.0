@@ -32,13 +32,13 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         // Do something with the date chosen by the user
         System.out.print(view.getDayOfMonth() + view.getMonth() + view.getYear());
 
-        //ageInput.setText(String.format(Locale.US, "%d-%d-%d", day, month, year));
+        //ageInput.setText(String.format(Locale.getDefault(), "%d-%d-%d", day, month, year));
         Log.i("Current Date", c.toString());
 
     }
 
     public static String dateformatter(DatePicker view){
         if (view == null) return "";
-        return String.format(Locale.US, "%02d-%02d-%d.", view.getDayOfMonth(), view.getMonth(), view.getYear());
+        return String.format(Locale.getDefault(), "%02d-%02d-%d.", view.getDayOfMonth(), view.getMonth(), view.getYear());
     }
 }

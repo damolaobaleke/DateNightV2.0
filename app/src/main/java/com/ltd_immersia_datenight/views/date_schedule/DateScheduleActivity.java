@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +36,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.ltd_immersia_datenight.R;
 import com.ltd_immersia_datenight.modelfirestore.Experience.ExperienceModel;
+import com.ltd_immersia_datenight.views.authentication.LoginActivity;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -154,10 +156,18 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
         cancelCreation.setOnClickListener(v -> bottomSheetDialog.dismiss());
 
         createDateSchedule.setOnClickListener(v -> {
-            Intent intent = new Intent(this, InviteUserActivity.class);
-            intent.putExtra("dateChosen", dateChosen.getText());
-            intent.putExtra("timeChosen", timeChosen.getText());
-            startActivity(intent);
+            boolean dateAndTimeChosen = !dateChosen.getText().toString().equals(
+                    getString(R.string.pick_date)) && !timeChosen.getText().toString().equals(getString(R.string.pick_time));
+
+            if(dateAndTimeChosen) {
+                Intent intent = new Intent(this, InviteUserActivity.class);
+                intent.putExtra("dateChosen", dateChosen.getText());
+                intent.putExtra("timeChosen", timeChosen.getText());
+                startActivity(intent);
+            } else {
+                Toast.makeText(DateScheduleActivity.this, "Please select a date and time to proceed",
+                               Toast.LENGTH_SHORT).show();
+            }
         });
 
         bottomSheetDialog.setContentView(view);

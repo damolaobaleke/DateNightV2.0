@@ -138,7 +138,7 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
                 }
 
                 // Determine whether to display hint or not
-                if(getItemCount() - numHiddenItems > 0){
+                if(getItemCount() > 1){
                     scheduledHint.setVisibility(View.GONE);
                 } else {
                     scheduledHint.setVisibility(View.VISIBLE);
@@ -156,10 +156,7 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
-                if (getItemCount() < numHiddenItems){
-                    numHiddenItems = getItemCount(); // accounts for when invite has been rejected
-                }
-                if(getItemCount() - numHiddenItems < 1){
+                if (getItemCount() < 1){
                     scheduledHint.setVisibility(View.VISIBLE);
                 } else {
                     scheduledHint.setVisibility(View.INVISIBLE);
@@ -468,8 +465,9 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             assert date != null;
             //convert date to timestamp
             return new Timestamp(date);
-        } catch (ParseException e) {
-            System.out.println("Exception :" + e);
+        } catch (Exception e) {
+            Log.e(TAG, "Error While trying to convert date string to timestamp: " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
