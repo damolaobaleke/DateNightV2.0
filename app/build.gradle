@@ -133,8 +133,8 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     //Unity
-    implementation project(':unityLibrary')
-    implementation fileTree(dir: project(':unityLibrary').getProjectDir().toString() + ('\\libs'), include: ['*.jar'])
+//    implementation project(':unityLibrary')
+//    implementation fileTree(dir: project(':unityLibrary').getProjectDir().toString() + ('\\libs'), include: ['*.jar'])
 
     //UI
     implementation 'de.hdodenhof:circleimageview:3.1.0'

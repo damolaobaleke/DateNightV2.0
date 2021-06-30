@@ -125,7 +125,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
 
     private void share(){
         shareButton.setOnClickListener(v->{
-            Uri link = Uri.parse("https://play.google.com/console/u/0/developers/8421302216223559919/app/4972918314666606268/tracks/4699075429511113233/releases/7/details");
+            Uri link = Uri.parse("https://play.google.com/store/apps/details?id=com.ltd_immersia_datenight");
             Spanned smiley = Html.fromHtml("&#U+263A",Html.FROM_HTML_MODE_LEGACY);
 
             Intent shareIntent = new Intent();
@@ -151,8 +151,9 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) { // TODO: Need to fix this to become a search button insead
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) { // TODO: Need to fix this to become a search button instead
                         if (queryDocumentSnapshots.size() < 1){
+                            noUserFound.setText(String.format("Could not find %s", queryString));
                             noUserFound.setVisibility(View.VISIBLE);
                         } else {
                             noUserFound.setVisibility(View.GONE);

@@ -31,7 +31,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.RemoteMessage;
 import com.ltd_immersia_datenight.R;
 import com.ltd_immersia_datenight.utils.constants.DatabaseConstants;
+import com.ltd_immersia_datenight.utils.constants.IntentConstants;
 import com.ltd_immersia_datenight.views.authentication.SignUpActivity;
+import com.ltd_immersia_datenight.views.datehub_navigation.DateHubNavigation;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -69,7 +71,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     /**
      * There are two scenarios when onNewToken is called:
-     * 1) When a new token is generated on initial app startup when they SIGNUP in our case
+     * 1) When a new token is generated on initial app startup when they SIGNUP in our case, so when user is created
      * 2) Whenever an existing token is changed
      * Under #2, there are three scenarios when the existing token is changed:
      * A) App is restored to a new device
@@ -93,32 +95,88 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
      * @param remoteMessage FCM message body received.
      */
     private void sendNotification(RemoteMessage remoteMessage) {
-        Intent intent = new Intent(this, SignUpActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_ONE_SHOT);
+        Intent intentChats = new Intent(this, DateHubNavigation.class);
+        intentChats.putExtra(IntentConstants.FRAGMENT_TO_LOAD, IntentConstants.INBOX_FRAGMENT);
 
-        //We're arent really using channels right now
-        String channelId = "channel_id";
+        //invite, cancel, reject same location.
+        Intent intent = new Intent(this, DateHubNavigation.class);
+        intent.putExtra(IntentConstants.FRAGMENT_TO_LOAD, IntentConstants.DATE_HUB_FRAGMENT);
+
+        intentChats.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntentChats = PendingIntent.getActivity(this, 0 , intentChats, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntentInvites = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntentCancel = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntentRejections = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_ONE_SHOT);
+
+
+        String channelIdChats = String.valueOf(Math.random());
+        String channelIdInvites =  String.valueOf(Math.random());
+        String channelIdCancellations =  String.valueOf(Math.random());
+        String channelIdRej = String.valueOf(Math.random());
+
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId)
+        //chats
+        NotificationCompat.Builder notificationBuilderChats = new NotificationCompat.Builder(this, channelIdChats)
                         .setSmallIcon(R.drawable.datehub_logo)
                         .setContentTitle(remoteMessage.getNotification().getTitle())
                         .setContentText(remoteMessage.getNotification().getBody())
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
+                        .setContentIntent(pendingIntentChats);
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        //invites
+        NotificationCompat.Builder notificationBuilderInvites = new NotificationCompat.Builder(this, channelIdInvites)
+                .setSmallIcon(R.drawable.datehub_logo)
+                .setContentTitle(remoteMessage.getNotification().getTitle())
+                .setContentText(remoteMessage.getNotification().getBody())
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntentInvites);
 
-        // Since android Oreo notification channel is needed.
+        //cancellations
+        NotificationCompat.Builder notificationBuilderCancel = new NotificationCompat.Builder(this, channelIdCancellations)
+                .setSmallIcon(R.drawable.datehub_logo)
+                .setContentTitle(remoteMessage.getNotification().getTitle())
+                .setContentText(remoteMessage.getNotification().getBody())
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntentCancel);
+
+        //rejections
+        NotificationCompat.Builder notificationBuilderRej = new NotificationCompat.Builder(this, channelIdRej)
+                .setSmallIcon(R.drawable.datehub_logo)
+                .setContentTitle(remoteMessage.getNotification().getTitle())
+                .setContentText(remoteMessage.getNotification().getBody())
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntentRejections);
+
+
+        //
+        NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Since android Oreo, notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId, "Channel chats", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channelOne = new NotificationChannel(channelIdChats, "Chats", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channelTwo = new NotificationChannel(channelIdInvites, "Date Invites", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channelThree = new NotificationChannel(channelIdCancellations, "Date Cancellations", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channelFour = new NotificationChannel(channelIdRej, "Date Rejections", NotificationManager.IMPORTANCE_DEFAULT);
+
+
             assert notificationManager != null;
-            notificationManager.createNotificationChannel(channel);
+            notificationManager.createNotificationChannel(channelOne);
+            notificationManager.createNotificationChannel(channelTwo);
+            notificationManager.createNotificationChannel(channelThree);
+            notificationManager.createNotificationChannel(channelFour);
         }
 
-        notificationManager.notify(0 , notificationBuilder.build());
+        notificationManager.notify(0 , notificationBuilderChats.build());
+        notificationManager.notify(1 , notificationBuilderInvites.build());
+        notificationManager.notify(2 , notificationBuilderCancel.build());
+        notificationManager.notify(3 , notificationBuilderRej.build());
     }
 
 }

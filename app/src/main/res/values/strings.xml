@@ -129,4 +129,5 @@
     <string name="avatar_creation_info">After creating your avatar, don\'t forget to copy the generated link</string>
     <string name="edit_avatar_text">Edit Avatar</string>
     <string name="create_avatar_text">Create Avatar</string>
+    <string name="no_such_user_text">No such user</string>
 </resources>

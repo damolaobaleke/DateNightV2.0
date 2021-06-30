@@ -27,6 +27,7 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
@@ -37,6 +38,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -134,7 +136,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         signUp.setOnClickListener(v -> {
             progressBarShown();
             validateForm();
-            if (checkUserAlreadyExists()) {
+            if (checkUserAlreadyExists(usernameInput.getText().toString().toLowerCase().trim())) {
                 //user exists do nothing
                 progressBarGone();
             } else {
@@ -144,48 +146,58 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         });
     }
 
-    private boolean checkUserAlreadyExists() {
-        usernames.whereEqualTo("username", usernameInput.getText().toString().toLowerCase().trim()).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
-                if (queryDocumentSnapshot.exists()) {
-                    //toast and log
-                    toast("username already exists");
-                    //Toast.makeText(SignUpActivity.this, R.string.valid_username, Toast.LENGTH_SHORT).show();
+    private boolean checkUserAlreadyExists(String usernameInput) {
+       usernames.whereEqualTo("username", usernameInput).get().addOnSuccessListener(queryDocumentSnapshots -> {
+           //TODO- Divide and Conquer,after sorting **REFACTOR**
+           //This is a Linear search O(f(n)) == O(n). Cant be a Binary Search(because its not a sorted array, unless we sort it when inputting in db )
+           //Binary Search, Big O = O(log(n)), also much faster
 
-                    //show error
-                    usernameLabel = findViewById(R.id.username_label);
-                    usernameLabel.setText(R.string.valid_username);
-                    usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.holo_red_light));
+           for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+               if (queryDocumentSnapshot.exists()) {
+                   //toast and log
+                   toast("username already exists");
+                   //Toast.makeText(SignUpActivity.this, R.string.valid_username, Toast.LENGTH_SHORT).show();
 
-                    //disable button
-                    signUp.setEnabled(false);
-                    signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_btn));
+                   //show error
+                   usernameLabel = findViewById(R.id.username_label);
+                   usernameLabel.setText(R.string.valid_username);
+                   usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.holo_red_light));
 
-                    Runnable runnable = () -> {
-                        usernameLabel.setText("Give yourself a username");
-                        usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
+                   //disable button
+                   signUp.setEnabled(false);
+                   signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_btn));
 
-                        signUp.setEnabled(true);
-                        signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.custom_login_button));
-                    };
-                    Handler handler = new Handler();
-                    handler.postDelayed(runnable, 1000);
+                   Runnable runnable = () -> {
+                       usernameLabel.setText("Give yourself a username");
+                       usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
 
-                    progressBarGone();
+                       signUp.setEnabled(true);
+                       signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.custom_login_button));
+                   };
+                   Handler handler = new Handler();
+                   handler.postDelayed(runnable, 1000);
+
+                   progressBarGone();
 
 
-                    userDoesntExists = false;
-                } else {
-                    signUp.setEnabled(true);
-                    signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.custom_login_button));
+                   userDoesntExists = false;
+               } else {
+                   signUp.setEnabled(true);
+                   signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.custom_login_button));
 
-                    usernameLabel.setText("Give yourself a username");
-                    usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
-                    signUp.setVisibility(View.VISIBLE);
-                    userDoesntExists = true;
-                }
-            }
-        });
+                   usernameLabel.setText("Give yourself a username");
+                   usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
+                   signUp.setVisibility(View.VISIBLE);
+                   userDoesntExists = true;
+               }
+           }
+       }).addOnFailureListener(new OnFailureListener() {
+           @Override
+           public void onFailure(@NonNull Exception e) {
+
+           }
+       });;
+
         return userDoesntExists;
     }
 

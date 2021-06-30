@@ -6,9 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.ltd_immersia_datenight.R;
 import com.ltd_immersia_datenight.views.date_schedule.DateScheduleActivity;
+import com.ltd_immersia_datenight.views.date_schedule.InviteUserActivity;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -51,6 +54,7 @@ public class PremiumFragment extends Fragment {
         loveIntheClouds.setCardElevation(1000f);
 
 
+
         premiumViewModel.getExpName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -77,6 +81,7 @@ public class PremiumFragment extends Fragment {
             @Override
             public void onChanged(String description) {
                 experienceDescription = description;
+                Log.i(TAG, experienceDescription);
             }
         });
 
@@ -94,7 +99,10 @@ public class PremiumFragment extends Fragment {
         });
 
 
-        loveIntheClouds.setOnClickListener(v -> startLoveInTheClouds());
+        loveIntheClouds.setOnClickListener(v -> {
+            toast("Coming Soon");
+            //startLoveInTheClouds();
+        });
 
 
         return view;
@@ -107,5 +115,16 @@ public class PremiumFragment extends Fragment {
         intent.putExtra("experienceDesc", experienceDescription);
         intent.putExtra("videoUrl", environmentVideoUrl);
         startActivity(intent);
+    }
+
+    public void toast(String message) {
+        View view = getLayoutInflater().inflate(R.layout.create_date_toast, null);
+        Button b = view.findViewById(R.id.toast_btn);
+
+        Toast toast = new Toast(requireContext());
+        b.setText(message);
+        toast.setView(view);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -193,8 +194,9 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
         DateNight appState = ((DateNight)this.requireContext().getApplicationContext());
         appState.clearAppData();
 
-        //update fcm token to empty string, if someone else logs in you don't want the person to be receiving another users notifications
-        userRef.update("fcmToken","");
+        //Update fcm token to empty string, if someone else logs in you don't want the person to be receiving another users notifications
+        userRef.update("fcmToken","").addOnSuccessListener(aVoid -> Log.i(TAG,"fcm token set to empty string"));
+
         mAuth.signOut();
         user = null;
         //stripe
