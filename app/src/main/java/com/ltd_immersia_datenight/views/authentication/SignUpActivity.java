@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,14 +18,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
@@ -70,12 +67,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import android.util.Patterns;
+
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
     FirebaseAuth mAuth;
     String userId;
     FirebaseDatabase database;
     EditText emailInput, fullNameInput;
     EditText passwordInput;
+    EditText verifyPasswordInput;
     EditText usernameInput;
     EditText dateOfBirth;
     EditText confirmPasswordInput;
@@ -96,7 +96,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     CollectionReference usernames;
     Editable mUserNameText;
     CharSequence mUserName;
-    boolean userDoesntExists = true;
+    boolean usernameAvailable = true;
     static String fcmToken;
 
 
@@ -116,6 +116,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
+        verifyPasswordInput = findViewById(R.id.verifyPasswordInput);
         usernameInput = findViewById(R.id.username);
         fullNameInput = findViewById(R.id.fullNameInput);
         ageInput = findViewById(R.id.Age);
@@ -129,22 +130,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         LogIn.setOnClickListener(this);
 
-        checkAge();
-
         signUp.setOnClickListener(v -> {
             progressBarShown();
-            validateForm();
-            if (checkUserAlreadyExists()) {
-                //user exists do nothing
-                progressBarGone();
-            } else {
-                signUp();
-            }
-
+            signUp();
         });
     }
 
-    private boolean checkUserAlreadyExists() {
+    private boolean isUsernameTaken() {
         // TODO: Validate username is valid (no special characters, no space inbetweeen etc etc.)
         usernames.whereEqualTo("username", usernameInput.getText().toString().toLowerCase().trim()).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
@@ -173,9 +165,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     handler.postDelayed(runnable, 1000);
 
                     progressBarGone();
-
-
-                    userDoesntExists = false;
+                    usernameAvailable = false;
                 } else {
                     signUp.setEnabled(true);
                     signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.custom_login_button));
@@ -183,33 +173,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     usernameLabel.setText("Give yourself a username");
                     usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
                     signUp.setVisibility(View.VISIBLE);
-                    userDoesntExists = true;
+                    usernameAvailable = true;
                 }
             }
         });
-        return userDoesntExists;
-    }
-
-    private void checkAge() {
-        ageInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                try {
-                    checkAgeIsGreaterThan18(s.toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+        return usernameAvailable;
     }
 
     public void chooseAge(View v) {
@@ -240,62 +208,71 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void signUp() {
         boolean formValidated = validateForm(); //if true run signUp
         if (formValidated) {
-            Log.i("User Details", emailInput.getText().toString() + passwordInput.getText().toString());
-
-            mAuth.createUserWithEmailAndPassword(emailInput.getText().toString(), passwordInput.getText().toString())
-                    .addOnSuccessListener(authResult -> Toast.makeText(this, "Registered Successfully, please verify your email address", Toast.LENGTH_SHORT).show())
-
-                    .addOnFailureListener(this, e -> {
-                        Log.e(TAG, e.getLocalizedMessage());
-                        e.printStackTrace();
-                    })
-
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            task1 = task;
-                            if (task1.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
+            usernames.whereEqualTo("username", usernameInput.getText().toString().toLowerCase().trim())
+                    .get()
+                    .addOnSuccessListener( queryDocumentSnapshots -> {
+                        for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                            if (queryDocumentSnapshot.exists()) {
+                                //toast and log
+                                usernameInput.setError("Username taken. Please try a different username");
+                                toast("Username taken. Please try a different username");
                                 progressBarGone();
-
-                                //Add User to db
-                                createUser();
-
-                                //verify email before going to login
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                assert user != null;
-                                user.sendEmailVerification().addOnCompleteListener(task2 -> {
-                                    if (task2.isSuccessful()) {
-                                        Toast.makeText(SignUpActivity.this, "Email sent.", Toast.LENGTH_SHORT).show();
-                                        emailInput.setText("");
-                                        passwordInput.setText("");
-
-                                        //go to LogIn, then to datehub
-                                        goToLogin();
-                                    } else {
-                                        Log.e(TAG, task2.getException().getMessage());
-                                    }
-                                });
-
-
                             } else {
-                                progressBarGone();
-                                Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                updateUI(null);
+                                // createUser(); TODO: uncomment
+                                usernameAvailable = true;
                             }
                         }
                     });
         }
     }
+    public void createUser(){
+        Log.i("User Details", emailInput.getText().toString().trim().toLowerCase() + passwordInput.getText().toString());
+        mAuth.createUserWithEmailAndPassword(emailInput.getText().toString().trim().toLowerCase(), passwordInput.getText().toString())
+                .addOnSuccessListener(authResult -> Toast.makeText(this, "Registered Successfully, please verify your email address", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(this, e -> {
+                    Log.e(TAG, e.getLocalizedMessage());
+                    e.printStackTrace();
+                })
+                .addOnCompleteListener(this, task -> {
+                    task1 = task;
+                    if (task1.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        progressBarGone();
 
-    public void createUser() {
+                        //Add User to db
+                        addUserDetailsToDb();
+
+                        //verify email before going to login
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        assert user != null;
+                        user.sendEmailVerification().addOnCompleteListener(task2 -> {
+                            if (task2.isSuccessful()) {
+                                Toast.makeText(SignUpActivity.this, "Email sent.", Toast.LENGTH_SHORT).show();
+                                emailInput.setText("");
+                                passwordInput.setText("");
+
+                                //go to LogIn, then to datehub
+                                goToLogin();
+                            } else {
+                                Log.e(TAG, task2.getException().getMessage());
+                            }
+                        });
+
+
+                    } else {
+                        progressBarGone();
+                        Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        updateUI(null);
+                    }
+                });
+    }
+
+    public void addUserDetailsToDb() {
         userId = mAuth.getCurrentUser().getUid();
-
         List<String> dateIds = new ArrayList<>();
 
         HashMap<String, String> avatar = new HashMap<>();
         avatar.put("avatarUrl", "");
-
 
         Log.d(TAG, "The fcm generated: " + generateFcmToken());
 
@@ -309,11 +286,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         });
 
         UserStatsModel userStats = new UserStatsModel(0, 0, 0, 0);
-        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().trim().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", DatabaseConstants.LOCAL_AUTH, dateIds, userStats, null, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false,fcmToken);
+        UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(),
+                                            usernameInput.getText().toString().trim().toLowerCase(),
+                                            fullNameInput.getText().toString().trim().toLowerCase(),
+                                            emailInput.getText().toString().trim().toLowerCase(),
+                                            dateStringToTimestamp(ageInput.getText().toString()), avatar,
+                                            "BASIC", DatabaseConstants.LOCAL_AUTH,
+                                            dateIds, userStats, null,
+                                            "",
+                                            new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0),
+                                            false, fcmToken);
 
 
         userRef = db.collection("userData").document(userId);
-        userNameRef = db.collection("usernames").document(usernameInput.getText().toString().toLowerCase());
+        userNameRef = db.collection("usernames").document(usernameInput.getText().toString().trim().toLowerCase());
 
         userRef.set(userModel).addOnSuccessListener(aVoid -> {
             Toast.makeText(SignUpActivity.this, "created successfully", Toast.LENGTH_SHORT).show();
@@ -327,7 +313,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         });
 
         Map<String, String> username = new HashMap<>();
-        username.put("username", usernameInput.getText().toString().toLowerCase());
+        username.put("username", usernameInput.getText().toString().trim().toLowerCase());
         userNameRef.set(username);
 
     }
@@ -382,37 +368,121 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private boolean validateForm() {
         boolean valid = true;
 
-        if (TextUtils.isEmpty(emailInput.getText().toString())) {
-            emailInput.setError("Required.");
+        // Validate email
+        String emailErr = validateEmail(emailInput.getText().toString().trim().toLowerCase());
+        emailInput.setError(emailErr);
+        if (emailErr != null){
+            valid = false;
+        }
+
+        // Validate username
+        String userNameErr = validateUsername(usernameInput.getText().toString().trim().toLowerCase());
+        usernameInput.setError(userNameErr);
+        if (userNameErr != null){
+            valid = false;
+        }
+
+        if (TextUtils.isEmpty(fullNameInput.getText().toString().trim())) {
+            fullNameInput.setError("Please enter a display name to proceed");
             progressBarGone();
             valid = false;
         } else {
-            emailInput.setError(null);
+            fullNameInput.setError(null);
             progressBarShown();
         }
 
-        if (TextUtils.isEmpty(passwordInput.getText().toString()) || passwordInput.getText().length() < 8) {
-            passwordInput.setError("Required." + "You must have a minimum of 8 characters in your password");
-            progressBarGone();
+        // Validate Password
+        String passErr = validatePassword(passwordInput.getText().toString());
+        passwordInput.setError(passErr);
+        if (passErr != null){
             valid = false;
-        } else {
-            passwordInput.setError(null);
-            progressBarShown();
         }
 
-        if (TextUtils.isEmpty(ageInput.getText().toString())) {
-            ageInput.setError("Required." + "You must be 17");
-            progressBarGone();
+        // Verify Password
+        String verPassErr = validatePasswordVerification(passwordInput.getText().toString(), verifyPasswordInput.getText().toString());
+        verifyPasswordInput.setError(verPassErr);
+        if (verPassErr != null){
             valid = false;
-        } else {
-            ageInput.setError(null);
-            progressBarShown();
+        }
+
+        // Validate age
+        String errDob;
+        try{
+            errDob = validateAgeIsGreaterThan18(ageInput.getText().toString());
+            ageInput.setError(errDob);
+            if (errDob != null){
+                valid = false;
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error while trying to validate age");
+            ageInput.setText("");
+            errDob = "Please enter your date of birth to proceed";
+            ageInput.setError(errDob);
+            valid = false;
+        }
+
+        // Check terms
+        if(!terms.isChecked() && valid){
+            toast("Please accept terms and conditions to proceed");
+            valid = false;
         }
 
         //returns false when fields are empty
         return valid;
     }
 
+    private String validateUsername(String username){
+        String errorMessage = null;
+
+        final String USERNAME_PATTERN = "^[a-z-A-Z-0-9_]+";
+        if (TextUtils.isEmpty(username)) {
+            errorMessage = "Please enter a username to proceed";
+        } else if(!username.matches(USERNAME_PATTERN)){
+            errorMessage = "Your username can only contain letters, numbers, and _";
+        }
+        return errorMessage;
+    }
+
+    private String validateEmail (String email){
+        String errorMessage = null;
+        if(TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            errorMessage = "Please enter a valid email address to proceed";
+        }
+        return errorMessage;
+    }
+
+    private String validatePassword(String password){
+        String errorMessage = null;
+        final String PASSWORD_PATTERN = ".*[a-z]+.*";
+        final String PASSWORD_PATTERN_2 = ".*[A-Z]+.*";
+        final String PASSWORD_PATTERN_3 = ".*[0-9]+.*";
+        final String PASSWORD_PATTERN_4 = ".*[!@#$&*_\\\\-]+.*";
+        if(password.length() < 8 ||
+            !(password.matches(PASSWORD_PATTERN) && password.matches(PASSWORD_PATTERN_2) &&
+            password.matches(PASSWORD_PATTERN_3) && password.matches(PASSWORD_PATTERN_4)))
+        {
+            Log.e(TAG, String.valueOf(password.matches(PASSWORD_PATTERN)));
+            Log.e(TAG, String.valueOf(password.matches(PASSWORD_PATTERN_2)));
+            Log.e(TAG, String.valueOf(password.matches(PASSWORD_PATTERN_3)));
+            Log.e(TAG, String.valueOf(password.matches(PASSWORD_PATTERN_4)));
+
+            errorMessage = "Password must be a minimum of 8 characters and must contain uppercase, lowercase, number and one of !, @, #, $, &, *, _, \\, -";
+        }
+        return errorMessage;
+    }
+
+    private String validatePasswordVerification(String password, String passwordReentered){
+        String errorMessage = null;
+        if (password.isEmpty()){
+            errorMessage = "Please enter a valid password";
+        } else if (passwordReentered.isEmpty()){
+            errorMessage = "Please re-enter password";
+        } else if (!password.equals(passwordReentered)){
+            errorMessage = "Passwords do not match";
+        }
+        return errorMessage;
+    }
     public void updateUI(FirebaseUser user) {
         if (user != null) {
             String name = user.getDisplayName();
@@ -420,10 +490,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
             goToDatehub();
 
-            Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
-        } else {
-            //Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(this, "Logging In", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -473,13 +540,24 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void checkAgeIsGreaterThan18(String ageInput) throws ParseException {
-        Calendar calendarBirthday = Calendar.getInstance();
-        Calendar calendarToday = Calendar.getInstance();
+    private String validateAgeIsGreaterThan18(String ageInput) throws ParseException {
+        String errorMessage = null;
 
+        Calendar date18YearsAgo = Calendar.getInstance();
+        date18YearsAgo.add(Calendar.YEAR, -18);
+
+        Calendar calendarBirthday = Calendar.getInstance();
         calendarBirthday.setTime(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).parse(ageInput));
 
-        int yearOfToday = calendarToday.get(Calendar.YEAR);
+        if (ageInput.isEmpty()){
+            errorMessage = "Please enter your birthday to proceed";
+        } else if(calendarBirthday.after(date18YearsAgo)){
+            errorMessage = "You must be 18 to use DateNight";
+        }
+
+        return errorMessage;
+        /*
+        int yearOfToday = date18YearsAgo.get(Calendar.YEAR);
         int yearOfBirthday = calendarBirthday.get(Calendar.YEAR);
 
         if (yearOfToday - yearOfBirthday > 17) {
@@ -487,14 +565,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         } else if (yearOfToday - yearOfBirthday == 17) {
 
-            int monthOfToday = calendarToday.get(Calendar.MONTH);
+            int monthOfToday = date18YearsAgo.get(Calendar.MONTH);
             int monthOfBirthday = calendarBirthday.get(Calendar.MONTH);
 
             if (monthOfToday > monthOfBirthday) {
                 signUp.setEnabled(true);
             } else if (monthOfToday == monthOfBirthday) {
 
-                if (calendarToday.get(Calendar.DAY_OF_MONTH) >= calendarBirthday.get(Calendar.DAY_OF_MONTH)) {
+                if (date18YearsAgo.get(Calendar.DAY_OF_MONTH) >= calendarBirthday.get(Calendar.DAY_OF_MONTH)) {
                     signUp.setEnabled(true);
 
                 } else {
@@ -510,6 +588,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             signUp.setEnabled(false);
             toast("You have to be 17");
         }
+
+         */
     }
 
     public static Timestamp dateCreated() {
@@ -541,14 +621,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void toast(String message) {
-        View view = getLayoutInflater().inflate(R.layout.create_date_toast, null);
-        Button b = view.findViewById(R.id.toast_btn);
-
-        Toast toast = new Toast(this);
-        b.setText(message);
-        toast.setView(view);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.show();
+        Toast.makeText(this, message,
+                       Toast.LENGTH_SHORT).show();
     }
 
     private static String generateFcmToken() {
@@ -565,4 +639,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         return fcmToken;
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        goToLogin();
+        return false;
+    }
 }
