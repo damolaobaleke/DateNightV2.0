@@ -125,7 +125,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
 
     private void share(){
         shareButton.setOnClickListener(v->{
-            Uri link = Uri.parse("https://play.google.com/console/u/0/developers/8421302216223559919/app/4972918314666606268/tracks/4699075429511113233/releases/7/details");
+            Uri link = Uri.parse("https://play.google.com/store/apps/details?id=com.ltd_immersia_datenight");
             Spanned smiley = Html.fromHtml("&#U+263A",Html.FROM_HTML_MODE_LEGACY);
 
             Intent shareIntent = new Intent();
@@ -149,38 +149,42 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
         }
         usercollRef.whereEqualTo("username",queryString) //searches based on lowercase username==== userSearch.getQuery().toString().toLowerCase()
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (queryDocumentSnapshots.size() < 1){
-                        noUserFound.setVisibility(View.VISIBLE);
-                    } else {
-                        noUserFound.setVisibility(View.GONE);
-                    }
-                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                        if (documentSnapshot.exists()) {
-                            dateinvitee = documentSnapshot.toObject(UserModel.class, DocumentSnapshot.ServerTimestampBehavior.PREVIOUS); //recreate document object from the model class
-                            dateinvitee.setId(documentSnapshot.getId());
-                            Log.e("InviteUserActivity", "Found user: " + documentSnapshot.get("id").toString());
-                            Log.e("InviteUserActivity", "Found user (dateinvitee): " +dateinvitee.getId());
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) { // TODO: Need to fix this to become a search button instead
+                        if (queryDocumentSnapshots.size() < 1){
+                            noUserFound.setText(String.format("Could not find %s", queryString));
+                            noUserFound.setVisibility(View.VISIBLE);
+                        } else {
+                            noUserFound.setVisibility(View.GONE);
+                        }
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            if (documentSnapshot.exists()) {
+                                dateinvitee = documentSnapshot.toObject(UserModel.class); //recreate document object from the model class
+                                dateinvitee.setId(documentSnapshot.getId());
+                                Log.e("InviteUserActivity", "Found user: " + documentSnapshot.get("id").toString());
+                                Log.e("InviteUserActivity", "Found user (dateinvitee): " +dateinvitee.getId());
 
-                            System.out.println(dateinvitee.getUsername() + " " + dateinvitee.getId());
-                            Log.i(TAG, dateinvitee.getUsername() + " " + dateinvitee.getId());
+                                System.out.println(dateinvitee.getUsername() + " " + dateinvitee.getId());
+                                Log.i(TAG, dateinvitee.getUsername() + " " + dateinvitee.getId());
 
-                            HashMap<String, Integer> avtr = new HashMap<>();
-                            avtr.put("avatar", R.drawable.avatar_ellipse); //R.drawable.avatar_ellipse
+                                HashMap<String, Integer> avtr = new HashMap<>();
+                                avtr.put("avatar", R.drawable.avatar_ellipse); //R.drawable.avatar_ellipse
 
-                            HashMap<String, String> avatar = new HashMap<>();
-                            avatar.put("avatar", ""); //R.drawable.avatar_ellipse
+                                HashMap<String, String> avatar = new HashMap<>();
+                                avatar.put("avatar", ""); //R.drawable.avatar_ellipse
 
-                            users.add(new UserModel(dateinvitee.getId(), dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, null,null, null, null, null, null, null,Timestamp.now(),false,""));
-                            //recyclerView.setHasFixedSize(true);
-                            layoutManager = new LinearLayoutManager(InviteUserActivity.this);
-                            adapter = new RecylerViewAdapter(users);
+                                users.add(new UserModel(dateinvitee.getId(), dateinvitee.getUsername(), dateinvitee.getFullName(), dateinvitee.getEmail(), null, null,null, null, null, null, null, null,Timestamp.now(),false,""));
+                                //recyclerView.setHasFixedSize(true);
+                                layoutManager = new LinearLayoutManager(InviteUserActivity.this);
+                                adapter = new RecylerViewAdapter(users);
 
-                            recyclerView.setLayoutManager(layoutManager);
-                            recyclerView.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();
+                                recyclerView.setLayoutManager(layoutManager);
+                                recyclerView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
 
-                            inviteAndCreateDate();
+                                inviteAndCreateDate();
+                            }
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {

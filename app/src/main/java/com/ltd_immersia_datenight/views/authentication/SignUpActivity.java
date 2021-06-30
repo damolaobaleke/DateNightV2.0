@@ -34,6 +34,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -136,50 +137,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         });
     }
 
-    private boolean isUsernameTaken() {
-        // TODO: Validate username is valid (no special characters, no space inbetweeen etc etc.)
-        usernames.whereEqualTo("username", usernameInput.getText().toString().toLowerCase().trim()).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
-                if (queryDocumentSnapshot.exists()) {
-                    //toast and log
-                    toast("username already exists");
-                    //Toast.makeText(SignUpActivity.this, R.string.valid_username, Toast.LENGTH_SHORT).show();
-
-                    //show error
-                    usernameLabel = findViewById(R.id.username_label);
-                    usernameLabel.setText(R.string.valid_username);
-                    usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.holo_red_light));
-
-                    //disable button
-                    signUp.setEnabled(false);
-                    signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_btn));
-
-                    Runnable runnable = () -> {
-                        usernameLabel.setText("Give yourself a username");
-                        usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
-
-                        signUp.setEnabled(true);
-                        signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.custom_login_button));
-                    };
-                    Handler handler = new Handler();
-                    handler.postDelayed(runnable, 1000);
-
-                    progressBarGone();
-                    usernameAvailable = false;
-                } else {
-                    signUp.setEnabled(true);
-                    signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.custom_login_button));
-
-                    usernameLabel.setText("Give yourself a username");
-                    usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
-                    signUp.setVisibility(View.VISIBLE);
-                    usernameAvailable = true;
-                }
-            }
-        });
-        return usernameAvailable;
-    }
-
     public void chooseAge(View v) {
         DatePickerDialog dateDialog = new DatePickerDialog(this, this, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         dateDialog.show();
@@ -204,10 +161,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-
     public void signUp() {
         boolean formValidated = validateForm(); //if true run signUp
         if (formValidated) {
+            // Check if username is already taken
             usernames.whereEqualTo("username", usernameInput.getText().toString().toLowerCase().trim())
                     .get()
                     .addOnSuccessListener( queryDocumentSnapshots -> {
@@ -270,6 +227,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void addUserDetailsToDb() {
         userId = mAuth.getCurrentUser().getUid();
         List<String> dateIds = new ArrayList<>();
+        List<String> purchasedExperiences = new ArrayList<>();
+        purchasedExperiences.add("");
 
         HashMap<String, String> avatar = new HashMap<>();
         avatar.put("avatarUrl", "");
@@ -296,7 +255,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                             "",
                                             new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0),
                                             false, fcmToken);
-
 
         userRef = db.collection("userData").document(userId);
         userNameRef = db.collection("usernames").document(usernameInput.getText().toString().trim().toLowerCase());
@@ -524,12 +482,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        ageInput.setText(String.format(Locale.getDefault(), "%d-%d-%d", dayOfMonth, month + 1, year)); //due to january in index pos is 0
+        ageInput.setText(String.format(Locale.US, "%d-%d-%d", dayOfMonth, month + 1, year)); //due to january in index pos is 0
     }
 
     public static Timestamp dateStringToTimestamp(String dateStr) {
         try {
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
             Date date = formatter.parse(dateStr);
             assert date != null;
             //convert date to timestamp
@@ -556,45 +514,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         return errorMessage;
-        /*
-        int yearOfToday = date18YearsAgo.get(Calendar.YEAR);
-        int yearOfBirthday = calendarBirthday.get(Calendar.YEAR);
-
-        if (yearOfToday - yearOfBirthday > 17) {
-            signUp.setEnabled(true);
-
-        } else if (yearOfToday - yearOfBirthday == 17) {
-
-            int monthOfToday = date18YearsAgo.get(Calendar.MONTH);
-            int monthOfBirthday = calendarBirthday.get(Calendar.MONTH);
-
-            if (monthOfToday > monthOfBirthday) {
-                signUp.setEnabled(true);
-            } else if (monthOfToday == monthOfBirthday) {
-
-                if (date18YearsAgo.get(Calendar.DAY_OF_MONTH) >= calendarBirthday.get(Calendar.DAY_OF_MONTH)) {
-                    signUp.setEnabled(true);
-
-                } else {
-                    signUp.setEnabled(false);
-                    Toast.makeText(this, "You have to be 17", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                signUp.setEnabled(false);
-                toast("You have to be 17");
-            }
-        } else {
-            signUp.setFocusable(false);
-            signUp.setEnabled(false);
-            toast("You have to be 17");
-        }
-
-         */
     }
 
     public static Timestamp dateCreated() {
         try {
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
             Date date = formatter.parse(String.valueOf(Calendar.getInstance().getTime()));
             Log.i("", "Today is " + date);
 
@@ -609,7 +533,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     public static String timeStamptoString(Timestamp timestamp) {
         // hours*minutes*seconds*milliseconds  int oneDay = 24 * 60 * 60 * 1000;
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         Date date = timestamp.toDate();
         String dateofbirth = formatter.format(date);
         return dateofbirth;
