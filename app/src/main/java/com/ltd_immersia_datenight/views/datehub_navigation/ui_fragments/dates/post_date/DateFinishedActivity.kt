@@ -26,7 +26,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.ltd_immersia_datenight.utils.constants.IntentConstants
 import com.ltd_immersia_datenight.utils.DateNight
-//import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad
+import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad
 import de.hdodenhof.circleimageview.CircleImageView
 
 class DateFinishedActivity : AppCompatActivity() {
@@ -89,17 +89,17 @@ class DateFinishedActivity : AppCompatActivity() {
         viewModel.incrementDateCount()
     }
 
-//    fun repeatDate(v: View){
-//        //TODO: Update ratings and stuff
-//        val intent: Intent = Intent(this, UnityEnvironmentLoad::class.java)
-//                .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
-//                .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).currentUser.fullName)
-//                .putExtra(IntentConstants.DATE_ID, dateId)
-//                .putExtra(IntentConstants.EXPERIENCE_ID, dateExperienceId)
-//                .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, dateParticipantId)
-//                .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, dateParticipantName)
-//        startActivity(intent)
-//    }
+    fun repeatDate(v: View){
+        //TODO: Update ratings and stuff
+        val intent: Intent = Intent(this, UnityEnvironmentLoad::class.java)
+                .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
+                .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).currentUser.fullName)
+                .putExtra(IntentConstants.DATE_ID, dateId)
+                .putExtra(IntentConstants.EXPERIENCE_ID, dateExperienceId)
+                .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, dateParticipantId)
+                .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, dateParticipantName)
+        startActivity(intent)
+    }
 
     fun unveilRateUserBottomSheet(v: View){
         // Show bottom sheet

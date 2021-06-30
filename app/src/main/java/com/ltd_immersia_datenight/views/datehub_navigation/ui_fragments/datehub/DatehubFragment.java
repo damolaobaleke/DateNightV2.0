@@ -69,7 +69,7 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
 //            @Override
 //            public void onChanged(Integer dtcValue) {
 //                int num = Integer.parseInt(dtcValue.toString());
-//                String formattedDtcBalance = NumberFormat.getInstance(Locale.US).format(num);
+//                String formattedDtcBalance = NumberFormat.getInstance(Locale.getDefault()).format(num);
 //
 //                Log.i("DateHub Frag", dtcValue.toString());
 //                dtcBalance.setText(formattedDtcBalance);
@@ -109,12 +109,9 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
                 }else{
                    avatarImage.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.datenight_logo));
                 }
-
             }
         });
-
         return view;
-
     }
 
     public void startReadyPlayerMeLink() {
@@ -128,6 +125,10 @@ public class DatehubFragment extends Fragment implements View.OnClickListener {
         startReadyPlayerMeLink();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
     @Override
     public void onResume() {
         super.onResume();

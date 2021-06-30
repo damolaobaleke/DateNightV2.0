@@ -13,6 +13,7 @@
 
 package com.ltd_immersia_datenight.modelfirestore.Help;
 
+
 public class Help {
     String type;
     String message;
@@ -28,5 +29,13 @@ public class Help {
 
     public String getMessage() {
         return message;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

@@ -13,10 +13,13 @@
 
 package com.ltd_immersia_datenight.network.api;
 
+import androidx.annotation.Keep;
+
 import com.ltd_immersia_datenight.modelfirestore.User.UserModel;
 import com.ltd_immersia_datenight.utils.stripe.config.EphemeralKeyObject;
 import com.ltd_immersia_datenight.utils.stripe.config.PaymentIntentObject;
 
+@Keep
 public class UserObject {
     boolean success;
     String message;
@@ -55,5 +58,30 @@ public class UserObject {
 
     public UserModel getUserData() {
         return userData;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setUserData(UserModel userData) {
+        this.userData = userData;
+    }
+
+    public void setData(EphemeralKeyObject data) {
+        this.data = data;
+    }
+
+    public void setStripeData(UserModelStripe stripeData) {
+        this.stripeData = stripeData;
+    }
+
+    public void setPaymentIntentData(
+            PaymentIntentObject paymentIntentData) {
+        this.paymentIntentData = paymentIntentData;
     }
 }

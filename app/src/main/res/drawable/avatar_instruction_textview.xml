@@ -12,7 +12,6 @@
 
     <item android:state_enabled="true">
         <shape android:shape="rectangle">
-            <corners android:radius="5dp" />
             <gradient
                 android:startColor="@color/date_night_pear_500"
                 android:endColor="@color/date_night_purple"

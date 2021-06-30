@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment
 import com.ltd_immersia_datenight.R
 import com.ltd_immersia_datenight.modelfirestore.Experience.ExperienceModel
 import com.ltd_immersia_datenight.views.date_schedule.DateScheduleActivity
-//import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad
+import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -182,10 +182,10 @@ class CasualFragment : Fragment() {
         startActivity(intent)
     }
 
-//    fun startScene() {
-//        val intent = Intent(requireContext(), UnityEnvironmentLoad::class.java)
-//        startActivity(intent)
-//    }
+    fun startScene() {
+        val intent = Intent(requireContext(), UnityEnvironmentLoad::class.java)
+        startActivity(intent)
+    }
 
     fun showProgress() {}
 

@@ -23,5 +23,13 @@ public class RenderObject {
     public String[] getRender() {
         return renders;
     }
+
+    public String[] getRenders() {
+        return renders;
+    }
+
+    public void setRenders(String[] renders) {
+        this.renders = renders;
+    }
 }
 

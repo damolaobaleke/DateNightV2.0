@@ -241,7 +241,6 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
                 Log.i("2D Link", objRender.getRender()[0] + "");
 
                 twodUrl = objRender.getRender()[0];
-
             }
 
             @Override
@@ -250,9 +249,7 @@ public class CreatAvatarActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-
         return twodUrl;
-
     }
 
     private void setUpNetworkRequest() {

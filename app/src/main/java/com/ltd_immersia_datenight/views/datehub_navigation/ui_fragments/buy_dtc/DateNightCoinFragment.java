@@ -65,7 +65,7 @@ public class DateNightCoinFragment extends Fragment {
             UserModel user = documentSnapshot.toObject(UserModel.class);
             assert user != null;
             int num = Integer.parseInt(String.valueOf(user.getDtc()));
-            String formattedDtcBalance = NumberFormat.getInstance(Locale.US).format(num);
+            String formattedDtcBalance = NumberFormat.getInstance(Locale.getDefault()).format(num);
 
             binding.availableCoins.setText(formattedDtcBalance);
         });

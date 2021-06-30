@@ -9,7 +9,7 @@
     tools:context=".views.unity.UnityEnvironmentLoad">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/loadingScreen"
+        android:id="@+id/loadingScreenLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"
@@ -17,17 +17,33 @@
         tools:layout_editor_absoluteY="-81dp">
 
         <TextView
-            android:id="@+id/textView37"
+            android:id="@+id/loadingExperienceTextView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Please wait for your date partner to arrive"
-            android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="@+id/textView36"
-            app:layout_constraintTop_toBottomOf="@+id/textView36" />
+            android:layout_height="0dp"
+            android:layout_marginTop="244dp"
+            android:fontFamily="@font/inter"
+            android:text="Loading your date experience"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView36"
+            android:id="@+id/datePartnerComingTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Please wait for your date partner to arrive"
+            android:textColor="@android:color/black"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/datePartnerComingTextView"
+            app:layout_constraintStart_toStartOf="@+id/datePartnerComingTextView"
+            app:layout_constraintTop_toBottomOf="@+id/datePartnerComingTextView" />
+
+        <TextView
+            android:id="@+id/datePartnerComingTextView"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginTop="84dp"
@@ -36,6 +52,7 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -52,11 +69,24 @@
             android:textAllCaps="false"
             android:textColor="@color/date_night_pear"
             android:textSize="18sp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView37" />
+            app:layout_constraintTop_toBottomOf="@+id/datePartnerComingTextView2" />
+
+        <ProgressBar
+            android:id="@+id/loadingExperienceProgBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:progress="0"
+            android:progressTint="@color/date_night_purple"
+            app:layout_constraintEnd_toEndOf="@+id/loadingExperienceTextView"
+            app:layout_constraintStart_toStartOf="@+id/loadingExperienceTextView"
+            app:layout_constraintTop_toBottomOf="@+id/loadingExperienceTextView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

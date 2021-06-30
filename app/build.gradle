@@ -7,6 +7,14 @@ plugins {
 def enableSeparateBuildPerCPUArchitecture = false
 
 android {
+    signingConfigs {
+        config {
+            storeFile file('C:\\Users\\Abdulkareem\\Desktop\\DateNight\\datenight-code-base\\key-store-for-release\\DateNight-v1-may-30-2021.jks')
+            storePassword 'hyelbolly'
+            keyAlias 'key-datenight-v1-may-30-2021'
+            keyPassword 'hyelbolly'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
@@ -14,8 +22,8 @@ android {
         applicationId "com.ltd_immersia_datenight"
         minSdkVersion 25
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 12
+        versionName "1.0.0"
         ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -23,9 +31,14 @@ android {
 
     buildTypes {
         release {
+            // debuggable true
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
 

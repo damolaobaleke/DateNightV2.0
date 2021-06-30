@@ -166,7 +166,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
 
     public static Timestamp dateStringToTimestamp(String dateStr) {
         try {
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             Date date = formatter.parse(dateStr);
             assert date != null;
             return new Timestamp(date);
@@ -178,7 +178,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
 
     public static String timeStamptoString(Timestamp timestamp) {
         // hours*minutes*seconds*milliseconds  int oneDay = 24 * 60 * 60 * 1000;
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         if(timestamp != null) {
            date = timestamp.toDate();
         }
@@ -187,7 +187,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        dateOfBirth.setText(String.format(Locale.US, "%d-%d-%d", dayOfMonth, month, year));
+        dateOfBirth.setText(String.format(Locale.getDefault(), "%d-%d-%d", dayOfMonth, month, year));
     }
 
     private void signOut() {

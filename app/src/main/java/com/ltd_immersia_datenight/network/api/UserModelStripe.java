@@ -13,8 +13,11 @@
 
 package com.ltd_immersia_datenight.network.api;
 
+import androidx.annotation.Keep;
+
 import com.google.firebase.firestore.Exclude;
 
+@Keep
 public class UserModelStripe {
     public String id;
     public String stripeCustomerId;
@@ -45,4 +48,15 @@ public class UserModelStripe {
         return ephemeralKey;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setStripeCustomerId(String stripeCustomerId) {
+        this.stripeCustomerId = stripeCustomerId;
+    }
+
+    public void setEphemeralKey(String ephemeralKey) {
+        this.ephemeralKey = ephemeralKey;
+    }
 }

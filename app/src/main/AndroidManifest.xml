@@ -46,7 +46,6 @@
         <activity android:name="com.ltd_immersia_datenight.views.payment.PaymentActivity" />
         <activity android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.help.SuggestImprovement" />
         <activity android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.help.ReportIssue" />
-        <activity android:name="com.ltd_immersia_datenight.views.user_profile.UserProfileActivity" />
         <activity
             android:name="com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad"
             android:theme="@style/AppTheme.NoActionBar">
@@ -77,7 +76,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
