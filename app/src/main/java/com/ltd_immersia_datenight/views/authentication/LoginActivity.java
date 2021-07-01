@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -127,13 +128,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             if (formValidated) {
 
-                mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                mAuth.signInWithEmailAndPassword(email.getText().toString().trim(), password.getText().toString())
                         .addOnCompleteListener(this, task -> {
                             if (task.isSuccessful()) {
                                 if (mAuth.getCurrentUser().isEmailVerified()) {
                                     progressBarGone();
 
-                                    Log.i("SignIn", "Successful");
+                                    Log.i(TAG, "Successful");
                                     Toast.makeText(LoginActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
 
                                     //update OnBoarded to true
@@ -150,9 +151,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     CustomerSession.initCustomerSession(this, new DateNightEphemeralKeyProvider());
 
                                     DateNight appState = ((DateNight) this.getApplication());
-                                    if (appState.getAppData(mAuth.getUid()) == null) {
+                                    if (appState.getAppData(mAuth.getCurrentUser().getUid()) == null) {
                                         // Fetch required launch data and then launch DateHubNavigation class
-                                        appState.initializeAppData(mAuth.getUid(), LoginActivity.this);
+                                        Log.i(TAG, "Attempting to initialize DateNight App data");
+                                        appState.initializeAppData(mAuth.getCurrentUser().getUid(), LoginActivity.this);
                                     } else {
                                         goToDatehub();
                                     }
@@ -162,11 +164,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 }
                             } else {
                                 progressBarGone();
+                                Log.e(TAG, task.getException().getMessage());
+                                task.getException().printStackTrace();
                                 //Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .addOnFailureListener(this, e -> {
-                            Log.e("Failed Auth", e.getLocalizedMessage());
+                            if(e instanceof FirebaseAuthInvalidCredentialsException){
+                                Toast.makeText(LoginActivity.this, "Your email address or password is incorrect", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Authentication error", Toast.LENGTH_SHORT).show();
+                            }
+                            Log.e("TAG", "Failed to log user in: " + e.getLocalizedMessage());
+                            e.printStackTrace();
                         });
             }
 
@@ -188,17 +198,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         boolean valid = true;
 
         if (TextUtils.isEmpty(email.getText().toString())) {
-            email.setError("Required, enter your email");
+            email.setError("Please enter a valid email address to proceed");
             valid = false;
         } else {
             email.setError(null);
-        }
-
-        if (TextUtils.isEmpty(password.getText().toString())) {
-            password.setError("Required.");
-            valid = false;
-        } else {
-            password.setError(null);
         }
 
         return valid;

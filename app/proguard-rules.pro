@@ -22,7 +22,7 @@
 
 # Keep custom model classes
 -keepclassmembers class com.ltd_immersia_datenight.modelfirestore.** { *; }
--keepclassmembers class com.ltd_immersia_datenight.unity_plugin.UnityPlayerWrapperActivity
+-keep class com.ltd_immersia_datenight.unity_plugin.UnityPlayerWrapperActivity { *; }
 
 # Keep animation classes
 -keepclassmembers class **.R$* {

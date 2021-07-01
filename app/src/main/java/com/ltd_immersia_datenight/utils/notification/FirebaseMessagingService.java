@@ -82,12 +82,14 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     @Override
     public void onNewToken(@NotNull String token) {
         Log.d(TAG, "Refreshed token: " + token);
-
-        userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
-        userDocRef.update("fcmToken", token);
-
+        try{
+            userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
+            userDocRef.update("fcmToken", token);
+        } catch (Exception e){
+            Log.e(TAG, "Error while trying to update token: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
-
 
     /**
      * Create and show a simple notification containing the received FCM message.

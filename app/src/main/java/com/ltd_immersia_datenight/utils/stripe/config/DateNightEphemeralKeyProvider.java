@@ -43,7 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DateNightEphemeralKeyProvider implements EphemeralKeyProvider {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
-    private static final String TAG = "EphProvider";
+    private static final String TAG = "DateNightEphemeralKeyProvider";
 
     private static final String BASE_URL = "https://api.immersia.co.uk"; //https://api.immersia.co.uk http://172.20.10.7:3000
     DatenightApi api;
@@ -68,45 +68,48 @@ public class DateNightEphemeralKeyProvider implements EphemeralKeyProvider {
             @Override
             public void onResponse(Call<UserObject> call, Response<UserObject> response) {
                 if (!response.isSuccessful()) {
-                    Log.i("Error", "The error code while getting the response " + response.code() + "\n" + response.message());
+                    Log.i(TAG, "The error code while getting the response " + response.code() + "\n" + response.message());
                     return;
                 }
 
-                UserObject user = response.body();
-                assert user != null;
-                Log.i(TAG, user.getMessage() + "\n" + user.getData() + "\n" + user.isSuccess() + "\n" + user.getData().getId());
+                try {
+                    UserObject user = response.body();
+                    assert user != null;
+                    Log.i(TAG, user.getMessage() + "\n" + user.getData() + "\n" + user.isSuccess() + "\n" + user.getData().getId());
 
-                Map<String, Object> EphObjMap = new HashMap<>();
+                    Map<String, Object> EphObjMap = new HashMap<>();
 
-                EphObjMap.put("id", user.getData().getId());
-                EphObjMap.put("object", user.getData().getObject());
-                EphObjMap.put("created", user.getData().getCreated());
-                EphObjMap.put("expires", user.getData().getExpires());
-                EphObjMap.put("livemode", user.getData().isLivemode());
-                EphObjMap.put("secret", user.getData().getSecret());
+                    EphObjMap.put("id", user.getData().getId());
+                    EphObjMap.put("object", user.getData().getObject());
+                    EphObjMap.put("created", user.getData().getCreated());
+                    EphObjMap.put("expires", user.getData().getExpires());
+                    EphObjMap.put("livemode", user.getData().isLivemode());
+                    EphObjMap.put("secret", user.getData().getSecret());
 
-                List<Map<String, Object>> associated_objects = new ArrayList<>();
+                    List<Map<String, Object>> associated_objects = new ArrayList<>();
 
-                Map<String, Object> assMap = new HashMap<>();
-                assMap.put("type",user.getData().getAssociated_objects().get(0).getType());
-                assMap.put("id",user.getData().getAssociated_objects().get(0).getId());
+                    Map<String, Object> assMap = new HashMap<>();
+                    assMap.put("type",user.getData().getAssociated_objects().get(0).getType());
+                    assMap.put("id",user.getData().getAssociated_objects().get(0).getId());
 
-                associated_objects.add(assMap);
+                    associated_objects.add(assMap);
 
-                EphObjMap.put("associated_objects", associated_objects);
+                    EphObjMap.put("associated_objects", associated_objects);
 
-                String jsonBody = new Gson().toJson(EphObjMap);
-                Log.i(TAG, jsonBody);
+                    String jsonBody = new Gson().toJson(EphObjMap);
+                    Log.i(TAG, jsonBody);
 
-                final String rawKey = user.getData().toString(); //data gotten in this case is ephemeralKey Object
-                keyUpdateListener.onKeyUpdate(jsonBody);
-
-
+                    final String rawKey = user.getData().toString(); //data gotten in this case is ephemeralKey Object
+                    keyUpdateListener.onKeyUpdate(jsonBody);
+                } catch (Exception e){
+                    Log.e(TAG, "Encountered unexpected error: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onFailure(Call<UserObject> call, Throwable t) {
-                Log.i("EphProvider", t.getMessage());
+                Log.i(TAG, t.getMessage());
             }
         });
     }

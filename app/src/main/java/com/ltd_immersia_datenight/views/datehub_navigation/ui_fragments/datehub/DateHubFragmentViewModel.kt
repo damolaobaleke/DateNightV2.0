@@ -1,5 +1,6 @@
 package com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.datehub
 
+import android.text.TextUtils
 import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -111,7 +112,7 @@ class DateHubFragmentViewModel : ViewModel() {
             if (documentSnapshot.exists()) {
                 try{
                     val user = documentSnapshot.toObject(UserModel::class.java)
-                    if(user!!.getAvatar()[DatabaseConstants.AVATAR_URL_FIELD] != null){
+                    if(user!!.getAvatar()[DatabaseConstants.AVATAR_URL_FIELD] != null && !TextUtils.isEmpty(user!!.getAvatar()[DatabaseConstants.AVATAR_URL_FIELD])){
                         isAvatarUrl.value = true
                         if(user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] == null) {
                             setAvatarHeadShot()

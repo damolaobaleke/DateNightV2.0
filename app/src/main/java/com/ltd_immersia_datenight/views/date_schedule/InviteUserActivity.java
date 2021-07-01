@@ -151,7 +151,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) { // TODO: Need to fix this to become a search button instead
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (queryDocumentSnapshots.size() < 1){
                             noUserFound.setText(String.format("Could not find %s", queryString));
                             noUserFound.setVisibility(View.VISIBLE);
@@ -246,11 +246,14 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onInviteClick(int position) {
                 mPosition = position;
-                // Create Date and go to congrats screen
-                createDateInDb();
-                Log.i(TAG, dateinvitee.getUsername() + " :username");
-                congratulations(dateinvitee.getId(), dateinvitee.getFullName(), datesRef.getId()); //the current pos of user being invited id
-                //send notification
+                if (dateinvitee.getId().equals(currentUserId)){
+                    toast("You cannot create a date with yourself. Please search for another user");
+                } else {
+                    createDateInDb();
+                    Log.i(TAG, dateinvitee.getUsername() + " :username");
+                    congratulations(dateinvitee.getId(), dateinvitee.getFullName(), datesRef.getId()); //the current pos of user being invited id
+                    //send notification
+                }
             }
         });
     }
@@ -354,14 +357,7 @@ public class InviteUserActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void toast(String message) {
-        View view = getLayoutInflater().inflate(R.layout.create_date_toast, null);
-        Button b = view.findViewById(R.id.toast_btn);
-
-        Toast toast = new Toast(InviteUserActivity.this);
-        b.setText(message);
-        toast.setView(view);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     public Timestamp dateDuration() {

@@ -1,5 +1,6 @@
 package com.ltd_immersia_datenight.views.authentication;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -18,16 +20,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
@@ -45,6 +50,7 @@ import com.ltd_immersia_datenight.network.api.DatenightApi;
 import com.ltd_immersia_datenight.network.api.UserObject;
 import com.ltd_immersia_datenight.utils.constants.DatabaseConstants;
 import com.ltd_immersia_datenight.views.datehub_navigation.DateHubNavigation;
+import com.ltd_immersia_datenight.views.landing_screen.BoardingScreen;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -78,21 +84,18 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     EditText passwordInput;
     EditText verifyPasswordInput;
     EditText usernameInput;
-    EditText dateOfBirth;
-    EditText confirmPasswordInput;
     EditText ageInput;
     Button signUp;
     CheckBox terms;
-    TextView LogIn, termsText, usernameLabel;
+    TextView LogIn, termsText;
     ProgressBar load;
     FirebaseFirestore db;
     DocumentReference userRef, userNameRef;
     Task<AuthResult> task1;
-    private static final String TAG = "Sign Up";
+    private static final String TAG = "SignUpActivity";
 
     private static final String BASE_URL = "https://api.immersia.co.uk"; //https://api.immersia.co.uk http://172.20.10.7:3000
     DatenightApi api;
-    //final CompositeDisposable compositeDisposable;  //to handle async response Reactive Java
 
     CollectionReference usernames;
     Editable mUserNameText;
@@ -100,6 +103,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     boolean usernameAvailable = true;
     static String fcmToken;
 
+    View.OnFocusChangeListener ageFocusListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +125,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         usernameInput = findViewById(R.id.username);
         fullNameInput = findViewById(R.id.fullNameInput);
         ageInput = findViewById(R.id.Age);
+        ageFocusListener = (v, hasFocus) -> {
+            if (hasFocus){
+                chooseAge(ageInput);
+            } else {
+                hideKeyboardAfterDobSelected();
+            }
+        };
+        ageInput.setOnFocusChangeListener(ageFocusListener);
 
         signUp = findViewById(R.id.Sign_Up);
         LogIn = findViewById(R.id.loginText);
@@ -132,7 +144,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         LogIn.setOnClickListener(this);
 
         signUp.setOnClickListener(v -> {
-            progressBarShown();
             signUp();
         });
     }
@@ -162,44 +173,45 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void signUp() {
-        boolean formValidated = validateForm(); //if true run signUp
+        boolean formValidated = validateForm();
         if (formValidated) {
+            progressBarShown();
+            Log.e(TAG, "Within signUp()");
             // Check if username is already taken
+            usernameAvailable = true;
             usernames.whereEqualTo("username", usernameInput.getText().toString().toLowerCase().trim())
                     .get()
-                    .addOnSuccessListener( queryDocumentSnapshots -> {
-                        for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
-                            if (queryDocumentSnapshot.exists()) {
-                                //toast and log
-                                usernameInput.setError("Username taken. Please try a different username");
-                                toast("Username taken. Please try a different username");
-                                progressBarGone();
-                            } else {
-                                // createUser(); TODO: uncomment
-                                usernameAvailable = true;
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()){
+                                if (task.getResult().isEmpty()){
+                                    createUser();
+                                } else {
+                                    usernameInput.setError("Username taken. Please try a different username");
+                                    toast("Username taken. Please try a different username");
+                                    progressBarGone();
+                                }
                             }
                         }
-                    });
+            });
         }
     }
+
     public void createUser(){
+        progressBarShown();
         Log.i("User Details", emailInput.getText().toString().trim().toLowerCase() + passwordInput.getText().toString());
         mAuth.createUserWithEmailAndPassword(emailInput.getText().toString().trim().toLowerCase(), passwordInput.getText().toString())
-                .addOnSuccessListener(authResult -> Toast.makeText(this, "Registered Successfully, please verify your email address", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(this, e -> {
-                    Log.e(TAG, e.getLocalizedMessage());
-                    e.printStackTrace();
-                })
+                .addOnSuccessListener(authResult -> Toast.makeText(this, "Sign up successful, please verify your email address", Toast.LENGTH_SHORT).show())
                 .addOnCompleteListener(this, task -> {
+                    progressBarGone();
+                    Log.e(TAG, "user creation complete");
                     task1 = task;
                     if (task1.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        progressBarGone();
-
-                        //Add User to db
+                        Log.e(TAG, "user creation complete and successful");
                         addUserDetailsToDb();
 
-                        //verify email before going to login
+                        // Verify user
                         FirebaseUser user = mAuth.getCurrentUser();
                         assert user != null;
                         user.sendEmailVerification().addOnCompleteListener(task2 -> {
@@ -207,18 +219,21 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 Toast.makeText(SignUpActivity.this, "Email sent.", Toast.LENGTH_SHORT).show();
                                 emailInput.setText("");
                                 passwordInput.setText("");
-
-                                //go to LogIn, then to datehub
                                 goToLogin();
                             } else {
                                 Log.e(TAG, task2.getException().getMessage());
                             }
                         });
-
-
                     } else {
-                        progressBarGone();
-                        Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        if(task.getException() instanceof FirebaseAuthUserCollisionException){
+                            // Email already in use by another user
+                            emailInput.setError("This email address is already in use by another user");
+                            Toast.makeText(SignUpActivity.this, "Email address entered is already in use by another user.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        }
+                        Log.e(TAG, "Error while trying to create user" + task.getException().getMessage());
+                        task.getException().printStackTrace();
                         updateUI(null);
                     }
                 });
@@ -342,11 +357,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         if (TextUtils.isEmpty(fullNameInput.getText().toString().trim())) {
             fullNameInput.setError("Please enter a display name to proceed");
-            progressBarGone();
             valid = false;
         } else {
             fullNameInput.setError(null);
-            progressBarShown();
         }
 
         // Validate Password
@@ -453,12 +466,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void progressBarShown() {
-        load = findViewById(R.id.progressBar2);
+        load = findViewById(R.id.progressBar5);
         load.setVisibility(View.VISIBLE);
     }
 
     public void progressBarGone() {
-        load = findViewById(R.id.progressBar2);
+        load = findViewById(R.id.progressBar5);
         load.setVisibility(View.INVISIBLE);
     }
 
@@ -483,6 +496,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         ageInput.setText(String.format(Locale.US, "%d-%d-%d", dayOfMonth, month + 1, year)); //due to january in index pos is 0
+        ageInput.clearFocus();
     }
 
     public static Timestamp dateStringToTimestamp(String dateStr) {
@@ -565,7 +579,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public boolean onSupportNavigateUp() {
-        goToLogin();
+        Intent intent = new Intent(SignUpActivity.this, BoardingScreen.class);
+        startActivity(intent);
         return false;
+    }
+
+    public void hideKeyboardAfterDobSelected() {
+        // InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(ageInput.getWindowToken(), 0);
     }
 }

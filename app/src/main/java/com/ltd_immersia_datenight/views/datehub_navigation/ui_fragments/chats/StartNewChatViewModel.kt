@@ -87,12 +87,13 @@ class StartNewChatViewModel: ViewModel() {
                     Log.i(TAG, exception.message)
 
                 }
-
     }
 
     fun endActivityAndReturnFoundUser(parentContext: StartNewChatActivity){
-
-        if(queryUserName != null && foundUserId != null && foundUserFullName != null){
+        if (foundUserId.equals(currentUserId)){
+            val text = "You cannot start a chat with yourself. Please search for another user"
+            Toast.makeText(parentContext, text, Toast.LENGTH_SHORT).show()
+        } else if(queryUserName != null && foundUserId != null && foundUserFullName != null){
             // Construct chat room Id
             val compareResult = currentUserId!!.compareTo(foundUserId!!)
             val newChatRoomId = if (compareResult < 0){
@@ -112,7 +113,6 @@ class StartNewChatViewModel: ViewModel() {
             parentContext.setResult(AppCompatActivity.RESULT_OK, intent)
             parentContext.finish()
         }
-
     }
 
     fun getFirstLetter(): String{

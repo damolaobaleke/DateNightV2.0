@@ -62,7 +62,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/custom_edittext"
             android:gravity="start"
-            android:hint="@string/enter_your_password"
+            android:hint="Enter password"
             android:inputType="textPassword"
             android:paddingVertical="10dp"
             android:paddingStart="5dp"
