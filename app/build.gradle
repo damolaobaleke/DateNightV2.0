@@ -22,7 +22,7 @@ android {
         applicationId "com.ltd_immersia_datenight"
         minSdkVersion 25
         targetSdkVersion 29
-        versionCode 12
+        versionCode 14
         versionName "1.0.0"
         ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86'
 
@@ -146,8 +146,8 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     //Unity
-//    implementation project(':unityLibrary')
-//    implementation fileTree(dir: project(':unityLibrary').getProjectDir().toString() + ('\\libs'), include: ['*.jar'])
+    implementation project(':unityLibrary')
+    implementation fileTree(dir: project(':unityLibrary').getProjectDir().toString() + ('\\libs'), include: ['*.jar'])
 
     //UI
     implementation 'de.hdodenhof:circleimageview:3.1.0'

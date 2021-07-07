@@ -49,12 +49,6 @@ public class UserModel {
         this.fcmToken = fcmToken;
     }
 
-    /**Constructor for invite user activity- majorly to get the avatar image*/
-//    public UserModel(String username, String name, String email, Timestamp dateOfBirth, Integer avatarHead, String status, Object dateId, Object statistics, String stripeCustomerId, String search) {
-//      //set instance variables to local variables
-//    }
-
-
     public void setId(String id) {
         this.id = id;
     }

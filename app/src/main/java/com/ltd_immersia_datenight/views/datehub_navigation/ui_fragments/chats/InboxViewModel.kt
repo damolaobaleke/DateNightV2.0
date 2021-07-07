@@ -47,6 +47,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
 
     init {
         currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        Log.e(TAG, currentUserId!!);
 
         userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(FirebaseAuth.getInstance().currentUser!!.uid)
 
@@ -62,7 +63,8 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
                     }
                 }
                 .addOnFailureListener { exception ->
-                    Log.e(TAG, exception.message)
+                    Log.e(TAG, "Error while trying to get user data: " + exception.message);
+
                 }
 
         // Set up Database reference and firebase recycler view adapter

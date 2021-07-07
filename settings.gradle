@@ -1,5 +1,5 @@
-//include ':unityLibrary'
-//project(':unityLibrary').projectDir=new File('..\\DateNightUnityEnvironment\\unityLibrary')
+include ':unityLibrary'
+project(':unityLibrary').projectDir=new File('..\\DateNightUnityEnvironment\\Android\\unityLibrary')
 
 include ':app'
 rootProject.name = "DateNight"

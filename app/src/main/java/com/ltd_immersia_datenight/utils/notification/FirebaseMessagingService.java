@@ -13,7 +13,6 @@
 
 package com.ltd_immersia_datenight.utils.notification;
 
-import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -83,17 +82,17 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     @Override
     public void onNewToken(@NotNull String token) {
         Log.d(TAG, "Refreshed token: " + token);
+        try{
+            userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
 
-        if(mAuth.getCurrentUser() != null){
-        userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
+            if(userDocRef.get().getResult().exists()) {
+                userDocRef.update("fcmToken", token);
+            }
+        } catch (Exception e){
+            Log.e(TAG, "Error while trying to update token: " + e.getMessage());
+            e.printStackTrace();
         }
-
-        if(userDocRef.get().getResult().exists()) {
-            userDocRef.update("fcmToken", token);
-        }
-
     }
-
 
     /**
      * Create and show a simple notification containing the received FCM message.

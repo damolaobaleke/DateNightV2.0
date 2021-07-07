@@ -100,6 +100,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
             userRef = db.collection("userData").document(userId);
         } else {
             Toast.makeText(getContext(), "Not Logged In", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "User not loggeed in");
         }
 
         return view;
@@ -111,7 +112,11 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
         if (user != null) {
             //requireActivity() = detaches listener when not in foreground in activity- not needed in fragments
             listenerRegister = userRef.addSnapshotListener((DocumentSnapshot value, FirebaseFirestoreException error) -> {
-                if (value.exists()) {
+                if (error != null){
+                    Log.e(TAG, "Listen for user document failed: " + error.getMessage());
+                    Log.e(TAG, userId);
+                    error.printStackTrace();
+                } else if (value.exists()) {
                     listenerRegister.remove();
                     UserModel userModel = value.toObject(UserModel.class); //recreate doc object from class
                     assert userModel != null;

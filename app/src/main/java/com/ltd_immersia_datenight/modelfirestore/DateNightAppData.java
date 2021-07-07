@@ -75,6 +75,8 @@ public class DateNightAppData {
                 Log.e(TAG, e.getMessage());
                 e.printStackTrace();
             }
+        } else {
+            Log.e(TAG, "Current user Id is null, unable to initialize app data");
         }
     }
 

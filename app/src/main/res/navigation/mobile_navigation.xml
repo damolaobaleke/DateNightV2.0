@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/nav_date_hub"
         android:name="com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.datehub.DatehubFragment"
-        android:label="Date Hub"
+        android:label="DateHub"
         tools:layout="@layout/fragment_date_hub">
         <action
             android:id="@+id/action_nav_hub_to_nav_dtc"

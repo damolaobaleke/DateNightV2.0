@@ -118,13 +118,7 @@ public class PremiumFragment extends Fragment {
     }
 
     public void toast(String message) {
-        View view = getLayoutInflater().inflate(R.layout.create_date_toast, null);
-        Button b = view.findViewById(R.id.toast_btn);
-
-        Toast toast = new Toast(requireContext());
-        b.setText(message);
-        toast.setView(view);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.show();
+        Toast.makeText(requireContext(), message,
+                       Toast.LENGTH_SHORT).show();
     }
 }
