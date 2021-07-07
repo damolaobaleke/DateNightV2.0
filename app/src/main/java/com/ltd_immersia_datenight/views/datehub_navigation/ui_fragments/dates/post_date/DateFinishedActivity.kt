@@ -13,7 +13,8 @@
 
 package com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.dates.post_date
 
-import android.content.Intent
+//import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -21,12 +22,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.ltd_immersia_datenight.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
-import com.ltd_immersia_datenight.utils.constants.IntentConstants
+import com.ltd_immersia_datenight.R
 import com.ltd_immersia_datenight.utils.DateNight
-import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad
+import com.ltd_immersia_datenight.utils.constants.IntentConstants
 import de.hdodenhof.circleimageview.CircleImageView
 
 class DateFinishedActivity : AppCompatActivity() {
@@ -63,15 +63,9 @@ class DateFinishedActivity : AppCompatActivity() {
         dateParticipantName = intent.getStringExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA)!!
         dateExperienceId = intent.getStringExtra(IntentConstants.EXPERIENCE_ID)!!
         dateId = intent.getStringExtra(IntentConstants.DATE_ID)!!
-        kissCount = intent.getIntExtra(IntentConstants.DATE_KISS_COUNT, 0)!!
+        kissCount = intent.getIntExtra(IntentConstants.DATE_KISS_COUNT, 0)
 
 
-    }
-
-    override fun onStop() {
-        super.onStop()
-        // TODO: Uncomment
-        //viewModel.submitUserRating(dateId, dateParticipantId)
     }
 
     fun launchRateDateActivity(v: View){
@@ -91,14 +85,18 @@ class DateFinishedActivity : AppCompatActivity() {
 
     fun repeatDate(v: View){
         //TODO: Update ratings and stuff
-        val intent: Intent = Intent(this, UnityEnvironmentLoad::class.java)
-                .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
-                .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).currentUser.fullName)
-                .putExtra(IntentConstants.DATE_ID, dateId)
-                .putExtra(IntentConstants.EXPERIENCE_ID, dateExperienceId)
-                .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, dateParticipantId)
-                .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, dateParticipantName)
-        startActivity(intent)
+        //val intent: Intent = Intent(this, UnityEnvironmentLoad::class.java)
+        //.putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
+        //.putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).currentUser.fullName)
+        //.putExtra(IntentConstants.DATE_ID, dateId)
+        //.putExtra(IntentConstants.EXPERIENCE_ID, dateExperienceId)
+        //.putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, dateParticipantId)
+        //.putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, dateParticipantName)
+        //startActivity(intent)
+
+        AlertDialog.Builder(this).setTitle("Notification")
+                .setMessage("You currently can't repeat a date from\nhere, we're working hard to fix this\nplease bare with us. Thanks !")
+                .setPositiveButton("OK") { dialogInterface, i -> dialogInterface.dismiss() }.create().show()
     }
 
     fun unveilRateUserBottomSheet(v: View){

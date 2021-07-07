@@ -13,6 +13,7 @@
 
 package com.ltd_immersia_datenight.utils.notification;
 
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -83,8 +84,13 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void onNewToken(@NotNull String token) {
         Log.d(TAG, "Refreshed token: " + token);
 
+        if(mAuth.getCurrentUser() != null){
         userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(mAuth.getCurrentUser().getUid());
-        userDocRef.update("fcmToken", token);
+        }
+
+        if(userDocRef.get().getResult().exists()) {
+            userDocRef.update("fcmToken", token);
+        }
 
     }
 
@@ -119,7 +125,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         //chats
-        NotificationCompat.Builder notificationBuilderChats = new NotificationCompat.Builder(this, channelIdChats)
+        NotificationCompat.Builder notificationBuilderChats = new NotificationCompat.Builder(this,  channelIdChats)
                         .setSmallIcon(R.drawable.datehub_logo)
                         .setContentTitle(remoteMessage.getNotification().getTitle())
                         .setContentText(remoteMessage.getNotification().getBody())
@@ -159,19 +165,19 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Since android Oreo, notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channelOne = new NotificationChannel(channelIdChats, "Chats", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationChannel channelTwo = new NotificationChannel(channelIdInvites, "Date Invites", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationChannel channelThree = new NotificationChannel(channelIdCancellations, "Date Cancellations", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationChannel channelFour = new NotificationChannel(channelIdRej, "Date Rejections", NotificationManager.IMPORTANCE_DEFAULT);
-
-
-            assert notificationManager != null;
-            notificationManager.createNotificationChannel(channelOne);
-            notificationManager.createNotificationChannel(channelTwo);
-            notificationManager.createNotificationChannel(channelThree);
-            notificationManager.createNotificationChannel(channelFour);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationChannel channelOne = new NotificationChannel(channelIdChats, "Chats", NotificationManager.IMPORTANCE_DEFAULT);
+//            NotificationChannel channelTwo = new NotificationChannel(channelIdInvites, "Date Invites", NotificationManager.IMPORTANCE_DEFAULT);
+//            NotificationChannel channelThree = new NotificationChannel(channelIdCancellations, "Date Cancellations", NotificationManager.IMPORTANCE_DEFAULT);
+//            NotificationChannel channelFour = new NotificationChannel(channelIdRej, "Date Rejections", NotificationManager.IMPORTANCE_DEFAULT);
+//
+//
+//            assert notificationManager != null;
+//            notificationManager.createNotificationChannel(channelOne);
+//            notificationManager.createNotificationChannel(channelTwo);
+//            notificationManager.createNotificationChannel(channelThree);
+//            notificationManager.createNotificationChannel(channelFour);
+//        }
 
         notificationManager.notify(0 , notificationBuilderChats.build());
         notificationManager.notify(1 , notificationBuilderInvites.build());

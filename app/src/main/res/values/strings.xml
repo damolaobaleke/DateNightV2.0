@@ -48,13 +48,13 @@
     <string name="title_activity_experience_type">ExperienceType</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
-    <string name="accounts">Accounts</string>
-    <string name="buy_dtc">Buy Dtc</string>
+    <string name="accounts">Account</string>
+    <string name="buy_dtc">Buy DTC</string>
     <string name="help">Help</string>
     <string name="log_out">Log Out</string>
     <string name="chats">Chats</string>
     <string name="date_hub">Hub</string>
-    <string name="my_dates">My dates</string>
+    <string name="my_dates">My Dates</string>
     <string name="average_date_rating">Your average date rating is </string>
 
     <string name="game_view_content_description">Game view</string>
@@ -70,7 +70,7 @@
     <string name="hint_two">damola</string>
     <string name="create_an_account">Create an account</string>
     <string name="text_pending_invitation">Your pending invitations are\nshown here</string>
-    <string name="text_sheduled_date">Click on the heart icon at the\nbottom to start a new date</string>
+    <string name="text_sheduled_date">Click on the plus icon at the\nbottom to start a new date</string>
     <string name="report_an_issue">Report an\nissue</string>
     <string name="suggest_which_features_you_d_like_to_nsee">Suggest which features you\'d like to\nsee…</string>
     <string name="tab_pending">Pending</string>
@@ -130,4 +130,7 @@
     <string name="edit_avatar_text">Edit Avatar</string>
     <string name="create_avatar_text">Create Avatar</string>
     <string name="no_such_user_text">No such user</string>
+    <string name="pick_date">Pick date</string>
+    <string name="pick_time">Pick time</string>
+    <string name="text_scheduled_hint">Click on the plus icon at the bottom to\nstart a new date</string>
 </resources>

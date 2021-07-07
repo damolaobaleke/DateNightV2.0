@@ -5,18 +5,16 @@ public class UserStatsModel {
     int dateCount;
     int kissCount;
     int numRatedDates;
-    int dtc;
     int ratedDates;
 
     public UserStatsModel(){
         /**Public no arg constructor needed*/
     }
 
-    public UserStatsModel(int rating, int dateCount, int kissCount, int dtc) {
+    public UserStatsModel(int rating, int dateCount, int kissCount) {
         this.rating = rating;
         this.dateCount = dateCount;
         this.kissCount = kissCount;
-        this.dtc = dtc;
     }
 
     public int getRating() {
@@ -29,10 +27,6 @@ public class UserStatsModel {
 
     public int getKissCount() {
         return kissCount;
-    }
-
-    public int getDtc() {
-        return dtc;
     }
 
     public int getNumRatedDates() {
@@ -53,10 +47,6 @@ public class UserStatsModel {
 
     public void setKissCount(int kissCount) {
         this.kissCount = kissCount;
-    }
-
-    public void setDtc(int dtc) {
-        this.dtc = dtc;
     }
 
     public int getRatedDates() {

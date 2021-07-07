@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/inter"
-        android:text="Invite your fav for both\ncasual &amp; premium\ndestinations"
+        android:text="Invite your fave for both\ncasual &amp; premium\ndestinations"
         android:textColor="@color/white"
         android:textFontWeight="900"
         android:textSize="18sp"

@@ -59,7 +59,7 @@ public class CheckOutActivity extends AppCompatActivity {
     private String paymentIntentClientSecret;
     private Stripe stripe;
     private FirebaseAuth mAuth;
-    private String TAG = "CheckoutActivity";
+    private final String TAG = "CheckoutActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

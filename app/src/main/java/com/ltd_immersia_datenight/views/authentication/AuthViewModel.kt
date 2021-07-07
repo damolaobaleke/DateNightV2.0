@@ -56,7 +56,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                         avatar["avatar"] = ""
 
                         //Add User to db
-                        val userStats = UserStatsModel(0, 0, 0, 0)
+                        val userStats = UserStatsModel(0, 0, 0)
                         val user = UserModel("", username, name, email, dateStringToTimestamp(age), avatar, "", DatabaseConstants.LOCAL_AUTH, null, userStats, null, "", Timestamp(mAuth.currentUser!!.metadata!!.creationTimestamp / 1000, 0), false, generateFcmToken())
                         createUserInDb(user)
 

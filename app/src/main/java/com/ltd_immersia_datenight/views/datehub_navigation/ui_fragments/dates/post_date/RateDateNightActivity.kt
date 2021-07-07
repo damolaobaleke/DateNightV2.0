@@ -16,8 +16,9 @@ class RateDateNightActivity : AppCompatActivity() {
     private lateinit var positiveFeedbackEditText: EditText
     private lateinit var negativeFeedbackEditText: EditText
     // Data
-    private var starRating = 0;
-    private lateinit var viewModel: RateDateNightViewModel;
+    private var starRating = 0
+    private lateinit var viewModel: RateDateNightViewModel
+
     // Intent extras
     private lateinit var dateExperienceId: String
 

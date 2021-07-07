@@ -30,8 +30,7 @@
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@drawable/avatar_2d_circle"
-                app:srcCompat="@drawable/datenight_logo"/>
+                android:background="@drawable/datenight_logo" />
 
             <TextView
                 android:id="@+id/edit_avatar_btn"
@@ -181,6 +180,22 @@
                         app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
                     <ProgressBar
+                        android:id="@+id/progressBarDefault"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="32dp"
+                        android:layoutDirection="rtl"
+                        android:progress="100"
+                        android:progressDrawable="@drawable/progress_circle"
+                        android:scaleX="1"
+                        android:scaleY="1"
+                        android:alpha="0.5"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="@+id/imageView6"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+                    <ProgressBar
                         android:id="@+id/progressBar"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="70dp"
@@ -228,7 +243,7 @@
                     <ImageView
                         android:id="@+id/imageView7"
                         android:layout_width="70dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="70dp"
                         android:layout_marginTop="32dp"
                         android:layout_marginBottom="32dp"
                         app:layout_constraintBottom_toBottomOf="parent"

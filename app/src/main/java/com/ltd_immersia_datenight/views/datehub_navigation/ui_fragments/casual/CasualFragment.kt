@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment
 import com.ltd_immersia_datenight.R
 import com.ltd_immersia_datenight.modelfirestore.Experience.ExperienceModel
 import com.ltd_immersia_datenight.views.date_schedule.DateScheduleActivity
-import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad
+//import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -154,7 +154,7 @@ class CasualFragment : Fragment() {
 
         paris.setOnClickListener { v: View? -> startParis() }
         cappaducia.setOnClickListener { v: View? ->
-            Toast.makeText(requireContext(), "Coming soon", LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Coming soon", LENGTH_SHORT).show()
             //startCappaducia()
         }
         return view
@@ -167,7 +167,7 @@ class CasualFragment : Fragment() {
     fun startParis() {
         val intent = Intent(context, DateScheduleActivity::class.java)
         //paris
-        intent.putExtra("experienceName", experienceName!!.text) //OR experienceModel.getName()
+        intent.putExtra("experienceName", experienceName.text) //OR experienceModel.getName()
         intent.putExtra("experienceDesc", experienceModel!!.description)
         intent.putExtra("experienceCost", experienceModel!!.price)
         startActivity(intent)
@@ -176,15 +176,15 @@ class CasualFragment : Fragment() {
     fun startCappaducia() {
         val intent = Intent(context, DateScheduleActivity::class.java)
         //capp
-        intent.putExtra("experienceName", experienceNameCappaduc!!.text) //OR experienceModel.getName()
+        intent.putExtra("experienceName", experienceNameCappaduc.text) //OR experienceModel.getName()
         intent.putExtra("experienceDesc", experienceModel1!!.description)
         intent.putExtra("experienceCost", experienceModel1!!.price)
         startActivity(intent)
     }
 
     fun startScene() {
-        val intent = Intent(requireContext(), UnityEnvironmentLoad::class.java)
-        startActivity(intent)
+//        val intent = Intent(requireContext(), UnityEnvironmentLoad::class.java)
+//        startActivity(intent)
     }
 
     fun showProgress() {}
@@ -205,17 +205,17 @@ class CasualFragment : Fragment() {
     }
 
     private fun isNetworkAvailable(): Boolean {
-        val connectivityManager: ConnectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager;
+        val connectivityManager: ConnectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { //API 29
-            val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork);
+            val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
             if (capabilities != null) {
                 when {
                     capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> { //Mobile Data
-                        return true;
+                        return true
                     }
                     capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> { //Wifi
-                        return true;
+                        return true
                     }
                 }
             }
@@ -223,19 +223,19 @@ class CasualFragment : Fragment() {
         } else {
             //works below API 29
             try {
-                val activeNetworkInfo = connectivityManager.activeNetworkInfo;
+                val activeNetworkInfo = connectivityManager.activeNetworkInfo
                 if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
-                    Log.i(TAG, "Network is available : TRUE");
-                    return true;
+                    Log.i(TAG, "Network is available : TRUE")
+                    return true
                 }
             } catch (e: Error) {
-                Log.i(TAG, "" + e.localizedMessage);
+                Log.i(TAG, "" + e.localizedMessage)
             }
 
         }
 
-        Log.i(TAG, "Network available : FALSE ");
-        return false;
+        Log.i(TAG, "Network available : FALSE ")
+        return false
     }
 }
 

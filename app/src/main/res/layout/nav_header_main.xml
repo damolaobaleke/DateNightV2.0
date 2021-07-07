@@ -19,20 +19,22 @@
 <!--        android:text="@string/nav_header_title"-->
 <!--        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />-->
 
-    <ImageView
-        android:id="@+id/imageView"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageViewAvatar"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:scaleY="1.4"
         android:scaleX="1.4"
+        android:layout_marginStart="14dp"
         android:contentDescription="@string/nav_header_desc"
-        app:srcCompat="@drawable/datenight_logo" />
+        android:background="@drawable/datenight_logo" />
 
     <TextView
         android:id="@+id/emailDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
         android:textColor="@color/white"
         android:textFontWeight="900"
         android:fontFamily="@font/inter"

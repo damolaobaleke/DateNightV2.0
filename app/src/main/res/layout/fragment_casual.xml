@@ -10,9 +10,9 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/paris"
         android:layout_width="180dp"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="14dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,45 +31,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/date_night_transparent"
             android:orientation="vertical">
 
             <!--Image-->
+
+            <!--Title and supporting text-->
             <ImageView
                 android:id="@+id/image_paris"
                 android:layout_width="match_parent"
-                android:layout_height= "120dp"
+                android:layout_height="125dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/paris" />
 
-            <!--Title and supporting text-->
-            <LinearLayout
+            <TextView
+                android:id="@+id/experience_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp">
-
-                <TextView
-                    android:id="@+id/experience_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/paris_night_dinner"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/inter"
-                    android:textAppearance="?attr/textAppearanceHeadline6"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/free"
-                    android:textSize="12sp"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textAppearance="?attr/textAppearanceBody2"/>
-
-            </LinearLayout>
-
-
+                android:text="@string/paris_night_dinner"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:padding="2.5dp"
+                android:background="@color/date_night_transparent"
+                android:fontFamily="@font/inter"
+                android:textAppearance="?attr/textAppearanceHeadline6"/>
 
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView

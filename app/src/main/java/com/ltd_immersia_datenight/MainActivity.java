@@ -26,6 +26,7 @@ import com.ltd_immersia_datenight.modelfirestore.User.UserModel;
 import com.ltd_immersia_datenight.utils.constants.DatabaseConstants;
 import com.ltd_immersia_datenight.utils.DateNight;
 import com.ltd_immersia_datenight.views.datehub_navigation.DateHubNavigation;
+import com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.dates.post_date.DateFinishedActivity;
 import com.ltd_immersia_datenight.views.landing_screen.BoardingScreen;
 import com.ltd_immersia_datenight.views.onboarding.UserOnBoarding;
 
@@ -83,8 +84,7 @@ public class MainActivity extends AppCompatActivity {
             if (documentSnapshot.exists()) {
                 UserModel user = null;
                 try {
-                    user = documentSnapshot.toObject(UserModel.class,
-                                                     DocumentSnapshot.ServerTimestampBehavior.PREVIOUS);
+                    user = documentSnapshot.toObject(UserModel.class, DocumentSnapshot.ServerTimestampBehavior.PREVIOUS);
 
                     if (!user.isOnBoarded() && mAuth.getCurrentUser() == null) {
                         Intent intent = new Intent(MainActivity.this, UserOnBoarding.class);
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     } else {
-                        DateNight appState = ((DateNight)this.getApplication());;
+                        DateNight appState = ((DateNight)this.getApplication());
                         if (appState.getAppData(mAuth.getUid()) == null) {
                             // Fetch required launch data and then launch DateHubNavigation class
                             appState.initializeAppData(mAuth.getUid(), MainActivity.this);

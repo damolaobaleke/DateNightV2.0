@@ -27,7 +27,7 @@ class ChangePasswordActivity : AppCompatActivity() {
         newPassword = findViewById(R.id.newPasswordEditText)
         changePasswordBtn = findViewById(R.id.changePasswordButton)
         changePasswordBtn.setOnClickListener {
-            changePassword();
+            changePassword()
         }
     }
 
@@ -46,7 +46,7 @@ class ChangePasswordActivity : AppCompatActivity() {
         user.reauthenticate(credential)
                 .addOnFailureListener{
                     val toast = Toast.makeText(this, "The old password you entered is incorrect", Toast.LENGTH_SHORT)
-                    toast.show();
+                    toast.show()
 
                 }
                 .addOnSuccessListener {
@@ -54,7 +54,7 @@ class ChangePasswordActivity : AppCompatActivity() {
                             .addOnCompleteListener { task ->
                                 if(task.isSuccessful){
                                     val toast = Toast.makeText(this, "Successfully updated password", Toast.LENGTH_SHORT)
-                                    toast.show();
+                                    toast.show()
                                     onBackPressed()
                                 }
                             }

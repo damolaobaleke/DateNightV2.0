@@ -51,8 +51,8 @@ import java.util.Set;
 public class PendingFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     static String TAG = "PendingFragment";
     // Firebase vars
-    private FirebaseFirestore dbFirestore = FirebaseFirestore.getInstance() ;
-    private String currentUserId  = FirebaseAuth.getInstance().getUid();
+    private final FirebaseFirestore dbFirestore = FirebaseFirestore.getInstance() ;
+    private final String currentUserId  = FirebaseAuth.getInstance().getUid();
     private DocumentReference userdocRef;
     FirebaseAuth mAuth;
     // Views

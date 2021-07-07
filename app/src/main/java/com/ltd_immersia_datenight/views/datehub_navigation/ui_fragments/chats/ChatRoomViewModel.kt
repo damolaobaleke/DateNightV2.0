@@ -71,9 +71,6 @@ class ChatRoomViewModel(username: String,
                 object : FirebaseRecyclerAdapter<ChatRoomMessage, ChatRoomMessageViewHolder>(firebaseRecyclerViewOptions){
 
 
-                    override fun getItemViewType(position: Int): Int {
-                        return super.getItemViewType(position)
-                    }
                     override fun onCreateViewHolder(parent: ViewGroup, type: Int): ChatRoomMessageViewHolder {
                         val newMessage = LayoutInflater.from(parent.context)
                                 .inflate(R.layout.item_chat_room_message, parent, false)
@@ -220,6 +217,6 @@ class ChatRoomViewModel(username: String,
     }
 
     companion object{
-        const val TAG = "ChatRoomActivity";
+        const val TAG = "ChatRoomActivity"
     }
 }

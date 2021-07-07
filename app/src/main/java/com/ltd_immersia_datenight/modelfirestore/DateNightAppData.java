@@ -28,11 +28,11 @@ import java.util.HashMap;
 
 public class DateNightAppData {
     // Firebase vars
-    private FirebaseFirestore dbFirestore = FirebaseFirestore.getInstance();
-    private String currentUserId; // Holds the id of the user who owns the data in instance of class
+    private final FirebaseFirestore dbFirestore = FirebaseFirestore.getInstance();
+    private final String currentUserId; // Holds the id of the user who owns the data in instance of class
     // Data to be persisted
     private UserModel currentUserModel;
-    private HashMap<String, ExperienceModel> experiencesData = new HashMap<String, ExperienceModel>();
+    private final HashMap<String, ExperienceModel> experiencesData = new HashMap<String, ExperienceModel>();
     // Util data
     private final static String TAG = "DateNightAppData";
     private boolean hasUnityBeenLaunched = false;

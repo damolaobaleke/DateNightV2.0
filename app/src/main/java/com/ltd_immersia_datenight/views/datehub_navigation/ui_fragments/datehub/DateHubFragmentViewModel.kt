@@ -55,13 +55,13 @@ class DateHubFragmentViewModel : ViewModel() {
         docReference.get().addOnSuccessListener { documentSnapshot ->
             if (documentSnapshot.exists()) {
                 val user = documentSnapshot.toObject(UserModel::class.java)
-                dtcBalance.value = user!!.getDtc()
-                Log.i(TAG, "dtc: ${user.getDtc()} ")
+                dtcBalance.value = user!!.dtc
+                Log.i(TAG, "dtc: ${user.dtc} ")
             } else {
                 dtcBalance.value = 0
             }
         }
-        return dtcBalance;
+        return dtcBalance
     }
 
 
@@ -70,19 +70,19 @@ class DateHubFragmentViewModel : ViewModel() {
             if (documentSnapshot.exists()) {
                 try{
                     userModel = documentSnapshot.toObject(UserModel::class.java)!!
-                    datesCount.text = userModel.getAvgDateStats().dateCount.toString()
-                    avgRating.text = userModel.getAvgDateStats().rating.toString()
-                    ratingProgBar.progress = userModel.getAvgDateStats().rating * 100 / 5
-                    dtcBalance.text = userModel.getDtc().toString()
-                    kissCount.text = userModel.getAvgDateStats().kissCount.toString()
-                    userAvatar.value = userModel.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD];
+                    datesCount.text = userModel.avgDateStats.dateCount.toString()
+                    avgRating.text = userModel.avgDateStats.rating.toString()
+                    ratingProgBar.progress = userModel.avgDateStats.rating * 100 / 5
+                    dtcBalance.text = userModel.dtc.toString()
+                    kissCount.text = userModel.avgDateStats.kissCount.toString()
+                    userAvatar.value = userModel.avatar[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD]
                 } catch(e: Exception){
                     Log.e(TAG, "Error while trying to cast response to UserModel")
                     Log.e(TAG, e.message)
                     e.printStackTrace()
                 }
             } else {
-                userAvatar.value = "";
+                userAvatar.value = ""
                 Log.i(TAG, "Unable to get user model")
             }
         }
@@ -93,17 +93,17 @@ class DateHubFragmentViewModel : ViewModel() {
             if (documentSnapshot.exists()) {
                 try{
                     val user = documentSnapshot.toObject(UserModel::class.java)
-                    if (user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] != null) {
-                        userAvatar.value = user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD];
+                    if (user!!.avatar[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] != null) {
+                        userAvatar.value = user.avatar[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD]
                     } else {
-                        userAvatar.value = "";
+                        userAvatar.value = ""
                     }
                 } catch (e: Exception){
 
                 }
             }
         }
-        return userAvatar;
+        return userAvatar
     }
 
     fun checkUserAvatarExists(): LiveData<Boolean> {
@@ -111,9 +111,9 @@ class DateHubFragmentViewModel : ViewModel() {
             if (documentSnapshot.exists()) {
                 try{
                     val user = documentSnapshot.toObject(UserModel::class.java)
-                    if(user!!.getAvatar()[DatabaseConstants.AVATAR_URL_FIELD] != null){
+                    if(user!!.avatar[DatabaseConstants.AVATAR_URL_FIELD] != null){
                         isAvatarUrl.value = true
-                        if(user!!.getAvatar()[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] == null) {
+                        if(user.avatar[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] == null) {
                             setAvatarHeadShot()
                         }
                     } else {
@@ -126,7 +126,7 @@ class DateHubFragmentViewModel : ViewModel() {
                 }
             }
         }
-        return isAvatarUrl;
+        return isAvatarUrl
     }
 
 
@@ -158,7 +158,7 @@ class DateHubFragmentViewModel : ViewModel() {
 
                 params["scene"] = "fullbody-portrait-v1"
                 params["armature"] = "ArmatureTargetMale"
-                params["model"] = user!!.getAvatar()[DatabaseConstants.AVATAR_URL_FIELD]
+                params["model"] = user!!.avatar[DatabaseConstants.AVATAR_URL_FIELD]
 
 
                 val render = api.getAvatarUrl(params)

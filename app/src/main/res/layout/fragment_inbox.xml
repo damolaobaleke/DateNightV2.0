@@ -48,29 +48,16 @@
 
     <ImageView
         android:id="@+id/image_person"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:elevation="20dp"
-        android:layout_marginTop="7dp"
+        android:foregroundGravity="center"
+        android:layout_marginTop="18dp"
         app:layout_constraintEnd_toEndOf="@+id/newChatButton"
         app:layout_constraintStart_toStartOf="@+id/newChatButton"
         app:layout_constraintTop_toTopOf="@id/newChatButton"
-        app:srcCompat="@drawable/ic_profile"
+        app:srcCompat="@drawable/ic_start_chat_24"
         tools:layout_editor_absoluteY="523dp" />
-
-    <TextView
-        android:id="@+id/add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:elevation="8dp"
-        android:text="Add"
-        android:fontFamily="@font/inter"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/newChatButton"
-        app:layout_constraintStart_toStartOf="@+id/newChatButton"
-        app:layout_constraintTop_toBottomOf="@+id/image_person" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/inbox_recycler_view"

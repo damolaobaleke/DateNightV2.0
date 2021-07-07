@@ -1,6 +1,7 @@
 package com.ltd_immersia_datenight.modelfirestore.Chat
 
 import androidx.annotation.Keep
+import com.ltd_immersia_datenight.utils.constants.DatabaseConstants
 import java.io.Serializable
 
 class ChatHead(val participants: Map<String?, String?>, val usernames: Map<String?, String?>, val mostRecentMessage: ChatRoomMessage){
@@ -16,7 +17,8 @@ class ChatHead(val participants: Map<String?, String?>, val usernames: Map<Strin
         participantId = if(temp.elementAt(0) != currentUserId) temp.elementAt(0) else temp.elementAt(1)
         participantUsername = usernames[participantId]
         participantFullName = participants[participantId]
-        participantPhotoUrl = "none" // TODO: Fix
+        //Damola is using the 2d avatar url here
+        participantPhotoUrl = participants[participantId]
     }
 
     // Default Constructor needed for firebase

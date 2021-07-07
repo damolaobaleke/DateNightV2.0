@@ -4,8 +4,12 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -20,8 +24,12 @@ import com.firebase.ui.database.SnapshotParser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.ltd_immersia_datenight.modelfirestore.User.UserModel
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.activity_unity_environment_load.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,6 +39,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
     private val dbReferenceRealtimeDb = FirebaseDatabase.getInstance().reference // TODO: Possibly move dbReferences to model
     private var dbReferenceChatRoomsRealtimeDb: DatabaseReference
     private val dbReferenceFirestore = FirebaseFirestore.getInstance().collection(DatabaseConstants.USER_DATA_NODE)
+    var db: FirebaseFirestore = FirebaseFirestore.getInstance()
     private lateinit var chatRoomDataParser: SnapshotParser<ChatHead?>
     private lateinit var firebaseRecyclerViewOptions: FirebaseRecyclerOptions<ChatHead>
     lateinit var chatHeadsFirebaseRecyclerViewAdapter: FirebaseRecyclerAdapter<ChatHead, ChatHeadViewHolder>
@@ -38,6 +47,8 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
 
     init {
         currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+        userDocRef = db.collection(DatabaseConstants.USER_DATA_NODE).document(FirebaseAuth.getInstance().currentUser!!.uid)
 
         // Fetch current user details
         val query = dbReferenceFirestore.document(currentUserId!!).get()
@@ -55,8 +66,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
                 }
 
         // Set up Database reference and firebase recycler view adapter
-        dbReferenceChatRoomsRealtimeDb =
-                dbReferenceRealtimeDb.child(DatabaseConstants.CHAT_ROOMS_NODE).child(currentUserId!!)
+        dbReferenceChatRoomsRealtimeDb = dbReferenceRealtimeDb.child(DatabaseConstants.CHAT_ROOMS_NODE).child(currentUserId!!)
 
     }
 
@@ -121,8 +131,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
         parentContext.startActivity(chatRoomActivityIntent, null)
     }
 
-    class ChatHeadViewHolder(private val chatHeadView: View) :
-            RecyclerView.ViewHolder(chatHeadView) {
+    class ChatHeadViewHolder(private val chatHeadView: View) : RecyclerView.ViewHolder(chatHeadView) {
         // Layouts
         private var mChatHeadImage: CircleImageView? = null
         private var mChatHeadName: TextView? = null
@@ -138,7 +147,7 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
         private var mChatParticipantFullName: String? = null
 
         init {
-            // mChatHeadImage = itemView.findViewById(R.id.chatHeadImage)
+            mChatHeadImage = itemView.findViewById(R.id.chatHeadImage)
             mChatHeadName = itemView.findViewById(R.id.chatHeadLabel)
             mMostRecentMessage = itemView.findViewById(R.id.chatHeadMostRecentMessage)
             mChatHeadTimeStamp = itemView.findViewById(R.id.chatHeadTimeStamp)
@@ -167,6 +176,21 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
             //--
             val firstLetterName = data.participantFullName!!.split("")
             mChatFullNameFirstLetter?.text =  firstLetterName[1]
+
+            //Load 2d avatar image if user has one else, use first letter of name
+//            try{
+//                if (data.participantPhotoUrl != null) {
+//
+//                    mChatFullNameFirstLetter!!.visibility = INVISIBLE
+//                    Picasso.get().load(data.participantPhotoUrl).into(mChatHeadImage)
+//                } else {
+//                    mChatHeadImage!!.visibility = INVISIBLE
+//                    mChatFullNameFirstLetter!!.visibility = VISIBLE
+//                }
+//            } catch (e: Exception){
+//
+//            }
+
 
             // Metadata
             mChatRoomKey = data.key
@@ -240,5 +264,6 @@ class InboxViewModel( username: String, userFullName: String) : ViewModel() {
         var currentUserId: String? = null
         lateinit var currentUsername: String
         lateinit var currentUserFullName: String
+        lateinit var userDocRef:DocumentReference
     }
 }

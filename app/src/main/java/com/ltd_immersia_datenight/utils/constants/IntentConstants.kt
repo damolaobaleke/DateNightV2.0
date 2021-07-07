@@ -27,4 +27,5 @@ object IntentConstants {
     const val INBOX_FRAGMENT = "inboxFragment"
     const val DATE_HUB_FRAGMENT = "dateHubFragment"
     const val BUY_DTC_FRAGMENT = "buyDtcFragment"
+    const val HELP_FRAGMENT = "helpFragment"
 }

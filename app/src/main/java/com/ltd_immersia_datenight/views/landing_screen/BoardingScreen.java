@@ -3,6 +3,7 @@ package com.ltd_immersia_datenight.views.landing_screen;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -92,7 +93,7 @@ public class BoardingScreen extends AppCompatActivity {
             Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
         } else {
             mAuth.signOut();
-            Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
+            toast("Welcome !");
 
             if(user != null) {
                 if (!user.isEmailVerified()) {
@@ -102,6 +103,15 @@ public class BoardingScreen extends AppCompatActivity {
         }
     }
 
-    //
+    public void toast(String message) {
+        View view = getLayoutInflater().inflate(R.layout.create_date_toast, null);
+        Button b = view.findViewById(R.id.toast_btn);
+
+        Toast toast = new Toast(this);
+        b.setText(message);
+        toast.setView(view);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
+    }
 
 }

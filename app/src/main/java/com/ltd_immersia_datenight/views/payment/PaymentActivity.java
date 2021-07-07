@@ -84,6 +84,7 @@ public class PaymentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+        setTitle("Buy DTC");
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -298,7 +299,7 @@ public class PaymentActivity extends AppCompatActivity {
 
                 // if `true`, will show "Google Pay" as an option on the
                 // Payment Methods selection screen
-                .setShouldShowGooglePay(true)
+                .setShouldShowGooglePay(false)
 
                 .build();
     }

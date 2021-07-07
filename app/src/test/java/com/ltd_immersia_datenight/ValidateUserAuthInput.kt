@@ -11,8 +11,11 @@
  * limitations under the License.
  */
 
-package com.ltd_immersia_datenight.views.authentication
+package com.ltd_immersia_datenight
 
-import androidx.lifecycle.ViewModel
+object ValidateUserAuthInput {
 
-class ForgotPasswordViewModel : ViewModel()
+    fun validateInput(email: String, password:String, username:String, name:String){
+
+    }
+}

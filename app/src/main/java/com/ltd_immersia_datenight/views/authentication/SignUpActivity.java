@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -27,7 +28,7 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
@@ -36,8 +37,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
@@ -63,6 +64,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -146,60 +148,65 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         });
     }
 
+
     private boolean checkUserAlreadyExists(String usernameInput) {
-       usernames.whereEqualTo("username", usernameInput).get().addOnSuccessListener(queryDocumentSnapshots -> {
-           //TODO- Divide and Conquer,after sorting **REFACTOR**
-           //This is a Linear search O(f(n)) == O(n). Cant be a Binary Search(because its not a sorted array, unless we sort it when inputting in db )
-           //Binary Search, Big O = O(log(n)), also much faster
+       //Task<QuerySnapshot> task  = usernames.whereEqualTo("username", usernameInput).get();
+        // if (task.isComplete() && task.getResult().getDocuments().size() > 1) {
 
-           for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
-               if (queryDocumentSnapshot.exists()) {
-                   //toast and log
-                   toast("username already exists");
-                   //Toast.makeText(SignUpActivity.this, R.string.valid_username, Toast.LENGTH_SHORT).show();
+        usernames.whereEqualTo("username", usernameInput).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(DocumentSnapshot documentSnapshot: queryDocumentSnapshots){
+                    if(documentSnapshot.exists()){
+                        //toast and log
+                        toast("username already exists");
+                        //Toast.makeText(SignUpActivity.this, R.string.valid_username, Toast.LENGTH_SHORT).show();
 
-                   //show error
-                   usernameLabel = findViewById(R.id.username_label);
-                   usernameLabel.setText(R.string.valid_username);
-                   usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.holo_red_light));
+                        //show error
+                        usernameLabel = findViewById(R.id.username_label);
+                        usernameLabel.setText(R.string.valid_username);
+                        usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.holo_red_light));
 
-                   //disable button
-                   signUp.setEnabled(false);
-                   signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.disabled_btn));
+                        //disable button
+                        signUp.setEnabled(false);
+                        signUp.setBackground(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.disabled_btn));
 
-                   Runnable runnable = () -> {
-                       usernameLabel.setText("Give yourself a username");
-                       usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
+                        Runnable runnable = () -> {
+                            usernameLabel.setText("Give yourself a username");
+                            usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
 
-                       signUp.setEnabled(true);
-                       signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.custom_login_button));
-                   };
-                   Handler handler = new Handler();
-                   handler.postDelayed(runnable, 1000);
+                            signUp.setEnabled(true);
+                            signUp.setBackground(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.custom_login_button));
+                        };
+                        Handler handler = new Handler();
+                        handler.postDelayed(runnable, 1000);
 
-                   progressBarGone();
+                        progressBarGone();
 
 
-                   userDoesntExists = false;
-               } else {
-                   signUp.setEnabled(true);
-                   signUp.setBackground(ContextCompat.getDrawable(this, R.drawable.custom_login_button));
+                        userDoesntExists = false;
 
-                   usernameLabel.setText("Give yourself a username");
-                   usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
-                   signUp.setVisibility(View.VISIBLE);
-                   userDoesntExists = true;
-               }
-           }
-       }).addOnFailureListener(new OnFailureListener() {
-           @Override
-           public void onFailure(@NonNull Exception e) {
+                    } else {
 
-           }
-       });;
+                    signUp.setEnabled(true);
+                    signUp.setBackground(ContextCompat.getDrawable(SignUpActivity.this, R.drawable.custom_login_button));
+
+                    usernameLabel.setText("Give yourself a username");
+                    usernameLabel.setTextColor(ContextCompat.getColor(SignUpActivity.this, android.R.color.black));
+                    signUp.setVisibility(View.VISIBLE);
+
+                    userDoesntExists = true;
+                    }
+
+
+
+                }
+            }
+        });
 
         return userDoesntExists;
     }
+
 
     private void checkAge() {
         ageInput.addTextChangedListener(new TextWatcher() {
@@ -303,8 +310,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         userId = mAuth.getCurrentUser().getUid();
 
         List<String> dateIds = new ArrayList<>();
-        List<String> purchasedExperiences = new ArrayList<>();
-        purchasedExperiences.add("");
+        HashMap<String, Timestamp> purchasedExperiences = new HashMap<>();
+        //purchasedExperiences.put("",Timestamp.now());
 
         HashMap<String, String> avatar = new HashMap<>();
         avatar.put("avatarUrl", "");
@@ -321,7 +328,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             fcmToken = task.getResult();
         });
 
-        UserStatsModel userStats = new UserStatsModel(0, 0, 0, 0);
+        UserStatsModel userStats = new UserStatsModel(0, 0, 0);
         UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), avatar, "BASIC", DatabaseConstants.LOCAL_AUTH, dateIds, userStats, purchasedExperiences, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false,fcmToken);
 
 
@@ -368,7 +375,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private void createStripeCustomer() {
         UserModel userModel = new UserModel(mAuth.getCurrentUser().getUid(), usernameInput.getText().toString().toLowerCase(), fullNameInput.getText().toString(), emailInput.getText().toString(), dateStringToTimestamp(ageInput.getText().toString()), null, "BASIC", DatabaseConstants.LOCAL_AUTH, null, null, null, "", new Timestamp(mAuth.getCurrentUser().getMetadata().getCreationTimestamp() / 1000, 0), false, "");
 
-
         Call<UserObject> userObjectCall = api.createStripeCustomer(userModel);
 
         userObjectCall.enqueue(new Callback<UserObject>() {
@@ -395,19 +401,28 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private boolean validateForm() {
         boolean valid = true;
 
-        if (TextUtils.isEmpty(emailInput.getText().toString())) {
-            emailInput.setError("Required.");
+        if (TextUtils.isEmpty(emailInput.getText().toString()) || !Patterns.EMAIL_ADDRESS.matcher(emailInput.getText()).matches()) {
+            emailInput.setError("Required. Enter a correct email address");
             progressBarGone();
             valid = false;
+
         } else {
             emailInput.setError(null);
             progressBarShown();
         }
 
+        if(usernameInput.getText().length() < 1 || TextUtils.isEmpty(usernameInput.getText().toString())){
+            usernameInput.setError("Enter a username");
+            valid = false;
+
+        }
+
         if (TextUtils.isEmpty(passwordInput.getText().toString()) || passwordInput.getText().length() < 8) {
-            passwordInput.setError("Required." + "You must have a minimum of 8 characters in your password");
+            if(!isValidPassword(passwordInput.getText().toString()))
+            passwordInput.setError("Required." + "You must have a minimum of 8 characters in your password and it must contain at least a lowercase, uppercase letter and a special character");
             progressBarGone();
             valid = false;
+
         } else {
             passwordInput.setError(null);
             progressBarShown();
@@ -417,6 +432,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             ageInput.setError("Required." + "You must be 17");
             progressBarGone();
             valid = false;
+
         } else {
             ageInput.setError(null);
             progressBarShown();
@@ -424,6 +440,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         //returns false when fields are empty
         return valid;
+    }
+
+    public static boolean isValidPassword(String s) {
+        Pattern PASSWORD_PATTERN = Pattern.compile("[a-zA-Z0-9\\!\\@\\#\\$\\&\\_\\_]]{0,8}");
+
+        return PASSWORD_PATTERN.matcher(s).matches();
     }
 
     public void updateUI(FirebaseUser user) {
@@ -525,33 +547,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public static Timestamp dateCreated() {
-        try {
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-            Date date = formatter.parse(String.valueOf(Calendar.getInstance().getTime()));
-            Log.i("", "Today is " + date);
-
-            //convert date to timestamp
-            return new Timestamp(date);
-
-        } catch (ParseException e) {
-            System.out.println("Exception :" + e);
-            return null;
-        }
-    }
-
-    public static String timeStamptoString(Timestamp timestamp) {
-        // hours*minutes*seconds*milliseconds  int oneDay = 24 * 60 * 60 * 1000;
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        Date date = timestamp.toDate();
-        String dateofbirth = formatter.format(date);
-        return dateofbirth;
-    }
-
-    public static Date stringToDate(String dateStr) throws ParseException {
-        Date date = DateFormat.getInstance().parse(dateStr);
-        return date;
-    }
 
     public void toast(String message) {
         View view = getLayoutInflater().inflate(R.layout.create_date_toast, null);
@@ -579,3 +574,5 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 }
+
+

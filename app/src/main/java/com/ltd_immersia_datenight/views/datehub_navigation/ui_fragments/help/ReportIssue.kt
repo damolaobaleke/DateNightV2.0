@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
-import com.ltd_immersia_datenight.R
-import com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.help.viewmodel.ReportViewModel
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.ltd_immersia_datenight.R
+import com.ltd_immersia_datenight.views.datehub_navigation.ui_fragments.help.viewmodel.ReportViewModel
 
 class ReportIssue : AppCompatActivity() {
     private lateinit var reportButton: Button
@@ -21,6 +22,11 @@ class ReportIssue : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_report_issue)
+        title = "Report issue"
+
+        val toolbar = findViewById<Toolbar>(R.id.report_issue_toolbar)
+        toolbar.setTitle(title)
+        setSupportActionBar(toolbar)
 
         reportButton = findViewById(R.id.report_bug)
         bugForm = findViewById(R.id.editTextTextMultiLine2)

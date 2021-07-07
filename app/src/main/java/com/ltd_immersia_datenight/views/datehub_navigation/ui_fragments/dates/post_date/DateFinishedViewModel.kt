@@ -120,9 +120,9 @@ class  DateFinishedViewModel : ViewModel() {
         userDocRef.get().addOnSuccessListener { documentSnapshot ->
             if(documentSnapshot.exists()){
                 val user =  documentSnapshot.toObject(UserModel::class.java)
-                Log.i("DateFinishedVM","Date count before date: ${user!!.getAvgDateStats().dateCount}")
+                Log.i("DateFinishedVM","Date count before date: ${user!!.avgDateStats.dateCount}")
 
-                var currentDateCount: Int = user.getAvgDateStats().dateCount
+                var currentDateCount: Int = user.avgDateStats.dateCount
                 val updateDateCount = currentDateCount+1
                 Log.i("DateFinishedVM","Date count after date: $updateDateCount")
 

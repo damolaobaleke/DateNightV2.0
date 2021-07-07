@@ -142,7 +142,7 @@ public class AccountsFragment extends Fragment implements DatePickerDialog.OnDat
         }).addOnFailureListener(e -> {
             progressBarGone();
             Log.i(TAG, "Didn't update user");
-        }).addOnCompleteListener(task -> progressBarGone());;
+        }).addOnCompleteListener(task -> progressBarGone());
     }
 
     public void progressBarShown() {

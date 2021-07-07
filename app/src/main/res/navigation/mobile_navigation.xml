@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_my_dates">
+    app:startDestination="@+id/nav_date_hub">
 
     <fragment
         android:id="@+id/nav_accounts"
@@ -47,6 +47,7 @@
         <action
             android:id="@+id/action_nav_hub_to_nav_dtc"
             app:destination="@id/nav_buy_dtc" />
+
     </fragment>
 
     <fragment

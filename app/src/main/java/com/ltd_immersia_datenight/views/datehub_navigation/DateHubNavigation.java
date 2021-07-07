@@ -1,17 +1,20 @@
 package com.ltd_immersia_datenight.views.datehub_navigation;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -30,6 +33,7 @@ import com.ltd_immersia_datenight.utils.constants.DatabaseConstants;
 import com.ltd_immersia_datenight.utils.constants.IntentConstants;
 import com.ltd_immersia_datenight.utils.DateNight;
 import com.ltd_immersia_datenight.views.landing_screen.BoardingScreen;
+import com.squareup.picasso.Picasso;
 
 public class DateHubNavigation extends AppCompatActivity {
 
@@ -37,6 +41,7 @@ public class DateHubNavigation extends AppCompatActivity {
     DrawerLayout drawer;
     FirebaseAuth mAuth;
     TextView emailDisplay;
+    ImageView avatar;
     DocumentReference userdocRef;
     FirebaseFirestore db;
     String TAG = "DatehubNavigation";
@@ -62,6 +67,7 @@ public class DateHubNavigation extends AppCompatActivity {
         //username display
         View header = navigationView.getHeaderView(0);
         emailDisplay = header.findViewById(R.id.emailDisplay);
+        avatar = header.findViewById(R.id.imageViewAvatar);
 
         mAuth = FirebaseAuth.getInstance();
         try{
@@ -70,6 +76,9 @@ public class DateHubNavigation extends AppCompatActivity {
                 UserModel user = documentSnapshot.toObject(UserModel.class);
                 if(user != null) {
                     emailDisplay.setText(user.getUsername());
+                    Picasso.get().load(user.getAvatar().get(DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD)).into(avatar);
+                }else{
+                    avatar.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.datenight_logo));
                 }
             });
         } catch(Exception e){
@@ -117,22 +126,22 @@ public class DateHubNavigation extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.create_date, menu);
-        return true;
-    }
+    //@Override
+    //public boolean onCreateOptionsMenu(Menu menu) {
+    //        // Inflate the menu; this adds items to the action bar if it is present.
+    //getMenuInflater().inflate(R.menu.create_date, menu);
+    //return true;
+    //}
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    //@Override
+    //public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    //switch (item.getItemId()) {
+    //            case R.id.action_settings:
+    //                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+    //                break;
+    //        }
+    //        return super.onOptionsItemSelected(item);
+    //    }
 
     public void signOut(MenuItem item) {
         DateNight appState = ((DateNight)this.getApplication());

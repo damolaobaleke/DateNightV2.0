@@ -18,7 +18,7 @@ class StartNewChatActivity : AppCompatActivity() {
     private lateinit var usernameSearchButton: Button
     private lateinit var clearSearchEditText: ImageView
     private lateinit var foundUserLayout: ConstraintLayout
-    private lateinit var shareButton: Button;
+    private lateinit var shareButton: Button
     lateinit var foundUserNameTextView: TextView
     lateinit var foundUserPhoto: CircleImageView
     lateinit var noSuchUserTextView: TextView
@@ -63,7 +63,7 @@ class StartNewChatActivity : AppCompatActivity() {
         })
 
         shareButton.setOnClickListener {
-            viewModel.inviteUser(this, shareButton);
+            viewModel.inviteUser(this, shareButton)
         }
     }
 

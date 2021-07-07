@@ -1,10 +1,14 @@
 package com.ltd_immersia_datenight.views.authentication;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -99,6 +103,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             validateForm();
             progressBarShown();
             logIn();
+            HideKeyboard();
         });
     }
 
@@ -167,6 +172,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         })
                         .addOnFailureListener(this, e -> {
                             Log.e("Failed Auth", e.getLocalizedMessage());
+                            Toast.makeText(this, e.getMessage(),Toast.LENGTH_SHORT).show();
                         });
             }
 
@@ -330,5 +336,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Log.d(TAG, "The fcm: " + fcmToken);
             userDocRef.update("fcmToken", fcmToken);
         });
+    }
+
+    public void HideKeyboard() {
+        //Hide key board when any where on screen is tapped
+        try {
+            InputMethodManager keyboard = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            keyboard.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+            Log.e("Soft Keyboard", e.getLocalizedMessage());
+        }
     }
 }

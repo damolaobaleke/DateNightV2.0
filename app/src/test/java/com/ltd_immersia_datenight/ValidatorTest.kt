@@ -11,8 +11,19 @@
  * limitations under the License.
  */
 
-package com.ltd_immersia_datenight.views.authentication
+package com.ltd_immersia_datenight
 
-import androidx.lifecycle.ViewModel
+import android.util.Patterns
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
 
-class ForgotPasswordViewModel : ViewModel()
+@RunWith(JUnit4::class)
+class ValidatorTest {
+
+    @Test
+    fun whenInputIsValid(){
+
+    }
+
+}

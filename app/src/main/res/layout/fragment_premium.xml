@@ -11,9 +11,9 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cap_balloon_ride"
         android:layout_width="180dp"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="14dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,31 +30,28 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <!--Image-->
             <ImageView
                 android:id="@+id/love_in_clouds"
                 android:layout_width="match_parent"
-                android:layout_height= "120dp"
+                android:layout_height= "125dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/cappadocia" />
 
             <!--Title and supporting text-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/experienceName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/love_in_the_clouds"
                     android:textSize="12sp"
                     android:fontFamily="@font/inter"
+                    android:padding="2.5dp"
+                    android:background="@color/date_night_transparent"
                     android:textAppearance="?attr/textAppearanceHeadline6"/>
 
                 <TextView
@@ -63,6 +60,7 @@
                     android:layout_height="wrap_content"
                     android:text="20"
                     android:textSize="16sp"
+                    android:visibility="gone"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textAppearance="?attr/textAppearanceBody2"/>
 
@@ -72,12 +70,11 @@
                     android:layout_height="wrap_content"
                     android:text="coins"
                     android:textSize="16sp"
+                    android:visibility="gone"
                     android:layout_marginTop="-24dp"
                     android:layout_marginStart="30dp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textAppearance="?attr/textAppearanceBody2"/>
-
-            </LinearLayout>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
