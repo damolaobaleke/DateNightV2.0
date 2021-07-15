@@ -94,13 +94,13 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(theAdapter);
         pendingHint = view.findViewById(R.id.pending_hint);
+        
         return view;
     }
 
 
     private void setUpRecyclerView() {
-        Query query = userdocRef.collection(DatabaseConstants.DATES_COLLECTION)
-                .orderBy(DatabaseConstants.DATE_CREATED_TIME_FIELD, Query.Direction.DESCENDING);
+        Query query = userdocRef.collection(DatabaseConstants.DATES_COLLECTION).orderBy(DatabaseConstants.DATE_CREATED_TIME_FIELD, Query.Direction.DESCENDING);
 
         //Set up recycler view options
         options = new FirestoreRecyclerOptions.Builder<DateModel>()
@@ -116,6 +116,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 if(data.getTimeCompleted() == null){
                     HashMap<String, String> participantStatus = data.getParticipantStatus();
                     for(String key : participantStatus.keySet()){
+                        //value of user id == pending
                         if (participantStatus.get(key).equals(DatabaseConstants.DATE_PENDING)){
                             hideView = false;
                             break;
@@ -135,12 +136,12 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 }
 
                 // Determine whether to display hint or not
-                if(getItemCount()  > 0){
+                if(getItemCount()  >= 0){
                     pendingHint.setVisibility(View.GONE);
                 } else {
                     pendingHint.setVisibility(View.VISIBLE);
                 }
-                Log.e(TAG, "NumHiddenItems: " + numHiddenItems + " GetItemcount: " + getItemCount());
+                Log.i(TAG, "NumHiddenItems: " + numHiddenItems + " GetItemcount: " + getItemCount());
             }
 
             @NonNull
@@ -332,6 +333,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                     case DialogInterface.BUTTON_POSITIVE:
                         //Yes button clicked - reject date
                         HashMap<String, String> participantStatus = dateData.getParticipantStatus();
+                        //replace value of the key with rejected
                         participantStatus.replace(currentUserId, DatabaseConstants.DATE_REJECTED);
 
                         Map<String, Object> updateData = new HashMap<>();

@@ -131,9 +131,7 @@
     <string name="create_avatar_text">Create Avatar</string>
     <string name="pick_date">Pick date</string>
     <string name="pick_time">Pick time</string>
-    <string name="verify_password">Enter your password again<font color="#F61515">*</font></string>
+    <string name="verify_password">Confirm your password<font color="#F61515">*</font></string>
     <string name="no_such_user_text">No such user</string>
-    <string name="pick_date">Pick date</string>
-    <string name="pick_time">Pick time</string>
     <string name="text_scheduled_hint">Click on the plus icon at the bottom to\nstart a new date</string>
 </resources>

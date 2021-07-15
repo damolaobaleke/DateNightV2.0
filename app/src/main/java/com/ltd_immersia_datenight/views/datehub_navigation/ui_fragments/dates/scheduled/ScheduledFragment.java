@@ -137,7 +137,7 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
                 }
 
                 // Determine whether to display hint or not
-                if(getItemCount() > 1){
+                if(getItemCount() >= 1){
                     scheduledHint.setVisibility(View.GONE);
                 } else {
                     scheduledHint.setVisibility(View.VISIBLE);

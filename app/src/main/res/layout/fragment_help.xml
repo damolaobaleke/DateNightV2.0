@@ -140,7 +140,7 @@
         android:layout_height="22dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="1dp"
-        android:layout_marginBottom="112dp"
+        android:layout_marginBottom="118dp"
         android:background="@drawable/help_custom_btn"
         android:paddingHorizontal="12dp"
         android:text="Privacy Policy"
