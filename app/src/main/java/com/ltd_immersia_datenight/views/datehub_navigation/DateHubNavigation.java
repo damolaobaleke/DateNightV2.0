@@ -105,12 +105,8 @@ public class DateHubNavigation extends AppCompatActivity {
         String fragmentToLaunch = getIntent().getStringExtra(IntentConstants.FRAGMENT_TO_LOAD);
         if (fragmentToLaunch != null){
             switch (fragmentToLaunch){
-                case IntentConstants.DATE_HUB_FRAGMENT:
-                    navController.navigate(R.id.action_nav_my_dates_to_nav_date_hub);
-                    break;
-
                 case IntentConstants.INBOX_FRAGMENT:
-                    navController.navigate(R.id.action_nav_my_dates_to_nav_inbox);
+                    navController.navigate(R.id.action_nav_date_hub_to_nav_inbox);
                     break;
                 case IntentConstants.BUY_DTC_FRAGMENT:
                     navController.navigate(R.id.action_nav_hub_to_nav_dtc);

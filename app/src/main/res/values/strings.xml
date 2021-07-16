@@ -126,14 +126,12 @@
     <string name="enter_your_full_name">Enter your full name<font color="#F61515">*</font></string>
     <string name="enter_your_password_signup">Enter your password<font color="#F61515">*</font></string>
     <string name="enter_your_date_of_birth_signup">Enter your Date of birth<font color="#F61515">*</font></string>
-    <string name="avatar_creation_info">After creating your avatar, don\'t forget to copy the generated link</string>
+    <string name="avatar_creation_info">After creating your avatar, don\'t forget to copy the generated link</string>s
     <string name="edit_avatar_text">Edit Avatar</string>
     <string name="create_avatar_text">Create Avatar</string>
     <string name="pick_date">Pick date</string>
     <string name="pick_time">Pick time</string>
-    <string name="verify_password">Enter your password again<font color="#F61515">*</font></string>
+    <string name="verify_password">Confirm password<font color="#F61515">*</font></string>
     <string name="no_such_user_text">No such user</string>
-    <string name="pick_date">Pick date</string>
-    <string name="pick_time">Pick time</string>
     <string name="text_scheduled_hint">Click on the plus icon at the bottom to\nstart a new date</string>
 </resources>
