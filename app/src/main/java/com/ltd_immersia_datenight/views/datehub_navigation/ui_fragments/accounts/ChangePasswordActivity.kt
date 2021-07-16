@@ -53,6 +53,12 @@ class ChangePasswordActivity : AppCompatActivity() {
     }
 
     fun changePassword(){
+        // Clear errors
+        oldPasswordTextInputLayout.error = null
+        newPasswordTextInputLayout.error = null
+        confirmPasswordTextInputLayout.error = null
+
+
         var oldPass = oldPassword.text.toString()
         var newPass = newPassword.text.toString()
         var confirmPass = confirmPassword.text.toString()
@@ -61,7 +67,7 @@ class ChangePasswordActivity : AppCompatActivity() {
         val credential = EmailAuthProvider.getCredential(email!!, oldPass)
         user.reauthenticate(credential)
                 .addOnFailureListener{
-                    oldPasswordTextInputLayout.error = "Incorrect old password enter"
+                    oldPasswordTextInputLayout.error = "Incorrect old password entered"
 
                 }
                 .addOnSuccessListener {
