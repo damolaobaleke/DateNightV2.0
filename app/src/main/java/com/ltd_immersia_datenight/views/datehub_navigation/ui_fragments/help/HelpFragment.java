@@ -77,7 +77,7 @@ public class HelpFragment extends Fragment {
     public void eula(){
         Intent intent = new Intent();
         intent.setType(Intent.CATEGORY_BROWSABLE);
-        intent.setData(Uri.parse("https://immersia.co.uk"));
+        intent.setData(Uri.parse("https://immersia.co.uk/files/EULA.pdf"));
         startActivity(intent);
     }
 

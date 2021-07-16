@@ -165,8 +165,7 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
                 intent.putExtra("timeChosen", timeChosen.getText());
                 startActivity(intent);
             } else {
-                Toast.makeText(DateScheduleActivity.this, "Please select a date and time to proceed",
-                               Toast.LENGTH_SHORT).show();
+                Toast.makeText(DateScheduleActivity.this, "Please select a date and time to proceed", Toast.LENGTH_SHORT).show();
             }
         });
 

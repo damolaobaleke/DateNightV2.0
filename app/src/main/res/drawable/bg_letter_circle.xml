@@ -16,9 +16,9 @@
     <item>
         <shape android:shape="rectangle">
             <stroke android:color="@color/date_night_purple" android:width="1.5dp"/>
-            <size android:width="20dp" android:height="20dp"/>
+            <size android:width="40dp" android:height="20dp"/>
             <solid android:color="@color/date_night_transparent"/>
-            <padding android:bottom="0dp"/>
+            <padding android:bottom="1dp" android:top="1dp" android:left="10dp" android:right="10dp"/>
             <corners android:radius="100dp"/>
         </shape>
     </item>

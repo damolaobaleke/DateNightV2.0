@@ -22,7 +22,7 @@
             tools:context=".views.authentication.SignUpActivity">
 
                 <TextView
-                    android:id="@+id/password2"
+                    android:id="@+id/passwordTwo"
                     style="@style/Username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                     app:layout_constraintEnd_toEndOf="@id/emailInput"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/emailInput"
-                    app:layout_constraintTop_toBottomOf="@+id/password2" />
+                    app:layout_constraintTop_toBottomOf="@+id/passwordTwo" />
 
             <TextView
                 android:id="@+id/email"

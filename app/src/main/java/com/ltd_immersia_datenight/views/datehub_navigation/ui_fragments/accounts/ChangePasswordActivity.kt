@@ -21,6 +21,9 @@ class ChangePasswordActivity : AppCompatActivity() {
     private lateinit var confirmPasswordTextInputLayout: TextInputLayout
     val TAG = "ChangePasswordActivity"
     val user = FirebaseAuth.getInstance().currentUser
+    val email = user!!.email
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +40,7 @@ class ChangePasswordActivity : AppCompatActivity() {
         newPasswordTextInputLayout = findViewById(R.id.newPasswordTextInputLayout)
         confirmPasswordTextInputLayout = findViewById(R.id.confirmPasswordTextInputLayout)
         changePasswordBtn = findViewById(R.id.changePasswordButton)
+
         changePasswordBtn.setOnClickListener {
             changePassword()
         }
@@ -58,8 +62,6 @@ class ChangePasswordActivity : AppCompatActivity() {
         user.reauthenticate(credential)
                 .addOnFailureListener{
                     oldPasswordTextInputLayout.error = "Incorrect old password enter"
-                    //val toast = Toast.makeText(this, "The old password you entered is incorrect", Toast.LENGTH_SHORT)
-                   // toast.show()
 
                 }
                 .addOnSuccessListener {
@@ -78,8 +80,6 @@ class ChangePasswordActivity : AppCompatActivity() {
                         confirmPasswordTextInputLayout.error = error
                     }
                 }
-
-
     }
 
     fun validateNewPassword(newPasswordValue: String, confirmPasswordValue: String): String{
