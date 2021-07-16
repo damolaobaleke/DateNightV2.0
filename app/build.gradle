@@ -31,11 +31,11 @@ android {
 
     buildTypes {
         release {
-            // debuggable true
+            debuggable true
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // signingConfig signingConfigs.config
+            signingConfig signingConfigs.config
         }
         debug {
             signingConfig signingConfigs.debug
