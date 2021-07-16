@@ -118,13 +118,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/bg_letter_circle"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="1dp"
-        android:text="D"
+        android:background="@drawable/bg_letter_circle_sch"
+        android:text="d"
         android:textAllCaps="true"
         android:textColor="@color/date_night_purple"
         android:textSize="24sp"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dateTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
