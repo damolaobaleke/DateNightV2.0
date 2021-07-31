@@ -306,8 +306,7 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
     private void leaveDateFromWaitingRoom(){
         quittedFromWaitingRoom = true;
         mUnityPlayer.unload();
-        Intent intent = new Intent (this, DateHubNavigation.class);
-        startActivity(intent);
+
     }
 
     @Override
@@ -316,6 +315,9 @@ public class UnityEnvironmentLoad extends UnityPlayerWrapperActivity {
         if (!quittedFromWaitingRoom){
             completeDate();
             launchDateFinishedActivity();
+        } else {
+            Intent intent = new Intent (this, DateHubNavigation.class);
+            startActivity(intent);
         }
         Log.i(TAG, "Unloaded unity");
     }

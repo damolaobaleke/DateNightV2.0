@@ -196,18 +196,6 @@ public class DateScheduleActivity extends AppCompatActivity implements DatePicke
         int hour12HourClock;
         String AM_PM = "";
 
-        /*
-        calendar = Calendar.getInstance();
-        if(calendar.get(Calendar.AM_PM) == Calendar.AM){
-            AM_PM = "am";
-        }else if(calendar.get(Calendar.AM_PM) == Calendar.PM){
-            AM_PM = "pm";
-        }else{
-            AM_PM = "";
-        }
-
-        */
-
         if (hourOfDay == 0){ // 12.00 AM
             AM_PM = "AM";
             hour12HourClock = 12;

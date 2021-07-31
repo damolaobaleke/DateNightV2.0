@@ -29,12 +29,6 @@
         android:label="My Dates"
         tools:layout="@layout/fragment_dates">
         <action
-            android:id="@+id/action_nav_my_dates_to_nav_date_hub"
-            app:destination="@id/nav_date_hub" />
-        <action
-            android:id="@+id/action_nav_my_dates_to_nav_inbox"
-            app:destination="@id/nav_inbox" />
-        <action
             android:id="@+id/action_nav_hub_to_nav_dtc"
             app:destination="@id/nav_buy_dtc" />
     </fragment>
@@ -47,6 +41,9 @@
         <action
             android:id="@+id/action_nav_hub_to_nav_dtc"
             app:destination="@id/nav_buy_dtc" />
+        <action
+            android:id="@+id/action_nav_date_hub_to_nav_inbox"
+            app:destination="@id/nav_inbox" />
 
     </fragment>
 

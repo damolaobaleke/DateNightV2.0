@@ -52,15 +52,15 @@ class StartNewChatViewModel: ViewModel() {
                             parentContext.firstLetterUser.text = getFirstLetter()
                             parentContext.userFullName.text = foundUserFullName
                             // parentContext.foundUserPhoto.setImageResource(); //TODO: Fix!
-                            parentContext.noSuchUserTextView.isVisible = false
-                            parentContext.foundUserLayout.isVisible = true
+                            parentContext.noSuchUserTextView.visibility = View.INVISIBLE
+                            parentContext.foundUserLayout.visibility = View.VISIBLE
 
                         } else if (documents.size == 0){
                             foundUserId = null
                             foundUserFullName = null
                             foundUserPhotoUrl = null
-                            parentContext.noSuchUserTextView.isVisible = true
-                            parentContext.foundUserLayout.isVisible = false
+                            parentContext.noSuchUserTextView.visibility = View.VISIBLE
+                            parentContext.foundUserLayout.visibility = View.INVISIBLE
                             Log.i(TAG, "No result for username: $username")
                             val toastMessage = "No user found for $username"
                             Toast.makeText(parentContext, toastMessage, Toast.LENGTH_SHORT).show()
@@ -70,6 +70,7 @@ class StartNewChatViewModel: ViewModel() {
                             foundUserId = null
                             foundUserFullName = null
                             foundUserPhotoUrl = null
+                            parentContext.foundUserLayout.visibility = View.INVISIBLE
                             Log.i(TAG, "Invalid number of users (possibly more than 1) matching username: $username")
                             val toastMessage = "No user found for $username"
                             Toast.makeText(parentContext, toastMessage, Toast.LENGTH_SHORT).show()
@@ -78,6 +79,7 @@ class StartNewChatViewModel: ViewModel() {
                         foundUserId = null
                         foundUserFullName = null
                         foundUserPhotoUrl = null
+                        parentContext.foundUserLayout.visibility = View.INVISIBLE
                         Log.e(TAG, "Encountered error searching for $username")
                         val toastMessage = "Encountered error searching for $username"
                         Toast.makeText(parentContext, toastMessage, Toast.LENGTH_SHORT).show()

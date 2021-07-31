@@ -37,7 +37,7 @@ import com.ltd_immersia_datenight.MainActivity;
 import com.ltd_immersia_datenight.R;
 import com.ltd_immersia_datenight.modelfirestore.Date.DateModel;
 import com.ltd_immersia_datenight.utils.DateNight;
-//import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad;
+import com.ltd_immersia_datenight.views.unity.UnityEnvironmentLoad;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -136,8 +136,8 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
                     holder.bind(data, holder.itemView);
                 }
 
-                // Determine whether to display hint or not
-                if(getItemCount() >= 1){
+                // Determine whether to display hint or nots
+                if(getItemCount() > 0){
                     scheduledHint.setVisibility(View.GONE);
                 } else {
                     scheduledHint.setVisibility(View.VISIBLE);
@@ -155,10 +155,10 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
-                if (getItemCount() < 1){
-                    scheduledHint.setVisibility(View.VISIBLE);
+                if(getItemCount() > 0){
+                    scheduledHint.setVisibility(View.GONE);
                 } else {
-                    scheduledHint.setVisibility(View.INVISIBLE);
+                    scheduledHint.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -242,7 +242,7 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
 
             startDate.setOnClickListener(v -> {
                 //start unity environment
-                //startUnityScene();
+                startUnityScene();
                 alertDialog.dismiss();
 
             }); //Start environment load
@@ -274,7 +274,7 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
 
             // Set onClick listeners for buttons
             startDate.setOnClickListener(v -> {
-                //startUnityScene();
+                startUnityScene();
                 alertDialog.dismiss();
             }); //Start environment load
             editDate.setOnClickListener(v -> {
@@ -290,18 +290,18 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
             alertDialog.show();
         }
 
-//        private void startUnityScene() {
-//            Intent intent = new Intent(requireActivity(), UnityEnvironmentLoad.class)
-//                    .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
-//                    .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).getCurrentUser().getFullName())
-//                    .putExtra(IntentConstants.DATE_ID, dateData.getId())
-//                    .putExtra(IntentConstants.DATE_CREATOR_ID, dateData.getCreator())
-//                    .putExtra(IntentConstants.EXPERIENCE_ID, dateData.getLinkedExperienceId())
-//                    .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, dateParticipantId)
-//                    .putExtra(IntentConstants.PARTICIPANT_USER_NAME_EXTRA, dateData.getParticipantUsernames().get(dateParticipantId))
-//                    .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, dateData.getParticipants().get(dateParticipantId));
-//            requireActivity().startActivity(intent);
-//        }
+        private void startUnityScene() {
+            Intent intent = new Intent(requireActivity(), UnityEnvironmentLoad.class)
+                    .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
+                    .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).getCurrentUser().getFullName())
+                    .putExtra(IntentConstants.DATE_ID, dateData.getId())
+                    .putExtra(IntentConstants.DATE_CREATOR_ID, dateData.getCreator())
+                    .putExtra(IntentConstants.EXPERIENCE_ID, dateData.getLinkedExperienceId())
+                    .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, dateParticipantId)
+                    .putExtra(IntentConstants.PARTICIPANT_USER_NAME_EXTRA, dateData.getParticipantUsernames().get(dateParticipantId))
+                    .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, dateData.getParticipants().get(dateParticipantId));
+            requireActivity().startActivity(intent);
+        }
 
 
         private void reScheduleDateTime() {
@@ -433,7 +433,7 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
     private void pickTime() {
         TimePickerDialog timeDialog = new TimePickerDialog(requireContext(), this,
                 Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
-                Calendar.getInstance().get(Calendar.MINUTE), true);
+                Calendar.getInstance().get(Calendar.MINUTE), false);
         timeDialog.show();
     }
 
@@ -444,22 +444,29 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        int hour12HourClock;
         String AM_PM = "";
 
-        Calendar calendar = Calendar.getInstance();
-        if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
-            AM_PM = "am";
-        } else if (calendar.get(Calendar.AM_PM) == Calendar.PM) {
-            AM_PM = "pm";
-        } else {
-            AM_PM = "";
+        if (hourOfDay == 0){ // 12.00 AM
+            AM_PM = "AM";
+            hour12HourClock = 12;
         }
-        timeChosen.setText(String.format(Locale.getDefault(), "%01d:%02d %s", hourOfDay, minute, AM_PM));
+        else if (hourOfDay < 12){
+            AM_PM = "AM";
+            hour12HourClock = hourOfDay;
+        }  else if (hourOfDay == 12){ // 12:00 PM
+            AM_PM = "PM";
+            hour12HourClock = hourOfDay;
+        } else {
+            AM_PM = "PM";
+            hour12HourClock = hourOfDay - 12;
+        }
+        timeChosen.setText(String.format(Locale.getDefault(), "%01d:%02d %s", hour12HourClock, minute, AM_PM));
     }
 
     public static Timestamp dateStringToTimestamp(String dateStr) {
         try {
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm", Locale.getDefault());
             Date date = formatter.parse(dateStr);
             assert date != null;
             //convert date to timestamp

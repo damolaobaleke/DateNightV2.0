@@ -157,10 +157,10 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
                 if (getItemCount() < numHiddenItems){
                     numHiddenItems = getItemCount(); // accounts for when invite has been rejected
                 }
-                if(getItemCount() < 1){
+                if(getItemCount()  > 0){
+                    pendingHint.setVisibility(View.GONE);
+                } else {
                     pendingHint.setVisibility(View.VISIBLE);
-                }else {
-                    pendingHint.setVisibility(View.INVISIBLE);
                 }
                 Log.e(TAG, "NumHiddenItems: " + numHiddenItems + " GetItemcount: " + getItemCount());
             }
@@ -381,7 +381,7 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
     private void pickTime() {
         TimePickerDialog timeDialog = new TimePickerDialog(requireContext(), this,
                                                            Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
-                                                           Calendar.getInstance().get(Calendar.MINUTE), true);
+                                                           Calendar.getInstance().get(Calendar.MINUTE), false);
         timeDialog.show();
     }
 
@@ -425,22 +425,29 @@ public class PendingFragment extends Fragment implements DatePickerDialog.OnDate
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        String AM_PM="";
+        int hour12HourClock;
+        String AM_PM = "";
 
-        Calendar calendar = Calendar.getInstance();
-        if(calendar.get(Calendar.AM_PM) == Calendar.AM){
-            AM_PM = "am";
-        }else if(calendar.get(Calendar.AM_PM) == Calendar.PM){
-            AM_PM = "pm";
-        }else{
-            AM_PM = "";
+        if (hourOfDay == 0){ // 12.00 AM
+            AM_PM = "AM";
+            hour12HourClock = 12;
         }
-        timeChosen.setText(String.format(Locale.getDefault(), "%01d:%02d %s", hourOfDay, minute, AM_PM));
+        else if (hourOfDay < 12){
+            AM_PM = "AM";
+            hour12HourClock = hourOfDay;
+        }  else if (hourOfDay == 12){ // 12:00 PM
+            AM_PM = "PM";
+            hour12HourClock = hourOfDay;
+        } else {
+            AM_PM = "PM";
+            hour12HourClock = hourOfDay - 12;
+        }
+        timeChosen.setText(String.format(Locale.getDefault(), "%01d:%02d %s", hour12HourClock, minute, AM_PM));
     }
 
     public static Timestamp dateStringToTimestamp(String dateStr) {
         try {
-            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+            DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm", Locale.getDefault());
             Date date = formatter.parse(dateStr);
             assert date != null;
             //convert date to timestamp
