@@ -474,12 +474,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void progressBarShown() {
-        load = findViewById(R.id.progressBar2);
+        load = findViewById(R.id.progressBar5);
         load.setVisibility(View.VISIBLE);
     }
 
     public void progressBarGone() {
-        load = findViewById(R.id.progressBar2);
+        load = findViewById(R.id.progressBar5);
         load.setVisibility(View.INVISIBLE);
     }
 
