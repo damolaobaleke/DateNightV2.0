@@ -125,12 +125,17 @@ class StartNewChatViewModel: ViewModel() {
 
     fun inviteUser(parentContext: StartNewChatActivity, shareButton: Button) {
         shareButton.setOnClickListener(View.OnClickListener { v: View? ->
-            val link = Uri.parse("https://play.google.com/console/u/0/developers/8421302216223559919/app/4972918314666606268/tracks/4699075429511113233/releases/7/details")
+            val androidLink = Uri.parse("https://play.google.com/store/apps/details?id=com.ltd_immersia_datenight")
+            val iOSLink = Uri.parse("https://apps.apple.com/ca/app/datenight-app/id1546254718")
             val smiley = Html.fromHtml("&#U+263A", Html.FROM_HTML_MODE_LEGACY)
             val shareIntent = Intent()
             shareIntent.action = Intent.ACTION_SEND
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "Are you tired of the endless talking stages? Join Date night now for a new dating experience. \nHere is the link $link")
-                    .putExtra(Intent.EXTRA_SUBJECT, "Date Night")
+            shareIntent.putExtra(Intent.EXTRA_TEXT,
+                "Would you like to come on a virtual date with me in Paris all from the comfort of your phone? There's food, music, and oh - personal avatars!" +
+                        "\nCheck out DateNight now"  +
+                        "\nAndroid: $androidLink" +
+                        "\niOS: $iOSLink")
+                    .putExtra(Intent.EXTRA_SUBJECT, "DateNight")
             shareIntent.type = "text/plain"
             startActivity(parentContext, shareIntent, null)
         })
