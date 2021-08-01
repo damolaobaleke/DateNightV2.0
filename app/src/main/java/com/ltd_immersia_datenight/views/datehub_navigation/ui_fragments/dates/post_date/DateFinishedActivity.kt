@@ -94,8 +94,8 @@ class DateFinishedActivity : AppCompatActivity() {
         //.putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, dateParticipantName)
         //startActivity(intent)
 
-        AlertDialog.Builder(this).setTitle("Notification")
-                .setMessage("You currently can't repeat a date from\nhere, we're working hard to fix this\nplease bare with us. Thanks !")
+        AlertDialog.Builder(this).setTitle("Error")
+                .setMessage("Repeating a date currently isn't\nsupported, but will be supported in\ncoming updates")
                 .setPositiveButton("OK") { dialogInterface, i -> dialogInterface.dismiss() }.create().show()
     }
 

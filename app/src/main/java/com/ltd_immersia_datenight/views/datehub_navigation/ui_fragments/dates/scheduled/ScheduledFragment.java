@@ -291,16 +291,24 @@ public class ScheduledFragment extends Fragment implements DatePickerDialog.OnDa
         }
 
         private void startUnityScene() {
-            Intent intent = new Intent(requireActivity(), UnityEnvironmentLoad.class)
-                    .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
-                    .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).getCurrentUser().getFullName())
-                    .putExtra(IntentConstants.DATE_ID, dateData.getId())
-                    .putExtra(IntentConstants.DATE_CREATOR_ID, dateData.getCreator())
-                    .putExtra(IntentConstants.EXPERIENCE_ID, dateData.getLinkedExperienceId())
-                    .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, dateParticipantId)
-                    .putExtra(IntentConstants.PARTICIPANT_USER_NAME_EXTRA, dateData.getParticipantUsernames().get(dateParticipantId))
-                    .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, dateData.getParticipants().get(dateParticipantId));
-            requireActivity().startActivity(intent);
+            if (!appState.getAppData(currentUserId).getHasUnityBeenLaunched()){
+                appState.getAppData(currentUserId).setHasUnityBeenLaunched(true);
+                Intent intent = new Intent(requireActivity(), UnityEnvironmentLoad.class)
+                        .putExtra(IntentConstants.USER_ID_EXTRA, currentUserId)
+                        .putExtra(IntentConstants.USER_FULL_NAME_EXTRA, appState.getAppData(currentUserId).getCurrentUser().getFullName())
+                        .putExtra(IntentConstants.DATE_ID, dateData.getId())
+                        .putExtra(IntentConstants.DATE_CREATOR_ID, dateData.getCreator())
+                        .putExtra(IntentConstants.EXPERIENCE_ID, dateData.getLinkedExperienceId())
+                        .putExtra(IntentConstants.PARTICIPANT_ID_EXTRA, dateParticipantId)
+                        .putExtra(IntentConstants.PARTICIPANT_USER_NAME_EXTRA, dateData.getParticipantUsernames().get(dateParticipantId))
+                        .putExtra(IntentConstants.PARTICIPANT_FULL_NAME_EXTRA, dateData.getParticipants().get(dateParticipantId));
+                requireActivity().startActivity(intent);
+            } else {
+                new AlertDialog.Builder(ScheduledFragment.this.getContext()).setTitle("Error")
+                        .setMessage("To go on another date, you must\nrelaunch the app first. We are working hard\nto fix this issue within the coming\nupdates")
+                        .setPositiveButton("Ok", (dialog, which) -> dialog.dismiss())
+                        .show();
+            }
         }
 
 
