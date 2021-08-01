@@ -156,34 +156,40 @@ class DateHubFragmentViewModel : ViewModel() {
                 val user = documentSnapshot.toObject(UserModel::class.java)
                 val params = HashMap<String, String?>()
 
-                params["scene"] = "fullbody-portrait-v1"
-                params["armature"] = "ArmatureTargetMale"
-                params["model"] = user!!.avatar[DatabaseConstants.AVATAR_URL_FIELD]
+                //If the user does have an avatar, the only condition where this should proceed
+                if(user!!.avatar[DatabaseConstants.AVATAR_URL_FIELD] !== "") {
+
+                    params["scene"] = "fullbody-portrait-v1"
+                    params["armature"] = "ArmatureTargetMale"
+                    params["model"] = user!!.avatar[DatabaseConstants.AVATAR_URL_FIELD]
 
 
-                val render = api.getAvatarUrl(params)
+                    val render = api.getAvatarUrl(params)
 
-                render.enqueue(object : Callback<RenderObject?> {
-                    override fun onResponse(call: Call<RenderObject?>, response: Response<RenderObject?>) {
-                        if (!response.isSuccessful) {
-                            Log.i(TAG, response.message())
-                            return
+                    render.enqueue(object : Callback<RenderObject?> {
+                        override fun onResponse(call: Call<RenderObject?>, response: Response<RenderObject?>) {
+                            if (!response.isSuccessful) {
+                                Log.i(TAG, response.message())
+                                return
+                            }
+
+                            val objRender = response.body()
+                            Log.i("2D Link", objRender!!.render[0].toString() + "")
+
+                            val avatar = HashMap<String, Any>()
+                            avatar[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] = objRender.render[0]
+
+                            //update avatar map with new K,V
+                            docReference.update(mapOf("avatar.avatarHeadShotUrl" to objRender.render[0]))
+
                         }
 
-                        val objRender = response.body()
-                        Log.i("2D Link", objRender!!.render[0].toString() + "")
+                        override fun onFailure(call: Call<RenderObject?>, t: Throwable) {
+                            Log.i("Error", t.message)
+                        }
+                    })
 
-                        val avatar = HashMap<String, Any>()
-                        avatar[DatabaseConstants.AVATAR_HEADSHOT_URL_FIELD] = objRender.render[0]
-
-                        //update avatar map with new K,V
-                        docReference.update(mapOf("avatar.avatarHeadShotUrl" to objRender.render[0]))
-                    }
-
-                    override fun onFailure(call: Call<RenderObject?>, t: Throwable) {
-                        Log.i("Error", t.message)
-                    }
-                })
+                }
             }
         }
     }
